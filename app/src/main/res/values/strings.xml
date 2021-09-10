@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Expostore</string>
+    <string name="main_app_name">Expostore</string>
+    <string name="main_btn_sign_in_text">Войти в аккаунт</string>
+    <string name="main_btn_sign_up_text">Зарегистрироваться</string>
+    <string name="login_title_text">Вход в аккаунт</string>
+    <string name="login_subtitle_text">Чтобы войти в Ваш аккаунт, введите пароль.</string>
+    <string name="login_et_number_hint">Номер телефона</string>
+    <string name="login_et_password_hint">Пароль</string>
+    <string name="login_btn_sign_in_next_text">Продолжить</string>
+    <string name="login_btn_forgot_password_text">Забыл пароль</string>
+</resources>
