@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.login.LoginFragment">
+    tools:context=".ui.authorization.login.LoginFragment">
 
     <data>
         <import type="android.view.View" alias="v"/>
         <variable
             name="loginVM"
-            type="com.expostore.ui.login.LoginViewModel"/>
+            type="com.expostore.ui.authorization.login.LoginViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:autofillHints=""
-            android:text="@={loginVM.number}"
+            android:maxLength="11"
+            android:text="@={loginVM.phone}"
             android:background="@drawable/style_edit_text"
             android:inputType="number"
             android:maxLines="1"
@@ -128,9 +129,10 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:backgroundTint="#2677F1"
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:enabled="false"
             android:text="@string/login_btn_sign_in_next_text"
-            android:onClick="@{loginVM::signin}"
+            android:onClick="@{loginVM::signIn}"
             android:textColor="@color/white"
             app:cornerRadius="10dp"
             android:letterSpacing="0.01"
@@ -146,6 +148,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:enabled="false"
+            android:onClick="@{loginVM::confirmNumber}"
             android:text="@string/login_btn_forgot_password_text"
             android:textColor="#8C162344"
             app:cornerRadius="10dp"

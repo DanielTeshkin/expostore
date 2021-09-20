@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment)
 
         navView = findViewById(R.id.bottomNavigationView)
-        navView.visibility = View.GONE
+        //navView.visibility = View.GONE
 
         val appBarConfiguration = AppBarConfiguration.Builder(
             R.id.navigation_home,

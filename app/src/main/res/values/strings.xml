@@ -3,10 +3,62 @@
     <string name="main_app_name">Expostore</string>
     <string name="main_btn_sign_in_text">Войти в аккаунт</string>
     <string name="main_btn_sign_up_text">Зарегистрироваться</string>
+
+
     <string name="login_title_text">Вход в аккаунт</string>
     <string name="login_subtitle_text">Чтобы войти в Ваш аккаунт, введите пароль.</string>
     <string name="login_et_number_hint">Номер телефона</string>
     <string name="login_et_password_hint">Пароль</string>
     <string name="login_btn_sign_in_next_text">Продолжить</string>
     <string name="login_btn_forgot_password_text">Забыл пароль</string>
+
+    <string name="on_failure_text">Ошибка подключения к серверу. Повторите попытку позже.</string>
+
+    <string name="category_btn_open_text">Перейти</string>
+    <string name="category_tv_name_hint">Название подборки</string>
+    <string name="detail_category_tv_name_hint">Название подборки</string>
+    <string name="main_tv_title_text">Главная</string>
+    <string name="product_tv_name_text">Название товара</string>
+
+    <string name="navigation_home_text">Главная</string>
+    <string name="navigation_search_text">Поиск</string>
+    <string name="navigation_favorites_text">Избранное</string>
+    <string name="navigation_tender_text">Тендер</string>
+    <string name="navigation_chat_text">Чат</string>
+
+    <string name="number_title_text">Регистрация</string>
+    <string name="masked_et_hint">0000000000</string>
+    <string name="number_tv_rules_text">Нажимая кнопку “Продолжить” вы соглашаетесь с пользовательским соглашением и политикой конфиденциальности</string>
+
+    <string name="confirm_number_title_text">Подтверждение номера</string>
+    <string name="confirm_number_subtitle_text">Мы отправили код подтверждения в смс на номер %1$s</string>
+
+    <string name="create_password_title_text">Почти готово</string>
+    <string name="create_password_subtitle_text">Отлично! Придумайте пароль.</string>
+    <string name="create_password_et_second_password_hint">Повторите пароль</string>
+    <string name="create_password_et_password_hint">Пароль</string>
+
+    <string name="completion_title_text">Завершение регистрации</string>
+    <string name="completion_subtitle_text">Для завершения регистрации, пожалуйста, введите данные о Вас</string>
+    <string name="completion_et_surname_hint">Фамилия</string>
+    <string name="completion_et_name_hint">Имя</string>
+    <string name="completion_et_city_hint">Город</string>
+    <string name="completion_et_email_hint">Электронная почта</string>
+
+    <string name="password_recovery_title_text">Восстановление пароля</string>
+    <string name="password_recovery_subtitle_text">Мы отправили смс код на указанный номер</string>
+
+    <string name="new_password_title_text">Последний шаг</string>
+    <string name="new_password_subtitle_text">Отлично, придумайте пароль</string>
+    <string name="new_password_et_password_hint">Пароль</string>
+    <string name="new_password_et_second_password_text">Повторите пароль</string>
+
+    <string name="terms_of_use">https://expostore.ru/terms_of_use/</string>
+
+
+    <string name="confirm_code_btn_resend_code_title">Отправить код</string>
+    <string name="confirm_code_btn_resend_code_text">Отправить код повторно (доступно через %1$d сек.)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="completion_et_patronymic_hint">Отчество</string>
 </resources>

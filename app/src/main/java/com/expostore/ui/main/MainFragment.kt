@@ -1,5 +1,6 @@
 package com.expostore.ui.main
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -40,14 +41,22 @@ class MainFragment : Fragment() {
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.mainVM = mainViewModel
 
-        (context as AppCompatActivity).bottomNavigationView.visibility = View.VISIBLE
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    override fun onStart() {
+        super.onStart()
+
+        (context as MainActivity).navView.visibility = View.VISIBLE
 
         val token = (context as MainActivity).sharedPreferences.getString("token", "")
+
+        if (token.isNullOrEmpty()){
+            navController = Navigation.findNavController(binding.root)
+            navController.navigate(R.id.action_mainFragment_to_openFragment)
+        }
 
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
@@ -80,7 +89,6 @@ class MainFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ArrayList<CategoryAdvertising>>, t: Throwable) {
-                val s = 0
             }
         })
     }

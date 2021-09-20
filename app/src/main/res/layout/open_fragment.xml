@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="@string/main_btn_sign_up_text"
+            android:onClick="@{openVM::navigateToSignUp}"
             android:textColor="#2677F1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

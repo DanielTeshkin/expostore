@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.expostore"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -72,6 +72,7 @@ dependencies {
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta02'
+    //phone number mask
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
 
 }

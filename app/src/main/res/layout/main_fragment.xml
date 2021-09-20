@@ -24,7 +24,8 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_main_add"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
             style="@style/BoldTextView"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:text="Главная"
+            android:text="@string/main_tv_title_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +65,8 @@
             <ImageView
                 android:id="@+id/iv_advertising"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:ignore="ContentDescription" />
 
         </androidx.cardview.widget.CardView>
 
@@ -87,4 +89,5 @@
             app:constraint_referenced_ids="imageButton2,imageView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

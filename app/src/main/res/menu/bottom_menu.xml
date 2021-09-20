@@ -4,23 +4,23 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/selector_menu_home"
-        android:title="Главная" />
+        android:title="@string/navigation_home_text" />
     <item
         android:id="@+id/navigation_search"
         android:icon="@drawable/ic_menu_search_disable"
-        android:title="Поиск" />
+        android:title="@string/navigation_search_text" />
     <item
         android:id="@+id/navigation_favorites"
         android:icon="@drawable/ic_menu_favorites_disable"
-        android:title="Избранное" />
+        android:title="@string/navigation_favorites_text" />
 
     <item
         android:id="@+id/navigation_tender"
         android:icon="@drawable/ic_menu_tender_disable"
-        android:title="Тендер" />
+        android:title="@string/navigation_tender_text" />
     <item
         android:id="@+id/navigation_chat"
         android:icon="@drawable/ic_menu_chat_disable"
-        android:title="Чат" />
+        android:title="@string/navigation_chat_text" />
 
 </menu>

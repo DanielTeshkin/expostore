@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.expostore.MainActivity
 import com.expostore.R
 import com.expostore.databinding.OpenFragmentBinding
 
@@ -20,7 +21,12 @@ class OpenFragment : Fragment() {
         openViewModel = ViewModelProvider(this).get(OpenViewModel::class.java)
         binding.openVM = openViewModel
 
+        (context as MainActivity).navView.visibility = View.GONE
+
+        //TODO Добавить в клик кнопки выхода
+        //(context as MainActivity).sharedPreferences.edit().clear().apply()
+
+
         return binding.root
     }
-
 }

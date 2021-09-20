@@ -18,7 +18,8 @@
         android:elevation="3dp"
         android:src="@drawable/ic_unlike"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:id="@+id/ll_dot"
@@ -47,11 +48,10 @@
             android:id="@+id/iv_detail_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="#F3F4F5" />
+            android:src="#F3F4F5"
+            tools:ignore="ContentDescription" />
 
     </androidx.cardview.widget.CardView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

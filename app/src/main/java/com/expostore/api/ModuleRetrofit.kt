@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object Retrofit {
     private var retrofit: Retrofit? = null
-    val BASE_URL = "https://expostore.ru"
+    const val BASE_URL = "https://expostore.ru"
 
     fun getClient(baseUrl: String): Retrofit {
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/openFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/openFragment"
@@ -13,15 +13,21 @@
         <action
             android:id="@+id/action_openFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_openFragment_to_numberFragment"
+            app:destination="@id/numberFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.expostore.ui.login.LoginFragment"
+        android:name="com.expostore.ui.authorization.login.LoginFragment"
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordRecoveryFragment"
+            app:destination="@id/passwordRecoveryFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -31,10 +37,74 @@
         <action
             android:id="@+id/action_mainFragment_to_detailCategoryFragment"
             app:destination="@id/detailCategoryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_openFragment"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailCategoryFragment"
         android:name="com.expostore.ui.main.category.DetailCategoryFragment"
         android:label="detail_category_fragment"
         tools:layout="@layout/detail_category_fragment" />
+    <fragment
+        android:id="@+id/numberFragment"
+        android:name="com.expostore.ui.authorization.registration.confirmnumber.ConfirmNumberFragment"
+        android:label="number_fragment"
+        tools:layout="@layout/confirm_number_fragment" >
+        <action
+            android:id="@+id/action_numberFragment_to_confirmNumberFragment"
+            app:destination="@id/confirmNumberFragment" />
+        <action
+            android:id="@+id/action_numberFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmNumberFragment"
+        android:name="com.expostore.ui.authorization.registration.confirmcode.ConfirmCodeFragment"
+        android:label="confirm_number_fragment"
+        tools:layout="@layout/confirm_code_fragment" >
+        <action
+            android:id="@+id/action_confirmNumberFragment_to_createPasswordFragment"
+            app:destination="@id/createPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPasswordFragment"
+        android:name="com.expostore.ui.authorization.registration.createpassword.CreatePasswordFragment"
+        android:label="create_password_fragment"
+        tools:layout="@layout/create_password_fragment" >
+        <action
+            android:id="@+id/action_createPasswordFragment_to_completionFragment"
+            app:destination="@id/completionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/completionFragment"
+        android:name="com.expostore.ui.authorization.registration.completion.CompletionFragment"
+        android:label="completion_fragment"
+        tools:layout="@layout/completion_fragment" >
+        <action
+            android:id="@+id/action_completionFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordRecoveryFragment"
+        android:name="com.expostore.ui.authorization.passwordrecovery.PasswordRecoveryFragment"
+        android:label="password_recovery_fragment"
+        tools:layout="@layout/password_recovery_fragment" >
+        <action
+            android:id="@+id/action_passwordRecoveryFragment_to_newPasswordFragment"
+            app:destination="@id/newPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPasswordFragment"
+        android:name="com.expostore.ui.authorization.newpassword.NewPasswordFragment"
+        android:label="new_password_fragment"
+        tools:layout="@layout/new_password_fragment" >
+        <action
+            android:id="@+id/action_newPasswordFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.expostore.ui.WebViewFragment"
+        android:label="WebViewFragment" />
 </navigation>
