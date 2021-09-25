@@ -58,7 +58,7 @@
 
     <string name="confirm_code_btn_resend_code_title">Отправить код</string>
     <string name="confirm_code_btn_resend_code_text">Отправить код повторно (доступно через %1$d сек.)</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="completion_et_patronymic_hint">Отчество</string>
+    <string name="search_et_hint">Поиск</string>
 </resources>

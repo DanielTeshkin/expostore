@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity() {
         //navView.visibility = View.GONE
 
         val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.navigation_home,
-            R.id.navigation_home,
-            R.id.navigation_home,
-            R.id.navigation_home,
-            R.id.navigation_home)
+            R.id.mainFragment,
+            R.id.searchFragment,
+            R.id.navigation_favorites,
+            R.id.navigation_tender,
+            R.id.navigation_chat)
             .build()
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
