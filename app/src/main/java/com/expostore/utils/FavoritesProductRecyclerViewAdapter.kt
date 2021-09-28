@@ -10,21 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.CategoryProduct
 import com.expostore.api.pojo.getcategory.CategoryProductImage
+import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import kotlinx.android.synthetic.main.detail_product_item.view.*
-import kotlin.collections.ArrayList
 
-class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<CategoryProduct>?, var context: Context) : RecyclerView.Adapter<DetailCategoryRecyclerViewAdapter.DetailCategoryViewHolder>() {
+class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFavoritesListResponseData>?, var context: Context) : RecyclerView.Adapter<FavoritesProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
     var onClick : OnClickListener? = null
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailCategoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.detail_product_item, parent, false)
-        return DetailCategoryViewHolder(v)
+        return FavoritesProductViewHolder(v)
     }
 
     override fun getItemId(position: Int): Long = position.toLong()
@@ -33,7 +32,7 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
 
     override fun getItemCount(): Int = products!!.size
 
-    inner class DetailCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class FavoritesProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var name: TextView = itemView.tv_detail_product_name
         var price: TextView = itemView.tv_detail_product_price
         var rvImages: RecyclerView = itemView.rv_detail_product_images
@@ -41,8 +40,8 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
         var note: TextView = itemView.tv_detail_product_note
     }
 
-    override fun onBindViewHolder(holder: DetailCategoryViewHolder, position: Int) {
-        val product = products!![position]
+    override fun onBindViewHolder(holder: FavoritesProductViewHolder, position: Int) {
+        val product = products!![position].product
 
         holder.name.text = product.name
         holder.price.text = product.price
@@ -63,7 +62,11 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
             holder.note.visibility = View.GONE
         }
 
-        val testImages = arrayListOf(CategoryProductImage(null,null),CategoryProductImage(null,null),CategoryProductImage(null,null))
+        val testImages = arrayListOf(
+            CategoryProductImage(null,null),
+            CategoryProductImage(null,null),
+            CategoryProductImage(null,null)
+        )
 
         val snapHelper = PagerSnapHelper() // Or PagerSnapHelper
         snapHelper.attachToRecyclerView(holder.rvImages)
@@ -86,4 +89,6 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
     }
 }
 
-
+interface OnClickListener {
+    fun onLikeClick(like: Boolean, id: String?)
+}

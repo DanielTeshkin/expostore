@@ -10,6 +10,9 @@ import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getcities.GetCitiesResponseData
+import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteRequestData
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
 import com.expostore.api.pojo.signin.SignInRequestData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
@@ -42,4 +45,12 @@ interface ServerApi {
 
     @GET("/api/advertising/selection/")
     fun getCategoryAdvertising(@Header("Authorization") authToken: String?): Call<ArrayList<CategoryAdvertising>>
+
+    //TODO изменить
+    @POST("/api/product/{id}/elected/select/")
+    fun selectFavorite(@Header("Authorization") authToken: String?, @Path("id") id: String): Call<SelectFavoriteResponseData>
+
+    @GET("/api/product/elected/list/")
+    fun getFavoritesList(@Header("Authorization") authToken: String?): Call<ArrayList<GetFavoritesListResponseData>>
+
 }

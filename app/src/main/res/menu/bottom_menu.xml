@@ -7,20 +7,20 @@
         android:title="@string/navigation_home_text" />
     <item
         android:id="@id/searchFragment"
-        android:icon="@drawable/ic_menu_search_disable"
+        android:icon="@drawable/selector_menu_search"
         android:title="@string/navigation_search_text" />
     <item
-        android:id="@+id/navigation_favorites"
-        android:icon="@drawable/ic_menu_favorites_disable"
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/selector_menu_favorites"
         android:title="@string/navigation_favorites_text" />
 
     <item
         android:id="@+id/navigation_tender"
-        android:icon="@drawable/ic_menu_tender_disable"
+        android:icon="@drawable/selector_menu_tender"
         android:title="@string/navigation_tender_text" />
     <item
         android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_menu_chat_disable"
+        android:icon="@drawable/selector_menu_chat"
         android:title="@string/navigation_chat_text" />
 
 </menu>

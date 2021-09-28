@@ -15,7 +15,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutDescription="@xml/search_fragment_xml_constraintlayout_scene">
+        app:layoutDescription="@xml/search_scene">
 
         <FrameLayout
             android:id="@+id/frame_search"

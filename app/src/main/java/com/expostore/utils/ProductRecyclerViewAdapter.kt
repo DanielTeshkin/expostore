@@ -35,8 +35,8 @@ class ProductRecyclerViewAdapter(private val products: ArrayList<CategoryProduct
         holder.name.text = product.name
 
         if (!product.images.isNullOrEmpty()) {
-            if (product.images[0].file != null)
-                Picasso.get().load(product.images[0].file).into(holder.image)
+            if (product.images!![0].file != null)
+                Picasso.get().load(product.images!![0].file).into(holder.image)
         }
     }
 }

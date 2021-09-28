@@ -11,9 +11,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.expostore.MainActivity
 import com.expostore.R
-import com.expostore.databinding.LoginFragmentBinding
 import com.expostore.databinding.NewPasswordFragmentBinding
-import com.expostore.ui.authorization.login.LoginViewModel
 
 class NewPasswordFragment : Fragment() {
 
