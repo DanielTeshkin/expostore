@@ -123,4 +123,27 @@
         android:name="com.expostore.ui.favorites.FavoritesFragment"
         android:label="favorites_fragment"
         tools:layout="@layout/favorites_fragment" />
+    <fragment
+        android:id="@+id/tenderListFragment"
+        android:name="com.expostore.ui.tender.list.TenderListFragment"
+        android:label="tender_list_fragment"
+        tools:layout="@layout/tender_list_fragment" >
+        <action
+            android:id="@+id/action_tenderListFragment_to_tenderCreateFragment"
+            app:destination="@id/tenderCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tenderCreateFragment"
+        android:name="com.expostore.ui.tender.create.TenderCreateFragment"
+        android:label="tender_create_fragment"
+        tools:layout="@layout/tender_create_fragment" >
+        <action
+            android:id="@+id/action_tenderCreateFragment_to_specificationsFragment"
+            app:destination="@id/specificationsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/specificationsFragment"
+        android:name="com.expostore.ui.main.specifications.SpecificationsFragment"
+        android:label="specifications_fragment"
+        tools:layout="@layout/specifications_fragment" />
 </navigation>

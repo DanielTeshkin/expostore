@@ -46,12 +46,14 @@ class MainFragment : Fragment() {
     }
 
 
+    //TODO авторизация не работает
     override fun onStart() {
         super.onStart()
 
         (context as MainActivity).navView.visibility = View.VISIBLE
 
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+
+         val token = (context as MainActivity).sharedPreferences.getString("token", "")
 
         if (token.isNullOrEmpty()){
             navController = Navigation.findNavController(binding.root)

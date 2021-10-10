@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             R.id.mainFragment,
             R.id.searchFragment,
             R.id.favoritesFragment,
-            R.id.navigation_tender,
+            R.id.tenderListFragment,
             R.id.navigation_chat)
             .build()
 

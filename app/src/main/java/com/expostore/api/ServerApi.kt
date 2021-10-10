@@ -4,14 +4,18 @@ import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
+import com.expostore.api.pojo.createtender.CreateTenderRequestData
+import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
 import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
 import com.expostore.api.pojo.getcities.City
-import com.expostore.api.pojo.getcities.GetCitiesResponseData
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteRequestData
+import com.expostore.api.pojo.gettenderlist.Tender
+import com.expostore.api.pojo.productcategory.ProductCategory
+import com.expostore.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
 import com.expostore.api.pojo.signin.SignInRequestData
 import com.expostore.api.pojo.signin.SignInResponseData
@@ -52,5 +56,17 @@ interface ServerApi {
 
     @GET("/api/product/elected/list/")
     fun getFavoritesList(@Header("Authorization") authToken: String?): Call<ArrayList<GetFavoritesListResponseData>>
+
+    @POST("/api/tender/create/")
+    fun createTender(@Header("Authorization") authToken: String?, @Body requestData: CreateTenderRequestData): Call<CreateTenderResponseData>
+
+    @POST("/api/image/save/")
+    fun saveImage(@Header("Authorization") authToken: String?,@Body request: SaveImageRequestData): Call<SaveImageResponseData>
+
+    @GET("/api/product/category/")
+    fun getProductCategory(@Header("Authorization") authToken: String?): Call<ArrayList<ProductCategory>>
+
+    @GET("/api/tender/")
+    fun getTenders(@Header("Authorization") authToken: String?): Call<ArrayList<Tender>>
 
 }

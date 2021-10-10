@@ -15,7 +15,7 @@
         android:title="@string/navigation_favorites_text" />
 
     <item
-        android:id="@+id/navigation_tender"
+        android:id="@+id/tenderListFragment"
         android:icon="@drawable/selector_menu_tender"
         android:title="@string/navigation_tender_text" />
     <item
