@@ -30,6 +30,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:labelVisibilityMode="labeled"
         android:background="@drawable/style_bottom_menu"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

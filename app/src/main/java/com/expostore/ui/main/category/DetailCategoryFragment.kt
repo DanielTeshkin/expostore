@@ -25,6 +25,7 @@ import com.expostore.ui.main.MainViewModel
 import com.expostore.utils.CategoryRecyclerViewAdapter
 import com.expostore.utils.DetailCategoryRecyclerViewAdapter
 import com.expostore.utils.OnClickListener
+import com.expostore.utils.OnClickRecyclerViewListener
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import retrofit2.Call
@@ -62,8 +63,8 @@ class DetailCategoryFragment : Fragment() {
         mAdapter.notifyDataSetChanged()
     }
 
-    private fun onLikeClick() : OnClickListener {
-        return object : OnClickListener {
+    private fun onLikeClick() : OnClickRecyclerViewListener {
+        return object : OnClickRecyclerViewListener {
 
             override fun onLikeClick(like: Boolean, id: String?) {
 
@@ -107,6 +108,12 @@ class DetailCategoryFragment : Fragment() {
                 })
             }
 
+            override fun onDetailCategoryProductItemClick(id: String?) {
+                val bundle = Bundle()
+                bundle.putString("id",id)
+                val navController = Navigation.findNavController(binding.root)
+                navController.navigate(R.id.action_detailCategoryFragment_to_productFragment, bundle)
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.expostore.utils
 
-import ProductImageRecyclerViewAdapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +17,7 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
-    var onClick : OnClickListener? = null
-
+    var onClick : OnClickRecyclerViewListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.detail_product_item, parent, false)
@@ -74,7 +72,7 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
         if (!product.images.isNullOrEmpty()) {
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(product, context, onClick!!)
+                adapter = ProductImageRecyclerViewAdapter(context, product.images!!, product.id, product.like, onClick!!)
                 setRecycledViewPool(viewPool)
             }
         }
@@ -82,7 +80,7 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
             product.images = testImages
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(product, context, onClick!!)
+                adapter = ProductImageRecyclerViewAdapter(context, testImages, product.id, product.like, onClick!!)
                 setRecycledViewPool(viewPool)
             }
         }

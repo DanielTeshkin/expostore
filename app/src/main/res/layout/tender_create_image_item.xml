@@ -12,7 +12,7 @@
         android:id="@+id/tender_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_tender_add_image">
+        android:background="@drawable/image_background">
 
     </ImageView>
 </androidx.cardview.widget.CardView>

@@ -23,10 +23,7 @@ import com.expostore.databinding.FavoritesFragmentBinding
 import com.expostore.databinding.TabFavoritesFragmentBinding
 import com.expostore.ui.favorites.FavoritesTabsViewPagerAdapter
 import com.expostore.ui.favorites.FavoritesViewModel
-import com.expostore.utils.CategoryRecyclerViewAdapter
-import com.expostore.utils.DetailCategoryRecyclerViewAdapter
-import com.expostore.utils.FavoritesProductRecyclerViewAdapter
-import com.expostore.utils.OnClickListener
+import com.expostore.utils.*
 import com.google.android.material.tabs.TabLayoutMediator
 import org.json.JSONObject
 import retrofit2.Call
@@ -80,8 +77,8 @@ class TabFavoritesFragment : Fragment() {
 
     }
 
-    private fun onLikeClick() : OnClickListener {
-        return object : OnClickListener {
+    private fun onLikeClick() : OnClickRecyclerViewListener {
+        return object : OnClickRecyclerViewListener {
 
             override fun onLikeClick(like: Boolean, id: String?) {
 
@@ -123,6 +120,10 @@ class TabFavoritesFragment : Fragment() {
                             Toast.makeText(context, (context as MainActivity).getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
                         }
                     })
+            }
+
+            override fun onDetailCategoryProductItemClick(id: String?) {
+                TODO("Not yet implemented")
             }
 
         }

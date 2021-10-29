@@ -1,9 +1,11 @@
 package com.expostore.api.pojo.getcategory
 
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.annotation.Keep
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
-
 
 data class Category(
     @JsonProperty("id") val id: String?,

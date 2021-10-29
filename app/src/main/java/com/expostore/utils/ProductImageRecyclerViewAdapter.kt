@@ -1,5 +1,6 @@
+package com.expostore.utils
+
 import android.content.Context
-import com.expostore.utils.Dots
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,21 +9,22 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.CategoryProduct
-import com.expostore.utils.OnClickListener
+import com.expostore.api.pojo.getcategory.CategoryProductImage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_product_image_item.view.*
 
 class ProductImageRecyclerViewAdapter(
-    private val product: CategoryProduct,
-    private val context: Context,
-    private val onClick: OnClickListener) :RecyclerView.Adapter<ProductImageRecyclerViewAdapter.ProductImagesViewHolder>() {
+        private val context: Context,
+        private val images: ArrayList<CategoryProductImage>,
+        private val id: String?,
+        private val like: Boolean?,
+        private val onClick: OnClickRecyclerViewListener?) :RecyclerView.Adapter<ProductImageRecyclerViewAdapter.ProductImagesViewHolder>() {
 
     private var dots: Dots = Dots()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductImagesViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.detail_product_image_item, parent, false)
+                .inflate(R.layout.detail_product_image_item, parent, false)
         return ProductImagesViewHolder(v)
     }
 
@@ -30,7 +32,7 @@ class ProductImageRecyclerViewAdapter(
 
     override fun getItemViewType(position: Int): Int = position
 
-    override fun getItemCount(): Int = product.images!!.size
+    override fun getItemCount(): Int = images.size
 
     inner class ProductImagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView = itemView.iv_detail_product
@@ -39,19 +41,24 @@ class ProductImageRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductImagesViewHolder, position: Int) {
-        val image = product.images!![position]
+        val image = images[position]
 
-        if (position == 0) holder.btnLike.visibility = View.VISIBLE
-        else holder.btnLike.visibility = View.GONE
+        if (images.size == 1) holder.llDots.visibility = View.GONE
 
-        dots.addDot(context, product.images!!.size, 15, 0, 15, 0, holder.llDots, R.drawable.dot_inactive)
+        dots.addDot(context, images.size, 15, 0, 15, 0, holder.llDots, R.drawable.dot_inactive)
         dots.currentDot(context, position, holder.llDots, R.drawable.dot_active, R.drawable.dot_inactive)
 
         if (image.file != null) Picasso.get().load(image.file).into(holder.image)
 
-        holder.btnLike.isChecked = product.like
-        holder.btnLike.setOnClickListener {
-            onClick.onLikeClick(holder.btnLike.isChecked, product.id)
+        if (id != null && like != null && onClick != null) {
+            if (position == 0) holder.btnLike.visibility = View.VISIBLE
+            else holder.btnLike.visibility = View.GONE
+
+            holder.btnLike.isChecked = like
+            holder.btnLike.setOnClickListener {
+                onClick.onLikeClick(holder.btnLike.isChecked, id)
+            }
         }
+        else holder.btnLike.visibility = View.GONE
     }
 }

@@ -1,5 +1,7 @@
 package com.expostore.api
 
+import com.expostore.api.pojo.addreview.AddReviewRequestData
+import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
@@ -12,6 +14,9 @@ import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
+import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.api.pojo.getreviews.Review
+import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.pojo.productcategory.ProductCategory
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
@@ -69,4 +74,12 @@ interface ServerApi {
     @GET("/api/tender/")
     fun getTenders(@Header("Authorization") authToken: String?): Call<ArrayList<Tender>>
 
+    @GET("/api/product/{id}/")
+    fun getProduct(@Header("Authorization") authToken: String?, @Path("id") id: String): Call<ProductResponseData>
+
+    @GET("/api/product/{id}/review/")
+    fun getReviews(@Path("id") id: String): Call<ReviewsResponseData>
+
+    @POST("/api/product/{id}/review/add/")
+    fun addReview(@Header("Authorization") authToken: String?,@Path("id") id: String, @Body requestData: AddReviewRequestData): Call<AddReviewResponseData>
 }

@@ -1,6 +1,5 @@
 package com.expostore.utils
 
-import ProductImageRecyclerViewAdapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,7 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
-    var onClick : OnClickListener? = null
-
+    var onClick : OnClickRecyclerViewListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailCategoryViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.detail_product_item, parent, false)
@@ -47,6 +45,10 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
         holder.name.text = product.name
         holder.price.text = product.price
 
+        holder.itemView.setOnClickListener{
+            onClick!!.onDetailCategoryProductItemClick(product.id)
+        }
+
         val childLayoutManager = LinearLayoutManager(
             holder.rvImages.context,
             RecyclerView.HORIZONTAL,
@@ -71,7 +73,7 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
         if (!product.images.isNullOrEmpty()) {
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(product, context, onClick!!)
+                adapter = ProductImageRecyclerViewAdapter(context, product.images!!, product.id, product.like, onClick!!)
                 setRecycledViewPool(viewPool)
             }
         }
@@ -79,11 +81,12 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
             product.images = testImages
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(product, context, onClick!!)
+                adapter = ProductImageRecyclerViewAdapter(context, testImages, product.id, product.like, onClick!!)
                 setRecycledViewPool(viewPool)
             }
         }
     }
+
 }
 
 

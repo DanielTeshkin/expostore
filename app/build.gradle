@@ -75,4 +75,7 @@ dependencies {
     //phone number mask
     implementation 'ru.egslava:MaskedEditText:1.0.5'
 
+    //custom rating bar
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
+
 }
