@@ -20,6 +20,11 @@ fun View.hideKeyboard() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+fun View.showKeyboard(view:View) {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+}
+
 // Создание ссылок в тексте с выделением
 fun makeLinks(textView: TextView, links: Array<String>, clickableSpans: Array<ClickableSpan>) {
     val spannableString = SpannableString(textView.text)

@@ -14,8 +14,8 @@ import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
+import com.expostore.api.pojo.getlistproduct.GetListProductResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
-import com.expostore.api.pojo.getreviews.Review
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.pojo.productcategory.ProductCategory
@@ -82,4 +82,7 @@ interface ServerApi {
 
     @POST("/api/product/{id}/review/add/")
     fun addReview(@Header("Authorization") authToken: String?,@Path("id") id: String, @Body requestData: AddReviewRequestData): Call<AddReviewResponseData>
+
+    @GET("/api/product/")
+    fun getListProduct(): Call<GetListProductResponseData>
 }

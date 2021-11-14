@@ -1,6 +1,8 @@
 package com.expostore.ui.main
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,6 +25,7 @@ import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.databinding.MainFragmentBinding
 import com.expostore.utils.CategoryRecyclerViewAdapter
+import com.expostore.utils.OnClickRecyclerViewListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -86,6 +89,12 @@ class MainFragment : Fragment() {
                     if(response.body() != null){
                         val firstItem = response.body()!![0]
                         Picasso.get().load(firstItem.image).into(binding.ivAdvertising)
+
+                        binding.ivAdvertising.setOnClickListener{
+                            val openURL = Intent(Intent.ACTION_VIEW)
+                            openURL.data = Uri.parse(response.body()!![0].url)
+                            startActivity(openURL)
+                        }
                     }
                 }
             }
@@ -95,8 +104,10 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun onClickRecyclerItems() : CategoryRecyclerViewAdapter.OnClickListener{
-        return object : CategoryRecyclerViewAdapter.OnClickListener {
+    private fun onClickRecyclerItems() : OnClickRecyclerViewListener{
+        return object : OnClickRecyclerViewListener {
+            override fun onLikeClick(like: Boolean, id: String?) {}
+            override fun onDetailCategoryProductItemClick(id: String?) {}
 
             override fun onDetailCategoryButton(category: Category) {
                 val bundle = Bundle()
@@ -105,6 +116,12 @@ class MainFragment : Fragment() {
                 navController.navigate(R.id.action_mainFragment_to_detailCategoryFragment, bundle)
 
             }
+
+            override fun onProductClick(id: String?) {
+                val bundle = Bundle()
+                bundle.putString("id",id)
+                val navController = Navigation.findNavController(binding.root)
+                navController.navigate(R.id.action_mainFragment_to_productFragment, bundle)            }
         }
     }
 }

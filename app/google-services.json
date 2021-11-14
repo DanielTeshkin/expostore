@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "670613637779",
+    "project_id": "expostore-c3ee4",
+    "storage_bucket": "expostore-c3ee4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670613637779:android:23cc8e72f9835bc66e5b66",
+        "android_client_info": {
+          "package_name": "com.expostore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670613637779-bsnf2org6bpmen24u652nnn0m5i161om.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expostore",
+            "certificate_hash": "374a757dd2f58ce0a18cd0fb0dbaec3f422c2c56"
+          }
+        },
+        {
+          "client_id": "670613637779-4tb8anpvvm6net82v1ud3168g6ukfvim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzDPHyE76_AWkBuWhelCl8OHWOMhUgeJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670613637779-4tb8anpvvm6net82v1ud3168g6ukfvim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

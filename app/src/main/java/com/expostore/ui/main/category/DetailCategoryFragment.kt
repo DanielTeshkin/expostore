@@ -65,6 +65,8 @@ class DetailCategoryFragment : Fragment() {
 
     private fun onLikeClick() : OnClickRecyclerViewListener {
         return object : OnClickRecyclerViewListener {
+            override fun onDetailCategoryButton(category: Category) {}
+            override fun onProductClick(id: String?) {}
 
             override fun onLikeClick(like: Boolean, id: String?) {
 

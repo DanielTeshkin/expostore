@@ -55,17 +55,17 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
             false
         )
 
+        //todo тестовый костыль
         if (position == 0){
             holder.noteTitle.visibility = View.VISIBLE
             holder.note.visibility = View.VISIBLE
+            //todo убрать и чекать по наличию отзыва
             holder.note.text = "Хочу купить себе на кухню"
         }
         else{
             holder.noteTitle.visibility = View.GONE
             holder.note.visibility = View.GONE
         }
-
-        val testImages = arrayListOf(CategoryProductImage(null,null),CategoryProductImage(null,null),CategoryProductImage(null,null))
 
         val snapHelper = PagerSnapHelper() // Or PagerSnapHelper
         snapHelper.attachToRecyclerView(holder.rvImages)
@@ -77,16 +77,7 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
                 setRecycledViewPool(viewPool)
             }
         }
-        else {
-            product.images = testImages
-            holder.rvImages.apply {
-                layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(context, testImages, product.id, product.like, onClick!!)
-                setRecycledViewPool(viewPool)
-            }
-        }
     }
-
 }
 
 
