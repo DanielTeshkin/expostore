@@ -19,7 +19,7 @@
         android:icon="@drawable/selector_menu_tender"
         android:title="@string/navigation_tender_text" />
     <item
-        android:id="@+id/navigation_chat"
+        android:id="@+id/chatsFragment"
         android:icon="@drawable/selector_menu_chat"
         android:title="@string/navigation_chat_text" />
 

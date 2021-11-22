@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             R.id.searchFragment,
             R.id.favoritesFragment,
             R.id.tenderListFragment,
-            R.id.navigation_chat)
+            R.id.chatFragment)
             .build()
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)

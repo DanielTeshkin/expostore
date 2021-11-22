@@ -116,6 +116,10 @@ class DetailCategoryFragment : Fragment() {
                 val navController = Navigation.findNavController(binding.root)
                 navController.navigate(R.id.action_detailCategoryFragment_to_productFragment, bundle)
             }
+
+            override fun onChatClick() {
+                TODO("Not yet implemented")
+            }
         }
     }
 }

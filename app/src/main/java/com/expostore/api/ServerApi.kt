@@ -12,6 +12,7 @@ import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
 import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
+import com.expostore.api.pojo.getchats.Chat
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getlistproduct.GetListProductResponseData
@@ -85,4 +86,7 @@ interface ServerApi {
 
     @GET("/api/product/")
     fun getListProduct(): Call<GetListProductResponseData>
+
+    @GET("/api/chat/")
+    fun getChats(@Header("Authorization") authToken: String?): Call<ArrayList<Chat>>
 }

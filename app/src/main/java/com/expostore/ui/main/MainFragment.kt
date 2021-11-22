@@ -108,6 +108,9 @@ class MainFragment : Fragment() {
         return object : OnClickRecyclerViewListener {
             override fun onLikeClick(like: Boolean, id: String?) {}
             override fun onDetailCategoryProductItemClick(id: String?) {}
+            override fun onChatClick() {
+                TODO("Not yet implemented")
+            }
 
             override fun onDetailCategoryButton(category: Category) {
                 val bundle = Bundle()

@@ -126,6 +126,10 @@ class TabFavoritesFragment : Fragment() {
                 TODO("Not yet implemented")
             }
 
+            override fun onChatClick() {
+                TODO("Not yet implemented")
+            }
+
             override fun onDetailCategoryButton(category: Category) {
                 TODO("Not yet implemented")
             }

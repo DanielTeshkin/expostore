@@ -7,6 +7,9 @@ interface OnClickRecyclerViewListener {
 
     fun onDetailCategoryProductItemClick(id:String?)
 
+    fun onChatClick()
+
+
     //Main Fragment
     fun onDetailCategoryButton(category: Category)
     fun onProductClick(id: String?)

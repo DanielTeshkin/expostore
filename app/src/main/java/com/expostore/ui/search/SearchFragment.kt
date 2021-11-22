@@ -261,6 +261,10 @@ class SearchFragment : Fragment(), OnMapReadyCallback {
                 val navController = Navigation.findNavController(binding.root)
                 navController.navigate(R.id.action_searchFragment_to_productFragment, bundle)
             }
+
+            override fun onChatClick() {
+                TODO("Not yet implemented")
+            }
         }
     }
 
