@@ -85,54 +85,33 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_back" />
 
         <TextView
-            android:id="@+id/tv_product_category"
+            android:id="@+id/tv_product_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:text="Категория"
             android:textColor="@color/blue"
             style="@style/BoldTextView"
-            android:textSize="15sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
 
-        <LinearLayout
-            android:id="@+id/ll_product_name_price"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_product_name"
+            style="@style/BoldTextView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_category">
-
-            <TextView
-                android:id="@+id/tv_product_name"
-                style="@style/BoldTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:textAlignment="textStart"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                tools:text="Название" />
-
-            <TextView
-                android:id="@+id/tv_product_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:textColor="@color/blue"
-                android:textSize="18sp"
-                tools:text="25 000руб" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_price"/>
 
         <TextView
             android:id="@+id/tv_product_available"
@@ -145,7 +124,7 @@
             android:textColor="#F53939"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_product_name_price" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
 
         <TextView
             android:id="@+id/tv_product_description_title"
@@ -303,6 +282,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:background="@drawable/style_list"
+            android:onClick="@{productVM::navigateToShop}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_product_add_review">

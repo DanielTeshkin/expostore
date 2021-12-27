@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TextView
             android:id="@+id/textView2"
             style="@style/BoldTextView"
@@ -42,34 +41,65 @@
             app:shapeAppearance="@style/ShapeAppearance.App.CircleImageView"
             app:srcCompat="@drawable/test_logo_profile" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_advertising"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_margin="20dp"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/barrier2"
-            app:layout_constraintBottom_toTopOf="@id/rv_categories">
-
-            <ImageView
-                android:id="@+id/iv_advertising"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="ContentDescription" />
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_categories"
-            android:layout_marginTop="30dp"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cv_advertising" />
+            app:layout_constraintTop_toBottomOf="@id/barrier2">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_advertising"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_advertising"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:ignore="ContentDescription" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/btn_add_advertisement"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:onClick="@{mainVM::navigateToAddProduct}"
+
+                    style="@style/BoldTextView"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:text="Добавить объявление"
+                    android:backgroundTint="#2677F1"
+                    android:textColor="@color/white"
+                    app:cornerRadius="10dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier2"

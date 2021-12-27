@@ -9,8 +9,11 @@
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/favorites_tab_background_selector.xml" value="0.3455" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/favorites_tab_background_unselected.xml" value="0.3455" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/favorites_tab_text_selector.xml" value="0.3455" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/image_background.xml" value="0.3265" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/image_background_white.xml" value="0.3265" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/layout_message_received_corners.xml" value="0.3265" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/layout_message_sent_corners.xml" value="0.3265" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/my_products_tab_background.xml" value="0.3265" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/other_btn_background.xml" value="0.3455" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/search_bottom_sheet_background.xml" value="0.3455" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/selector_blue_button.xml" value="0.3455" />
@@ -18,6 +21,7 @@
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/style_image_view_product.xml" value="0.3455" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/drawable/style_list.xml" value="0.3455" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout-v28/search_product_item.xml" value="0.3625" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/add_product_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/add_review_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/category_item.xml" value="0.14791666666666667" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/chat_fragment.xml" value="0.3625" />
@@ -39,6 +43,8 @@
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/main_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/message_received_item.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/message_sent_item.xml" value="0.3625" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/my_products_fragment.xml" value="0.3625" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/my_products_tab_item.xml" value="0.67" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/new_password_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/open_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/product_fragment.xml" value="0.358695652173913" />
@@ -48,11 +54,15 @@
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/reviews_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/search_fragment.xml" value="0.2" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/search_product_item.xml" value="0.5" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/shop_create_fragment.xml" value="0.3625" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/shop_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/specification_item.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/tender_create_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/tender_create_image_item.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/tender_image_item.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/tender_item.xml" value="0.3625" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/tender_list_fragment.xml" value="0.3625" />
+        <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/layout/web_view_fragment.xml" value="0.3625" />
         <entry key="..\:/Programming/AndroidProjects/Expostore/app/src/main/res/menu/bottom_menu.xml" value="0.3625" />
       </map>
     </option>

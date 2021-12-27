@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.authorization.passwordrecovery.PasswordRecoveryFragment">
+    tools:context=".ui.profile.ProfileFragment">
 
     <data>
         <import type="android.view.View" alias="v"/>
         <variable
-            name="passwordRecoveryVM"
-            type="com.expostore.ui.authorization.passwordrecovery.PasswordRecoveryViewModel"/>
+            name="profileVM"
+            type="com.expostore.ui.profile.ProfileViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,17 +96,20 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_number" />
 
         <View
+            android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#F3F4F5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_settings"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
 
         <Button
             android:id="@+id/btn_my_products"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+
+            android:onClick="@{profileVM::navigateToMyProducts}"
 
             android:text="Мои товары"
             android:letterSpacing="0.01"
@@ -122,27 +125,28 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
 
         <View
+            android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#F3F4F5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_my_products"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_my_products" />
 
         <Button
-            android:id="@+id/btn_support"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-
-            android:text="Поддержка"
-            android:letterSpacing="0.01"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/black"
+            android:id="@+id/btn_my_tenders"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:textAlignment="textStart"
+            android:layout_width="match_parent"
 
+            android:layout_height="50dp"
+            android:letterSpacing="0.01"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:text="Мои тендеры"
+            android:textAlignment="textStart"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_my_products" />
@@ -153,14 +157,41 @@
             android:background="#F3F4F5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_support"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_my_products"/>
 
         <Button
-            android:id="@+id/btn_help"
+            android:id="@+id/btn_support"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:letterSpacing="0.01"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Поддержка"
+            android:textAlignment="textStart"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_my_tenders" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_support" />
+
+        <Button
+            android:id="@+id/btn_writed_my_reviews"
             android:layout_width="match_parent"
             android:layout_height="50dp"
 
-            android:text="Справочная служба"
+            android:text="Написанные мной отзывы"
             android:letterSpacing="0.01"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textColor="@color/black"
@@ -172,6 +203,59 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_support" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_help" />
+
+        <Button
+            android:id="@+id/btn_my_reviews"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:letterSpacing="0.01"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Мои отзывы"
+            android:textAlignment="textStart"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_writed_my_reviews" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_help"/>
+
+        <Button
+            android:id="@+id/btn_help"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:letterSpacing="0.01"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Справочная служба"
+            android:textAlignment="textStart"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_my_reviews" />
 
         <View
             android:layout_width="match_parent"

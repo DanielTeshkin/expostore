@@ -13,4 +13,9 @@ class MainViewModel : ViewModel() {
         navController = Navigation.findNavController(view)
         navController.navigate(R.id.action_mainFragment_to_profileFragment)
     }
+
+    fun navigateToAddProduct(view: View){
+        navController = Navigation.findNavController(view)
+        navController.navigate(R.id.action_mainFragment_to_addProductFragment)
+    }
 }

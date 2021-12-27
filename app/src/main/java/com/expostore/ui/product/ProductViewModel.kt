@@ -11,6 +11,7 @@ class ProductViewModel : ViewModel() {
 
     lateinit var navController: NavController
     lateinit var id: String
+    lateinit var shopId: String
     var bundle = Bundle()
 
     fun navigateToReviews(view: View){
@@ -33,5 +34,11 @@ class ProductViewModel : ViewModel() {
     fun navigateToQrCode(view: View){
         navController = Navigation.findNavController(view)
         navController.navigate(R.id.action_productFragment_to_productQrCodeFragment)
+    }
+
+    fun navigateToShop(view: View){
+        bundle.putString("shopId",shopId)
+        navController = Navigation.findNavController(view)
+        navController.navigate(R.id.action_productFragment_to_shopFragment, bundle)
     }
 }

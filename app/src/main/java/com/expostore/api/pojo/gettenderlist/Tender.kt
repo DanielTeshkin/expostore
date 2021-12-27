@@ -1,5 +1,6 @@
 package com.expostore.api.pojo.gettenderlist
 
+import com.expostore.api.pojo.getcategory.CategoryProductImage
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Tender(
@@ -10,6 +11,6 @@ data class Tender(
         @JsonProperty("price_up_to") val priceUpTo: String?,
         @JsonProperty("location") val location: String?,
         @JsonProperty("author") val author: String,
-        @JsonProperty("images") val images: ArrayList<TenderImage>,
+        @JsonProperty("images") val images: ArrayList<CategoryProductImage>,
         @JsonProperty("category") val category: ArrayList<TenderCategory>
 )

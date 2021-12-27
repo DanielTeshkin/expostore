@@ -19,43 +19,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_add_tender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:text="Добавить объявление"
-
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_tender_images" />
 
     <LinearLayout
         android:id="@+id/ll_tender_name_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:orientation="horizontal"
-
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_add_tender">
+        app:layout_constraintTop_toBottomOf="@+id/rv_tender_images">
 
         <TextView
             android:id="@+id/tv_tender_name"
+            style="@style/BoldTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="10dp"
-            style="@style/BoldTextView"
+            android:layout_weight="1"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -66,9 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textSize="18sp"
             android:textColor="@color/blue"
-            tools:text="25 000руб"/>
+            android:textSize="18sp"
+            tools:text="25 000руб" />
 
     </LinearLayout>
 

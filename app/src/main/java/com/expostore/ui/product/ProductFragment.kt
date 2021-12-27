@@ -39,6 +39,7 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
 
     var id: String? = null
+    var shopId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.product_fragment, container, false)
@@ -91,13 +92,15 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
 
     fun setupInfo(info: ProductResponseData){
         binding.tvProductName.text = info.name
-        binding.tvProductCategory.text = info.category
-        binding.tvProductPrice.text = info.price
+        binding.tvProductPrice.text = info.price + " руб."
         binding.tvProductAvailable.text = info.status
         binding.tvProductDescription.text = info.longDescription
 
 
         if (info.shop != null) {
+            shopId = info.shop.id
+            shopId?.let{ productViewModel.shopId = it}
+
             binding.tvProductShopName.text = info.shop.name
             binding.tvProductLocation.text = info.shop.address
 

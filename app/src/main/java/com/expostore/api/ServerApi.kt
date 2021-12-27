@@ -18,6 +18,7 @@ import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getlistproduct.GetListProductResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
+import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.pojo.productcategory.ProductCategory
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
@@ -89,4 +90,8 @@ interface ServerApi {
 
     @GET("/api/chat/")
     fun getChats(@Header("Authorization") authToken: String?): Call<ArrayList<Chat>>
+
+    @GET("/api/shop/{id}/")
+    fun getShop(@Header("Authorization") authToken: String?,@Path("id") id: String): Call<GetShopResponseData>
+
 }
