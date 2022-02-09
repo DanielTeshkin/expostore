@@ -1,16 +1,28 @@
 package com.expostore.ui.product
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.expostore.MainActivity
 import com.expostore.R
 
 class ProductViewModel : ViewModel() {
 
+    @SuppressLint("StaticFieldLeak")
+    lateinit var context: Context
     lateinit var navController: NavController
     lateinit var id: String
+    lateinit var phoneSeller: String
     lateinit var shopId: String
     var bundle = Bundle()
 

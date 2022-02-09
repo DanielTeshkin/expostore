@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.expostore"
-        minSdkVersion 28
+        minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"

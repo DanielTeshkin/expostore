@@ -414,6 +414,7 @@
                 app:cornerRadius="10dp"/>
 
             <Button
+                android:id="@+id/btn_call_down"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
                 android:layout_weight="1"
@@ -426,9 +427,7 @@
 
                 android:backgroundTint="#2677F1"
                 style="@style/BoldTextView"
-                app:cornerRadius="10dp"
-
-                android:onClick="@{productVM::navigateToAddReview}"/>
+                app:cornerRadius="10dp"/>
 
 
         </LinearLayout>

@@ -72,7 +72,7 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
         if (!product.images.isNullOrEmpty()) {
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(context, product.images!!, product.id, product.like, onClick!!)
+                adapter = ProductImageRecyclerViewAdapter(context, product.images!!, product.id, true, onClick!!)
                 setRecycledViewPool(viewPool)
             }
         }
@@ -80,7 +80,7 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
             product.images = testImages
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
-                adapter = ProductImageRecyclerViewAdapter(context, testImages, product.id, product.like, onClick!!)
+                adapter = ProductImageRecyclerViewAdapter(context, testImages, product.id, true, onClick!!)
                 setRecycledViewPool(viewPool)
             }
         }

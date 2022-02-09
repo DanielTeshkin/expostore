@@ -97,11 +97,8 @@ class TabFavoritesFragment : Fragment() {
                         override fun onResponse(call: Call<SelectFavoriteResponseData>, response: Response<SelectFavoriteResponseData>) {
                             try {
                                 if (response.isSuccessful) {
-                                    Toast.makeText(
-                                        context,
-                                        "Toвар добавлен в избранное",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    // todo добавить флаг на удаление/добавление товара в избранное
+                                    // Toast.makeText(context, "Toвар добавлен в избранное", Toast.LENGTH_SHORT).show()
                                 } else {
                                     if (response.errorBody() != null) {
                                         val jObjError = JSONObject(response.errorBody()!!.string())

@@ -3,6 +3,9 @@
     <string name="main_app_name">Expostore</string>
     <string name="main_btn_sign_in_text">Войти в аккаунт</string>
     <string name="main_btn_sign_up_text">Зарегистрироваться</string>
+    <string name="MAPS_API_KEY">AIzaSyCzDPHyE76_AWkBuWhelCl8OHWOMhUgeJg</string>
+
+
 
 
     <string name="login_title_text">Вход в аккаунт</string>

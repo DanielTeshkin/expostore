@@ -1,12 +1,17 @@
 package com.expostore.ui.product
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -47,6 +52,9 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
         binding.productVM = productViewModel
         id = arguments?.getString("id")
         id?.let { productViewModel.id = it }
+
+        productViewModel.context = requireContext()
+
         return binding.root
     }
 
@@ -81,6 +89,39 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
                 override fun onFailure(call: Call<ProductResponseData>, t: Throwable) {}
             })
         }
+
+
+
+        binding.btnCall.setOnClickListener {
+            callNumber()
+        }
+
+        binding.btnCallDown.setOnClickListener {
+            callNumber()
+        }
+
+    }
+
+
+    private fun callNumber(){
+
+        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            requestMultiplePermissions.launch(arrayOf(android.Manifest.permission.CALL_PHONE))
+            return
+        }
+
+        else {
+            val intent = Intent(Intent.ACTION_CALL);
+            intent.data = Uri.parse("tel:777777777")
+            startActivity(intent)
+        }
+    }
+
+    private val requestMultiplePermissions = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        permissions.entries.forEach { _ ->
+            callNumber()
+        }
     }
 
 
@@ -96,6 +137,14 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
         binding.tvProductAvailable.text = info.status
         binding.tvProductDescription.text = info.longDescription
 
+        //productViewModel.phoneSeller = info.owner.
+
+        binding.mapView.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:37.7749,-122.4194")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
 
         if (info.shop != null) {
             shopId = info.shop.id
@@ -136,6 +185,13 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = ReviewRecyclerViewAdapter(info.reviews)
             }
+        }
+
+
+        binding.btnCall.setOnClickListener {
+            val intent = Intent(Intent.ACTION_CALL);
+            intent.data = Uri.parse("tel:$77777777")
+            startActivity(intent)
         }
     }
 }

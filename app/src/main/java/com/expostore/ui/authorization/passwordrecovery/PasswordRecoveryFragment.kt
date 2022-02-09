@@ -24,7 +24,11 @@ class PasswordRecoveryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.password_recovery_fragment, container, false)
         passwordRecoveryViewModel = ViewModelProvider(this).get(PasswordRecoveryViewModel::class.java)
         binding.passwordRecoveryVM = passwordRecoveryViewModel
+
         passwordRecoveryViewModel.context = requireContext()
+        passwordRecoveryViewModel.btnResendCode = binding.btnResendCode
+        passwordRecoveryViewModel.phoneInput = requireArguments().getString("phone")
+        passwordRecoveryViewModel.timer.start()
 
         (context as MainActivity).navView.visibility = View.GONE
 

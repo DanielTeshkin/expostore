@@ -103,10 +103,7 @@ class LoginViewModel : ViewModel() {
                             bundle.putString("phone", phone)
                             navController = Navigation.findNavController(view)
                             navController.navigate(R.id.action_loginFragment_to_passwordRecoveryFragment, bundle)
-
                             view.hideKeyboard()
-                            navController = Navigation.findNavController(view)
-                            navController.navigate(R.id.action_numberFragment_to_confirmNumberFragment, bundle)
                         }
                     }
                 }
