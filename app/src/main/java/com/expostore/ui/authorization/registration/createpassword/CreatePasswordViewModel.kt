@@ -19,6 +19,7 @@ import com.expostore.api.pojo.signin.SignInRequestData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.utils.hideKeyboard
 import org.json.JSONObject
 import retrofit2.Call
@@ -52,7 +53,7 @@ class CreatePasswordViewModel : ViewModel() {
                         if(response.body() != null){
                             if (response.body()!!.access != null) {
                                 val token = response.body()!!.access
-                                (context as MainActivity).sharedPreferences.edit().putString("token", token).apply()
+                                AppPreferences.getSharedPreferences(context).edit().putString("token", token).apply()
                                 view.hideKeyboard()
                                 navController = Navigation.findNavController(view)
                                 navController.navigate(R.id.action_createPasswordFragment_to_completionFragment)

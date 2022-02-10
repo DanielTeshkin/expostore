@@ -19,6 +19,7 @@ import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategory.CategoryProduct
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.DetailCategoryFragmentBinding
 import com.expostore.databinding.MainFragmentBinding
 import com.expostore.ui.main.MainViewModel
@@ -70,7 +71,7 @@ class DetailCategoryFragment : Fragment() {
 
             override fun onLikeClick(like: Boolean, id: String?) {
 
-                val token = (context as MainActivity).sharedPreferences.getString("token", "")
+                val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
                 if (token.isNullOrEmpty()){
                     //Todo Подумать над нулевым токеном (возможно кидать на экран авторизации)

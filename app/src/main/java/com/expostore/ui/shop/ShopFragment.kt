@@ -23,6 +23,7 @@ import com.expostore.api.pojo.getcategory.CategoryProductImage
 import com.expostore.api.pojo.getproduct.ProductResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.ProductFragmentBinding
 import com.expostore.databinding.ShopFragmentBinding
 import com.expostore.ui.product.ProductViewModel
@@ -57,7 +58,7 @@ class ShopFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         shopId?.let {
@@ -98,7 +99,7 @@ class ShopFragment : Fragment() {
 
             override fun onLikeClick(like: Boolean, id: String?) {
 
-                val token = (context as MainActivity).sharedPreferences.getString("token", "")
+                val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
                 if (token.isNullOrEmpty()){
                     //Todo Подумать над нулевым токеном (возможно кидать на экран авторизации)

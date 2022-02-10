@@ -20,6 +20,7 @@ import com.expostore.api.ServerApi
 import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.productcategory.ProductCategory
+import com.expostore.data.AppPreferences
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -59,7 +60,7 @@ class TenderCreateViewModel : ViewModel() {
     }
 
     fun getProductCategory(view: View){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         serverApi.getProductCategory("Bearer $token").enqueue(object : Callback<ArrayList<ProductCategory>> {
@@ -91,7 +92,7 @@ class TenderCreateViewModel : ViewModel() {
     }
 
     fun createTender(view: View){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
         val requestData = CreateTenderRequestData(title,description,priceFrom,priceUpTo,location,imagesId,category)
 

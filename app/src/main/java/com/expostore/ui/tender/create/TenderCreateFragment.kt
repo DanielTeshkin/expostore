@@ -22,6 +22,7 @@ import com.expostore.api.Retrofit
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.TenderCreateFragmentBinding
 import com.expostore.utils.TenderCreateImageRecyclerViewAdapter
 import com.expostore.utils.decodeImage
@@ -111,7 +112,7 @@ class TenderCreateFragment : Fragment() {
     }
 
     private fun saveImage(image: String){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
         val requestData = SaveImageRequestData(image,"jpeg")
 

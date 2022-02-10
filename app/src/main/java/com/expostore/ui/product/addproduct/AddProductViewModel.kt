@@ -14,6 +14,7 @@ import com.expostore.R
 import com.expostore.api.Retrofit
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.productcategory.ProductCategory
+import com.expostore.data.AppPreferences
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +38,7 @@ class AddProductViewModel : ViewModel() {
     val bundle = Bundle()
 
     fun getProductCategory(view: View){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         serverApi.getProductCategory("Bearer $token").enqueue(object :

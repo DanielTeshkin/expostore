@@ -18,6 +18,7 @@ import com.expostore.api.ServerApi
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
 import com.expostore.api.pojo.getcities.City
+import com.expostore.data.AppPreferences
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import org.json.JSONObject
 import retrofit2.Call
@@ -44,7 +45,7 @@ class CompletionViewModel : ViewModel() {
     var email: String = ""
 
     fun getCities(){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
         serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
         serverApi.getCities(token).enqueue(object : Callback<ArrayList<City>> {
             override fun onFailure(call: Call<ArrayList<City>>, t: Throwable) {
@@ -93,7 +94,7 @@ class CompletionViewModel : ViewModel() {
 
     fun editProfile(view: View) {
         if (idCity != null) {
-            val token = (context as MainActivity).sharedPreferences.getString("token", "")
+            val token = AppPreferences.getSharedPreferences(context).getString("token", "")
             val request = EditProfileRequestData(surname, name, patronymic, email, idCity)
             serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
             serverApi.editProfile("Bearer $token", request).enqueue(object : Callback<EditProfileResponseData> {

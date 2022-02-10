@@ -23,6 +23,7 @@ import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getcategory.GetCategoryResponseData
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
 import com.expostore.api.pojo.signin.SignInResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.MainFragmentBinding
 import com.expostore.utils.CategoryRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
@@ -56,7 +57,7 @@ class MainFragment : Fragment() {
         (context as MainActivity).navView.visibility = View.VISIBLE
 
 
-         val token = (context as MainActivity).sharedPreferences.getString("token", "")
+         val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
         if (token.isNullOrEmpty()){
             navController = Navigation.findNavController(binding.root)

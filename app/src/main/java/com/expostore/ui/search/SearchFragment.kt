@@ -32,6 +32,7 @@ import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getlistproduct.GetListProductResponseData
 import com.expostore.api.pojo.getlistproduct.Product
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.SearchFragmentBinding
 import com.expostore.utils.CategoryRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
@@ -148,7 +149,7 @@ class SearchFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun getProducts(){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
         if (token.isNullOrEmpty()){
             //Todo Подумать над нулевым токеном (возможно кидать на экран авторизации)
@@ -215,7 +216,7 @@ class SearchFragment : Fragment(), OnMapReadyCallback {
 
             override fun onLikeClick(like: Boolean, id: String?) {
 
-                val token = (context as MainActivity).sharedPreferences.getString("token", "")
+                val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
                 if (token.isNullOrEmpty()){
                     //Todo Подумать над нулевым токеном (возможно кидать на экран авторизации)

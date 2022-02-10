@@ -21,6 +21,7 @@ import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
 import com.expostore.api.pojo.signup.SignUpResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.utils.hideKeyboard
 import com.willy.ratingbar.BaseRatingBar
 import org.json.JSONObject
@@ -58,7 +59,7 @@ class AddReviewViewModel : ViewModel() {
     }
 
     fun saveReview(view: View){
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         if (!id.isNullOrEmpty() && rating != null){

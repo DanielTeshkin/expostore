@@ -24,6 +24,7 @@ import com.expostore.api.Retrofit
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getcategory.CategoryProductImage
 import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.ProductFragmentBinding
 import com.expostore.utils.ProductImageRecyclerViewAdapter
 import com.expostore.utils.ReviewRecyclerViewAdapter
@@ -75,7 +76,7 @@ class ProductFragment : Fragment(), OnMapReadyCallback {
 //        }
 
 
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         id?.let {

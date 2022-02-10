@@ -19,6 +19,7 @@ import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.FavoritesFragmentBinding
 import com.expostore.databinding.TabFavoritesFragmentBinding
 import com.expostore.ui.favorites.FavoritesTabsViewPagerAdapter
@@ -48,7 +49,7 @@ class TabFavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
         if (token.isNullOrEmpty()){
             navController = Navigation.findNavController(binding.root)
@@ -82,7 +83,7 @@ class TabFavoritesFragment : Fragment() {
 
             override fun onLikeClick(like: Boolean, id: String?) {
 
-                val token = (context as MainActivity).sharedPreferences.getString("token", "")
+                val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
 
                 if (token.isNullOrEmpty()){
                     //Todo Подумать над нулевым токеном (возможно кидать на экран авторизации)

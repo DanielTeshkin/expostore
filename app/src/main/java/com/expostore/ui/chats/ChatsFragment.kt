@@ -22,6 +22,7 @@ import com.expostore.api.Retrofit
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.getchats.Chat
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.ChatsFragmentBinding
 import com.expostore.utils.ChatsRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
@@ -47,7 +48,7 @@ class ChatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
         serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         if (token != null) getChats(token)

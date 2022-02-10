@@ -22,6 +22,7 @@ import com.expostore.api.Retrofit
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.OpenFragmentBinding
 import com.expostore.databinding.TenderListFragmentBinding
 import com.expostore.ui.open.OpenViewModel
@@ -67,7 +68,7 @@ class TenderListFragment : Fragment(), OnMapReadyCallback {
 
         fetchLocation()
 
-        val token = (context as MainActivity).sharedPreferences.getString("token", "")
+        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
         val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
         serverApi.getTenders("Bearer $token").enqueue(object : Callback<ArrayList<Tender>> {
