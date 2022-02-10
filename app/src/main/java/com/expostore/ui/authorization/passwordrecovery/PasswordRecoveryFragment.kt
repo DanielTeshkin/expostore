@@ -30,7 +30,7 @@ class PasswordRecoveryFragment : Fragment() {
         passwordRecoveryViewModel.phoneInput = requireArguments().getString("phone")
         passwordRecoveryViewModel.timer.start()
 
-        (context as MainActivity).navView.visibility = View.GONE
+        (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         return binding.root
     }

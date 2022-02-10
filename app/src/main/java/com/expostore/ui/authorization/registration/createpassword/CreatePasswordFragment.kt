@@ -24,7 +24,7 @@ class CreatePasswordFragment : Fragment() {
         binding.createPasswordVM = createPasswordViewModel
         createPasswordViewModel.context = requireContext()
 
-        (context as MainActivity).navView.visibility = View.GONE
+        (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         createPasswordViewModel.phone = arguments?.getString("phoneInput")
 

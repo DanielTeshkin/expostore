@@ -21,7 +21,7 @@ class OpenFragment : Fragment() {
         openViewModel = ViewModelProvider(this).get(OpenViewModel::class.java)
         binding.openVM = openViewModel
 
-        (context as MainActivity).navView.visibility = View.GONE
+        (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         //TODO Добавить в клик кнопки выхода
         //(context as MainActivity).sharedPreferences.edit().clear().apply()

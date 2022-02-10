@@ -48,6 +48,7 @@ class AddReviewFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.add_review_fragment, container, false)
         addReviewViewModel = ViewModelProvider(this).get(AddReviewViewModel::class.java)
         binding.addReviewVM = addReviewViewModel
+        Toast.makeText(requireContext(),"QQQ",Toast.LENGTH_LONG).show()
         return binding.root
     }
 
@@ -58,7 +59,6 @@ class AddReviewFragment : Fragment() {
             binding.tvRating.text = "Оценка: " + rating.toInt() + "/" + ratingBar.numStars.toString()
             addReviewViewModel.rating = rating.toInt()
         }
-
         addReviewViewModel.btnSaveReview = binding.btnSaveReview
         addReviewViewModel.context = requireContext()
         id = arguments?.getString("id")
@@ -100,9 +100,11 @@ class AddReviewFragment : Fragment() {
             val data: Intent? = result.data
             val uri = data!!.data
             val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri!!)
+            Log.d("1","LaunchSomeActivity")
 
             if (inputStream != null) saveImage(encodeImage(inputStream))
             else Toast.makeText(context, "Не удалось добавить изображение", Toast.LENGTH_SHORT).show()
+            Log.d("1","LaunchSomeActivity2")
         }
     }
 
@@ -119,7 +121,9 @@ class AddReviewFragment : Fragment() {
             ) {
                 try {
                     if (response.isSuccessful) {
-                        response.body()?.id?.let { addImage(image, it) }
+                        response.body()?.id?.let { addImage(image, it)
+                            Log.d("1","try/catch1")
+                        }
 
                     } else {
                         if (response.errorBody() != null) {
@@ -145,6 +149,7 @@ class AddReviewFragment : Fragment() {
     }
 
     private fun addImage(image: String, id: String){
+        Log.d("1","addImage")
         addReviewViewModel.imagesId.add(id)
         images.add(decodeImage(image))
 
@@ -152,9 +157,12 @@ class AddReviewFragment : Fragment() {
         binding.rvReviewImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
+            context
+            Log.d("1","addImage2")
         }
         mAdapter.onClick = addPhoto()
         mAdapter.notifyDataSetChanged()
+        Toast.makeText(context,"QQQ",Toast.LENGTH_LONG).show()
     }
 
 }

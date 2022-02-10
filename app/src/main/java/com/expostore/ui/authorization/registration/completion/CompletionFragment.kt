@@ -27,7 +27,7 @@ class CompletionFragment : Fragment() {
 
         completionViewModel.context = requireContext()
 
-        (context as MainActivity).navView.visibility = View.GONE
+        (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         binding.etSurname.addTextChangedListener(profileTextWatcher)
         binding.etName.addTextChangedListener(profileTextWatcher)

@@ -29,7 +29,7 @@ class ConfirmCodeFragment : Fragment() {
         confirmCodeViewModel.timer.start()
 
         //Отключение нижней навигации для фрагмента
-        (context as MainActivity).navView.visibility = View.GONE
+        (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         // Подключение наблюдателя текста
         binding.btnSignInNext.isEnabled = false

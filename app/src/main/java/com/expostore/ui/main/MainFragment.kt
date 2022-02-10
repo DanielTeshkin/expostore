@@ -54,7 +54,7 @@ class MainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        (context as MainActivity).navView.visibility = View.VISIBLE
+        (context as MainActivity).binding.bottomNavigationView.visibility = View.VISIBLE
 
 
          val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")

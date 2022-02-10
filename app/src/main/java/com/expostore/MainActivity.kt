@@ -1,45 +1,35 @@
 package com.expostore
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.expostore.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController:NavController
-    lateinit var navView: BottomNavigationView
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         supportActionBar?.hide()
+//
+//        val appBarConfiguration = AppBarConfiguration.Builder(
+//            R.id.mainFragment,
+//            R.id.searchFragment,
+//            R.id.favoritesFragment,
+//            R.id.tenderListFragment,
+//            R.id.chatFragment)
+//            .build()
 
-        navController = findNavController(R.id.nav_host_fragment)
-
-        navView = findViewById(R.id.bottomNavigationView)
-        //navView.visibility = View.GONE
-
-        val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.mainFragment,
-            R.id.searchFragment,
-            R.id.favoritesFragment,
-            R.id.tenderListFragment,
-            R.id.chatFragment)
-            .build()
-
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-        NavigationUI.setupWithNavController(navView, navController)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navController)
 
     }
 }
