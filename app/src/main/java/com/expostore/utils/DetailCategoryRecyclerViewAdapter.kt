@@ -49,6 +49,8 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
             onClick!!.onDetailCategoryProductItemClick(product.id)
         }
 
+        holder
+
         val childLayoutManager = LinearLayoutManager(
             holder.rvImages.context,
             RecyclerView.HORIZONTAL,
