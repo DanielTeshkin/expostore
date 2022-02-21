@@ -8,21 +8,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.expostore.MainActivity
 import com.expostore.R
 import com.expostore.databinding.ConfirmCodeFragmentBinding
+import com.expostore.ui.base.BaseFragment
 
-class ConfirmCodeFragment : Fragment() {
+class ConfirmCodeFragment : BaseFragment<ConfirmCodeFragmentBinding>(ConfirmCodeFragmentBinding::inflate) {
 
-    private lateinit var binding: ConfirmCodeFragmentBinding
     private lateinit var confirmCodeViewModel: ConfirmCodeViewModel
     var number: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.confirm_code_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         confirmCodeViewModel = ViewModelProvider(this).get(ConfirmCodeViewModel::class.java)
-        binding.confirmCodeVM = confirmCodeViewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnSignInNext.setOnClickListener {
+            confirmCodeViewModel.confirmCode(it, binding.etNumber.text.toString())
+        }
+
         confirmCodeViewModel.phoneInput = arguments?.getString("numberInput")
         confirmCodeViewModel.context = requireContext()
 
@@ -42,7 +49,6 @@ class ConfirmCodeFragment : Fragment() {
         if (!number.isNullOrEmpty())
             binding.subtitle.text = getString(R.string.confirm_number_subtitle_text, number)
 
-        return binding.root
     }
 
     // Наблюдатель текста для кода

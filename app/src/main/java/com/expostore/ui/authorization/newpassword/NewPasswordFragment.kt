@@ -8,20 +8,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.expostore.MainActivity
 import com.expostore.R
 import com.expostore.databinding.NewPasswordFragmentBinding
+import com.expostore.ui.base.BaseFragment
 
-class NewPasswordFragment : Fragment() {
+class NewPasswordFragment : BaseFragment<NewPasswordFragmentBinding>(NewPasswordFragmentBinding::inflate) {
 
-    private lateinit var binding: NewPasswordFragmentBinding
     private lateinit var newPasswordViewModel: NewPasswordViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.new_password_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         newPasswordViewModel = ViewModelProvider(this).get(NewPasswordViewModel::class.java)
-        binding.newPasswordVM = newPasswordViewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnNext.setOnClickListener {
+            newPasswordViewModel.signUp(it, binding.etSecondPassword.text.toString())
+        }
+
         newPasswordViewModel.context = requireContext()
 
         (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
@@ -32,8 +38,6 @@ class NewPasswordFragment : Fragment() {
 
         binding.etPassword.addTextChangedListener(passwordTextWatcher)
         binding.etSecondPassword.addTextChangedListener(passwordTextWatcher)
-
-        return binding.root
     }
 
     private val passwordTextWatcher: TextWatcher = object : TextWatcher {

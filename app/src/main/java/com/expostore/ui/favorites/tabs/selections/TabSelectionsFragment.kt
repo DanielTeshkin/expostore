@@ -1,27 +1,18 @@
 package com.expostore.ui.favorites.tabs.selections
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.expostore.R
+import androidx.lifecycle.ViewModelProvider
+import com.expostore.databinding.TabSelectionsFragmentBinding
+import com.expostore.ui.base.BaseFragment
 
-class TabSelectionsFragment : Fragment() {
+class TabSelectionsFragment :
+    BaseFragment<TabSelectionsFragmentBinding>(TabSelectionsFragmentBinding::inflate) {
 
     companion object {
         fun newInstance() = TabSelectionsFragment()
     }
 
     private lateinit var viewModel: TabSelectionsViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.tab_selections_fragment, container, false)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

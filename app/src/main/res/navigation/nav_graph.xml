@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailCategoryFragment"
-        android:name="com.expostore.ui.main.category.DetailCategoryFragment"
+        android:name="com.expostore.ui.category.DetailCategoryFragment"
         android:label="detail_category_fragment"
         tools:layout="@layout/detail_category_fragment" >
         <action
@@ -161,7 +161,7 @@
     </fragment>
     <fragment
         android:id="@+id/specificationsFragment"
-        android:name="com.expostore.ui.main.specifications.SpecificationsFragment"
+        android:name="com.expostore.ui.specifications.SpecificationsFragment"
         android:label="specifications_fragment"
         tools:layout="@layout/specifications_fragment" />
     <fragment

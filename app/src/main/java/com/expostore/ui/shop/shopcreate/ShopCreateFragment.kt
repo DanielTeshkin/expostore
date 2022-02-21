@@ -1,30 +1,23 @@
 package com.expostore.ui.shop.shopcreate
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import com.expostore.R
-import com.expostore.databinding.ProductFragmentBinding
+import androidx.lifecycle.ViewModelProvider
 import com.expostore.databinding.ShopCreateFragmentBinding
-import com.expostore.ui.product.ProductViewModel
-import com.google.android.gms.maps.GoogleMap
+import com.expostore.ui.base.BaseFragment
 
-class ShopCreateFragment : Fragment() {
+class ShopCreateFragment :
+    BaseFragment<ShopCreateFragmentBinding>(ShopCreateFragmentBinding::inflate) {
 
-    private lateinit var binding: ShopCreateFragmentBinding
     private lateinit var shopCreateViewModel: ShopCreateViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.shop_create_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         shopCreateViewModel = ViewModelProvider(this)[ShopCreateViewModel::class.java]
-        binding.shopCreateVM = shopCreateViewModel
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         shopCreateViewModel.btnSave = binding.btnSave
-
-        return binding.root
     }
 }

@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.chats.chat.ChatFragment">
-
-    <data>
-        <import type="android.view.View" alias="v"/>
-        <variable
-            name="chatVM"
-            type="com.expostore.ui.chats.chat.ChatViewModel"/>
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F2F3F7">
+    android:background="#F2F3F7"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
             android:id="@+id/title"
@@ -89,5 +79,3 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>

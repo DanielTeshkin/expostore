@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.authorization.registration.completion.CompletionFragment">
-
-    <data>
-        <import type="android.view.View" alias="v"/>
-        <variable
-            name="completionVM"
-            type="com.expostore.ui.authorization.registration.completion.CompletionViewModel"/>
-    </data>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,21 +18,21 @@
             android:background="@null"
             android:onClick="@{completionVM::navigateBack}"
             android:src="@drawable/ic_arrow_back"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
 
         <TextView
             android:id="@+id/title"
             style="@style/BoldTextView"
-            android:textColor="@color/black"
-            android:textSize="24sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/completion_title_text"
             android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,11 +54,11 @@
             android:id="@+id/til_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
-            android:layout_marginTop="60dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtitle">
@@ -79,7 +69,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
-                android:text="@={completionVM.surname}"
                 android:background="@drawable/style_edit_text"
                 android:hint="@string/completion_et_surname_hint"
                 android:maxLines="1"
@@ -87,6 +76,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
+                android:text="@={completionVM.surname}"
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -96,15 +86,15 @@
             android:id="@+id/til_name"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="15dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
+            app:helperTextEnabled="false"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
-            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_surname"
-            app:helperTextEnabled="false">
+            app:layout_constraintTop_toBottomOf="@+id/til_surname">
 
             <EditText
                 android:id="@+id/et_name"
@@ -112,7 +102,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
-                android:text="@={completionVM.name}"
                 android:background="@drawable/style_edit_text"
                 android:hint="@string/completion_et_name_hint"
                 android:maxLines="1"
@@ -120,6 +109,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
+                android:text="@={completionVM.name}"
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -129,15 +119,15 @@
             android:id="@+id/til_patronymic"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="15dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
+            app:helperTextEnabled="false"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
-            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_name"
-            app:helperTextEnabled="false">
+            app:layout_constraintTop_toBottomOf="@+id/til_name">
 
             <EditText
                 android:id="@+id/et_patronymic"
@@ -145,7 +135,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
-                android:text="@={completionVM.patronymic}"
                 android:background="@drawable/style_edit_text"
                 android:hint="@string/completion_et_patronymic_hint"
                 android:maxLines="1"
@@ -153,6 +142,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
+                android:text="@={completionVM.patronymic}"
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -165,10 +155,10 @@
             android:layout_marginTop="15dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
+            app:endIconDrawable="@drawable/ic_dropdown_menu"
+            app:endIconMode="dropdown_menu"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
-            app:endIconMode="dropdown_menu"
-            app:endIconDrawable="@drawable/ic_dropdown_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_patronymic">
@@ -241,11 +231,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintTop_toBottomOf="@+id/til_email" />
+            app:layout_constraintTop_toBottomOf="@+id/til_email"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-</layout>
+</ScrollView>

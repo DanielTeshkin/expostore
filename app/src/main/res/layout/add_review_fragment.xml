@@ -1,144 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:fillViewport="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:overScrollMode="never"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.product.addreview.AddReviewFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <import type="android.view.View" alias="v"/>
-        <variable
-            name="addReviewVM"
-            type="com.expostore.ui.product.addreview.AddReviewViewModel"/>
-    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageButton
+            android:background="@null"
+            android:id="@+id/btn_back"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:onClick="@{addReviewVM::navigateBack}"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_review_images"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:layout_marginTop="30dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="20dp"
+            android:clipToPadding="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back"
+            />
 
+        <TextView
+            style="@style/BoldTextView"
+            android:id="@+id/tv_rating"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:text="Оценка: 0/5"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_review_images" />
 
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
+        <com.willy.ratingbar.BaseRatingBar
+            android:id="@+id/ratingBar"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_rating"
+            app:srb_drawableEmpty="@drawable/ic_empty_star_with_padding"
+            app:srb_drawableFilled="@drawable/ic_star_with_padding"
+            app:srb_numStars="5"
+
+            app:srb_starPadding="0dp"
+            app:srb_stepSize="1" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_tender_description"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintBottom_toTopOf="@+id/btn_save_review"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+            app:layout_constraintVertical_bias="0.0">
+
+            <EditText
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:autofillHints=""
+                android:background="@drawable/style_edit_text"
+                android:gravity="top"
+                android:hint="Отзыв"
+                android:id="@+id/et_review"
+                android:inputType="textMultiLine"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:background="@null"
-                android:onClick="@{addReviewVM::navigateBack}"
-                android:src="@drawable/ic_arrow_back"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="ContentDescription" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_review_images"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:layout_marginTop="30dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="20dp"
-                android:clipToPadding="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_back"
-                />
+                android:minHeight="100dp"
+                android:padding="16dp"
+                android:paddingBottom="0dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="0dp"
+                android:text="@={addReviewVM.review}"
+                android:textColorHint="#8C162344"
+                tools:ignore="LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_rating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="Оценка: 0/5"
-                style="@style/BoldTextView"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_review_images" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/BoldTextView"
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:enabled="false"
+            android:id="@+id/btn_save_review"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:letterSpacing="0.01"
+            android:onClick="@{addReviewVM::saveReview}"
+            android:text="Сохранить"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <com.willy.ratingbar.BaseRatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                app:srb_numStars="5"
-                app:srb_stepSize="1"
-                app:srb_starPadding="0dp"
-                app:srb_drawableEmpty="@drawable/ic_empty_star_with_padding"
-                app:srb_drawableFilled="@drawable/ic_star_with_padding"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_rating" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_tender_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintAnimationEnabled="false"
-                app:hintEnabled="false"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintBottom_toTopOf="@+id/btn_save_review"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar">
-
-                <EditText
-                    android:id="@+id/et_review"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints=""
-                    android:background="@drawable/style_edit_text"
-                    android:gravity="top"
-                    android:hint="Отзыв"
-                    android:inputType="textMultiLine"
-                    android:minHeight="100dp"
-                    android:padding="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="0dp"
-                    android:text="@={addReviewVM.review}"
-                    android:textColorHint="#8C162344"
-                    tools:ignore="LabelFor,TextFields" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save_review"
-                style="@style/BoldTextView"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_margin="20dp"
-                android:backgroundTint="@drawable/selector_blue_button"
-                android:letterSpacing="0.01"
-                android:enabled="false"
-                android:onClick="@{addReviewVM::saveReview}"
-                android:text="Сохранить"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-</layout>
+</ScrollView>

@@ -1,24 +1,16 @@
 package com.expostore.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebViewClient
-import androidx.databinding.DataBindingUtil
-import com.expostore.R
 import com.expostore.databinding.WebViewFragmentBinding
+import com.expostore.ui.base.BaseFragment
 
-class WebViewFragment : Fragment() {
+class WebViewFragment : BaseFragment<WebViewFragmentBinding>(WebViewFragmentBinding::inflate) {
 
-    private lateinit var binding: WebViewFragmentBinding
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.web_view_fragment, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.webView.webViewClient = WebViewClient()
         arguments?.getString("url")?.let { binding.webView.loadUrl(it) }
-
-        return binding.root
     }
 }

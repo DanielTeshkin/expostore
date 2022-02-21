@@ -1,5 +1,6 @@
 package com.expostore.api
 
+import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,26 +9,31 @@ import java.util.concurrent.TimeUnit
 
 
 object Retrofit {
-    private var retrofit: Retrofit? = null
+    // TODO: переделать на нормальную реализацию, когда будет даггер
+    lateinit var apiWorker: ApiWorkerImpl
+        private set
     const val BASE_URL = "https://expostore.ru"
 
-    fun getClient(baseUrl: String): Retrofit {
-
+    fun build(context: Context) {
+        if (::apiWorker.isInitialized) {
+            return
+        }
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(logging)
-        httpClient.connectTimeout(30, TimeUnit.SECONDS)
-        httpClient.readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .addInterceptor(Interceptor(context))
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build()
 
-        if (retrofit == null) {
-            retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build()
-        }
-        return retrofit!!
+        val api = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+            .create(ServerApi::class.java)
+        apiWorker = ApiWorkerImpl(api)
     }
 }

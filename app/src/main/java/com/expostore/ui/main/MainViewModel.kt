@@ -5,8 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.R
+import com.expostore.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor() : BaseViewModel() {
     lateinit var navController: NavController
 
     fun navigateToProfile(view: View){

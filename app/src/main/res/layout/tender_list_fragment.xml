@@ -1,136 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.tender.list.TenderListFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/tender_list_fragment_scene">
 
-    <data>
-        <import type="android.view.View" alias="v"/>
-        <variable
-            name="tenderListVM"
-            type="com.expostore.ui.tender.list.TenderListViewModel"/>
-    </data>
-
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/constraintLayout"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/search_map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/tender_list_fragment_scene">
+        android:layout_height="0dp"
+        tools:ignore="SpeakableTextPresentCheck" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/search_map_view"
+
+    <!--        <com.google.android.material.button.MaterialButton-->
+    <!--            android:id="@+id/search_btn_filters"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:insetLeft="0dp"-->
+    <!--            android:insetTop="0dp"-->
+    <!--            android:insetRight="0dp"-->
+    <!--            android:insetBottom="0dp"-->
+    <!--            app:cornerRadius="20dp"-->
+    <!--            app:icon="@drawable/ic_search_filters"-->
+    <!--            app:iconGravity="textStart"-->
+    <!--            app:iconPadding="0dp"-->
+    <!--            app:iconSize="18dp"-->
+    <!--            tools:ignore="TouchTargetSizeCheck"-->
+    <!--            tools:layout_editor_absoluteX="351dp"-->
+    <!--            tools:layout_editor_absoluteY="20dp" />-->
+
+    <LinearLayout
+        android:id="@+id/search_ll"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/search_bottom_sheet_background"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="40dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/search_view" />
+
+        <Button
+            android:id="@+id/create_tender"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:letterSpacing="0.01"
+            android:onClick="@{tenderListVM::createTender}"
+            android:text="Разместить тендер"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp" />
 
 
-        <!--        <com.google.android.material.button.MaterialButton-->
-        <!--            android:id="@+id/search_btn_filters"-->
-        <!--            android:layout_width="40dp"-->
-        <!--            android:layout_height="40dp"-->
-        <!--            android:insetLeft="0dp"-->
-        <!--            android:insetTop="0dp"-->
-        <!--            android:insetRight="0dp"-->
-        <!--            android:insetBottom="0dp"-->
-        <!--            app:cornerRadius="20dp"-->
-        <!--            app:icon="@drawable/ic_search_filters"-->
-        <!--            app:iconGravity="textStart"-->
-        <!--            app:iconPadding="0dp"-->
-        <!--            app:iconSize="18dp"-->
-        <!--            tools:ignore="TouchTargetSizeCheck"-->
-        <!--            tools:layout_editor_absoluteX="351dp"-->
-        <!--            tools:layout_editor_absoluteY="20dp" />-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_tl"
 
-        <LinearLayout
-            android:id="@+id/search_ll"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@drawable/search_bottom_sheet_background"
-            android:orientation="vertical">
+            android:layout_height="56dp"
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="40dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/search_view" />
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
 
-            <Button
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false">
+
+            <EditText
+
+                android:id="@+id/search_et"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_margin="20dp"
-                style="@style/BoldTextView"
-                android:backgroundTint="@drawable/selector_blue_button"
-                android:letterSpacing="0.01"
-                android:onClick="@{tenderListVM::createTender}"
-                android:text="Разместить тендер"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:cornerRadius="10dp"/>
 
+                android:layout_height="match_parent"
+                android:autofillHints=""
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_tl"
+                android:background="@drawable/style_edit_text"
 
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="16dp"
 
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:hint="@string/search_et_hint"
+                android:inputType="text"
 
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintAnimationEnabled="false"
-                app:hintEnabled="false">
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingTop="0dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="0dp"
 
-                <EditText
+                android:textColorHint="#8C162344"
+                android:textIsSelectable="false"
+                tools:ignore="LabelFor" />
 
-                    android:id="@+id/search_et"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="match_parent"
+        </com.google.android.material.textfield.TextInputLayout>
 
-                    android:layout_height="match_parent"
-                    android:autofillHints=""
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:drawableLeft="@drawable/ic_search_btn_filters"
+            android:drawablePadding="10dp"
+            android:text="По новизне"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-                    android:textIsSelectable="false"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tender_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-                    android:background="@drawable/style_edit_text"
-                    android:drawableStart="@drawable/ic_search"
+    </LinearLayout>
 
-                    android:drawablePadding="16dp"
-                    android:hint="@string/search_et_hint"
-
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:paddingStart="16dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="16dp"
-
-                    android:paddingBottom="0dp"
-                    android:textColorHint="#8C162344"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="По новизне"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:drawableLeft="@drawable/ic_search_btn_filters"
-                android:drawablePadding="10dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_tender_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
-
-</layout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

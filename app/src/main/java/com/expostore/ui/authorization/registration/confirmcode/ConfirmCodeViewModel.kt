@@ -49,7 +49,7 @@ class ConfirmCodeViewModel : ViewModel() {
         }
     }
 
-    fun confirmCode(view: View){
+    fun confirmCode(view: View, code: String){
         val request = ConfirmCodeRequestData(phoneInput, code)
         serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
         serverApi.confirmCode(request).enqueue(object : Callback<ConfirmCodeResponseData> {

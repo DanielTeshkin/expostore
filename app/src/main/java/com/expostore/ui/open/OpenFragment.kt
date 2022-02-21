@@ -6,27 +6,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.expostore.MainActivity
 import com.expostore.R
 import com.expostore.databinding.OpenFragmentBinding
+import com.expostore.ui.base.BaseFragment
 
-class OpenFragment : Fragment() {
+class OpenFragment : BaseFragment<OpenFragmentBinding>(OpenFragmentBinding::inflate) {
 
-    private lateinit var binding: OpenFragmentBinding
     private lateinit var openViewModel: OpenViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.open_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         openViewModel = ViewModelProvider(this).get(OpenViewModel::class.java)
-        binding.openVM = openViewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnSignIn.setOnClickListener {
+            openViewModel.navigateToSignIn(it)
+        }
+        binding.btnSignUp.setOnClickListener {
+            openViewModel.navigateToSignUp(it)
+        }
 
         (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
 
         //TODO Добавить в клик кнопки выхода
         //(context as MainActivity).sharedPreferences.edit().clear().apply()
-
-
-        return binding.root
     }
 }

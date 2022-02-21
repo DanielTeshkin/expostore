@@ -1,29 +1,34 @@
 package com.expostore.ui.authorization.passwordrecovery
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.expostore.MainActivity
-import com.expostore.R
-import com.expostore.databinding.LoginFragmentBinding
 import com.expostore.databinding.PasswordRecoveryFragmentBinding
-import com.expostore.ui.authorization.login.LoginViewModel
+import com.expostore.ui.base.BaseFragment
 
-class PasswordRecoveryFragment : Fragment() {
+class PasswordRecoveryFragment :
+    BaseFragment<PasswordRecoveryFragmentBinding>(PasswordRecoveryFragmentBinding::inflate) {
 
-    private lateinit var binding: PasswordRecoveryFragmentBinding
     private lateinit var passwordRecoveryViewModel: PasswordRecoveryViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.password_recovery_fragment, container, false)
-        passwordRecoveryViewModel = ViewModelProvider(this).get(PasswordRecoveryViewModel::class.java)
-        binding.passwordRecoveryVM = passwordRecoveryViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        passwordRecoveryViewModel =
+            ViewModelProvider(this).get(PasswordRecoveryViewModel::class.java)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnSignInNext.setOnClickListener {
+            passwordRecoveryViewModel.confirmCode(it, binding.etCode.text.toString())
+        }
+
+        binding.btnResendCode.setOnClickListener {
+            passwordRecoveryViewModel.confirmNumber(it)
+        }
 
         passwordRecoveryViewModel.context = requireContext()
         passwordRecoveryViewModel.btnResendCode = binding.btnResendCode

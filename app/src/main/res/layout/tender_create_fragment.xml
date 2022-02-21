@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.tender.create.TenderCreateFragment">
-
-    <data>
-        <import type="android.view.View" alias="v"/>
-        <variable
-            name="tenderCreateVM"
-            type="com.expostore.ui.tender.create.TenderCreateViewModel"/>
-    </data>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,11 +14,11 @@
             style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:text="Новый тендер"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,27 +30,27 @@
             android:layout_margin="20dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tender_title"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false">
+            app:layout_constraintTop_toBottomOf="@+id/tender_title">
 
             <EditText
-                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:id="@+id/et_tender_name"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
-                android:text="@={tenderCreateVM.title}"
                 android:background="@drawable/style_edit_text"
+                android:hint="Наименование"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingStart="16dp"
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:hint="Наименование"
+                android:text="@={tenderCreateVM.title}"
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,9 +60,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:onClick="@{tenderCreateVM::getProductCategory}"
             android:background="@drawable/style_list"
+            android:onClick="@{tenderCreateVM::getProductCategory}"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_tender_name">
@@ -81,12 +71,12 @@
                 android:id="@+id/tv_tender_create_category_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Категория"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="Категория"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <ImageButton
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -103,8 +93,8 @@
             android:id="@+id/til_tender_price_up_to"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
@@ -201,8 +191,8 @@
             android:id="@+id/til_tender_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="false"
@@ -245,10 +235,10 @@
             android:id="@+id/til_tender_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxStrokeWidth="0dp"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
+            app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
@@ -280,8 +270,8 @@
             android:id="@+id/til_tender_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
@@ -296,12 +286,12 @@
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="250dp"
                 android:autofillHints=""
                 android:background="@drawable/style_edit_text"
                 android:gravity="top"
                 android:hint="Описание"
                 android:inputType="textMultiLine"
+                android:minHeight="250dp"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
@@ -316,8 +306,8 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal"
             android:clipToPadding="false"
+            android:orientation="horizontal"
             android:overScrollMode="never"
             android:paddingStart="10dp"
             android:paddingEnd="20dp"
@@ -327,61 +317,61 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Отмена"
-            style="@style/BoldTextView"
-            android:textSize="16sp"
-            android:letterSpacing="0.01"
-            android:textAllCaps="false"
-            app:cornerRadius="10dp"
-            android:textColor="@color/white"
-            android:backgroundTint="#F53939"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
+            android:backgroundTint="#F53939"
+            android:letterSpacing="0.01"
+            android:text="Отмена"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_tender_images"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/btn_save_draft"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Сохранить как черновик"
-            style="@style/BoldTextView"
-            android:textSize="16sp"
-            android:letterSpacing="0.01"
-            android:textAllCaps="false"
-            app:cornerRadius="10dp"
-            android:textColor="@color/white"
-            android:backgroundTint="#FFA41C"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFA41C"
+            android:letterSpacing="0.01"
+            android:text="Сохранить как черновик"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_cancel" />
 
         <Button
             android:id="@+id/btn_save"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Сохранить"
-            style="@style/BoldTextView"
-            android:textSize="16sp"
-            android:letterSpacing="0.01"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            app:cornerRadius="10dp"
-            android:backgroundTint="@drawable/selector_blue_button"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:letterSpacing="0.01"
             android:onClick="@{tenderCreateVM::createTender}"
+            android:text="Сохранить"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_save_draft" />
@@ -389,6 +379,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-</layout>
+</ScrollView>

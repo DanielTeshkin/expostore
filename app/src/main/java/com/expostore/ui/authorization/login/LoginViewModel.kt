@@ -53,7 +53,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun signIn(view: View){
+    fun signIn(view: View, phone: String, password: String){
         request = SignInRequestData(phone,password)
         serverApi = getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 
@@ -90,7 +90,7 @@ class LoginViewModel : ViewModel() {
         })
     }
 
-    fun confirmNumber(view: View) {
+    fun confirmNumber(view: View, phone: String) {
         val request = ConfirmNumberRequestData(phone)
         serverApi = getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
         serverApi.confirmNumber(request).enqueue(object : Callback<ConfirmNumberResponseData> {

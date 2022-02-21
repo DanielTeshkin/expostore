@@ -36,7 +36,7 @@ class NewPasswordViewModel : ViewModel() {
     var password: String = ""
     var secondPassword: String = ""
 
-    fun signUp(view: View){
+    fun signUp(view: View, password: String){
         request = SignUpRequestData(phone,password)
         serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
 

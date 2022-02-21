@@ -1,17 +1,11 @@
 package com.expostore.ui.main
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,35 +14,39 @@ import com.expostore.R
 import com.expostore.api.Retrofit
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getcategory.Category
-import com.expostore.api.pojo.getcategory.GetCategoryResponseData
 import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
-import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.MainFragmentBinding
+import com.expostore.ui.base.BaseFragment
 import com.expostore.utils.CategoryRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::inflate) {
 
-    private lateinit var binding: MainFragmentBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var navController: NavController
     private lateinit var mAdapter: CategoryRecyclerViewAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
+    private val viewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        binding.mainVM = mainViewModel
-
-
-        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnAddAdvertisement.setOnClickListener {
+            mainViewModel.navigateToAddProduct(it)
+        }
+        binding.ivProfile.setOnClickListener {
+            mainViewModel.navigateToProfile(it)
+        }
+    }
 
     //TODO авторизация не работает
     override fun onStart() {

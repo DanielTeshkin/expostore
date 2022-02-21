@@ -1,4 +1,4 @@
-package com.expostore.ui.main.specifications
+package com.expostore.ui.specifications
 
 import android.view.View
 import androidx.lifecycle.ViewModel

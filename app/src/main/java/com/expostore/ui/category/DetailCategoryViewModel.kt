@@ -1,4 +1,4 @@
-package com.expostore.ui.main.category
+package com.expostore.ui.category
 
 import androidx.lifecycle.ViewModel
 

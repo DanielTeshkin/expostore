@@ -29,69 +29,70 @@ import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ServerApi {
 
     @POST("/api/sign-in/")
-    fun authorization(@Body request: SignInRequestData): Call<SignInResponseData>
+    fun authorization(@Body request: SignInRequestData): Response<SignInResponseData>
 
     @POST("/api/confirm/create/")
-    fun confirmNumber(@Body request: ConfirmNumberRequestData): Call<ConfirmNumberResponseData>
+    fun confirmNumber(@Body request: ConfirmNumberRequestData): Response<ConfirmNumberResponseData>
 
     @POST("/api/confirm/confirmed/")
-    fun confirmCode(@Body request: ConfirmCodeRequestData): Call<ConfirmCodeResponseData>
+    fun confirmCode(@Body request: ConfirmCodeRequestData): Response<ConfirmCodeResponseData>
 
     @POST("/api/sign-up/")
-    fun registration(@Body request: SignUpRequestData): Call<SignUpResponseData>
+    fun registration(@Body request: SignUpRequestData): Response<SignUpResponseData>
 
     @GET("/api/cities/")
-    fun getCities(@Header("Authorization") authToken: String?): Call<ArrayList<City>>
+    fun getCities(@Header("Authorization") authToken: String?): Response<List<City>>
 
     @PUT("/api/profile/")
-    fun editProfile(@Header("Authorization") authToken: String?, @Body request: EditProfileRequestData): Call<EditProfileResponseData>
+    fun editProfile(@Header("Authorization") authToken: String?, @Body request: EditProfileRequestData): Response<EditProfileResponseData>
 
     @GET("/api/selection/product/")
-    fun getCategories(@Header("Authorization") authToken: String?): Call<ArrayList<Category>>
+    fun getCategories(@Header("Authorization") authToken: String?): Response<List<Category>>
 
     @GET("/api/advertising/selection/")
-    fun getCategoryAdvertising(@Header("Authorization") authToken: String?): Call<ArrayList<CategoryAdvertising>>
+    fun getCategoryAdvertising(@Header("Authorization") authToken: String?): Response<List<CategoryAdvertising>>
 
     //TODO изменить
     @POST("/api/product/{id}/elected/select/")
-    fun selectFavorite(@Header("Authorization") authToken: String?, @Path("id") id: String): Call<SelectFavoriteResponseData>
+    fun selectFavorite(@Header("Authorization") authToken: String?, @Path("id") id: String): Response<SelectFavoriteResponseData>
 
     @GET("/api/product/elected/list/")
-    fun getFavoritesList(@Header("Authorization") authToken: String?): Call<ArrayList<GetFavoritesListResponseData>>
+    fun getFavoritesList(@Header("Authorization") authToken: String?): Response<List<GetFavoritesListResponseData>>
 
     @POST("/api/tender/create/")
-    fun createTender(@Header("Authorization") authToken: String?, @Body requestData: CreateTenderRequestData): Call<CreateTenderResponseData>
+    fun createTender(@Header("Authorization") authToken: String?, @Body requestData: CreateTenderRequestData): Response<CreateTenderResponseData>
 
     @POST("/api/image/save/")
-    fun saveImage(@Header("Authorization") authToken: String?,@Body request: SaveImageRequestData): Call<SaveImageResponseData>
+    fun saveImage(@Header("Authorization") authToken: String?,@Body request: SaveImageRequestData): Response<SaveImageResponseData>
 
     @GET("/api/product/category/")
-    fun getProductCategory(@Header("Authorization") authToken: String?): Call<ArrayList<ProductCategory>>
+    fun getProductCategory(@Header("Authorization") authToken: String?): Response<List<ProductCategory>>
 
     @GET("/api/tender/")
-    fun getTenders(@Header("Authorization") authToken: String?): Call<ArrayList<Tender>>
+    fun getTenders(@Header("Authorization") authToken: String?): Response<List<Tender>>
 
     @GET("/api/product/{id}/")
-    fun getProduct(@Header("Authorization") authToken: String?, @Path("id") id: String): Call<ProductResponseData>
+    fun getProduct(@Header("Authorization") authToken: String?, @Path("id") id: String): Response<ProductResponseData>
 
     @GET("/api/product/{id}/review/")
-    fun getReviews(@Path("id") id: String): Call<ReviewsResponseData>
+    fun getReviews(@Path("id") id: String): Response<ReviewsResponseData>
 
     @POST("/api/product/{id}/review/add/")
-    fun addReview(@Header("Authorization") authToken: String?,@Path("id") id: String, @Body requestData: AddReviewRequestData): Call<AddReviewResponseData>
+    fun addReview(@Header("Authorization") authToken: String?,@Path("id") id: String, @Body requestData: AddReviewRequestData): Response<AddReviewResponseData>
 
     @GET("/api/product/")
-    fun getListProduct(): Call<GetListProductResponseData>
+    fun getListProduct(): Response<GetListProductResponseData>
 
     @GET("/api/chat/")
-    fun getChats(@Header("Authorization") authToken: String?): Call<ArrayList<Chat>>
+    fun getChats(@Header("Authorization") authToken: String?): Response<List<Chat>>
 
     @GET("/api/shop/{id}/")
-    fun getShop(@Header("Authorization") authToken: String?,@Path("id") id: String): Call<GetShopResponseData>
+    fun getShop(@Header("Authorization") authToken: String?,@Path("id") id: String): Response<GetShopResponseData>
 
 }

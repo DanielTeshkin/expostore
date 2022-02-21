@@ -60,7 +60,7 @@ class ConfirmNumberViewModel : ViewModel() {
         }
     }
 
-    fun confirmNumber(view: View) {
+    fun confirmNumber(view: View, phone: String) {
         if (phoneInput!!.length == PHONE_INPUT) {
             val request = ConfirmNumberRequestData(phoneInput)
             serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
