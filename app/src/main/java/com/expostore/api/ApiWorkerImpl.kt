@@ -1,7 +1,7 @@
 package com.expostore.api
 
-import com.expostore.api.pojo.ApiResponse
-import com.expostore.api.pojo.BaseApiResponse
+import com.expostore.api.base.ApiResponse
+import com.expostore.api.base.BaseApiResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
@@ -43,8 +43,11 @@ class ApiWorkerImpl(private val serverApi: ServerApi) : ApiWorker {
     private inline fun <T> processListResponse(response: Response<List<T>>): BaseApiResponse<List<T>> =
         ApiResponse.createList(response)
 
-    override suspend fun authorization(request: SignInRequestData): BaseApiResponse<SignInResponseData> =
-        processResponse(serverApi.authorization(request))
+    override suspend fun authorization(
+        username: String,
+        password: String
+    ): BaseApiResponse<SignInResponseData> =
+        processResponse(serverApi.authorization(SignInRequestData(username, password)))
 
     override suspend fun confirmNumber(request: ConfirmNumberRequestData): BaseApiResponse<ConfirmNumberResponseData> =
         processResponse(serverApi.confirmNumber(request))
@@ -55,73 +58,66 @@ class ApiWorkerImpl(private val serverApi: ServerApi) : ApiWorker {
     override suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData> =
         processResponse(serverApi.registration(request))
 
-    override suspend fun getCities(authToken: String?): BaseApiResponse<List<City>> =
-        processListResponse(serverApi.getCities(authToken))
+    override suspend fun getCities(): BaseApiResponse<List<City>> =
+        processListResponse(serverApi.getCities())
 
     override suspend fun editProfile(
-        authToken: String?,
         request: EditProfileRequestData
     ): BaseApiResponse<EditProfileResponseData> =
-        processResponse(serverApi.editProfile(authToken, request))
+        processResponse(serverApi.editProfile(request))
 
-    override suspend fun getCategories(authToken: String?): BaseApiResponse<List<Category>> =
-        processListResponse(serverApi.getCategories(authToken))
+    override suspend fun getCategories(): BaseApiResponse<List<Category>> =
+        processListResponse(serverApi.getCategories())
 
-    override suspend fun getCategoryAdvertising(authToken: String?): BaseApiResponse<List<CategoryAdvertising>> =
-        processListResponse(serverApi.getCategoryAdvertising(authToken))
+    override suspend fun getCategoryAdvertising(): BaseApiResponse<List<CategoryAdvertising>> =
+        processListResponse(serverApi.getCategoryAdvertising())
 
     override suspend fun selectFavorite(
-        authToken: String?,
         id: String
     ): BaseApiResponse<SelectFavoriteResponseData> =
-        processResponse(serverApi.selectFavorite(authToken, id))
+        processResponse(serverApi.selectFavorite(id))
 
-    override suspend fun getFavoritesList(authToken: String?): BaseApiResponse<List<GetFavoritesListResponseData>> =
-        processListResponse(serverApi.getFavoritesList(authToken))
+    override suspend fun getFavoritesList(): BaseApiResponse<List<GetFavoritesListResponseData>> =
+        processListResponse(serverApi.getFavoritesList())
 
     override suspend fun createTender(
-        authToken: String?,
         requestData: CreateTenderRequestData
     ): BaseApiResponse<CreateTenderResponseData> =
-        processResponse(serverApi.createTender(authToken, requestData))
+        processResponse(serverApi.createTender(requestData))
 
     override suspend fun saveImage(
-        authToken: String?,
         request: SaveImageRequestData
     ): BaseApiResponse<SaveImageResponseData> =
-        processResponse(serverApi.saveImage(authToken, request))
+        processResponse(serverApi.saveImage(request))
 
-    override suspend fun getProductCategory(authToken: String?): BaseApiResponse<List<ProductCategory>> =
-        processListResponse(serverApi.getProductCategory(authToken))
+    override suspend fun getProductCategory(): BaseApiResponse<List<ProductCategory>> =
+        processListResponse(serverApi.getProductCategory())
 
-    override suspend fun getTenders(authToken: String?): BaseApiResponse<List<Tender>> =
-        processListResponse(serverApi.getTenders(authToken))
+    override suspend fun getTenders(): BaseApiResponse<List<Tender>> =
+        processListResponse(serverApi.getTenders())
 
     override suspend fun getProduct(
-        authToken: String?,
         id: String
     ): BaseApiResponse<ProductResponseData> =
-        processResponse(serverApi.getProduct(authToken, id))
+        processResponse(serverApi.getProduct(id))
 
     override suspend fun getReviews(id: String): BaseApiResponse<ReviewsResponseData> =
         processResponse(serverApi.getReviews(id))
 
     override suspend fun addReview(
-        authToken: String?,
         id: String,
         requestData: AddReviewRequestData
     ): BaseApiResponse<AddReviewResponseData> =
-        processResponse(serverApi.addReview(authToken, id, requestData))
+        processResponse(serverApi.addReview(id, requestData))
 
     override suspend fun getListProduct(): BaseApiResponse<GetListProductResponseData> =
         processResponse(serverApi.getListProduct())
 
-    override suspend fun getChats(authToken: String?): BaseApiResponse<List<Chat>> =
-        processListResponse(serverApi.getChats(authToken))
+    override suspend fun getChats(): BaseApiResponse<List<Chat>> =
+        processListResponse(serverApi.getChats())
 
     override suspend fun getShop(
-        authToken: String?,
         id: String
     ): BaseApiResponse<GetShopResponseData> =
-        processResponse(serverApi.getShop(authToken, id))
+        processResponse(serverApi.getShop(id))
 }

@@ -26,13 +26,12 @@ class ProductRecyclerViewAdapter(private val products: ArrayList<CategoryProduct
     override fun getItemCount(): Int = products!!.size
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.tv_product_name
-        var image: ImageView = itemView.iv_product_image
+
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = products!![position]
-
+/*
         holder.name.text = product.name
 
         if (!product.images.isNullOrEmpty()) {
@@ -42,7 +41,7 @@ class ProductRecyclerViewAdapter(private val products: ArrayList<CategoryProduct
 
         holder.itemView.setOnClickListener {
             onClick.onProductClick(product.id)
-        }
+        }*/
     }
 
 }

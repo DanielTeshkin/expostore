@@ -70,19 +70,19 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
         snapHelper.attachToRecyclerView(holder.rvImages)
 
         if (!product.images.isNullOrEmpty()) {
-            holder.rvImages.apply {
+/*            holder.rvImages.apply {
                 layoutManager = childLayoutManager
                 adapter = ProductImageRecyclerViewAdapter(context, product.images!!, product.id, true, onClick!!)
                 setRecycledViewPool(viewPool)
-            }
+            }*/
         }
         else {
-            product.images = testImages
+/*            product.images = testImages
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
                 adapter = ProductImageRecyclerViewAdapter(context, testImages, product.id, true, onClick!!)
                 setRecycledViewPool(viewPool)
-            }
+            }*/
         }
     }
 }

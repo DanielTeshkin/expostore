@@ -7,9 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
+// TODO: выпилить из проекта
 object Retrofit {
-    // TODO: переделать на нормальную реализацию, когда будет даггер
     lateinit var apiWorker: ApiWorkerImpl
         private set
     const val BASE_URL = "https://expostore.ru"

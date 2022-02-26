@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Expostore"
+        android:networkSecurityConfig="@xml/network_config"
         android:requestLegacyExternalStorage="true">
 
         <meta-data

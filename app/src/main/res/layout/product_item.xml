@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp">
@@ -17,23 +17,27 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_product_image"
+            android:id="@+id/product_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="#F3F4F5"/>
+            android:scaleType="centerCrop"
+            android:src="#F3F4F5" />
 
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:id="@+id/tv_product_name"
-        android:layout_width="match_parent"
+        android:id="@+id/product_name"
+        style="@style/BoldTextView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        style="@style/BoldTextView"
-        android:text="@string/product_tv_name_text"
-        android:textSize="15sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mcv_product_image" />
+        app:layout_constraintTop_toBottomOf="@+id/mcv_product_image"
+        tools:text="товар" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,64 +35,64 @@ import retrofit2.http.*
 interface ServerApi {
 
     @POST("/api/sign-in/")
-    fun authorization(@Body request: SignInRequestData): Response<SignInResponseData>
+    suspend fun authorization(@Body request: SignInRequestData): Response<SignInResponseData>
 
     @POST("/api/confirm/create/")
-    fun confirmNumber(@Body request: ConfirmNumberRequestData): Response<ConfirmNumberResponseData>
+    suspend fun confirmNumber(@Body request: ConfirmNumberRequestData): Response<ConfirmNumberResponseData>
 
     @POST("/api/confirm/confirmed/")
-    fun confirmCode(@Body request: ConfirmCodeRequestData): Response<ConfirmCodeResponseData>
+    suspend fun confirmCode(@Body request: ConfirmCodeRequestData): Response<ConfirmCodeResponseData>
 
     @POST("/api/sign-up/")
-    fun registration(@Body request: SignUpRequestData): Response<SignUpResponseData>
+    suspend fun registration(@Body request: SignUpRequestData): Response<SignUpResponseData>
 
     @GET("/api/cities/")
-    fun getCities(@Header("Authorization") authToken: String?): Response<List<City>>
+    suspend fun getCities(): Response<List<City>>
 
     @PUT("/api/profile/")
-    fun editProfile(@Header("Authorization") authToken: String?, @Body request: EditProfileRequestData): Response<EditProfileResponseData>
+    suspend fun editProfile(@Body request: EditProfileRequestData): Response<EditProfileResponseData>
 
     @GET("/api/selection/product/")
-    fun getCategories(@Header("Authorization") authToken: String?): Response<List<Category>>
+    suspend fun getCategories(): Response<List<Category>>
 
     @GET("/api/advertising/selection/")
-    fun getCategoryAdvertising(@Header("Authorization") authToken: String?): Response<List<CategoryAdvertising>>
+    suspend fun getCategoryAdvertising(): Response<List<CategoryAdvertising>>
 
     //TODO изменить
     @POST("/api/product/{id}/elected/select/")
-    fun selectFavorite(@Header("Authorization") authToken: String?, @Path("id") id: String): Response<SelectFavoriteResponseData>
+    suspend fun selectFavorite(@Path("id") id: String): Response<SelectFavoriteResponseData>
 
     @GET("/api/product/elected/list/")
-    fun getFavoritesList(@Header("Authorization") authToken: String?): Response<List<GetFavoritesListResponseData>>
+    suspend fun getFavoritesList(): Response<List<GetFavoritesListResponseData>>
 
     @POST("/api/tender/create/")
-    fun createTender(@Header("Authorization") authToken: String?, @Body requestData: CreateTenderRequestData): Response<CreateTenderResponseData>
+    suspend fun createTender(@Body requestData: CreateTenderRequestData): Response<CreateTenderResponseData>
 
     @POST("/api/image/save/")
-    fun saveImage(@Header("Authorization") authToken: String?,@Body request: SaveImageRequestData): Response<SaveImageResponseData>
+    suspend fun saveImage(@Body request: SaveImageRequestData): Response<SaveImageResponseData>
 
     @GET("/api/product/category/")
-    fun getProductCategory(@Header("Authorization") authToken: String?): Response<List<ProductCategory>>
+    suspend fun getProductCategory(): Response<List<ProductCategory>>
 
     @GET("/api/tender/")
-    fun getTenders(@Header("Authorization") authToken: String?): Response<List<Tender>>
+    suspend fun getTenders(): Response<List<Tender>>
 
     @GET("/api/product/{id}/")
-    fun getProduct(@Header("Authorization") authToken: String?, @Path("id") id: String): Response<ProductResponseData>
+    suspend fun getProduct(@Path("id") id: String): Response<ProductResponseData>
 
     @GET("/api/product/{id}/review/")
-    fun getReviews(@Path("id") id: String): Response<ReviewsResponseData>
+    suspend fun getReviews(@Path("id") id: String): Response<ReviewsResponseData>
 
     @POST("/api/product/{id}/review/add/")
-    fun addReview(@Header("Authorization") authToken: String?,@Path("id") id: String, @Body requestData: AddReviewRequestData): Response<AddReviewResponseData>
+    suspend fun addReview(@Path("id") id: String, @Body requestData: AddReviewRequestData): Response<AddReviewResponseData>
 
     @GET("/api/product/")
-    fun getListProduct(): Response<GetListProductResponseData>
+    suspend fun getListProduct(): Response<GetListProductResponseData>
 
     @GET("/api/chat/")
-    fun getChats(@Header("Authorization") authToken: String?): Response<List<Chat>>
+    suspend fun getChats(): Response<List<Chat>>
 
     @GET("/api/shop/{id}/")
-    fun getShop(@Header("Authorization") authToken: String?,@Path("id") id: String): Response<GetShopResponseData>
+    suspend fun getShop(@Path("id") id: String): Response<GetShopResponseData>
 
 }

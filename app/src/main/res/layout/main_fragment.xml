@@ -33,7 +33,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier2">
@@ -79,10 +80,12 @@
                 app:cornerRadius="10dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_categories"
+                android:id="@+id/categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button" />
@@ -97,6 +100,6 @@
         android:layout_height="wrap_content"
         android:elevation="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="iv_profile" />
+        app:constraint_referenced_ids="iv_profile, textView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

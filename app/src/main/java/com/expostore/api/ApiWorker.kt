@@ -1,6 +1,6 @@
 package com.expostore.api
 
-import com.expostore.api.pojo.BaseApiResponse
+import com.expostore.api.base.BaseApiResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
@@ -35,7 +35,7 @@ import retrofit2.http.*
  * @author Fedotov Yakov
  */
 interface ApiWorker {
-    suspend fun authorization(request: SignInRequestData): BaseApiResponse<SignInResponseData>
+    suspend fun authorization(username: String, password: String): BaseApiResponse<SignInResponseData>
 
     suspend fun confirmNumber(request: ConfirmNumberRequestData): BaseApiResponse<ConfirmNumberResponseData>
 
@@ -43,37 +43,37 @@ interface ApiWorker {
 
     suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData>
 
-    suspend fun getCities(authToken: String?): BaseApiResponse<List<City>>
+    suspend fun getCities(): BaseApiResponse<List<City>>
 
-    suspend fun editProfile(authToken: String?, @Body request: EditProfileRequestData): BaseApiResponse<EditProfileResponseData>
+    suspend fun editProfile(@Body request: EditProfileRequestData): BaseApiResponse<EditProfileResponseData>
 
-    suspend fun getCategories(authToken: String?): BaseApiResponse<List<Category>>
+    suspend fun getCategories(): BaseApiResponse<List<Category>>
 
-    suspend fun getCategoryAdvertising(authToken: String?): BaseApiResponse<List<CategoryAdvertising>>
+    suspend fun getCategoryAdvertising(): BaseApiResponse<List<CategoryAdvertising>>
 
     //TODO изменить
-    suspend fun selectFavorite(authToken: String?, id: String): BaseApiResponse<SelectFavoriteResponseData>
+    suspend fun selectFavorite(id: String): BaseApiResponse<SelectFavoriteResponseData>
 
-    suspend fun getFavoritesList(authToken: String?): BaseApiResponse<List<GetFavoritesListResponseData>>
+    suspend fun getFavoritesList(): BaseApiResponse<List<GetFavoritesListResponseData>>
 
-    suspend fun createTender(authToken: String?, requestData: CreateTenderRequestData): BaseApiResponse<CreateTenderResponseData>
+    suspend fun createTender(requestData: CreateTenderRequestData): BaseApiResponse<CreateTenderResponseData>
 
-    suspend fun saveImage(authToken: String?, request: SaveImageRequestData): BaseApiResponse<SaveImageResponseData>
+    suspend fun saveImage(request: SaveImageRequestData): BaseApiResponse<SaveImageResponseData>
 
-    suspend fun getProductCategory(authToken: String?): BaseApiResponse<List<ProductCategory>>
+    suspend fun getProductCategory(): BaseApiResponse<List<ProductCategory>>
 
-    suspend fun getTenders(authToken: String?): BaseApiResponse<List<Tender>>
+    suspend fun getTenders(): BaseApiResponse<List<Tender>>
 
-    suspend fun getProduct(authToken: String?, id: String): BaseApiResponse<ProductResponseData>
+    suspend fun getProduct(id: String): BaseApiResponse<ProductResponseData>
 
     suspend fun getReviews(id: String): BaseApiResponse<ReviewsResponseData>
 
-    suspend fun addReview(authToken: String?, id: String, requestData: AddReviewRequestData): BaseApiResponse<AddReviewResponseData>
+    suspend fun addReview(id: String, requestData: AddReviewRequestData): BaseApiResponse<AddReviewResponseData>
 
     suspend fun getListProduct(): BaseApiResponse<GetListProductResponseData>
 
-    suspend fun getChats(authToken: String?): BaseApiResponse<List<Chat>>
+    suspend fun getChats(): BaseApiResponse<List<Chat>>
 
-    suspend fun getShop(authToken: String?, id: String): BaseApiResponse<GetShopResponseData>
+    suspend fun getShop(id: String): BaseApiResponse<GetShopResponseData>
 
 }

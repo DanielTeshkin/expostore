@@ -44,10 +44,10 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
 
         holder.name.text = product.name
         holder.price.text = product.price
-
+/*
         holder.itemView.setOnClickListener{
             onClick!!.onDetailCategoryProductItemClick(product.id)
-        }
+        }*/
 
         holder
 
@@ -72,13 +72,13 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
         val snapHelper = PagerSnapHelper() // Or PagerSnapHelper
         snapHelper.attachToRecyclerView(holder.rvImages)
 
-        if (!product.images.isNullOrEmpty()) {
+/*        if (!product.images.isNullOrEmpty()) {
             holder.rvImages.apply {
                 layoutManager = childLayoutManager
                 adapter = ProductImageRecyclerViewAdapter(context, product.images!!, product.id, product.like, onClick!!)
                 setRecycledViewPool(viewPool)
             }
-        }
+        }*/
     }
 }
 

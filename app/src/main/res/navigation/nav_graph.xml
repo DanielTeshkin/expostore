@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/openFragment"
-        android:name="com.expostore.ui.open.OpenFragment"
+        android:name="com.expostore.ui.fragment.open.OpenFragment"
         android:label="main_fragment"
         tools:layout="@layout/open_fragment" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.expostore.ui.authorization.login.LoginFragment"
+        android:name="com.expostore.ui.fragment.authorization.login.LoginFragment"
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.expostore.ui.main.MainFragment"
+        android:name="com.expostore.ui.fragment.main.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/main_fragment" >
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailCategoryFragment"
-        android:name="com.expostore.ui.category.DetailCategoryFragment"
+        android:name="com.expostore.ui.fragment.category.DetailCategoryFragment"
         android:label="detail_category_fragment"
         tools:layout="@layout/detail_category_fragment" >
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/numberFragment"
-        android:name="com.expostore.ui.authorization.registration.confirmnumber.ConfirmNumberFragment"
+        android:name="com.expostore.ui.fragment.authorization.registration.confirmnumber.ConfirmNumberFragment"
         android:label="number_fragment"
         tools:layout="@layout/confirm_number_fragment" >
         <action
@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/confirmNumberFragment"
-        android:name="com.expostore.ui.authorization.registration.confirmcode.ConfirmCodeFragment"
+        android:name="com.expostore.ui.fragment.authorization.registration.confirmcode.ConfirmCodeFragment"
         android:label="confirm_number_fragment"
         tools:layout="@layout/confirm_code_fragment" >
         <action
@@ -82,7 +82,7 @@
     </fragment>
     <fragment
         android:id="@+id/createPasswordFragment"
-        android:name="com.expostore.ui.authorization.registration.createpassword.CreatePasswordFragment"
+        android:name="com.expostore.ui.fragment.authorization.registration.createpassword.CreatePasswordFragment"
         android:label="create_password_fragment"
         tools:layout="@layout/create_password_fragment" >
         <action
@@ -91,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/completionFragment"
-        android:name="com.expostore.ui.authorization.registration.completion.CompletionFragment"
+        android:name="com.expostore.ui.fragment.authorization.registration.completion.CompletionFragment"
         android:label="completion_fragment"
         tools:layout="@layout/completion_fragment" >
         <action
@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordRecoveryFragment"
-        android:name="com.expostore.ui.authorization.passwordrecovery.PasswordRecoveryFragment"
+        android:name="com.expostore.ui.fragment.authorization.passwordrecovery.PasswordRecoveryFragment"
         android:label="password_recovery_fragment"
         tools:layout="@layout/password_recovery_fragment" >
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/newPasswordFragment"
-        android:name="com.expostore.ui.authorization.newpassword.NewPasswordFragment"
+        android:name="com.expostore.ui.fragment.authorization.newpassword.NewPasswordFragment"
         android:label="new_password_fragment"
         tools:layout="@layout/new_password_fragment" >
         <action
@@ -118,11 +118,11 @@
     </fragment>
     <fragment
         android:id="@+id/webViewFragment"
-        android:name="com.expostore.ui.WebViewFragment"
+        android:name="com.expostore.ui.fragment.WebViewFragment"
         android:label="WebViewFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.expostore.ui.profile.ProfileFragment"
+        android:name="com.expostore.ui.fragment.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_myProductsFragment"
@@ -130,7 +130,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.expostore.ui.search.SearchFragment"
+        android:name="com.expostore.ui.fragment.search.SearchFragment"
         android:label="SearchFragment" >
         <action
             android:id="@+id/action_searchFragment_to_productFragment"
@@ -138,12 +138,12 @@
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.expostore.ui.favorites.FavoritesFragment"
+        android:name="com.expostore.ui.fragment.favorites.FavoritesFragment"
         android:label="favorites_fragment"
         tools:layout="@layout/favorites_fragment" />
     <fragment
         android:id="@+id/tenderListFragment"
-        android:name="com.expostore.ui.tender.list.TenderListFragment"
+        android:name="com.expostore.ui.fragment.tender.list.TenderListFragment"
         android:label="tender_list_fragment"
         tools:layout="@layout/tender_list_fragment" >
         <action
@@ -152,7 +152,7 @@
     </fragment>
     <fragment
         android:id="@+id/tenderCreateFragment"
-        android:name="com.expostore.ui.tender.create.TenderCreateFragment"
+        android:name="com.expostore.ui.fragment.tender.create.TenderCreateFragment"
         android:label="tender_create_fragment"
         tools:layout="@layout/tender_create_fragment" >
         <action
@@ -161,12 +161,12 @@
     </fragment>
     <fragment
         android:id="@+id/specificationsFragment"
-        android:name="com.expostore.ui.specifications.SpecificationsFragment"
+        android:name="com.expostore.ui.fragment.specifications.SpecificationsFragment"
         android:label="specifications_fragment"
         tools:layout="@layout/specifications_fragment" />
     <fragment
         android:id="@+id/productFragment"
-        android:name="com.expostore.ui.product.ProductFragment"
+        android:name="com.expostore.ui.fragment.product.ProductFragment"
         android:label="product_fragment"
         tools:layout="@layout/product_fragment" >
         <action
@@ -184,21 +184,21 @@
     </fragment>
     <fragment
         android:id="@+id/reviewsFragment"
-        android:name="com.expostore.ui.product.reviews.ReviewsFragment"
+        android:name="com.expostore.ui.fragment.product.reviews.ReviewsFragment"
         android:label="ReviewsFragment" />
     <fragment
         android:id="@+id/addReviewFragment"
-        android:name="com.expostore.ui.product.addreview.AddReviewFragment"
+        android:name="com.expostore.ui.fragment.product.addreview.AddReviewFragment"
         android:label="add_review_fragment"
         tools:layout="@layout/add_review_fragment" />
     <fragment
         android:id="@+id/productQrCodeFragment"
-        android:name="com.expostore.ui.product.qrcode.ProductQrCodeFragment"
+        android:name="com.expostore.ui.fragment.product.qrcode.ProductQrCodeFragment"
         android:label="product_qr_code_fragment"
         tools:layout="@layout/product_qr_code_fragment" />
     <fragment
         android:id="@+id/chatsFragment"
-        android:name="com.expostore.ui.chats.ChatsFragment"
+        android:name="com.expostore.ui.fragment.chats.ChatsFragment"
         android:label="chats_fragment"
         tools:layout="@layout/chats_fragment" >
         <action
@@ -207,17 +207,17 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.expostore.ui.chats.chat.ChatFragment"
+        android:name="com.expostore.ui.fragment.chats.chat.ChatFragment"
         android:label="chat_fragment"
         tools:layout="@layout/chat_fragment" />
     <fragment
         android:id="@+id/myProductsFragment"
-        android:name="com.expostore.ui.product.myproducts.MyProductsFragment"
+        android:name="com.expostore.ui.fragment.product.myproducts.MyProductsFragment"
         android:label="my_products_fragment"
         tools:layout="@layout/my_products_fragment" />
     <fragment
         android:id="@+id/shopFragment"
-        android:name="com.expostore.ui.shop.ShopFragment"
+        android:name="com.expostore.ui.fragment.shop.ShopFragment"
         android:label="shop_fragment"
         tools:layout="@layout/shop_fragment" >
         <action
@@ -226,7 +226,7 @@
     </fragment>
     <fragment
         android:id="@+id/addProductFragment"
-        android:name="com.expostore.ui.product.addproduct.AddProductFragment"
+        android:name="com.expostore.ui.fragment.product.addproduct.AddProductFragment"
         android:label="add_product_fragment"
         tools:layout="@layout/add_product_fragment" >
         <action

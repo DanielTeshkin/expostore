@@ -1,6 +1,7 @@
 package com.expostore.di
 
 import android.content.Context
+import com.expostore.BuildConfig
 import com.expostore.api.ApiWorker
 import com.expostore.api.ApiWorkerImpl
 import com.expostore.api.Interceptor
@@ -25,7 +26,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl(com.expostore.api.Retrofit.BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()
