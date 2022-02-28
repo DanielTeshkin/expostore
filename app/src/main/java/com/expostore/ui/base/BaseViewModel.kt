@@ -27,38 +27,54 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun <T> Flow<T>.handleResult(
-        flow: MutableStateFlow<ResponseState<T>>? = null,
+        flow: MutableStateFlow<ResponseState<T>>,
         onSuccess: ((T) -> Unit)? = null,
         onError: ((Throwable) -> Unit)? = null
     ) {
-        onStart { flow?.emit(ResponseState.Loading(true)) }
+        onStart { flow.emit(ResponseState.Loading(true)) }
             .onEach {
-                flow?.emit(ResponseState.Success(it))
+                flow.emit(ResponseState.Success(it))
                 onSuccess?.invoke(it)
             }
             .catch {
-                flow?.emit(ResponseState.Error(it))
+                flow.emit(ResponseState.Error(it))
                 onError?.invoke(it)
             }
-            .onCompletion { flow?.emit(ResponseState.Loading(false)) }
+            .onCompletion { flow.emit(ResponseState.Loading(false)) }
             .launchIn(viewModelScope)
     }
 
     protected fun <T> Flow<T>.handleResult(
-        flow: MutableSharedFlow<ResponseState<T>>? = null,
+        flow: MutableSharedFlow<ResponseState<T>>,
         onSuccess: ((T) -> Unit)? = null,
         onError: ((Throwable) -> Unit)? = null
     ) {
-        onStart { flow?.emit(ResponseState.Loading(true)) }
+        onStart { flow.emit(ResponseState.Loading(true)) }
             .onEach {
-                flow?.emit(ResponseState.Success(it))
+                flow.emit(ResponseState.Success(it))
                 onSuccess?.invoke(it)
             }
             .catch {
-                flow?.emit(ResponseState.Error(it))
+                flow.emit(ResponseState.Error(it))
                 onError?.invoke(it)
             }
-            .onCompletion { flow?.emit(ResponseState.Loading(false)) }
+            .onCompletion { flow.emit(ResponseState.Loading(false)) }
+            .launchIn(viewModelScope)
+    }
+
+    protected fun <T> Flow<T>.handleResult(
+        onLoading: ((Boolean) -> Unit)? = null,
+        onSuccess: ((T) -> Unit)? = null,
+        onError: ((Throwable) -> Unit)? = null
+    ) {
+        onStart { onLoading?.invoke(true) }
+            .onEach {
+                onSuccess?.invoke(it)
+            }
+            .catch {
+                onError?.invoke(it)
+            }
+            .onCompletion { onLoading?.invoke(false) }
             .launchIn(viewModelScope)
     }
 

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.expostore.databinding.CategoryItemBinding
 import com.expostore.databinding.ProductItemBinding
+import com.expostore.extension.load
 import com.expostore.model.category.CategoryProductModel
 
 /**
@@ -45,10 +46,7 @@ class ProductAdapter: ListAdapter<CategoryProductModel, ProductAdapter.ProductsV
             binding.run {
                 productName.text = item.name
                 item.images.firstOrNull()?.file?.let {
-                    Glide.with(root.context)
-                        .load(it)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(productImage)
+                    productImage.load(it)
                 }
             }
         }

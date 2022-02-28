@@ -4,34 +4,41 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.R
-import com.expostore.model.category.CategoryModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.main.interactor.MainInteractor
-import com.expostore.ui.state.ResponseState
+import com.expostore.ui.state.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val interactor: MainInteractor
 ) : BaseViewModel() {
-    lateinit var navController: NavController
-
-    private val _uiState = MutableSharedFlow<ResponseState<List<CategoryModel>>>()
+    private val _uiState = MutableSharedFlow<MainState>()
     val uiState = _uiState.asSharedFlow()
 
     override fun onStart() {
-        interactor.geCategories().handleResult(_uiState)
+        load()
     }
 
-    fun navigateToProfile(view: View){
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_mainFragment_to_profileFragment)
-    }
-
-    fun navigateToAddProduct(view: View){
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_mainFragment_to_addProductFragment)
+    private fun load() {
+        interactor.load().handleResult({ isLoading ->
+            emit(_uiState, MainState.Loading(isLoading))
+        }, { data ->
+            when (data) {
+                is MainInteractor.MainData.Categories -> emit(
+                    _uiState,
+                    MainState.SuccessCategory(data.items)
+                )
+                is MainInteractor.MainData.Advertising -> emit(
+                    _uiState,
+                    MainState.SuccessAdvertising(data.items)
+                )
+            }
+        }, {
+            emit(_uiState, MainState.Error(it))
+        })
     }
 }

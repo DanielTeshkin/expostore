@@ -26,6 +26,11 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
     private var _binding: Binding? = null
     protected val binding get() = _binding!!
 
+    /**
+     * Первый раз ли вызывается onResume
+     */
+    private var isFirstResume: Boolean = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +53,21 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!isFirstResume){
+            onRestart()
+        }
+        isFirstResume = false
+    }
+
+    /**
+     * Метод вызывающийся при перезапуске фрагмента
+     */
+    open fun onRestart() {
+        /* no-op */
     }
 
     override fun onDestroy() {

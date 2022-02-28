@@ -30,7 +30,7 @@ class DetailCategoryFragment :
 
     private lateinit var detailCategoryViewModel: DetailCategoryViewModel
     private lateinit var mAdapter: DetailCategoryRecyclerViewAdapter
-    lateinit var info: Category
+    //lateinit var info: Category
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +40,16 @@ class DetailCategoryFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (context as AppCompatActivity).bottomNavigationView.visibility = View.VISIBLE
 
-        info = arguments?.getSerializable("category") as Category
-        binding.tvCategoryName.text = info.name
+        //info = arguments?.getSerializable("category") as Category
+        //binding.tvCategoryName.text = info.name
 
-        mAdapter = DetailCategoryRecyclerViewAdapter(info.products, requireContext())
-        binding.rvDetailProduct.apply {
+        //mAdapter = DetailCategoryRecyclerViewAdapter(info.products, requireContext())
+/*        binding.rvDetailProduct.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mAdapter
         }
         mAdapter.onClick = onLikeClick()
-        mAdapter.notifyDataSetChanged()
+        mAdapter.notifyDataSetChanged()*/
     }
 
     private fun onLikeClick(): OnClickRecyclerViewListener {
