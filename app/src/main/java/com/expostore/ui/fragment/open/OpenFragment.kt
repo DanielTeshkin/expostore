@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.expostore.MainActivity
 import com.expostore.R
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.OpenFragmentBinding
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.fragment.main.MainFragmentDirections
 
 class OpenFragment : BaseFragment<OpenFragmentBinding>(OpenFragmentBinding::inflate) {
 
@@ -18,6 +20,10 @@ class OpenFragment : BaseFragment<OpenFragmentBinding>(OpenFragmentBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         openViewModel = ViewModelProvider(this).get(OpenViewModel::class.java)
+
+        if(!AppPreferences.getSharedPreferences(requireContext()).getString("token", "").isNullOrEmpty()) {
+            navigateSafety(OpenFragmentDirections.actionOpenFragmentToMainFragment())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

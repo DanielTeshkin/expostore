@@ -9,16 +9,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.CategoryProductImage
+import com.expostore.api.pojo.getcategory.ImageResponseData
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_product_image_item.view.*
 
 class ProductImageRecyclerViewAdapter(
-        private val context: Context,
-        private val images: ArrayList<CategoryProductImage>,
-        private val id: String?,
-        private val like: Boolean?,
-        private val onClick: OnClickRecyclerViewListener?) :RecyclerView.Adapter<ProductImageRecyclerViewAdapter.ProductImagesViewHolder>() {
+    private val context: Context,
+    private val images: ArrayList<ImageResponseData>,
+    private val id: String?,
+    private val like: Boolean?,
+    private val onClick: OnClickRecyclerViewListener?) :RecyclerView.Adapter<ProductImageRecyclerViewAdapter.ProductImagesViewHolder>() {
 
     private var dots: Dots = Dots()
 

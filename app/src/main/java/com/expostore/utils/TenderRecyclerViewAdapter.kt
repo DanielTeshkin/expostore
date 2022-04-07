@@ -31,11 +31,11 @@ class TenderRecyclerViewAdapter(private var tenders: ArrayList<Tender>) : Recycl
     override fun getItemCount(): Int = tenders.size
 
     inner class TenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.tv_search_product_name
+/*        var name: TextView = itemView.tv_search_product_name
         var price: TextView = itemView.tv_search_product_price
         var rvImages: RecyclerView = itemView.rv_search_product_images
         var description: TextView = itemView.tv_search_product_description
-        var address: TextView = itemView.tv_search_product_address
+        var address: TextView = itemView.tv_search_product_address*/
 
 //        var count: TextView = itemView.tv_tender_count
 //        var location: TextView = itemView.tv_tender_location
@@ -44,10 +44,10 @@ class TenderRecyclerViewAdapter(private var tenders: ArrayList<Tender>) : Recycl
     override fun onBindViewHolder(holder: TenderViewHolder, position: Int) {
         val tender = tenders[position]
 
-        holder.name.text = tender.title
+/*        holder.name.text = tender.title
         holder.price.text = tender.priceUpTo
         holder.description.text = tender.description
-        holder.address.text = tender.title
+        holder.address.text = tender.title*/
 
         //holder.count.text = "Не вводит пользователь"
         //holder.location.text = tender.location
@@ -56,7 +56,7 @@ class TenderRecyclerViewAdapter(private var tenders: ArrayList<Tender>) : Recycl
 //            onClick!!.onDetailCategoryProductItemClick(product.id)
 //        }
 
-        val childLayoutManager = LinearLayoutManager(
+       /* val childLayoutManager = LinearLayoutManager(
             holder.rvImages.context,
             RecyclerView.HORIZONTAL,
             false
@@ -72,7 +72,7 @@ class TenderRecyclerViewAdapter(private var tenders: ArrayList<Tender>) : Recycl
                 adapter = ProductImageRecyclerViewAdapter(context, tender.images, null, null, null)
                 setRecycledViewPool(viewPool)
             }
-        }
+        }*/
     }
 
 }

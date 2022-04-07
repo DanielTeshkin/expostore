@@ -1,24 +1,23 @@
 package com.expostore.model.category
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getcategory.Category
+import com.expostore.api.response.CategoryResponse
+import com.expostore.model.product.ProductModel
+import com.expostore.model.product.toModel
 import kotlinx.android.parcel.Parcelize
 
-/**
- * @author Fedotov Yakov
- */
 @Parcelize
 data class CategoryModel(
-    val id: String = "",
-    val name: String = "",
-    val products: List<CategoryProductModel> = emptyList(),
-    val count: Int?
+    val name: String,
+    val count: Int,
+    val id: String,
+    val products: List<ProductModel>
 ): Parcelable
 
-val Category.toModel: CategoryModel
+val CategoryResponse.toModel: CategoryModel
     get() = CategoryModel(
-        id ?: "",
         name ?: "",
-        products.orEmpty().map { it.toModel },
-        count ?: 0
+        count ?: 0,
+        id ?: "",
+        products.orEmpty().map { it.toModel }
     )

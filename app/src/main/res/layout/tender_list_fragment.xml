@@ -90,7 +90,7 @@
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="16dp"
 
-                android:hint="@string/search_et_hint"
+                android:hint="@string/search_fragment_search"
                 android:inputType="text"
 
                 android:maxLines="1"

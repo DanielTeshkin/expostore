@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
 import com.expostore.api.pojo.getcategory.CategoryProduct
-import com.expostore.api.pojo.getcategory.CategoryProductImage
 import kotlinx.android.synthetic.main.detail_product_item.view.*
 import kotlin.collections.ArrayList
 

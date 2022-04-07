@@ -72,7 +72,7 @@
             android:paddingTop="0dp"
             android:paddingEnd="16dp"
             android:paddingBottom="0dp"
-            android:text="89106625728"
+            android:text="89279332890"
             android:textColorHint="#8C162344" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +106,7 @@
             android:paddingTop="0dp"
             android:paddingEnd="16dp"
             android:paddingBottom="0dp"
-            android:text="Qwerty123"
+            android:text="password"
             android:textColorHint="#8C162344" />
 
     </com.google.android.material.textfield.TextInputLayout>

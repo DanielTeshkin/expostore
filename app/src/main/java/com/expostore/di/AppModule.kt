@@ -12,7 +12,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -33,14 +32,12 @@ object AppModule {
 
     // TODO: поменять context на репозиторий, когда будет бд
     @Provides
-    fun provideHttpClient(@ApplicationContext context: Context): OkHttpClient =
+    fun provideHttpClient(@ApplicationContext context: Context, interceptor: Interceptor): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .addInterceptor(Interceptor(context))
+            .addInterceptor(interceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build()
 
     @Singleton
@@ -50,6 +47,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApiWorker(serverApi: ServerApi): ApiWorker =
-        ApiWorkerImpl(serverApi)
+    fun provideApiWorker(serverApi: ServerApi, @ApplicationContext context: Context): ApiWorker =
+        ApiWorkerImpl(serverApi, context)
+
+    @Singleton
+    @Provides
+    fun provideContext(@ApplicationContext context: Context): Context = context
 }

@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
 
-    private lateinit var navController: NavController
+    //private lateinit var navController: NavController
     lateinit var serverApi: ServerApi
     lateinit var request: SignInRequestData
     lateinit var context: Context

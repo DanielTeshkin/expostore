@@ -2,6 +2,7 @@ package com.expostore.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import com.expostore.ui.state.ResponseState
 import kotlinx.coroutines.flow.*
@@ -17,9 +18,19 @@ abstract class BaseViewModel : ViewModel() {
 
     private var isStarted: Boolean = false
 
+    lateinit var navController: NavController
+
     protected abstract fun onStart()
 
     fun start() {
+        if (!isStarted) {
+            isStarted = true
+            onStart()
+        }
+    }
+
+    fun start(navController: NavController) {
+        this.navController = navController
         if (!isStarted) {
             isStarted = true
             onStart()

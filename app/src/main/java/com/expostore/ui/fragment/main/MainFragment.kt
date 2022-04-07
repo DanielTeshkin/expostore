@@ -4,11 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.expostore.R
-import com.expostore.api.pojo.getcategory.Category
-import com.expostore.data.AppPreferences
 import com.expostore.databinding.MainFragmentBinding
 import com.expostore.extension.load
 import com.expostore.model.category.CategoryAdvertisingModel
@@ -16,7 +11,6 @@ import com.expostore.model.category.CategoryModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.main.adapter.CategoriesAdapter
 import com.expostore.ui.state.MainState
-import com.expostore.utils.OnClickRecyclerViewListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,7 +40,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         }
 
         viewModel.apply {
-            subscibe(uiState) { handleState(it) }
+            subscribe(uiState) { handleState(it) }
             start()
         }
     }
@@ -78,7 +72,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         }
     }
 
-    private fun handleLoading(loading: Boolean) {
+    private fun handleLoading(isLoading: Boolean) {
         // TODO: сделать отображение загрузки
     }
 

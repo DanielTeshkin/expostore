@@ -1,21 +1,18 @@
 package com.expostore.model.category
 
-import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
+import com.expostore.api.response.CategoryAdvertisingResponse
 
-/**
- * @author Fedotov Yakov
- */
 data class CategoryAdvertisingModel(
-    val id: String = "",
-    val image: String = "",
-    val url: String = "",
-    val dateCreated: String = ""
+	val image: String,
+	val dateCreated: String,
+	val id: String,
+	val url: String
 )
 
-val CategoryAdvertising.toModel: CategoryAdvertisingModel
-    get() = CategoryAdvertisingModel(
-        id ?: "",
-        image ?: "",
-        url ?: "",
-        dateCreated ?: ""
-    )
+val CategoryAdvertisingResponse.toModel: CategoryAdvertisingModel
+	get() = CategoryAdvertisingModel(
+		image ?: "",
+		dateCreated ?: "",
+		id ?: "",
+		url ?: ""
+	)

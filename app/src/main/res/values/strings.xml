@@ -3,11 +3,10 @@
     <string name="main_app_name">Expostore</string>
     <string name="main_btn_sign_in_text">Войти в аккаунт</string>
     <string name="main_btn_sign_up_text">Зарегистрироваться</string>
-    <string name="MAPS_API_KEY">AIzaSyCzDPHyE76_AWkBuWhelCl8OHWOMhUgeJg</string>
+    <string name="MAPS_API_KEY">AIzaSyCrhv3ZZIrDjWkS95nQIg1KHQQGU_MUz4k</string>
 
 
-
-
+    <!-- Login Fragment -->
     <string name="login_title_text">Вход в аккаунт</string>
     <string name="login_subtitle_text">Чтобы войти в Ваш аккаунт, введите пароль.</string>
     <string name="login_et_number_hint">Номер телефона</string>
@@ -63,6 +62,30 @@
     <string name="confirm_code_btn_resend_code_text">Отправить код повторно (доступно через %1$d сек.)</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="completion_et_patronymic_hint">Отчество</string>
-    <string name="search_et_hint">Поиск</string>
     <string name="favorites_tv_title_text">Избранное</string>
+
+    <!-- Search Fragment -->
+    <string name="search_fragment_filtering_by_novelty">По новизне</string>
+    <string name="search_fragment_search">Поиск</string>
+
+    <!-- Search Filter Fragment -->
+    <string name="search_filter_fragment_in_stock">В наличии</string>
+    <string name="search_filter_fragment_production">Производство</string>
+    <string name="search_filter_fragment_one_day">От 1 дня</string>
+    <string name="search_filter_fragment_five_day">До 5 дней</string>
+    <string name="search_filter_fragment_delivery">Доставка</string>
+    <string name="search_filter_fragment_size">Размер</string>
+    <string name="search_filter_fragment_width">Длина</string>
+    <string name="search_filter_fragment_height">Ширина</string>
+    <string name="search_filter_fragment_material">Материал</string>
+    <string name="search_filter_fragment_color">Цвет</string>
+    <string name="search_filter_fragment_not_selected">Не выбран</string>
+    <string name="search_filter_fragment_select_on_map">Выбор на карте</string>
+    <string name="search_filter_fragment_apply_a_filter">Применить фильтры</string>
+    <string name="search_filter_fragment_save">Сохранить поиск</string>
+
+    <!--Api errors-->
+    <string name="api_exception_connection">Не удалось подключиться к интернету</string>
+    <string name="api_exception_timeout">Истекло время ожидания</string>
+    <string name="api_exception_unknown">Неизвестная ошибка</string>
 </resources>

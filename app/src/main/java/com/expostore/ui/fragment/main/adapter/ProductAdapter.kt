@@ -10,13 +10,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.expostore.databinding.CategoryItemBinding
 import com.expostore.databinding.ProductItemBinding
 import com.expostore.extension.load
-import com.expostore.model.category.CategoryProductModel
+import com.expostore.model.product.ProductModel
 
 /**
  * @author Fedotov Yakov
  */
-class ProductAdapter: ListAdapter<CategoryProductModel, ProductAdapter.ProductsViewHolder>(ProductsDiffCallback) {
-    var onItemClicked: ((CategoryProductModel) -> Unit)? = null
+class ProductAdapter: ListAdapter<ProductModel, ProductAdapter.ProductsViewHolder>(ProductsDiffCallback) {
+    var onItemClicked: ((ProductModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
         return ProductsViewHolder(
@@ -42,7 +42,7 @@ class ProductAdapter: ListAdapter<CategoryProductModel, ProductAdapter.ProductsV
             }
         }
 
-        fun bind(item: CategoryProductModel) {
+        fun bind(item: ProductModel) {
             binding.run {
                 productName.text = item.name
                 item.images.firstOrNull()?.file?.let {
@@ -52,11 +52,11 @@ class ProductAdapter: ListAdapter<CategoryProductModel, ProductAdapter.ProductsV
         }
     }
 
-    object ProductsDiffCallback : DiffUtil.ItemCallback<CategoryProductModel>() {
-        override fun areItemsTheSame(oldItem: CategoryProductModel, newItem: CategoryProductModel) =
+    object ProductsDiffCallback : DiffUtil.ItemCallback<ProductModel>() {
+        override fun areItemsTheSame(oldItem: ProductModel, newItem: ProductModel) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: CategoryProductModel, newItem: CategoryProductModel) =
+        override fun areContentsTheSame(oldItem: ProductModel, newItem: ProductModel) =
             oldItem == newItem
     }
 }

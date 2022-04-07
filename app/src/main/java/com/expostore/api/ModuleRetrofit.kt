@@ -22,7 +22,6 @@ object Retrofit {
 
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(logging)
-            .addInterceptor(Interceptor(context))
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()
@@ -33,6 +32,6 @@ object Retrofit {
             .client(httpClient)
             .build()
             .create(ServerApi::class.java)
-        apiWorker = ApiWorkerImpl(api)
+        //apiWorker = ApiWorkerImpl(api)
     }
 }

@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::inflate) {
 
+    override var isBottomNavViewVisible = false
+
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +27,8 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
         super.onViewCreated(view, savedInstanceState)
 
         loginViewModel.apply {
-            subscibe(navigation) { navigateSafety(it) }
-            subscibe(uiState) { handleState(it) }
+            subscribe(navigation) { navigateSafety(it) }
+            subscribe(uiState) { handleState(it) }
         }
 
         binding.btnSignInNext.setOnClickListener {
@@ -63,6 +65,7 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
 
     private fun handleItem(item: SignInResponseDataModel) {
         AppPreferences.getSharedPreferences(requireContext()).edit().putString("token", item.access)
+            .putString("refresh", item.refresh)
             .apply()
     }
 

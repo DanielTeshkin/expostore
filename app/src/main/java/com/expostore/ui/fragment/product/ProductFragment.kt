@@ -12,9 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.expostore.api.Retrofit
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.getcategory.CategoryProductImage
+import com.expostore.api.pojo.getcategory.ImageResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.ProductFragmentBinding
@@ -26,9 +24,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBinding::inflate),
@@ -186,9 +181,9 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
         snapHelper.attachToRecyclerView(binding.rvProductImages)
 
         if (info.images == null) info.images = arrayListOf(
-            CategoryProductImage(null, null),
-            CategoryProductImage(null, null),
-            CategoryProductImage(null, null)
+            ImageResponseData(null, null),
+            ImageResponseData(null, null),
+            ImageResponseData(null, null)
         )
 
         binding.rvProductImages.apply {

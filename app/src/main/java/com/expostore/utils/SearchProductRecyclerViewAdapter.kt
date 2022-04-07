@@ -32,17 +32,17 @@ class SearchProductRecyclerViewAdapter(private val products: ArrayList<Product>?
     override fun getItemCount(): Int = products!!.size
 
     inner class SearchProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.tv_search_product_name
+/*        var name: TextView = itemView.tv_search_product_name
         var price: TextView = itemView.tv_search_product_price
         var rvImages: RecyclerView = itemView.rv_search_product_images
         var description: TextView = itemView.tv_search_product_description
-        var address: TextView = itemView.tv_search_product_address
+        var address: TextView = itemView.tv_search_product_address*/
     }
 
     override fun onBindViewHolder(holder: SearchProductViewHolder, position: Int) {
         val product = products!![position]
 
-        holder.name.text = product.name
+      /*  holder.name.text = product.name
         holder.price.text = product.price
         holder.description.text = product.name
         holder.address.text = product.name
@@ -67,7 +67,7 @@ class SearchProductRecyclerViewAdapter(private val products: ArrayList<Product>?
                 adapter = ProductImageRecyclerViewAdapter(context, product.images, product.id, product.like, onClick!!)
                 setRecycledViewPool(viewPool)
             }
-        }
+        }*/
     }
 }
 

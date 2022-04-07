@@ -1,5 +1,6 @@
 package com.expostore.api
 
+import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
@@ -16,7 +17,9 @@ import com.expostore.api.pojo.getchats.Chat
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getlistproduct.GetListProductResponseData
+import com.expostore.api.pojo.getlistproduct.Product
 import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
@@ -28,6 +31,11 @@ import com.expostore.api.pojo.signin.SignInRequestData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
+import com.expostore.api.request.RefreshTokenRequest
+import com.expostore.api.response.CategoryAdvertisingResponse
+import com.expostore.api.response.CategoryCharacteristicResponse
+import com.expostore.api.response.CategoryResponse
+import com.expostore.api.response.ProductResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -36,6 +44,9 @@ interface ServerApi {
 
     @POST("/api/sign-in/")
     suspend fun authorization(@Body request: SignInRequestData): Response<SignInResponseData>
+
+    @POST("/api/token/refresh/")
+    suspend fun refresh(@Body refresh: RefreshTokenRequest): Response<SignInResponseData>
 
     @POST("/api/confirm/create/")
     suspend fun confirmNumber(@Body request: ConfirmNumberRequestData): Response<ConfirmNumberResponseData>
@@ -49,14 +60,17 @@ interface ServerApi {
     @GET("/api/cities/")
     suspend fun getCities(): Response<List<City>>
 
+    @GET("/api/profile/")
+    suspend fun getProfile(): Response<GetProfileResponseData>
+
     @PUT("/api/profile/")
     suspend fun editProfile(@Body request: EditProfileRequestData): Response<EditProfileResponseData>
 
     @GET("/api/selection/product/")
-    suspend fun getCategories(): Response<List<Category>>
+    suspend fun getCategories(): Response<List<CategoryResponse>>
 
     @GET("/api/advertising/selection/")
-    suspend fun getCategoryAdvertising(): Response<List<CategoryAdvertising>>
+    suspend fun getCategoryAdvertising(): Response<List<CategoryAdvertisingResponse>>
 
     //TODO изменить
     @POST("/api/product/{id}/elected/select/")
@@ -74,6 +88,9 @@ interface ServerApi {
     @GET("/api/product/category/")
     suspend fun getProductCategory(): Response<List<ProductCategory>>
 
+    @GET("/api/product/category/{id}")
+    suspend fun getCategoryCharacteristic(@Path("id") id: String): Response<List<CategoryCharacteristicResponse>>
+
     @GET("/api/tender/")
     suspend fun getTenders(): Response<List<Tender>>
 
@@ -87,7 +104,7 @@ interface ServerApi {
     suspend fun addReview(@Path("id") id: String, @Body requestData: AddReviewRequestData): Response<AddReviewResponseData>
 
     @GET("/api/product/")
-    suspend fun getListProduct(): Response<GetListProductResponseData>
+    suspend fun getListProduct(@Query("page") page: Int?, @Query("q") query: String?): Response<BaseListResponse<ProductResponse>>
 
     @GET("/api/chat/")
     suspend fun getChats(): Response<List<Chat>>

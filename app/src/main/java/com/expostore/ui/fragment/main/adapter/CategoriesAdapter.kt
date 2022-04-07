@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.CategoryItemBinding
 import com.expostore.model.category.CategoryModel
-import com.expostore.model.category.CategoryProductModel
+import com.expostore.model.product.ProductModel
 
 /**
  * @author Fedotov Yakov
  */
 class CategoriesAdapter :
-    ListAdapter<CategoryModel, CategoriesAdapter.CategoryViewHolder>(CategoriesDiffCallback) {
+    ListAdapter<CategoryModel, CategoriesAdapter.CategoryViewHolder>(CATEGORIES_DIFF_UTIL) {
     var onCategoryClickListener: ((CategoryModel) -> Unit)? = null
-    var onProductClickListener: ((CategoryProductModel) -> Unit)? = null
+    var onProductClickListener: ((ProductModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(
@@ -52,11 +52,13 @@ class CategoriesAdapter :
         }
     }
 
-    object CategoriesDiffCallback : DiffUtil.ItemCallback<CategoryModel>() {
-        override fun areItemsTheSame(oldItem: CategoryModel, newItem: CategoryModel) =
-            oldItem.id == newItem.id
+    companion object {
+        private val CATEGORIES_DIFF_UTIL = object : DiffUtil.ItemCallback<CategoryModel>() {
+            override fun areItemsTheSame(oldItem: CategoryModel, newItem: CategoryModel) =
+                oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: CategoryModel, newItem: CategoryModel) =
-            oldItem == newItem
+            override fun areContentsTheSame(oldItem: CategoryModel, newItem: CategoryModel) =
+                oldItem == newItem
+        }
     }
 }

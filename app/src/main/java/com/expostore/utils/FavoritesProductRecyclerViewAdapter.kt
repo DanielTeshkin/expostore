@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.CategoryProductImage
+import com.expostore.api.pojo.getcategory.ImageResponseData
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import kotlinx.android.synthetic.main.detail_product_item.view.*
 
@@ -61,9 +61,9 @@ class FavoritesProductRecyclerViewAdapter(private val products: ArrayList<GetFav
         }
 
         val testImages = arrayListOf(
-            CategoryProductImage(null,null),
-            CategoryProductImage(null,null),
-            CategoryProductImage(null,null)
+            ImageResponseData(null,null),
+            ImageResponseData(null,null),
+            ImageResponseData(null,null)
         )
 
         val snapHelper = PagerSnapHelper() // Or PagerSnapHelper
