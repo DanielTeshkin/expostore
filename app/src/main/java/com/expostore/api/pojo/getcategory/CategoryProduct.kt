@@ -1,14 +1,15 @@
 package com.expostore.api.pojo.getcategory
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.io.Serializable
+
+import com.google.gson.annotations.SerializedName
+
 
 data class CategoryProduct(
-    @JsonProperty("id") val id: String?,
-    @JsonProperty("name") val name: String?,
-    @JsonProperty("images") var images: ArrayList<ImageResponseData>?,
-    @JsonProperty("price") val price: String?,
-    @JsonProperty("rating") val rating: String?,
-    @JsonProperty("promotion") val promotion: String?,
-    @JsonProperty("is_liked") val like: Boolean?
-): Serializable
+    @SerializedName("id") val id: String?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("images") var images: ArrayList<ImageResponseData>?,
+    @SerializedName("price") val price: String?,
+    @SerializedName("rating") val rating: String?,
+    @SerializedName("promotion") val promotion: String?,
+    @SerializedName("is_liked") val like: Boolean?
+)

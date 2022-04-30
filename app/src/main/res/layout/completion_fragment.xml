@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:onClick="@{completionVM::navigateBack}"
+
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -76,7 +76,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={completionVM.surname}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -109,7 +109,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={completionVM.name}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -142,7 +142,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={completionVM.patronymic}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -176,7 +176,6 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={completionVM.city}"
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -208,7 +207,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={completionVM.email}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor" />
 
@@ -222,7 +221,7 @@
             android:layout_marginTop="15dp"
             android:backgroundTint="@drawable/selector_blue_button"
             android:letterSpacing="0.01"
-            android:onClick="@{completionVM::editProfile}"
+
             android:text="@string/login_btn_sign_in_next_text"
             android:textAllCaps="false"
             android:textColor="@color/white"

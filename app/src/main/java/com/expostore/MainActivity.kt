@@ -1,6 +1,7 @@
 package com.expostore
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
@@ -32,12 +33,20 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.chatFragment) {
 
-    }
+                binding.bottomNavigationView.visibility = View.GONE
+            } else {
 
-    fun setVisibleBottomNavView(isVisible: Boolean) {
-        if(binding.bottomNavigationView.isVisible != isVisible) {
-            binding.bottomNavigationView.isVisible = isVisible
+               binding.bottomNavigationView.visibility = View.VISIBLE
+            }
         }
     }
+
+   // fun setVisibleBottomNavView(isVisible: Boolean) {
+      //  if(binding.bottomNavigationView.isVisible != isVisible) {
+       //     binding.bottomNavigationView.isVisible = isVisible
+       // }
+   // }
 }

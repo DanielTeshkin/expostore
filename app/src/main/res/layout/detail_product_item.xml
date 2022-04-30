@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:clipToPadding="false"
+        android:orientation="horizontal"
         android:overScrollMode="never"
         android:paddingStart="10dp"
         android:paddingEnd="20dp"
@@ -33,58 +34,53 @@
         android:id="@+id/ll_detail_product_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_detail_product_images">
 
         <TextView
-            android:id="@+id/tv_detail_product_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            style="@style/BoldTextView"
-            android:layout_weight="1"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            tools:hint="Диван кровать еврокнижка, Вегас"/>
-
-        <TextView
             android:id="@+id/tv_detail_product_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:textSize="16sp"
-            android:textColor="@color/blue"
-            tools:hint="25 000руб"/>
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:hint="25 000руб" />
+
+        <TextView
+            android:id="@+id/tv_detail_product_name"
+            style="@style/BoldTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            tools:hint="Диван кровать еврокнижка, Вегас" />
+
+        <TextView
+            android:id="@+id/tv_detail_product_note_title"
+            style="@style/BoldTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+
+            android:text="Моя заметка"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_detail_product_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            tools:hint="Здесь отображается заметка, написанная к товару, при наличии таковой" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_detail_product_note_title"
-        style="@style/BoldTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:text="Моя заметка"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_detail_product_info" />
-
-    <TextView
-        android:id="@+id/tv_detail_product_note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        tools:hint="Здесь отображается заметка, написанная к товару, при наличии таковой"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_detail_product_note_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

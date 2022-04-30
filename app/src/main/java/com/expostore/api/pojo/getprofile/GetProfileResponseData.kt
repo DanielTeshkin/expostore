@@ -5,10 +5,10 @@ import com.expostore.api.response.ImageResponse
 import com.google.gson.annotations.SerializedName
 
 data class GetProfileResponseData(
-	@field:SerializedName("shop")
+	@SerializedName("shop")
 	val shop: Shop? = null,
 
-	@field:SerializedName("city")
+	@SerializedName("city")
 	val city: Int? = null,
 
 	@field:SerializedName("last_name")

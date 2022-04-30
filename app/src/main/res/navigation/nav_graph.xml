@@ -14,7 +14,7 @@
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"
-            app:destination="@id/loginFragment"/>
+            app:destination="@id/openFragment"/>
         <action
             android:id="@+id/action_splashFragment_to_mainFragment"
             app:popUpTo="@id/nav_graph"
@@ -95,6 +95,9 @@
         <action
             android:id="@+id/action_numberFragment_to_webViewFragment"
             app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_numberFragment_to_openFragment"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmNumberFragment"
@@ -104,6 +107,12 @@
         <action
             android:id="@+id/action_confirmNumberFragment_to_createPasswordFragment"
             app:destination="@id/createPasswordFragment" />
+        <argument android:name="phone"
+            app:argType="string"
+            android:defaultValue='""' />
+        <action
+            android:id="@+id/action_confirmNumberFragment_to_numberFragment"
+            app:destination="@id/numberFragment" />
     </fragment>
     <fragment
         android:id="@+id/createPasswordFragment"
@@ -113,6 +122,12 @@
         <action
             android:id="@+id/action_createPasswordFragment_to_completionFragment"
             app:destination="@id/completionFragment" />
+        <argument android:name="phone"
+            app:argType="string"
+            android:defaultValue='""' />
+        <action
+            android:id="@+id/action_createPasswordFragment_to_confirmNumberFragment"
+            app:destination="@id/confirmNumberFragment" />
     </fragment>
     <fragment
         android:id="@+id/completionFragment"
@@ -122,6 +137,9 @@
         <action
             android:id="@+id/action_completionFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_completionFragment_to_createPasswordFragment"
+            app:destination="@id/createPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordRecoveryFragment"
@@ -148,10 +166,14 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.expostore.ui.fragment.profile.ProfileFragment"
-        android:label="ProfileFragment" >
+        android:label="ProfileFragment"
+        tools:layout="@layout/profile_fragment">
         <action
             android:id="@+id/action_profileFragment_to_myProductsFragment"
             app:destination="@id/myProductsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_EditProfileFragment"
+            app:destination="@id/EditProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -236,13 +258,35 @@
         tools:layout="@layout/chats_fragment" >
         <action
             android:id="@+id/action_chatsFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/chatFragment" >
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.expostore.ui.fragment.chats.chat.ChatFragment"
         android:label="chat_fragment"
-        tools:layout="@layout/chat_fragment" />
+        tools:layout="@layout/chat_fragment" >
+
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="id_data"
+            app:argType="string[]" />
+        <argument
+            android:name="id_images"
+            app:argType="string[]" />
+        <argument
+            android:name="product_names"
+            app:argType="string[]" />
+        <argument
+            android:name="id_author"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/myProductsFragment"
         android:name="com.expostore.ui.fragment.product.myproducts.MyProductsFragment"
@@ -270,4 +314,13 @@
         android:id="@+id/searchFilterFragment"
         android:name="com.expostore.ui.fragment.search.filter.SearchFilterFragment"
         android:label="SearchFilterFragment" />
+    <fragment
+        android:id="@+id/EditProfileFragment"
+        android:name="com.expostore.ui.fragment.profile.profile_edit.EditProfileFragment"
+        android:label="edit_profile_fragment"
+        tools:layout="@layout/edit_profile_fragment">
+        <action
+            android:id="@+id/action_EditProfileFragment_self"
+            app:destination="@id/EditProfileFragment" />
+    </fragment>
 </navigation>

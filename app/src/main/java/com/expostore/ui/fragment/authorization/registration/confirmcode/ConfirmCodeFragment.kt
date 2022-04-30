@@ -4,50 +4,54 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.expostore.MainActivity
 import com.expostore.R
+import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.databinding.ConfirmCodeFragmentBinding
 import com.expostore.ui.base.BaseFragment
-
+import com.expostore.ui.state.ResponseState
+import dagger.hilt.android.AndroidEntryPoint
+/**
+ * @author Teshkin Daniel
+ */
+@AndroidEntryPoint
 class ConfirmCodeFragment : BaseFragment<ConfirmCodeFragmentBinding>(ConfirmCodeFragmentBinding::inflate) {
 
-    private lateinit var confirmCodeViewModel: ConfirmCodeViewModel
-    var number: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        confirmCodeViewModel = ViewModelProvider(this).get(ConfirmCodeViewModel::class.java)
-    }
-
+    private  val confirmCodeViewModel: ConfirmCodeViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.btnSignInNext.setOnClickListener {
-            confirmCodeViewModel.confirmCode(it, binding.etNumber.text.toString())
+         val phone=ConfirmCodeFragmentArgs.fromBundle(requireArguments()).phone
+        binding.subtitle.text = getString(R.string.confirm_number_subtitle_text, phone)
+        binding.imageButton.setOnClickListener {
+            confirmCodeViewModel.back()
         }
+        binding.btnSignInNext.setOnClickListener {
+            confirmCodeViewModel.confirmCode(phone,binding.etNumber.text.toString())
+            confirmCodeViewModel.apply {
+                singleSubscribe(navigation) { navigateSafety(it) }
+                singleSubscribe(state){handleResult(it)}
+            }
+        }
+    }
 
-        confirmCodeViewModel.phoneInput = arguments?.getString("numberInput")
-        confirmCodeViewModel.context = requireContext()
+    private fun handleResult(state: ResponseState<ConfirmCodeResponseData>) {
+        when(state){
+            is ResponseState.Loading -> Log.i("time","жди")
+            is ResponseState.Error -> handleError(state.throwable)
+        }
+    }
 
-        confirmCodeViewModel.timer.start()
-
-        //Отключение нижней навигации для фрагмента
-        (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
-
-        // Подключение наблюдателя текста
-        binding.btnSignInNext.isEnabled = false
-        binding.etNumber.addTextChangedListener(codeTextWatcher)
-
-        confirmCodeViewModel.btnResendCode = binding.btnResendCode
-
-        //Добавление сохраненного номера в подзаголовок
-        number = arguments?.getString("numberText")
-        if (!number.isNullOrEmpty())
-            binding.subtitle.text = getString(R.string.confirm_number_subtitle_text, number)
+    private fun handleError(throwable:Throwable) {
+        throwable.message?.takeIf { it.isNotEmpty() }?.let {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        }
 
     }
 

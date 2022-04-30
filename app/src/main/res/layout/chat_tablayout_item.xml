@@ -10,18 +10,19 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:src="@drawable/image_background_white"/>
 
     <TextView
         android:id="@+id/text"
+        style="@style/BoldTextView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        style="@style/BoldTextView"
         android:singleLine="true"
-        android:textSize="14sp"
         android:text="Название"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="14sp" />
 
 </LinearLayout>

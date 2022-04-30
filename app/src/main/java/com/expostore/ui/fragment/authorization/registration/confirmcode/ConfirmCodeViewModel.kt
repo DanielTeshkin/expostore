@@ -18,100 +18,46 @@ import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
+import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.authorization.login.LoginFragmentDirections
+import com.expostore.ui.fragment.authorization.registration.completion.CompletionFragmentDirections
+import com.expostore.ui.fragment.authorization.registration.interactor.InteractorRegistration
+import com.expostore.ui.state.ResponseState
 import com.expostore.utils.hideKeyboard
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
+/**
+ * @author Teshkin Daniel
+ */
+@HiltViewModel
+class ConfirmCodeViewModel @Inject constructor(private val registration: InteractorRegistration) : BaseViewModel() {
+    private val _state=MutableSharedFlow<ResponseState<ConfirmCodeResponseData>>()
+       var state=_state.asSharedFlow()
 
-@SuppressLint("StaticFieldLeak")
-class ConfirmCodeViewModel : ViewModel() {
 
-    private lateinit var serverApi: ServerApi
-    private lateinit var navController: NavController
-    lateinit var context: Context
-    var btnResendCode: TextView? = null
-    var phoneInput: String? = null
-    var code: String = ""
-    val bundle = Bundle()
+    fun confirmCode(phone:String,code:String){
+        registration.confirmCode(phone,code).handleResult(_state,{
+            navigationTo(ConfirmCodeFragmentDirections.actionConfirmNumberFragmentToCreatePasswordFragment(phone))
+        })
 
-    val timer = object : CountDownTimer(60000, 1000) {
-        override fun onTick(millisUntilFinished: Long) {
-            btnResendCode!!.text = context.getString(R.string.confirm_code_btn_resend_code_text, millisUntilFinished / 1000)
-            btnResendCode!!.isClickable = false
-        }
-
-        override fun onFinish() {
-            btnResendCode!!.text = context.getString(R.string.confirm_code_btn_resend_code_title)
-            btnResendCode!!.isClickable = true
-        }
+    }
+    fun back(){
+        navigationTo(ConfirmCodeFragmentDirections.actionConfirmNumberFragmentToNumberFragment())
     }
 
-    fun confirmCode(view: View, code: String){
-        val request = ConfirmCodeRequestData(phoneInput, code)
-        /*serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-        serverApi.confirmCode(request).enqueue(object : Callback<ConfirmCodeResponseData> {
-
-            override fun onFailure(call: Call<ConfirmCodeResponseData>, t: Throwable) {
-                Toast.makeText(context, context.getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call<ConfirmCodeResponseData>, response: Response<ConfirmCodeResponseData>) {
-                try {
-                    if (response.isSuccessful) {
-                        if (response.body() != null) {
-                            if (response.body()!!.message != null) {
-                                view.hideKeyboard()
-                                bundle.putString("phoneInput",phoneInput)
-                                navController = Navigation.findNavController(view)
-                                navController.navigate(R.id.action_confirmNumberFragment_to_createPasswordFragment, bundle)
-                            }
-                        }
-                    } else {
-                        if (response.errorBody() != null) {
-                            val jObjError = JSONObject(response.errorBody()!!.string())
-                            val message = jObjError.getString("message")
-
-                            if (message.isNotEmpty())
-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                catch (e: Exception){
-                    Log.d("RESPONSE", e.toString())
-                }
-            }
-        })*/
-    }
-
-    fun confirmNumber(view: View) {
-        val request = ConfirmNumberRequestData(phoneInput)
-        /*serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-        serverApi.confirmNumber(request).enqueue(object : Callback<ConfirmNumberResponseData> {
-            override fun onFailure(call: Call<ConfirmNumberResponseData>, t: Throwable) {
-                Toast.makeText(context, context.getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-            }
-            override fun onResponse(call: Call<ConfirmNumberResponseData>, response: Response<ConfirmNumberResponseData>) {
-                try {
-                    if (response.isSuccessful) {
-                        if (response.body() != null) {
-                            if (response.body()!!.phone != null) {
-                                view.hideKeyboard()
-                                timer.start()
-                            }
-                        }
-                    }
-                }
-                catch (e: Exception){
-                    Log.d("RESPONSE", e.toString())
-                }
-            }
-        })*/
-    }
-
-    fun navigateBack(view: View){
-        navController = Navigation.findNavController(view)
-        navController.popBackStack()
+    override fun onStart() {
+        TODO("Not yet implemented")
     }
 }
+
+
+
+
+

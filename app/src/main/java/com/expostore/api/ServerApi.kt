@@ -11,13 +11,12 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getcategory.Category
-import com.expostore.api.pojo.getcategoryadvertising.CategoryAdvertising
-import com.expostore.api.pojo.getchats.Chat
+import com.expostore.api.pojo.getchats.ResponseMainChat
+import com.expostore.api.pojo.getchats.ItemChatResponse
+import com.expostore.api.pojo.getchats.MessageRequest
+
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
-import com.expostore.api.pojo.getlistproduct.GetListProductResponseData
-import com.expostore.api.pojo.getlistproduct.Product
 import com.expostore.api.pojo.getproduct.ProductResponseData
 import com.expostore.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
@@ -36,7 +35,6 @@ import com.expostore.api.response.CategoryAdvertisingResponse
 import com.expostore.api.response.CategoryCharacteristicResponse
 import com.expostore.api.response.CategoryResponse
 import com.expostore.api.response.ProductResponse
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -56,6 +54,13 @@ interface ServerApi {
 
     @POST("/api/sign-up/")
     suspend fun registration(@Body request: SignUpRequestData): Response<SignUpResponseData>
+
+   // @POST("/api/chat/create/")
+  //  suspend fun chatCreate(@Body request:ChatM,@Path("id") id: String):Response<Chat>
+
+
+    @POST("/api/chat/item/{id}/message/create/")
+    suspend fun messageCreate(@Body request: MessageRequest, @Path("id") id: String):Response<MessageRequest>
 
     @GET("/api/cities/")
     suspend fun getCities(): Response<List<City>>
@@ -83,7 +88,7 @@ interface ServerApi {
     suspend fun createTender(@Body requestData: CreateTenderRequestData): Response<CreateTenderResponseData>
 
     @POST("/api/image/save/")
-    suspend fun saveImage(@Body request: SaveImageRequestData): Response<SaveImageResponseData>
+    suspend fun saveImage(@Body request: SaveImageRequestData): Response< SaveImageResponseData>
 
     @GET("/api/product/category/")
     suspend fun getProductCategory(): Response<List<ProductCategory>>
@@ -107,9 +112,18 @@ interface ServerApi {
     suspend fun getListProduct(@Query("page") page: Int?, @Query("q") query: String?): Response<BaseListResponse<ProductResponse>>
 
     @GET("/api/chat/")
-    suspend fun getChats(): Response<List<Chat>>
+    suspend fun getChats(): Response<List<ResponseMainChat>>
+
+    @GET("/api/chat/item/{id}")
+    suspend fun getChat(@Path("id") id: String): Response<ItemChatResponse>
 
     @GET("/api/shop/{id}/")
     suspend fun getShop(@Path("id") id: String): Response<GetShopResponseData>
+
+    @DELETE("api/chat/{id}")
+    suspend fun deleteMainChat(@Path("id") id: String):Response<ResponseMainChat>
+
+    @DELETE("api/chat/item/{id}")
+    suspend fun deleteChat(@Path("id") id: String):Response<ItemChatResponse>
 
 }

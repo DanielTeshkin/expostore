@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ImageResponse(
 
-	@field:SerializedName("file")
+	@SerializedName("file")
 	val file: String? = null,
 
-	@field:SerializedName("id")
+	@SerializedName("id")
 	val id: String? = null
 )

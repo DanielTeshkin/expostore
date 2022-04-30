@@ -12,7 +12,10 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getchats.Chat
+import com.expostore.api.pojo.getchats.ResponseMainChat
+import com.expostore.api.pojo.getchats.ItemChatResponse
+import com.expostore.api.pojo.getchats.MessageRequest
+
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
@@ -49,6 +52,8 @@ interface ApiWorker {
 
     suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData>
 
+    suspend fun messageCreate(request:  MessageRequest, id: String):BaseApiResponse<MessageRequest>
+
     suspend fun getCities(): BaseApiResponse<List<City>>
 
     suspend fun getProfile(): BaseApiResponse<GetProfileResponseData>
@@ -66,7 +71,7 @@ interface ApiWorker {
 
     suspend fun createTender(requestData: CreateTenderRequestData): BaseApiResponse<CreateTenderResponseData>
 
-    suspend fun saveImage(request: SaveImageRequestData): BaseApiResponse<SaveImageResponseData>
+    suspend fun saveImage(request: SaveImageRequestData): BaseApiResponse< SaveImageResponseData>
 
     suspend fun getProductCategory(): BaseApiResponse<List<ProductCategory>>
 
@@ -88,8 +93,16 @@ interface ApiWorker {
         query: String? = null
     ): BaseApiResponse<BaseListResponse<ProductResponse>>
 
-    suspend fun getChats(): BaseApiResponse<List<Chat>>
+    suspend fun getChats(): BaseApiResponse<List<ResponseMainChat>>
+
+    suspend fun getChat(id:String): BaseApiResponse<ItemChatResponse>
 
     suspend fun getShop(id: String): BaseApiResponse<GetShopResponseData>
+
+    suspend fun deleteMainChat(id: String):BaseApiResponse<ResponseMainChat>
+
+    suspend fun deleteChat( id: String):BaseApiResponse<ItemChatResponse>
+
+
 
 }

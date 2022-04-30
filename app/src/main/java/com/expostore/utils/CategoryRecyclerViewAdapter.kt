@@ -1,5 +1,7 @@
 package com.expostore.utils
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,21 +9,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
+import com.expostore.api.pojo.getcategory.CategoryProduct
+import com.expostore.api.response.CategoryResponse
+import com.expostore.api.response.ProductResponse
 import com.expostore.model.category.CategoryModel
+import com.expostore.model.product.ProductModel
 import kotlinx.android.synthetic.main.category_item.view.*
 
-class CategoryRecyclerViewAdapter() :
+class CategoryRecyclerViewAdapter(private val product_list:MutableList<CategoryResponse>, val context: Context) :
     RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>() {
 
-    private val viewPool = RecyclerView.RecycledViewPool()
+
 
     var onClick: OnClickRecyclerViewListener? = null
 
-    var list: List<CategoryModel> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
@@ -32,14 +33,25 @@ class CategoryRecyclerViewAdapter() :
 
     override fun getItemViewType(position: Int): Int = position
 
-    override fun getItemCount(): Int = list!!.size
+    override fun getItemCount(): Int = product_list!!.size
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+          fun bind(item:CategoryResponse){
+              val list= ArrayList<ProductResponse>()
+              Log.i("qqq",itemCount.toString())
+             item.products?.map { list.add(it) }
+              itemView.category_name.text=item.name
+              val recyclerView=itemView.category_products
+              val linearLayoutManager=LinearLayoutManager(context,RecyclerView.HORIZONTAL, false)
+              val adapter=ProductRecyclerViewAdapter(list)
+              recyclerView.layoutManager=linearLayoutManager
+              recyclerView.adapter=adapter
+          }
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val category = list[position]
+        holder.bind(product_list[position])
 /*
         if (category.products.isNullOrEmpty()) {
             holder.itemView.visibility = View.GONE

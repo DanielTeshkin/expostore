@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -20,64 +21,48 @@ import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
 import com.expostore.data.AppPreferences
+import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.authorization.registration.confirmcode.ConfirmCodeFragmentDirections
+import com.expostore.ui.fragment.authorization.registration.interactor.InteractorRegistration
+import com.expostore.ui.state.ResponseState
 import com.expostore.utils.hideKeyboard
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
+/**
+ * @author Teshkin Daniel
+ */
+@HiltViewModel
+class CreatePasswordViewModel @Inject constructor(private val registration: InteractorRegistration) : BaseViewModel() {
+     private val _ui= MutableSharedFlow<ResponseState<SignUpResponseData>>()
+    val ui=_ui.asSharedFlow()
+    private val _instance =MutableLiveData<Boolean>()
+    val instance=_instance
 
-@SuppressLint("StaticFieldLeak")
-class CreatePasswordViewModel : ViewModel() {
+    fun signUp(phone: String, password: String) {
+        registration.createPassword(phone,password).handleResult(_ui,{
+            navigationTo(CreatePasswordFragmentDirections.actionCreatePasswordFragmentToCompletionFragment())
+        })
+    }
+    fun checkPassword(first:String,second:String){
+        if(first.isNotEmpty()){
+            val check= first == second
+            _instance.value=check
+        }
 
-    private lateinit var navController: NavController
-    lateinit var serverApi: ServerApi
-    lateinit var request: SignUpRequestData
-    lateinit var context: Context
-
-    var phone: String? = null
-    var password: String = ""
-    var secondPassword: String = ""
-
-    fun signUp(view: View, password: String){
-        request = SignUpRequestData(phone,password)
-        /*serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-
-        serverApi.registration(request).enqueue(object : Callback<SignUpResponseData> {
-            override fun onFailure(call: Call<SignUpResponseData>, t: Throwable) {
-                Toast.makeText(context, context.getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-            }
-            override fun onResponse(call: Call<SignUpResponseData>, response: Response<SignUpResponseData>) {
-                try {
-                    if (response.isSuccessful) {
-                        if(response.body() != null){
-                            if (response.body()!!.access != null) {
-                                val token = response.body()!!.access
-                                AppPreferences.getSharedPreferences(context).edit().putString("token", token).apply()
-                                view.hideKeyboard()
-                                navController = Navigation.findNavController(view)
-                                navController.navigate(R.id.action_createPasswordFragment_to_completionFragment)
-                            }
-                        }
-                    }
-                    else {
-                        if (response.errorBody() != null) {
-                            val jObjError = JSONObject(response.errorBody()!!.string())
-                            val message = jObjError.getString("username")
-                            if (message.isNotEmpty())
-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                catch (e: Exception){
-                    Log.d("RESPONSE", e.toString())
-                }
-            }
-        })*/
+    }
+    fun backEnd(){
+        navigationTo(CreatePasswordFragmentDirections.actionCreatePasswordFragmentToConfirmNumberFragment())
     }
 
-    fun navigateBack(view: View){
-        navController = Navigation.findNavController(view)
-        navController.popBackStack()
+
+    override fun onStart() {
+        TODO("Not yet implemented")
     }
 }

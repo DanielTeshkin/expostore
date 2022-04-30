@@ -11,9 +11,13 @@
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="360dp"
+        android:layout_marginBottom="10dp"
         android:background="@null"
         android:onClick="@{confirmNumberVM::navigateBack}"
         android:src="@drawable/ic_arrow_back"
+        app:layout_constraintBottom_toTopOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -43,6 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title">
 
         <TextView
+            android:id="@+id/plus"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -53,6 +58,7 @@
             android:textSize="16sp" />
 
         <View
+            android:id="@+id/v"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
@@ -70,7 +76,7 @@
             app:hintEnabled="false"
             app:passwordToggleEnabled="true">
 
-            <br.com.sapereaude.maskedEditText.MaskedEditText
+            <EditText
                 android:id="@+id/et_number"
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
@@ -82,7 +88,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={confirmNumberVM.number}"
+
                 android:textColor="@color/black"
                 android:textColorHighlight="@android:color/transparent"
                 mask:mask="### ### ####"
@@ -100,7 +106,6 @@
         android:layout_height="60dp"
         android:backgroundTint="@drawable/selector_blue_button"
         android:letterSpacing="0.01"
-        android:onClick="@{confirmNumberVM::confirmNumber}"
         android:text="@string/login_btn_sign_in_next_text"
         android:textAllCaps="false"
         android:textColor="@color/white"

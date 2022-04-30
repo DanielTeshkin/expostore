@@ -16,7 +16,10 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getchats.Chat
+import com.expostore.api.pojo.getchats.ResponseMainChat
+import com.expostore.api.pojo.getchats.ItemChatResponse
+import com.expostore.api.pojo.getchats.MessageRequest
+
 import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
@@ -94,6 +97,11 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData> =
         processResponse { serverApi.registration(request) }
 
+    override suspend fun messageCreate(
+        request: MessageRequest,
+        id: String
+    ): BaseApiResponse< MessageRequest> = processResponse { serverApi.messageCreate(request,id) }
+
     override suspend fun getProfile(): BaseApiResponse<GetProfileResponseData> =
         processResponse { serverApi.getProfile() }
 
@@ -158,11 +166,20 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     ): BaseApiResponse<BaseListResponse<ProductResponse>> =
         processResponse { serverApi.getListProduct(page, query) }
 
-    override suspend fun getChats(): BaseApiResponse<List<Chat>> =
+    override suspend fun getChats(): BaseApiResponse<List<ResponseMainChat>> =
         processListResponse { serverApi.getChats() }
+
+    override suspend fun getChat(id: String): BaseApiResponse<ItemChatResponse> = processResponse { serverApi.getChat(id) }
 
     override suspend fun getShop(
         id: String
     ): BaseApiResponse<GetShopResponseData> =
         processResponse { serverApi.getShop(id) }
+
+    override suspend fun deleteMainChat(id: String): BaseApiResponse<ResponseMainChat> = processResponse { serverApi.deleteMainChat(id) }
+
+    override suspend fun deleteChat(id: String): BaseApiResponse<ItemChatResponse> = processResponse { serverApi.deleteChat(id) }
+
+
+
 }

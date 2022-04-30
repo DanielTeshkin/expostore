@@ -5,20 +5,20 @@ import com.expostore.model.ImageModel
 import com.expostore.model.toModel
 
 data class ProfileModel(
-    val shop: ShopModel = ShopModel(),
-    val city: Int = 0,
-    val lastName: String = "",
-    val avatar: String = "",
-    val isEnabledPushNotify: Boolean = false,
-    val causeBlocked: String = "",
-    val isBlocked: Boolean = false,
-    val patronymic: String = "",
-    val id: String = "",
-    val firstName: String = "",
-    val isEnabledNotifyEmail: Boolean = false,
-    val email: String = "",
-    val pushToken: String = "",
-    val username: String = ""
+    val shop: ShopModel? = ShopModel(),
+    val city: Int? = 0,
+    val lastName: String? = "",
+    val avatar: String? = "",
+    val isEnabledPushNotify: Boolean? = false,
+    val causeBlocked: String? = "",
+    val isBlocked: Boolean? = false,
+    val patronymic: String? = "",
+    val id: String? = "",
+    val firstName: String? = "",
+    val isEnabledNotifyEmail: Boolean? = false,
+    val email: String? = "",
+    val pushToken: String? = "",
+    val username: String? = ""
 ) {
     data class ShopModel(
         val owner: String = "",

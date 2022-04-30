@@ -70,13 +70,12 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
 
-            android:text="Настройки"
+            android:text="Редактировать профиль"
             android:letterSpacing="0.01"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textColor="@color/black"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:textAlignment="textStart"
-
             android:layout_marginTop="30dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -92,6 +91,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_shop"/>
+
+        <Button
+            android:id="@+id/btn_shop"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:letterSpacing="0.01"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Редактировать магазин"
+            android:textAlignment="textStart"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_shop"/>
 
         <Button
             android:id="@+id/btn_my_products"
@@ -111,7 +143,7 @@
             android:paddingEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_shop" />
 
         <View
             android:id="@+id/view3"
@@ -253,6 +285,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_help"/>
+
+
 
 
 

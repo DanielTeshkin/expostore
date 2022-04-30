@@ -1,8 +1,9 @@
 package com.expostore.api.pojo.signup
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.gson.annotations.SerializedName
 
 data class SignUpResponseData(
-    @JsonProperty("refresh") val refresh: String?,
-    @JsonProperty("access") val access: String?
+    @SerializedName("refresh") val refresh: String?="",
+    @SerializedName("access") val access: String?=""
 )

@@ -20,13 +20,11 @@ class MainViewModel @Inject constructor(
     val uiState = _uiState.asSharedFlow()
 
     override fun onStart() {
-        load()
-    }
-
+        load()}
     private fun load() {
         interactor.load().handleResult({ isLoading ->
             emit(_uiState, MainState.Loading(isLoading))
-        }, { data ->
+        },{ data ->
             when (data) {
                 is MainInteractor.MainData.Categories -> emit(
                     _uiState,
@@ -39,6 +37,5 @@ class MainViewModel @Inject constructor(
             }
         }, {
             emit(_uiState, MainState.Error(it))
-        })
-    }
+        }) }
 }

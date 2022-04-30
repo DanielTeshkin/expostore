@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.expostore.MainActivity
+import com.expostore.ui.state.ResponseState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -50,7 +52,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity.setVisibleBottomNavView(isBottomNavViewVisible)
+        //mainActivity.setVisibleBottomNavView(isBottomNavViewVisible)
     }
 
     protected fun navigateSafety(destination: NavDirections) =
@@ -73,6 +75,13 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
             }
         }
     }
+    protected fun <T> singleSubscribe(flow: Flow<T>, action: suspend (T) -> Unit) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            flow.collect(action)
+        }
+    }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -93,6 +102,8 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         super.onDestroy()
         _binding = null
     }
+
+
 
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity

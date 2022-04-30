@@ -11,5 +11,4 @@ sealed class MainState {
     data class Error(val throwable: Throwable) : MainState()
     data class SuccessCategory(val items: List<CategoryModel>) : MainState()
     data class SuccessAdvertising(val items: List<CategoryAdvertisingModel>) : MainState()
-
 }
