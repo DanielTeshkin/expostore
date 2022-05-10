@@ -173,7 +173,12 @@
             app:destination="@id/myProductsFragment" />
         <action
             android:id="@+id/action_profileFragment_to_EditProfileFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
             app:destination="@id/EditProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_shop_create"
+            app:destination="@id/shop_create" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -253,7 +258,7 @@
         tools:layout="@layout/product_qr_code_fragment" />
     <fragment
         android:id="@+id/chatsFragment"
-        android:name="com.expostore.ui.fragment.chats.ChatsFragment"
+        android:name="com.expostore.ui.fragment.chats.list.ChatsFragment"
         android:label="chats_fragment"
         tools:layout="@layout/chats_fragment" >
         <action
@@ -319,8 +324,30 @@
         android:name="com.expostore.ui.fragment.profile.profile_edit.EditProfileFragment"
         android:label="edit_profile_fragment"
         tools:layout="@layout/edit_profile_fragment">
+        <argument
+            android:name="first_name"
+            app:argType="string" />
+        <argument
+            android:name="last_name"
+            app:argType="string" />
+        <argument
+            android:name="city"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
         <action
-            android:id="@+id/action_EditProfileFragment_self"
-            app:destination="@id/EditProfileFragment" />
+            android:id="@+id/action_EditProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shop_create"
+        android:name="com.expostore.ui.fragment.shop.shopcreate.ShopCreateFragment"
+        android:label="shop_create"
+        tools:layout="@layout/shop_create_fragment"
+        >
+        <action
+            android:id="@+id/action_shop_create_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
     </fragment>
 </navigation>

@@ -8,7 +8,9 @@ import com.expostore.databinding.MainFragmentBinding
 import com.expostore.extension.load
 import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.CategoryModel
+import com.expostore.model.profile.ProfileModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.fragment.chats.loadAvatar
 import com.expostore.ui.fragment.main.adapter.CategoriesAdapter
 import com.expostore.ui.state.MainState
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +53,12 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
             is MainState.Error -> handleError(state.throwable)
             is MainState.SuccessCategory -> handleCategories(state.items)
             is MainState.SuccessAdvertising -> handleAdvertising(state.items)
+            is MainState.SuccessProfile -> handleProfile(state.item)
         }
+    }
+
+    private fun handleProfile(item: ProfileModel) {
+        item.avatar?.let { binding.ivProfile.loadAvatar(it) }
     }
 
     private fun handleCategories(items: List<CategoryModel>) {
@@ -59,8 +66,9 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
     }
 
     private fun handleAdvertising(items: List<CategoryAdvertisingModel>) {
-        items.firstOrNull()?.let {
-            binding.ivAdvertising.load(it.url)
+        Toast.makeText(requireContext(), items[0].image, Toast.LENGTH_LONG).show()
+        items.let {
+            binding.ivAdvertising.load(it[0].image)
         }
     }
 

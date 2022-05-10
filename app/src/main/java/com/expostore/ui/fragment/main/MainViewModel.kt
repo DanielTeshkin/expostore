@@ -34,6 +34,9 @@ class MainViewModel @Inject constructor(
                     _uiState,
                     MainState.SuccessAdvertising(data.items)
                 )
+                is MainInteractor.MainData.Profile-> emit(_uiState,
+                    MainState.SuccessProfile(data.item)
+                )
             }
         }, {
             emit(_uiState, MainState.Error(it))

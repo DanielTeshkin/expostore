@@ -1,16 +1,17 @@
 package com.expostore.api.pojo.getchats
 
 
+import com.expostore.api.response.ImageResponse
 import com.google.gson.annotations.SerializedName
 
 data class MessageResponse(
-    @SerializedName("id")  val  id : String,
-    @SerializedName("images")  val  imageResponsImages: ArrayList<ResponseImage>? = null,
+    @SerializedName("id")  val  id : String="",
+    @SerializedName("images")  val images: ArrayList<ImageResponse>? = null,
     @SerializedName("text")  val text: String,
-    @SerializedName("date_created")  val  dateCreated : String,
-    @SerializedName("status") val  status: String,
+    @SerializedName("date_created")  val  dateCreated : String="",
+    @SerializedName("status") val  status: String="",
     @SerializedName("author") val  author: String,
-    @SerializedName("chat_files") val  chatFiles : ArrayList<String> = arrayListOf()
+    @SerializedName("chat_files") val  chatFiles : ArrayList<ChatFile> = arrayListOf()
     ) {
 
 }

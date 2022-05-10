@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.R
+import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getprofile.GetProfileResponseData
+import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.model.profile.ProfileModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
@@ -15,9 +17,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel constructor( private val profileRepository: ProfileRepository) : BaseViewModel() {
+class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository) : BaseViewModel() {
          private val _profile=MutableSharedFlow<ResponseState<ProfileModel>>()
     val profile=_profile.asSharedFlow()
     private val _title=MutableStateFlow<String>("Создать магазин")
@@ -38,15 +41,21 @@ class ProfileViewModel constructor( private val profileRepository: ProfileReposi
     override fun onStart() {
         TODO("Not yet implemented")
     }
+    fun updateAvatar(requestData: SaveImageRequestData){
+       // chatRepository.saveImage(requestData).handleResult(_save)
+    }
 
-    fun navigateEditProfile(){
-        navigationTo(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment())
+    fun navigateEditProfile(first_name:String,last_name:String,city:String,email:String){
+        navigationTo(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment(first_name,last_name,city,email))
     }
     fun navigateMyProduct(exist:Boolean){
         when(exist){
         true ->navigationTo(ProfileFragmentDirections.actionProfileFragmentToMyProductsFragment())
             else -> {}
         }
+    }
+    fun navigateShop(){
+        navigationTo(ProfileFragmentDirections.actionProfileFragmentToShopCreate())
     }
 
 }

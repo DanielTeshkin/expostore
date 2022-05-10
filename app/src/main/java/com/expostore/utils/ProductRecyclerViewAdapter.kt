@@ -3,16 +3,10 @@ package com.expostore.utils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.Category
-import com.expostore.api.pojo.getcategory.CategoryProduct
 import com.expostore.api.response.ProductResponse
 import com.expostore.extension.load
-import com.expostore.model.product.ProductModel
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class ProductRecyclerViewAdapter(private val products: ArrayList<ProductResponse>) : RecyclerView.Adapter<ProductRecyclerViewAdapter.ProductViewHolder>() {

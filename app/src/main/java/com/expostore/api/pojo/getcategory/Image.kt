@@ -1,6 +1,8 @@
 package com.expostore.api.pojo.getcategory
 
+import com.google.gson.annotations.SerializedName
+
 data class Image(
-    val `file`: String,
-    val id: String
+    @SerializedName("file") val `file`: String,
+    @SerializedName("id")val id: String
 )

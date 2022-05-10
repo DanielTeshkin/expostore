@@ -19,6 +19,12 @@ fun ImageView.load(url: String) {
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }
+fun ImageView.loadBanner(url: String){
+    Glide.with(context)
+        .load(url)
+        .centerCrop()
+        .into(this)
+}
 
 val Drawable.toMarker: BitmapDescriptor
     get() = this.run {

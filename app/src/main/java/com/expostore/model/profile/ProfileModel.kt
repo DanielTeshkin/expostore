@@ -6,7 +6,7 @@ import com.expostore.model.toModel
 
 data class ProfileModel(
     val shop: ShopModel? = ShopModel(),
-    val city: Int? = 0,
+    val city: String? ="",
     val lastName: String? = "",
     val avatar: String? = "",
     val isEnabledPushNotify: Boolean? = false,
@@ -42,7 +42,7 @@ val GetProfileResponseData.toModel: ProfileModel
             shop?.lng ?: 0.0,
             shop?.shoppingCenter ?: ""
         ),
-        city ?: 0,
+        city ?: "",
         lastName ?: "",
         avatar ?: "",
         isEnabledPushNotify ?: false,

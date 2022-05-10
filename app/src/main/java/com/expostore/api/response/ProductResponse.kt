@@ -1,5 +1,6 @@
 package com.expostore.api.response
 
+import com.expostore.api.pojo.getcategory.Characteristic
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
@@ -17,7 +18,7 @@ data class ProductResponse(
 	val images: List<ImageResponse>? = null,
 
 	@field:SerializedName("characteristics")
-	val characteristics: List<String>? = null,
+	val characteristics: List<Characteristic>? = null,
 
 	@field:SerializedName("shop")
 	val shop: ShopResponse? = null,

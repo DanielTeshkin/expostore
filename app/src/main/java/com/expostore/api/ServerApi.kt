@@ -11,13 +11,14 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getchats.ResponseMainChat
-import com.expostore.api.pojo.getchats.ItemChatResponse
-import com.expostore.api.pojo.getchats.MessageRequest
+
+import com.expostore.api.pojo.getchats.*
 
 import com.expostore.api.pojo.getcities.City
+import com.expostore.api.pojo.getcities.CityResponse
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.api.pojo.getprofile.EditProfileRequest
 import com.expostore.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
@@ -35,8 +36,11 @@ import com.expostore.api.response.CategoryAdvertisingResponse
 import com.expostore.api.response.CategoryCharacteristicResponse
 import com.expostore.api.response.CategoryResponse
 import com.expostore.api.response.ProductResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
+import java.io.File
 
 interface ServerApi {
 
@@ -55,15 +59,21 @@ interface ServerApi {
     @POST("/api/sign-up/")
     suspend fun registration(@Body request: SignUpRequestData): Response<SignUpResponseData>
 
-   // @POST("/api/chat/create/")
-  //  suspend fun chatCreate(@Body request:ChatM,@Path("id") id: String):Response<Chat>
+    @POST("/api/chat/create/")
+    suspend fun chatCreate(@Body request:ResponseMainChat,@Path("id") id: String):Response<ResponseMainChat>
 
+    @Multipart
+    @POST("/api/chat/file/create/")
+    suspend fun fileCreate(@Part file: MultipartBody.Part, @Part("filename")name: RequestBody):Response<ResponseFile>
 
     @POST("/api/chat/item/{id}/message/create/")
     suspend fun messageCreate(@Body request: MessageRequest, @Path("id") id: String):Response<MessageRequest>
 
+    @POST("/api/chat/item/{id}/message/create/")
+    suspend fun messageFileOrImage(@Body request: FileOrImageMessage, @Path("id") id: String):Response<MessageRequest>
+
     @GET("/api/cities/")
-    suspend fun getCities(): Response<List<City>>
+    suspend fun getCities(): Response<List<CityResponse>>
 
     @GET("/api/profile/")
     suspend fun getProfile(): Response<GetProfileResponseData>
@@ -71,11 +81,17 @@ interface ServerApi {
     @PUT("/api/profile/")
     suspend fun editProfile(@Body request: EditProfileRequestData): Response<EditProfileResponseData>
 
+    @PATCH("/api/profile/")
+    suspend fun patchProfile(@Body request: EditProfileRequest): Response<EditProfileRequest>
+
     @GET("/api/selection/product/")
     suspend fun getCategories(): Response<List<CategoryResponse>>
 
     @GET("/api/advertising/selection/")
     suspend fun getCategoryAdvertising(): Response<List<CategoryAdvertisingResponse>>
+
+    @GET("/api/advertising/main/")
+    suspend fun getCategoryAdvertisingMain(): Response<List<CategoryAdvertisingResponse>>
 
     //TODO изменить
     @POST("/api/product/{id}/elected/select/")

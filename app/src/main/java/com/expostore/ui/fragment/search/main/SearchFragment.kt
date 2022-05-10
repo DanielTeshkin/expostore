@@ -32,7 +32,7 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
 
     private lateinit var googleMap: GoogleMap
 
-    private val adapter = ProductsAdapter()
+    //private val adapter = ProductsAdapter()
 
     private var markerPosition: Marker? = null
 
@@ -43,7 +43,7 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
             searchMapView.onCreate(savedInstanceState)
             searchMapView.getMapAsync(this@SearchFragment)
 
-            recyclerView.adapter = adapter
+            //recyclerView.adapter = adapter
 
             location.setOnClickListener {
                 this@SearchFragment.myLocation?.let {
@@ -53,16 +53,16 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
 
             filter.setOnClickListener { navigateSafety(SearchFragmentDirections.actionSearchFragmentToSearchFilterFragment()) }
         }
-        adapter.onItemClickListener = {
-            val bundle = Bundle()
-            bundle.putString("id", it.id)
-            val navController = Navigation.findNavController(binding.root)
-            navController.navigate(R.id.action_searchFragment_to_productFragment, bundle)
-        }
+       // adapter.onItemClickListener = {
+         //   val bundle = Bundle()
+           // bundle.putString("id", it.id)
+          //  val navController = Navigation.findNavController(binding.root)
+        //   navController.navigate(R.id.action_searchFragment_to_productFragment, bundle)
+        // }
 
-        adapter.onLikeItemClickListener = { viewModel.selectFavorite(it) }
+        // adapter.onLikeItemClickListener = { viewModel.selectFavorite(it) }
 
-        adapter.onCallItemClickListener = { navigateToCall(it) }
+        //adapter.onCallItemClickListener = { navigateToCall(it) }
 
         viewModel.apply {
             start()
@@ -92,13 +92,13 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
     }
 
     private fun handleFavorite(id: String, isSuccess: Boolean) {
-        adapter.processLike(id, isSuccess)
+        //  adapter.processLike(id, isSuccess)
     }
 
     private fun collectUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.fetchProduct().collectLatest {
-                adapter.submitData(it)
+                //    adapter.submitData(it)
             }
         }
     }
@@ -130,7 +130,7 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
     }
 
     override fun onLocationChange(location: Location) {
-        markerPosition?.position = LatLng(location.latitude, location.longitude)
+       markerPosition?.position = LatLng(location.latitude, location.longitude)
     }
 
     override fun onLocationFind(location: Location): Boolean {
@@ -145,7 +145,7 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
         myLocation?.let { location ->
             if (markerPosition != null) {
                 moveToLocation(location)
-                return@let
+               return@let
             }
             val latLng = LatLng(location.latitude, location.longitude)
             val markerOptions = MarkerOptions().position(latLng)

@@ -1,108 +1,167 @@
 package com.expostore.ui.fragment.chats.dialog
 
 
+
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.expostore.api.pojo.getchats.ItemChatResponse
-import com.expostore.api.pojo.getchats.MessageResponse
-import com.expostore.api.pojo.getchats.MessageRequest
+import com.expostore.api.pojo.getchats.*
 import com.expostore.databinding.DialogFragmentBinding
+import com.expostore.model.chats.DataMapping.ItemChat
+import com.expostore.model.chats.DataMapping.Message
 import com.expostore.ui.base.BaseFragment
+
+import com.expostore.ui.fragment.chats.listPath
 import com.expostore.ui.state.ResponseState
-import com.expostore.utils.DialogRecyclerViewAdapter
+import com.expostore.ui.fragment.chats.dialog.adapter.DialogRecyclerViewAdapter
+import com.expostore.ui.fragment.chats.down
+import com.expostore.ui.fragment.chats.fragment.FileDialog
+import com.expostore.ui.fragment.chats.fragment.ImageDialog
+import com.expostore.ui.fragment.chats.general.ControllerUI
+import com.expostore.ui.fragment.chats.general.FileStorage
+import com.expostore.ui.fragment.chats.general.ImagePicker
+import com.expostore.ui.fragment.chats.visible
 import com.expostore.utils.OnClickImage
+import com.kroegerama.imgpicker.BottomSheetImagePicker
 import dagger.hilt.android.AndroidEntryPoint
+
+import kotlin.collections.ArrayList
 
 
 /**
  * @author Teshkin Daniel
  */
 @AndroidEntryPoint
- class DialogFragment(val id: String, val author:String, val username:String) : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate){
+open class DialogFragment(val id: String, val author:String) : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),
+    BottomSheetImagePicker.OnImagesSelectedListener {
     private val viewModel: DialogViewModel by viewModels()
     private lateinit var manager: LinearLayoutManager
     lateinit var mAdapter: DialogRecyclerViewAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.updateMessages(id)
         subscribeViewModel()
+
     }
 
     override fun onStart() {
         super.onStart()
-        binding.messageSend.setOnClickListener {
-            sendMessage()
-        }
-        binding.messageSendBtn.setOnClickListener {
-            openGallery()
-        }
+        init()
     }
 
-    private fun subscribeViewModel(){
+    override fun onStop() {
+        super.onStop()
+        viewModel.stopUpdate()
+    }
+
+    private fun subscribeViewModel() {
         viewModel.apply {
-            subscribe(item){handle(it)}
+            subscribe(item) { handleState(it) }
+            subscribe(message) { handleSent(it) }
         }
     }
 
-    private  fun sendMessage(){
-        viewModel.sentMessageOrUpdate(id,MessageRequest(text = binding.etInput.text.toString(), author = username))
+    private fun init() {
+        binding.apply {
+            messageSend.setOnClickListener { sendMessage() }
+            messageSendBtn.setOnClickListener { openGallery() }
+            imageView4.setOnClickListener { openBottomMenu() }
+        }
+        textListener()
+    }
+
+    private fun textListener() {
+        binding.apply {
+            etInput.addTextChangedListener {
+                val stroke = etInput.text.toString()
+                messageSend.visible(stroke.isNotEmpty())
+                imageView4.visible(stroke.isEmpty())
+
+            }
+        }
+    }
+
+    private fun sendMessage() {
+        val message = MessageRequest(text = binding.etInput.text.toString())
+        viewModel.sentMessageOrUpdate(id, message)
+        mAdapter.addMessage(
+            Message(
+                text = binding.etInput.text.toString(),
+                author = author,
+                images = ArrayList()
+            )
+        )
+        binding.rvMessages.down(mAdapter.itemCount)
         binding.etInput.text.clear()
     }
 
-    private fun handle(state: ResponseState<ItemChatResponse>){
+    @SuppressLint("ResourceType")
+    private fun openGallery() {
+        ImagePicker()
+            .bottomSheetImageSetting()
+            .show(childFragmentManager)
+
+    }
+
+    private fun handleSent(state: ResponseState<MessageRequest>) {
         when (state) {
-            is ResponseState.Loading ->  handleLoading()
-            is ResponseState.Error ->  handleError(state.throwable.message!!)
-            is ResponseState.Success -> loadOrUpdate(state.item.messageResponses)
+            is ResponseState.Success -> binding.rvMessages.down(mAdapter.itemCount)
         }
     }
-    private fun handleLoading(){
+
+    private fun handleState(state: ResponseState<ItemChat>) {
+        when (state) {
+            is ResponseState.Loading -> handleLoading()
+            is ResponseState.Error -> handleError(state.throwable.message!!)
+            is ResponseState.Success -> loadOrUpdate(state.item.messages)
+        }
+    }
+
+    private fun handleLoading() {
         viewModel.instanceProgressBar.observe(viewLifecycleOwner, Observer {
-            when(it){
-                true-> binding.progressBar2.visibility=View.VISIBLE
-                false->binding.progressBar2.visibility=View.INVISIBLE
+            binding.progressBar2.visible(it)
+        })
+    }
+
+    private fun loadOrUpdate(messageResponses: MutableList<Message>) {
+        viewModel.instanceAdapter.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                false -> load(messageResponses)
+                true -> update(messageResponses)
             }
         })
 
     }
 
- private fun loadOrUpdate(messageResponses:MutableList<MessageResponse>){
-         viewModel.instanceAdapter.observe(viewLifecycleOwner, Observer {
-             when(it){
-                 false->load(messageResponses)
-                 true -> update(messageResponses)
-             }
-         })
-
- }
-
-    private fun load(messageResponses:MutableList<MessageResponse>){
-           val onClickImage=object :OnClickImage{
-               override fun click(bitmap: Bitmap) {
-                   val dialogFragment=ImageDownload(bitmap)
-                   dialogFragment.show(requireActivity().supportFragmentManager,"DialogImage")
-               }
-
-           }
-
-        binding.rvMessages.apply {
-            manager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            mAdapter=DialogRecyclerViewAdapter(messageResponses,author,requireContext(),onClickImage)
-            layoutManager=manager
-            adapter=mAdapter
-            viewModel.changeProgressBarInstance()
+    private fun load(messages: MutableList<Message>) {
+        val onClickImage = object : OnClickImage {
+            override fun click(bitmap: Bitmap) {
+                ControllerUI(requireContext()).openImageFragment(bitmap)
+                    .show(requireActivity().supportFragmentManager, "DialogImage")
+            }
         }
-       viewModel.changeAdapterInstance()
+        binding.rvMessages.apply {
+            manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            mAdapter =
+                DialogRecyclerViewAdapter(messages, author, requireContext(), onClickImage)
+            layoutManager = manager
+            adapter = mAdapter
+
+        }
+        viewModel.changeProgressBarInstance()
+        binding.rvMessages.down(mAdapter.itemCount)
+        viewModel.changeAdapterInstance()
 
     }
 
@@ -110,31 +169,46 @@ import dagger.hilt.android.AndroidEntryPoint
         Toast.makeText(requireContext(), throwable, Toast.LENGTH_LONG).show()
     }
 
-    private  fun update(messageResponses: MutableList<MessageResponse>){
-        mAdapter.addData(messageResponses,binding.rvMessages)
+    private fun update(messages: MutableList<Message>) {
+        mAdapter.addData(messages)
 
     }
 
-    fun openGallery() {
-        val galleryIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        resultLauncher.launch(galleryIntent)
+    private fun openBottomMenu() {
+        val intent = FileStorage(requireContext())
+            .openStorage()
+        resultLauncher.launch(intent)
     }
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val contentURI = data!!.data
-            if (contentURI != null) {
 
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val a = result.data?.clipData
+                if (a != null) {
+                    val fragment = FileDialog(a.listPath(), id)
+                    fragment.show(requireActivity().supportFragmentManager, "file")
+                } else {
+                    val list = ArrayList<Uri>()
 
+                    result.data?.data?.let { list.add(it) }
+                    val fragment = FileDialog(list, id)
+                    fragment.show(requireActivity().supportFragmentManager, "file")
 
-                val dialogFragment= ImageDialog(contentURI,id)
-                dialogFragment.show(requireActivity().supportFragmentManager,"imageDialog")
                 }
             }
         }
-    }
+
+    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
+                val fragment = ImageDialog(uris as ArrayList<Uri>, id)
+                fragment.show(requireActivity().supportFragmentManager, "image")
+
+
+            }
+
+
+}
+
+
 
 
 

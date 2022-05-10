@@ -121,4 +121,11 @@ dependencies {
     implementation 'androidx.paging:paging-common-ktx:3.1.0'
     implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
 
+    //Room
+    implementation "androidx.room:room-runtime:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+
+    implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
+    implementation 'com.github.abhishekti7:UnicornFilePicker:1.0.2'
+
 }

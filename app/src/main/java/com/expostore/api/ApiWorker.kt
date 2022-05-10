@@ -12,13 +12,14 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getchats.ResponseMainChat
-import com.expostore.api.pojo.getchats.ItemChatResponse
-import com.expostore.api.pojo.getchats.MessageRequest
+
+import com.expostore.api.pojo.getchats.*
 
 import com.expostore.api.pojo.getcities.City
+import com.expostore.api.pojo.getcities.CityResponse
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.api.pojo.getprofile.EditProfileRequest
 import com.expostore.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
@@ -34,6 +35,13 @@ import com.expostore.api.response.CategoryAdvertisingResponse
 import com.expostore.api.response.CategoryCharacteristicResponse
 import com.expostore.api.response.CategoryResponse
 import com.expostore.api.response.ProductResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.Part
+import retrofit2.http.Path
+import java.io.File
 
 /**
  * @author Fedotov Yakov
@@ -52,18 +60,24 @@ interface ApiWorker {
 
     suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData>
 
+    suspend fun fileCreate(file: MultipartBody.Part,name:RequestBody):BaseApiResponse<ResponseFile>
+
     suspend fun messageCreate(request:  MessageRequest, id: String):BaseApiResponse<MessageRequest>
 
-    suspend fun getCities(): BaseApiResponse<List<City>>
+    suspend fun messageFileOrImage(request: FileOrImageMessage, id: String):BaseApiResponse<MessageRequest>
+
+    suspend fun getCities(): BaseApiResponse<List<CityResponse>>
 
     suspend fun getProfile(): BaseApiResponse<GetProfileResponseData>
 
     suspend fun editProfile(request: EditProfileRequestData): BaseApiResponse<EditProfileResponseData>
 
+    suspend fun patchProfile( request: EditProfileRequest): BaseApiResponse<EditProfileRequest>
+
     suspend fun getCategories(): BaseApiResponse<List<CategoryResponse>>
 
     suspend fun getCategoryAdvertising(): BaseApiResponse<List<CategoryAdvertisingResponse>>
-
+    suspend fun getCategoryAdvertisingMain(): BaseApiResponse<List<CategoryAdvertisingResponse>>
     //TODO изменить
     suspend fun selectFavorite(id: String): BaseApiResponse<SelectFavoriteResponseData>
 

@@ -23,7 +23,7 @@
         android:background="@drawable/layout_message_received_corners">
 
         <TextView
-            android:id="@+id/text_message_received"
+            android:id="@+id/text_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"

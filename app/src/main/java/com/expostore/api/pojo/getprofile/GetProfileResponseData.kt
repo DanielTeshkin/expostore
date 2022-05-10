@@ -9,7 +9,7 @@ data class GetProfileResponseData(
 	val shop: Shop? = null,
 
 	@SerializedName("city")
-	val city: Int? = null,
+	val city: String? = null,
 
 	@field:SerializedName("last_name")
 	val lastName: String? = null,

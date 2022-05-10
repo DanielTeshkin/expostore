@@ -1,11 +1,15 @@
 package com.expostore.di
 
+import android.app.Application
 import android.content.Context
+import androidx.room.Room
 import com.expostore.BuildConfig
 import com.expostore.api.ApiWorker
 import com.expostore.api.ApiWorkerImpl
 import com.expostore.api.Interceptor
 import com.expostore.api.ServerApi
+import com.expostore.data.LocalDataApi
+import com.expostore.db.LocalDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,4 +65,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideContext(@ApplicationContext context: Context): Context = context
+
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext appContext: Context)=LocalDatabase.getDatabase(appContext)
+
+    @Singleton
+    @Provides
+    fun provideLocalApi(localDatabase: LocalDatabase):LocalDataApi=localDatabase.getDao()
 }

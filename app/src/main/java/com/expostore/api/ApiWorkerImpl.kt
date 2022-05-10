@@ -16,13 +16,13 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getchats.ResponseMainChat
-import com.expostore.api.pojo.getchats.ItemChatResponse
-import com.expostore.api.pojo.getchats.MessageRequest
+import com.expostore.api.pojo.getchats.*
 
 import com.expostore.api.pojo.getcities.City
+import com.expostore.api.pojo.getcities.CityResponse
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.api.pojo.getprofile.EditProfileRequest
 import com.expostore.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
@@ -42,6 +42,8 @@ import com.expostore.api.response.CategoryResponse
 import com.expostore.api.response.ProductResponse
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -97,15 +99,25 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData> =
         processResponse { serverApi.registration(request) }
 
+    override suspend fun fileCreate(
+        file: MultipartBody.Part,
+        name:RequestBody
+    ): BaseApiResponse<ResponseFile> = processResponse { serverApi.fileCreate(file,name) }
+
     override suspend fun messageCreate(
         request: MessageRequest,
         id: String
     ): BaseApiResponse< MessageRequest> = processResponse { serverApi.messageCreate(request,id) }
 
+    override suspend fun messageFileOrImage(
+        request: FileOrImageMessage,
+        id: String
+    ): BaseApiResponse<MessageRequest> =processResponse { serverApi.messageFileOrImage(request, id) }
+
     override suspend fun getProfile(): BaseApiResponse<GetProfileResponseData> =
         processResponse { serverApi.getProfile() }
 
-    override suspend fun getCities(): BaseApiResponse<List<City>> =
+    override suspend fun getCities(): BaseApiResponse<List<CityResponse>> =
         processListResponse { serverApi.getCities() }
 
     override suspend fun editProfile(
@@ -113,11 +125,17 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     ): BaseApiResponse<EditProfileResponseData> =
         processResponse { serverApi.editProfile(request) }
 
+    override suspend fun patchProfile(request: EditProfileRequest): BaseApiResponse<EditProfileRequest> =
+        processResponse { serverApi.patchProfile(request) }
+
+
     override suspend fun getCategories(): BaseApiResponse<List<CategoryResponse>> =
         processListResponse { serverApi.getCategories() }
 
     override suspend fun getCategoryAdvertising(): BaseApiResponse<List<CategoryAdvertisingResponse>> =
         processListResponse { serverApi.getCategoryAdvertising() }
+
+    override suspend fun getCategoryAdvertisingMain(): BaseApiResponse<List<CategoryAdvertisingResponse>> =processResponse { serverApi.getCategoryAdvertisingMain() }
 
     override suspend fun selectFavorite(
         id: String

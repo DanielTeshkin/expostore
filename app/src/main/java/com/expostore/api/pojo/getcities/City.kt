@@ -1,13 +1,15 @@
 package com.expostore.api.pojo.getcities
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class City(
-    @JsonProperty("id") val id: Int,
-    @JsonProperty("name") val name: String
+    val mapCity:Pair<String,Int>
+) : Parcelable
+
+val CityResponse.toModel : City
+get() = City(
+    mapCity =Pair(name,id)
 )
-{
-    override fun toString(): String {
-        return name
-    }
-}
+

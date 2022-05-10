@@ -83,6 +83,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
 
 
 
+
     override fun onResume() {
         super.onResume()
         if (!isFirstResume) {

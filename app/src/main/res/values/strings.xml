@@ -88,4 +88,16 @@
     <string name="api_exception_connection">Не удалось подключиться к интернету</string>
     <string name="api_exception_timeout">Истекло время ожидания</string>
     <string name="api_exception_unknown">Неизвестная ошибка</string>
+
+
+    <plurals name="pick_multi">
+        <item quantity="one">Выбрана одна картинка</item>
+        <item quantity="other">%1$d картинки выбрано</item>
+    </plurals>
+    <plurals name="pick_multi_more">
+        <item quantity="one">Выбери картинку</item>
+        <item quantity="other">Пожалуйста выбере %1$d more images…</item>
+    </plurals>
+    <string name="pick_multi_limit">Можно отправить только 4 картинки в одном сообщении</string>
+
 </resources>

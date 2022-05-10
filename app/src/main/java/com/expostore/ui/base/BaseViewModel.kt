@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import com.expostore.ui.state.ResponseState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * @author Fedotov Yakov
@@ -99,6 +101,29 @@ abstract class BaseViewModel : ViewModel() {
         viewModelScope.launch {
             flow.emit(value)
         }
+    }
+
+    protected fun handleUI( action: suspend ( ) -> Unit){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                action()
+            }
+        }
+    }
+    protected fun <T> stateResponse(state: ResponseState<T>){
+        when(state){
+            is ResponseState.Loading -> handleLoading(state.isLoading)
+            is ResponseState.Success -> handleSuccess(state.item)
+        }
+    }
+
+     fun <T> handleSuccess(item: T):T{
+         return item
+     }
+
+
+     fun handleLoading(loading: Boolean):Boolean{
+        return loading
     }
 
     protected fun navigationTo(directions: NavDirections) {

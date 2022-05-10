@@ -1,9 +1,11 @@
 package com.expostore.model.product
 
 import android.os.Parcelable
+import com.expostore.api.pojo.getcategory.Characteristic
 import com.expostore.api.response.ProductResponse
 import com.expostore.model.ImageModel
 import com.expostore.model.toModel
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -12,7 +14,7 @@ data class ProductModel(
     val shortDescription: String = "",
     val descriptionBlocked: String = "",
     val images: List<ImageModel> = emptyList(),
-    val characteristics: List<String> = emptyList(),
+    val characteristics: List<Character> = emptyList(),
     val shop: ShopModel = ShopModel(),
     val author: AuthorModel = AuthorModel(),
     val dateCreated: String = "",
@@ -38,7 +40,7 @@ val ProductResponse.toModel: ProductModel
         shortDescription ?: "",
         descriptionBlocked ?: "",
         images.orEmpty().map { it.toModel },
-        characteristics.orEmpty(),
+        characteristics.orEmpty().map { it.toModel },
         shop?.toModel ?: ShopModel(),
         author?.toModel ?: AuthorModel(),
         dateCreated ?: "",
@@ -57,3 +59,9 @@ val ProductResponse.toModel: ProductModel
         status ?: "",
         communicationType ?: ""
     )
+@Parcelize
+data class Character( val characteristic: String,
+                     val id: String,
+                    val value: String):Parcelable
+val Characteristic.toModel:Character
+get()= Character(characteristic, id, value)

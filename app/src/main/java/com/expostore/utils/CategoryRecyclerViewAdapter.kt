@@ -5,15 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.CategoryProduct
 import com.expostore.api.response.CategoryResponse
 import com.expostore.api.response.ProductResponse
-import com.expostore.model.category.CategoryModel
-import com.expostore.model.product.ProductModel
+
 import kotlinx.android.synthetic.main.category_item.view.*
 
 class CategoryRecyclerViewAdapter(private val product_list:MutableList<CategoryResponse>, val context: Context) :
