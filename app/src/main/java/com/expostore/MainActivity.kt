@@ -30,23 +30,29 @@ class MainActivity : AppCompatActivity() {
 //            R.id.chatFragment)
 //            .build()
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        val navigation=binding.bottomNavigationView
+       navigation.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.chatFragment) {
+            when (destination.id) {
+                R.id.chatFragment -> navigation.visibility = View.GONE
+                R.id.productFragment->navigation.visibility = View.GONE
+                R.id.profileFragment->navigation.visibility = View.GONE
 
-                binding.bottomNavigationView.visibility = View.GONE
-            } else {
+                else -> {
+                    binding.bottomNavigationView.visibility = View.VISIBLE
 
-               binding.bottomNavigationView.visibility = View.VISIBLE
+                }
             }
         }
+
+        // fun setVisibleBottomNavView(isVisible: Boolean) {
+        //  if(binding.bottomNavigationView.isVisible != isVisible) {
+        //     binding.bottomNavigationView.isVisible = isVisible
+        // }
+        // }
     }
 
-   // fun setVisibleBottomNavView(isVisible: Boolean) {
-      //  if(binding.bottomNavigationView.isVisible != isVisible) {
-       //     binding.bottomNavigationView.isVisible = isVisible
-       // }
-   // }
 }

@@ -36,9 +36,7 @@ import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
 import com.expostore.api.request.RefreshTokenRequest
-import com.expostore.api.response.CategoryAdvertisingResponse
-import com.expostore.api.response.CategoryCharacteristicResponse
-import com.expostore.api.response.CategoryResponse
+import com.expostore.api.response.*
 import com.expostore.api.response.ProductResponse
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
@@ -137,6 +135,10 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
 
     override suspend fun getCategoryAdvertisingMain(): BaseApiResponse<List<CategoryAdvertisingResponse>> =processResponse { serverApi.getCategoryAdvertisingMain() }
 
+    override suspend fun getUserSelection(): BaseApiResponse<List<CategoryResponse>> =processListResponse { serverApi.getUserSelection() }
+
+    override suspend fun getSaveSearchList(): BaseApiResponse<List<SaveSearchResponse>> =processListResponse { serverApi.getSaveSearchList() }
+
     override suspend fun selectFavorite(
         id: String
     ): BaseApiResponse<SelectFavoriteResponseData> =
@@ -198,6 +200,9 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
 
     override suspend fun deleteChat(id: String): BaseApiResponse<ItemChatResponse> = processResponse { serverApi.deleteChat(id) }
 
+    override suspend fun deleteUserSelection(id: String): BaseApiResponse<CategoryResponse> =processResponse {serverApi.deleteUserSelection(id) }
+
+    override suspend fun deleteSaveSearch(id: String): BaseApiResponse<SaveSearchResponse> =processResponse { serverApi.deleteSaveSearch(id) }
 
 
 }

@@ -31,14 +31,13 @@ import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
-import com.expostore.api.response.CategoryAdvertisingResponse
-import com.expostore.api.response.CategoryCharacteristicResponse
-import com.expostore.api.response.CategoryResponse
+import com.expostore.api.response.*
 import com.expostore.api.response.ProductResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Part
 import retrofit2.http.Path
 import java.io.File
@@ -77,7 +76,12 @@ interface ApiWorker {
     suspend fun getCategories(): BaseApiResponse<List<CategoryResponse>>
 
     suspend fun getCategoryAdvertising(): BaseApiResponse<List<CategoryAdvertisingResponse>>
+
     suspend fun getCategoryAdvertisingMain(): BaseApiResponse<List<CategoryAdvertisingResponse>>
+
+    suspend fun getUserSelection():BaseApiResponse<List<CategoryResponse>>
+
+    suspend fun getSaveSearchList():BaseApiResponse<List<SaveSearchResponse>>
     //TODO изменить
     suspend fun selectFavorite(id: String): BaseApiResponse<SelectFavoriteResponseData>
 
@@ -117,6 +121,9 @@ interface ApiWorker {
 
     suspend fun deleteChat( id: String):BaseApiResponse<ItemChatResponse>
 
+    suspend fun deleteUserSelection( id:String):BaseApiResponse<CategoryResponse>
+
+    suspend fun deleteSaveSearch( id:String) : BaseApiResponse<SaveSearchResponse>
 
 
 }

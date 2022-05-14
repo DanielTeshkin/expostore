@@ -17,5 +17,5 @@
         <color name="primary_light_color_pix">#80075e54</color>
         <color name="surface_color_pix">#ffffff</color>
         <color name="text_color_pix">#807f7f</color>
-
+    <color name="light_color_pix">#DDDDDD</color>
 </resources>

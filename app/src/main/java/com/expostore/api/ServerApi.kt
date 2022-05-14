@@ -32,9 +32,7 @@ import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
 import com.expostore.api.request.RefreshTokenRequest
-import com.expostore.api.response.CategoryAdvertisingResponse
-import com.expostore.api.response.CategoryCharacteristicResponse
-import com.expostore.api.response.CategoryResponse
+import com.expostore.api.response.*
 import com.expostore.api.response.ProductResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -93,12 +91,21 @@ interface ServerApi {
     @GET("/api/advertising/main/")
     suspend fun getCategoryAdvertisingMain(): Response<List<CategoryAdvertisingResponse>>
 
+    @GET("/api/selection/user/product/")
+    suspend fun getUserSelection():Response<List<CategoryResponse>>
+
+    @GET("/api/search/list/")
+    suspend fun getSaveSearchList():Response<List<SaveSearchResponse>>
+
     //TODO изменить
     @POST("/api/product/{id}/elected/select/")
     suspend fun selectFavorite(@Path("id") id: String): Response<SelectFavoriteResponseData>
 
     @GET("/api/product/elected/list/")
     suspend fun getFavoritesList(): Response<List<GetFavoritesListResponseData>>
+
+    //@GET("/api/product/elected/list/")
+   // suspend fun getSearchList(): Response<List<GetFavoritesListResponseData>>
 
     @POST("/api/tender/create/")
     suspend fun createTender(@Body requestData: CreateTenderRequestData): Response<CreateTenderResponseData>
@@ -130,7 +137,7 @@ interface ServerApi {
     @GET("/api/chat/")
     suspend fun getChats(): Response<List<ResponseMainChat>>
 
-    @GET("/api/chat/item/{id}")
+    @GET("/api/chat/item/{id}/")
     suspend fun getChat(@Path("id") id: String): Response<ItemChatResponse>
 
     @GET("/api/shop/{id}/")
@@ -141,5 +148,13 @@ interface ServerApi {
 
     @DELETE("api/chat/item/{id}")
     suspend fun deleteChat(@Path("id") id: String):Response<ItemChatResponse>
+
+    @DELETE("/api/selection/user/product/{id}/")
+    suspend fun deleteUserSelection(@Path("id") id:String):Response<CategoryResponse>
+
+    @DELETE("/api/search/{id}/")
+    suspend fun deleteSaveSearch(@Path("id") id:String) : Response<SaveSearchResponse>
+
+
 
 }

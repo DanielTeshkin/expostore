@@ -18,8 +18,8 @@ class ChatViewPagerAdapter(
     private val dialogs: Int,
   val  id: Array<String>,
     val username:String,
-    val id_image:Array<String>,
-    val name_products:Array<String>,
+  private  val images:Array<String>,
+    private val product_name:Array<String>,
     val author:String
 ): FragmentStateAdapter(fragment) {
 
@@ -28,8 +28,8 @@ class ChatViewPagerAdapter(
         @SuppressLint("InflateParams")
     fun getTabView(position: Int): View{
             val view: View = LayoutInflater.from(context).inflate(R.layout.chat_tablayout_item, null)
-            view.text.text = name_products[position]
-                 view.image.loadTabImage(id_image[position])
+            view.text.text = product_name[position]
+                 view.image.loadTabImage(images[position])
         return view
     }
 

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.expostore.databinding.GalleryItemBinding
 
-class ImageDialogRecyclerViewAdapter(private val images:ArrayList<Uri>, private val context: Context):
+class ImageDialogRecyclerViewAdapter(private val images:MutableList<Uri>, private val context: Context):
         RecyclerView.Adapter<ImageDialogRecyclerViewAdapter.ImageViewHolder>() {
         inner class ImageViewHolder( val binding: GalleryItemBinding) : RecyclerView.ViewHolder(binding.root){
             fun bind(uri:Uri,index: Int){

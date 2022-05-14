@@ -110,7 +110,7 @@ abstract class BaseViewModel : ViewModel() {
             }
         }
     }
-    protected fun <T> stateResponse(state: ResponseState<T>){
+     fun <T> stateResponse(state: ResponseState<T>){
         when(state){
             is ResponseState.Loading -> handleLoading(state.isLoading)
             is ResponseState.Success -> handleSuccess(state.item)

@@ -33,7 +33,7 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
     inner class DetailCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var name: TextView = itemView.tv_detail_product_name
         var price: TextView = itemView.tv_detail_product_price
-        var rvImages: RecyclerView = itemView.rv_detail_product_images
+       // var rvImages: RecyclerView = itemView.rv_detail_product_images
         var noteTitle: TextView = itemView.tv_detail_product_note_title
         var note: TextView = itemView.tv_detail_product_note
     }
@@ -50,11 +50,11 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
 
         holder
 
-        val childLayoutManager = LinearLayoutManager(
-            holder.rvImages.context,
-            RecyclerView.HORIZONTAL,
-            false
-        )
+        //val childLayoutManager = LinearLayoutManager(
+           // holder.rvImages.context,
+           // RecyclerView.HORIZONTAL,
+          //  false
+       // )
 
         //todo тестовый костыль
         if (position == 0){
@@ -69,7 +69,7 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
         }
 
         val snapHelper = PagerSnapHelper() // Or PagerSnapHelper
-        snapHelper.attachToRecyclerView(holder.rvImages)
+       // snapHelper.attachToRecyclerView(holder.rvImages)
 
 /*        if (!product.images.isNullOrEmpty()) {
             holder.rvImages.apply {

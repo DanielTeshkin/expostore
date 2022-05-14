@@ -39,11 +39,12 @@ class DialogViewModel @Inject constructor(private val chatRepository: ChatReposi
     override fun onStart() {
     }
     fun updateMessages(id:String){
-        update=viewModelScope.repeat(3000){
+        update=viewModelScope.repeat(10000){
                       chatRepository.chatItem(id).handleResult(_item) } }
 
     fun sentMessageOrUpdate(id: String,body:  MessageRequest){
           chatRepository.postMessage(id,body).handleResult(_message)
+
     }
 
 

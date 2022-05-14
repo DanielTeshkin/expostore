@@ -12,24 +12,30 @@ class TypeHolder(  private val onClickImage: OnClickImage)
 {
     fun getType(username: String, message: Message):Int{
         return if(message.author==username&&message.images?.size==0
-            && message.chatFiles!!.size==0
-        ) R.layout.message_sent_item
-        else if(message.author!=username&& message.images?.size==0
-            && message.chatFiles!!.size==0
-        ) R.layout.message_received_item
-        else if(message.author==username&& message.images?.size!=0
-            && message.chatFiles!!.size==0
-        ) R.layout.image_sent_item
-        else if(message.author!=username&& message.images?.size!=0
-            && message.chatFiles!!.size==0
-        ) R.layout.image_recevied_item
-        else if(message.author!=username&& message.chatFiles!!.size >0
+            && message.chatFiles?.size==0
+        ) {
+            R.layout.message_sent_item
+        } else if(message.author!=username&& message.images?.size==0
+            && message.chatFiles?.size==0
+        ) {
+            R.layout.message_received_item
+        } else if(message.author==username&& message.images?.size!=0
+            && message.chatFiles?.size==0
+        ) {
+            R.layout.image_sent_item
+        } else if(message.author!=username&& message.images?.size!=0
+            && message.chatFiles?.size==0
+        ) {
+            R.layout.image_recevied_item
+        } else if(message.author!=username&& message.chatFiles?.size!! >0
             && message.images?.size==0
-        ) R.layout.file_received
-        else if(message.author==username&& message.chatFiles!!.size >0
+        ) {
+            R.layout.file_received
+        } else if(message.author==username&& message.chatFiles?.size!! >0
             && message.images?.size==0
-        ) R.layout.file_sent
-        else{ 4}
+        ) {
+            R.layout.file_sent
+        } else{ 4}
     }
 
     fun createHolder( type:Int,parent: ViewGroup): DialogViewHolder {
@@ -47,7 +53,7 @@ class TypeHolder(  private val onClickImage: OnClickImage)
                 false))
             R.layout.file_received->ResponseFileHolder(FileReceivedBinding.inflate(LayoutInflater.from(parent.context), parent,
                 false))
-         else-> ResponseFileHolder(FileReceivedBinding.inflate(LayoutInflater.from(parent.context), parent,
+         else-> ResponseMessageHolder(MessageReceivedItemBinding.inflate(LayoutInflater.from(parent.context), parent,
              false))
         }
     }

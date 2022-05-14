@@ -28,13 +28,12 @@
         android:paddingEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
+        android:overScrollMode="never"
         app:layout_constraintTop_toBottomOf="@+id/favorites_title"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp"
         app:tabMode="scrollable"
         app:tabPaddingEnd="5dp"
-
         app:tabPaddingStart="5dp"
         app:tabRippleColor="@null"
         app:tabUnboundedRipple="true" />

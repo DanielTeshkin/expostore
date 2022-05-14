@@ -76,14 +76,16 @@
 
         <TextView
             android:id="@+id/tv_product_price"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/blue"
-            style="@style/BoldTextView"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
@@ -93,15 +95,17 @@
             style="@style/BoldTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_available"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_price"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_price" />
 
         <TextView
             android:id="@+id/tv_product_available"

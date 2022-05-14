@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class ImageDialog(val list: ArrayList<Uri>, val id:String) : DialogFragment() {
+class ImageDialog(val list: MutableList<Uri>, val id:String) : DialogFragment() {
      private val dialogViewModel: ImageDialogView by viewModels()
       lateinit var _binding:FragmentImageDialogBinding
 

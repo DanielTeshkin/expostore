@@ -195,7 +195,21 @@
         android:id="@+id/favoritesFragment"
         android:name="com.expostore.ui.fragment.favorites.FavoritesFragment"
         android:label="favorites_fragment"
-        tools:layout="@layout/favorites_fragment" />
+        tools:layout="@layout/favorites_fragment" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_searchFilterFragment2"
+            app:destination="@id/searchFilterFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_productFragment2"
+            app:destination="@id/productFragment"
+            app:enterAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_out"
+
+            />
+        <action
+            android:id="@+id/action_favoritesFragment_to_detailCategoryFragment2"
+            app:destination="@id/detailCategoryFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tenderListFragment"
         android:name="com.expostore.ui.fragment.tender.list.TenderListFragment"
@@ -263,7 +277,11 @@
         tools:layout="@layout/chats_fragment" >
         <action
             android:id="@+id/action_chatsFragment_to_chatFragment"
-            app:destination="@id/chatFragment" >
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_out"
+
+            >
 
         </action>
     </fragment>

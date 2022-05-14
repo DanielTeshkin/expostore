@@ -19,13 +19,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_detail_product_images"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:overScrollMode="never"
-        android:paddingStart="10dp"
-        android:paddingEnd="20dp"
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toTopOf="@+id/ll_detail_product_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider" />
@@ -34,8 +36,12 @@
         android:id="@+id/ll_detail_product_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_detail_product_images">
@@ -43,25 +49,26 @@
         <TextView
             android:id="@+id/tv_detail_product_price"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:fontFamily="sans-serif-black"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="#111B33"
+            android:textColorHighlight="#111B33"
+            android:textColorHint="#111B33"
+            android:textColorLink="#111B33"
             android:textSize="20sp"
-            android:textStyle="bold"
-            tools:hint="25 000руб" />
+
+            tools:hint="25 000 руб" />
 
         <TextView
             android:id="@+id/tv_detail_product_name"
             style="@style/BoldTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="18sp"
+            android:textColor="#111B33"
+            android:textColorHint="#111B33"
+            android:textSize="20sp"
             tools:hint="Диван кровать еврокнижка, Вегас" />
 
         <TextView
@@ -70,16 +77,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-
+            android:fontFamily="@font/roboto_medium"
             android:text="Моя заметка"
-            android:textSize="14sp" />
+            android:textColor="#111B33"
+            android:textColorHighlight="#111B33"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_detail_product_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+
+            android:textSize="15sp"
             tools:hint="Здесь отображается заметка, написанная к товару, при наличии таковой" />
+
+        <TextView
+            android:id="@+id/product_open"
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:clickable="true"
+            android:text="Подробнее"
+            android:textColor="#2677F1" />
 
     </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
 import com.expostore.databinding.FragmentImageDownloadBinding
 import com.expostore.ui.fragment.chats.general.FileStorage
 
@@ -33,19 +34,11 @@ open class ImageDownload( val bitmap: Bitmap) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Glide.with(requireActivity()).load(bitmap).into(_binding.imageFull)
 
-        _binding.imageFull.setImageBitmap(bitmap)
 
-        _binding.imageFull.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(requireContext())
-                .setCancelable(true)
-                .setNeutralButton("Cкачать") { _, _ ->
-                    FileStorage(requireContext()).saveImage(bitmap)
-                }
-            alertDialog.apply {
-                create()
-                show()
-            }
+        _binding.buttonSave.setOnClickListener {
+            FileStorage(requireContext()).saveImage(bitmap)
         }
     }
 

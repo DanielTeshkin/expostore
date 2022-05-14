@@ -20,7 +20,7 @@ class ProductImageRecyclerViewAdapter(
     private val like: Boolean?,
     private val onClick: OnClickRecyclerViewListener?) :RecyclerView.Adapter<ProductImageRecyclerViewAdapter.ProductImagesViewHolder>() {
 
-    private var dots: Dots = Dots()
+    //private var dots: Dots = Dots()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductImagesViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -37,7 +37,7 @@ class ProductImageRecyclerViewAdapter(
     inner class ProductImagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView = itemView.iv_detail_product
         var llDots: LinearLayout = itemView.ll_dot
-        var btnLike: CheckBox = itemView.ib_detail_product_like
+        //var btnLike: CheckBox = itemView.ib_detail_product_like
     }
 
     override fun onBindViewHolder(holder: ProductImagesViewHolder, position: Int) {
@@ -45,20 +45,19 @@ class ProductImageRecyclerViewAdapter(
 
         if (images.size == 1) holder.llDots.visibility = View.GONE
 
-        dots.addDot(context, images.size, 15, 0, 15, 0, holder.llDots, R.drawable.dot_inactive)
-        dots.currentDot(context, position, holder.llDots, R.drawable.dot_active, R.drawable.dot_inactive)
+      //  dots.addDot(context, images.size, 15, 0, 15, 0, holder.llDots, R.drawable.dot_inactive)
+      //  dots.currentDot(context, position, holder.llDots, R.drawable.dot_active, R.drawable.dot_inactive)
 
         if (image.file != null) Picasso.get().load(image.file).into(holder.image)
 
         if (id != null && like != null && onClick != null) {
-            if (position == 0) holder.btnLike.visibility = View.VISIBLE
-            else holder.btnLike.visibility = View.GONE
+            //if (position == 0) holder.btnLike.visibility = View.VISIBLE
+           // else holder.btnLike.visibility = View.GONE
 
-            holder.btnLike.isChecked = like
-            holder.btnLike.setOnClickListener {
-                onClick.onLikeClick(holder.btnLike.isChecked, id)
+          //  holder.btnLike.isChecked = like
+            //holder.btnLike.setOnClickListener {
+             //   onClick.onLikeClick(holder.btnLike.isChecked, id)
             }
         }
-        else holder.btnLike.visibility = View.GONE
+        //else holder.btnLike.visibility = View.GONE
     }
-}

@@ -14,6 +14,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.expostore.R
 import com.expostore.api.pojo.getchats.*
 import com.expostore.databinding.DialogFragmentBinding
 import com.expostore.model.chats.DataMapping.ItemChat
@@ -23,6 +24,8 @@ import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.chats.listPath
 import com.expostore.ui.state.ResponseState
 import com.expostore.ui.fragment.chats.dialog.adapter.DialogRecyclerViewAdapter
+import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
+import com.expostore.ui.fragment.chats.dialog.bottom.ButtonType
 import com.expostore.ui.fragment.chats.down
 import com.expostore.ui.fragment.chats.fragment.FileDialog
 import com.expostore.ui.fragment.chats.fragment.ImageDialog
@@ -31,7 +34,7 @@ import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.fragment.chats.general.ImagePicker
 import com.expostore.ui.fragment.chats.visible
 import com.expostore.utils.OnClickImage
-import com.kroegerama.imgpicker.BottomSheetImagePicker
+
 import dagger.hilt.android.AndroidEntryPoint
 
 import kotlin.collections.ArrayList
@@ -42,7 +45,7 @@ import kotlin.collections.ArrayList
  */
 @AndroidEntryPoint
 open class DialogFragment(val id: String, val author:String) : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),
-    BottomSheetImagePicker.OnImagesSelectedListener {
+    BottomSheetImage.OnImagesSelectedListener {
     private val viewModel: DialogViewModel by viewModels()
     private lateinit var manager: LinearLayoutManager
     lateinit var mAdapter: DialogRecyclerViewAdapter
@@ -95,7 +98,7 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
     private fun sendMessage() {
         val message = MessageRequest(text = binding.etInput.text.toString())
         viewModel.sentMessageOrUpdate(id, message)
-        mAdapter.addMessage(
+             mAdapter.addMessage(
             Message(
                 text = binding.etInput.text.toString(),
                 author = author,
@@ -108,8 +111,12 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
 
     @SuppressLint("ResourceType")
     private fun openGallery() {
-        ImagePicker()
-            .bottomSheetImageSetting()
+        BottomSheetImage.Builder("com.expostore.MyFileProvider")
+            .cameraButton(ButtonType.Button)
+            .galleryButton(ButtonType.Button)
+            .multiSelect(1,4)
+            .multiSelectTitles(R.plurals.pick_multi, R.plurals.pick_multi_more, R.string.pick_multi_limit)
+            .requestTag("multi")
             .show(childFragmentManager)
 
     }
@@ -198,12 +205,11 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
             }
         }
 
-    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
-                val fragment = ImageDialog(uris as ArrayList<Uri>, id)
-                fragment.show(requireActivity().supportFragmentManager, "image")
 
-
-            }
+    override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
+        val fragment = ImageDialog(uris , id)
+        fragment.show(requireActivity().supportFragmentManager, "image")
+    }
 
 
 }
