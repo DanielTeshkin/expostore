@@ -13,9 +13,6 @@ import okhttp3.Response
 import javax.inject.Inject
 
 
-/**
- * @author Fedotov Yakov
- */
 class Interceptor @Inject constructor(
     private val context: Context,
     private val apiWorker: Lazy<ApiWorker>

@@ -22,12 +22,10 @@ class ChatsViewModel @Inject constructor(private val chatRepository: ChatReposit
         chatRepository.chats()
             .handleResult(_chats)
     }
-    fun openChatItem(name:String,username:String,id_list:Array<String>,id_image:Array<String>,product_names:Array<String>,author:String){
-        navigationTo(ChatsFragmentDirections.actionChatsFragmentToChatFragment(name,username,id_list,id_image,product_names,author))
+    fun openChatItem(){
+        navigationTo(ChatsFragmentDirections.actionChatsFragmentToChatFragment())
     }
-    fun  saveChatInfo(infoChat: InfoChat){
-        chatRepository.saveChatInfo(infoChat)
-    }
+
     override fun onStart() {
     }
 }

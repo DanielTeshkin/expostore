@@ -4,6 +4,7 @@ import com.expostore.api.base.BaseApiResponse
 import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
+import com.expostore.api.pojo.addshop.AddShopRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
@@ -36,15 +37,10 @@ import com.expostore.api.response.ProductResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.Part
-import retrofit2.http.Path
+import retrofit2.http.*
 import java.io.File
 
-/**
- * @author Fedotov Yakov
- */
+
 interface ApiWorker {
     suspend fun authorization(
         username: String,
@@ -59,6 +55,12 @@ interface ApiWorker {
 
     suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData>
 
+    suspend fun shopCreate(request: AddShopRequestData):BaseApiResponse<ShopResponse>
+
+    suspend fun editShop(request: AddShopRequestData):BaseApiResponse<ShopResponse>
+
+    suspend fun getMyShop():BaseApiResponse<ShopResponse>
+
     suspend fun fileCreate(file: MultipartBody.Part,name:RequestBody):BaseApiResponse<ResponseFile>
 
     suspend fun messageCreate(request:  MessageRequest, id: String):BaseApiResponse<MessageRequest>
@@ -69,9 +71,12 @@ interface ApiWorker {
 
     suspend fun getProfile(): BaseApiResponse<GetProfileResponseData>
 
+
+    suspend fun getReviews():BaseApiResponse<ReviewsResponse>
+
     suspend fun editProfile(request: EditProfileRequestData): BaseApiResponse<EditProfileResponseData>
 
-    suspend fun patchProfile( request: EditProfileRequest): BaseApiResponse<EditProfileRequest>
+    suspend fun patchProfile( request: EditProfileRequest): BaseApiResponse<EditResponseProfile>
 
     suspend fun getCategories(): BaseApiResponse<List<CategoryResponse>>
 
@@ -97,6 +102,8 @@ interface ApiWorker {
 
     suspend fun getTenders(): BaseApiResponse<List<Tender>>
 
+    suspend fun getMyTenders(): BaseApiResponse<List<Tender>>
+
     suspend fun getProduct(id: String): BaseApiResponse<ProductResponseData>
 
     suspend fun getReviews(id: String): BaseApiResponse<ReviewsResponseData>
@@ -110,6 +117,12 @@ interface ApiWorker {
         page: Int? = null,
         query: String? = null
     ): BaseApiResponse<BaseListResponse<ProductResponse>>
+
+    suspend fun getMyListProduct(
+        status:String?=null
+    ): BaseApiResponse<BaseListResponse<ProductResponse>>
+
+
 
     suspend fun getChats(): BaseApiResponse<List<ResponseMainChat>>
 

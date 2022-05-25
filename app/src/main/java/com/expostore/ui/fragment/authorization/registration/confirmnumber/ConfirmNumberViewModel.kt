@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import br.com.sapereaude.maskedEditText.MaskedEditText
 import com.expostore.R
-import com.expostore.api.Retrofit
+
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData

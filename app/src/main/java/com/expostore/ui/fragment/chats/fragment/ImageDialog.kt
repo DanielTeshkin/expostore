@@ -78,18 +78,13 @@ class ImageDialog(val list: MutableList<Uri>, val id:String) : DialogFragment() 
             })
         }
 
+        _binding.messageSen.setOnClickListener {
+           val path= ImageMessage().encodeBitmapList(bitmapList)
 
-
-
-
-       _binding.messageSen.setOnClickListener {
-
-         val path= ImageMessage().encodeBitmapList(bitmapList)
-           Log.i("size",path.size.toString())
            val saveId=ArrayList<String>()
-           path.map {
+           path.map {image->
             dialogViewModel.apply {
-                saveMessage(SaveImageRequestData(it!!,"png"))
+                saveMessage(SaveImageRequestData(image,"png"))
                 single_subscribe(save) {
                     when (it) {
                         is ResponseState.Loading -> _binding.progressBar.visibility=View.VISIBLE
@@ -97,11 +92,12 @@ class ImageDialog(val list: MutableList<Uri>, val id:String) : DialogFragment() 
                             saveId.add(it.item.id)
                             Toast.makeText(requireContext(), "Идёт загрузка...", Toast.LENGTH_LONG).show()
                         }
+                        is ResponseState.Error -> Toast.makeText(requireContext(),it.throwable.message , Toast.LENGTH_LONG).show()
                     }
                 }
             }
            }
-           GlobalScope.launch {
+           lifecycleScope.launch {
                delay(5000)
            sendImage(saveId)
         }}

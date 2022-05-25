@@ -16,4 +16,9 @@ class ImagePicker {
             .requestTag("multi")
 
     }
+    fun bottomSheetSingleImageSetting(): BottomSheetImage.Builder{
+        return BottomSheetImage.Builder("com.expostore.MyFileProvider")
+            .cameraButton(ButtonType.Button)
+            .galleryButton(ButtonType.Button)
+    }
 }

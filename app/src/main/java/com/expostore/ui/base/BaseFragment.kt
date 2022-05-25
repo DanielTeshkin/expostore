@@ -81,6 +81,26 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         }
     }
 
+    protected fun state(action:suspend ()->Unit){
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            action.invoke()
+        }
+    }
+
+    protected fun updateStateUI(action:suspend ()->Unit){
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                action.invoke()
+        }}
+    }
+
+
+
+    protected fun handleError(message:String){
+        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+    }
+
+
 
 
 

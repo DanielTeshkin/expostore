@@ -3,7 +3,7 @@ package com.expostore.ui.fragment.chats.dialog.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.expostore.model.chats.DataMapping.Message
 
-class DiffUtilDialog(private val oldList: MutableList<Message>, private val newList: MutableList<Message>,): DiffUtil.Callback() {
+class DiffUtilDialog(private val oldList: MutableList<Message>, private val newList: MutableList<Message>): DiffUtil.Callback() {
     override fun getOldListSize(): Int =oldList.size
 
     override fun getNewListSize(): Int =newList.size

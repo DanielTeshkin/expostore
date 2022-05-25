@@ -12,6 +12,7 @@ import com.expostore.model.profile.ProfileModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.chats.loadAvatar
 import com.expostore.ui.fragment.main.adapter.CategoriesAdapter
+import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.state.MainState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,12 +25,12 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnAddAdvertisement.setOnClickListener {
-            navigateSafety(MainFragmentDirections.actionMainFragmentToAddProductFragment())
-        }
+         viewModel.load()
         binding.ivProfile.setOnClickListener {
             navigateSafety(MainFragmentDirections.actionMainFragmentToProfileFragment())
         }
+
+
 
         binding.categories.adapter = adapter
 
@@ -38,11 +39,12 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         }
 
         adapter.onProductClickListener = {
-            navigateSafety(MainFragmentDirections.actionMainFragmentToProductFragment(it))
+            navigateSafety(MainFragmentDirections.actionMainFragmentToProductFragment())
         }
 
         viewModel.apply {
             subscribe(uiState) { handleState(it) }
+            subscribe(navigation){navigateSafety(it)}
             start()
         }
     }
@@ -58,7 +60,10 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
     }
 
     private fun handleProfile(item: ProfileModel) {
-        item.avatar?.let { binding.ivProfile.loadAvatar(it) }
+        item.avatar?.let { binding.ivProfile.loadAvatar(it.file) }
+        binding.btnAddAdvertisement.click {
+            viewModel.navigateToCreateProduct()
+        }
     }
 
     private fun handleCategories(items: List<CategoryModel>) {

@@ -8,6 +8,7 @@ import com.expostore.api.base.BaseApiResponse
 import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
+import com.expostore.api.pojo.addshop.AddShopRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
@@ -48,9 +49,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
 
-/**
- * @author Fedotov Yakov
- */
+
 class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Context) : ApiWorker {
 
     private suspend inline fun <T> processResponse(crossinline action: suspend () -> Response<T>): BaseApiResponse<T> {
@@ -97,6 +96,14 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun registration(request: SignUpRequestData): BaseApiResponse<SignUpResponseData> =
         processResponse { serverApi.registration(request) }
 
+    override suspend fun shopCreate(request: AddShopRequestData): BaseApiResponse<ShopResponse> =processResponse {
+        serverApi.shopCreate(request) }
+
+    override suspend fun editShop(request: AddShopRequestData): BaseApiResponse<ShopResponse> =processResponse {
+        serverApi.editShop(request) }
+
+    override suspend fun getMyShop(): BaseApiResponse<ShopResponse> =processResponse { serverApi.getMyShop() }
+
     override suspend fun fileCreate(
         file: MultipartBody.Part,
         name:RequestBody
@@ -115,6 +122,10 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun getProfile(): BaseApiResponse<GetProfileResponseData> =
         processResponse { serverApi.getProfile() }
 
+    override suspend fun getReviews(): BaseApiResponse<ReviewsResponse> = processResponse {
+        serverApi.getReviews()
+    }
+
     override suspend fun getCities(): BaseApiResponse<List<CityResponse>> =
         processListResponse { serverApi.getCities() }
 
@@ -123,7 +134,7 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     ): BaseApiResponse<EditProfileResponseData> =
         processResponse { serverApi.editProfile(request) }
 
-    override suspend fun patchProfile(request: EditProfileRequest): BaseApiResponse<EditProfileRequest> =
+    override suspend fun patchProfile(request: EditProfileRequest): BaseApiResponse<EditResponseProfile> =
         processResponse { serverApi.patchProfile(request) }
 
 
@@ -166,6 +177,9 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun getTenders(): BaseApiResponse<List<Tender>> =
         processListResponse { serverApi.getTenders() }
 
+    override suspend fun getMyTenders(): BaseApiResponse<List<Tender>> =
+        processResponse { serverApi.getMyTenders() }
+
     override suspend fun getProduct(
         id: String
     ): BaseApiResponse<ProductResponseData> =
@@ -185,6 +199,10 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
         query: String?
     ): BaseApiResponse<BaseListResponse<ProductResponse>> =
         processResponse { serverApi.getListProduct(page, query) }
+
+    override suspend fun getMyListProduct(status:String?): BaseApiResponse<BaseListResponse<ProductResponse>> =
+        processResponse{serverApi.getMyListProduct(status)}
+
 
     override suspend fun getChats(): BaseApiResponse<List<ResponseMainChat>> =
         processListResponse { serverApi.getChats() }

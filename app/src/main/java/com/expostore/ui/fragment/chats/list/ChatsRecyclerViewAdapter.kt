@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
 import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.ui.fragment.chats.dialog.adapter.DiffUtilDialog
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.lastMessage
 import com.expostore.ui.fragment.chats.loadAvatar
@@ -15,18 +17,16 @@ import com.expostore.utils.OnClick
 
 import kotlinx.android.synthetic.main.chat_item.view.*
 
-class ChatsRecyclerViewAdapter(private val responseMainChats: MutableList<MainChat>, val onClickListener: OnClick) : RecyclerView.Adapter<ChatsRecyclerViewAdapter.ChatsViewHolder>() {
-
+class ChatsRecyclerViewAdapter(private var chats: MutableList<MainChat>, val onClickListener: OnClick) : RecyclerView.Adapter<ChatsRecyclerViewAdapter.ChatsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatsViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.chat_item, parent, false)
         return ChatsViewHolder(v)
-
     }
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getItemViewType(position: Int): Int = position
 
-    override fun getItemCount(): Int = responseMainChats.size
+    override fun getItemCount(): Int = chats.size
 
     inner class ChatsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView = itemView.iv_chat_image
@@ -36,7 +36,7 @@ class ChatsRecyclerViewAdapter(private val responseMainChats: MutableList<MainCh
     }
 
     override fun onBindViewHolder(holder: ChatsViewHolder, position: Int) {
-        val chat = responseMainChats[position]
+        val chat = chats[position]
         val list=chat.identify()
         holder.name.text = list[1]
         holder.message.text= chat.lastMessage()
@@ -45,18 +45,10 @@ class ChatsRecyclerViewAdapter(private val responseMainChats: MutableList<MainCh
             onClickListener.onClickChat(position, chat) }
     }
 
-    fun removeAt(index: Int) {
-       responseMainChats!!.removeAt(index)
-        notifyItemRemoved(index)
-    }
-
     fun addData(listItems: MutableList<MainChat>) {
-        val size = responseMainChats.size
-        responseMainChats.clear()
-        responseMainChats.addAll(listItems)
-        val sizeNew = responseMainChats.size
-
-        notifyItemRangeChanged(size, sizeNew)
+         val diffUtil= DiffUtil.calculateDiff(DiffUtil(chats,listItems))
+        diffUtil.dispatchUpdatesTo(this)
+        chats=listItems
     }
 
 }

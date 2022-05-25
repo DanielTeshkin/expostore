@@ -2,11 +2,12 @@ package com.expostore.db
 
 import android.content.Context
 import androidx.room.*
+import com.expostore.data.ChatDao
 import com.expostore.data.InfoChat
 import com.expostore.data.InfoTypeConverter
 import com.expostore.data.LocalDataApi
 
-@Database(entities = [InfoChat::class], version = 1, exportSchema = true)
+@Database(entities = [InfoChat::class,ChatDao::class], version = 1, exportSchema = true)
 @TypeConverters(InfoTypeConverter::class)
 abstract class LocalDatabase:RoomDatabase() {
     abstract fun getDao():LocalDataApi

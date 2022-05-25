@@ -10,7 +10,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.MainActivity
 import com.expostore.R
-import com.expostore.api.Retrofit
+
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.getcategory.Category
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData

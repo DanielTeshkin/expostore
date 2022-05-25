@@ -22,24 +22,18 @@ class TabSavedSearchesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tabSavedSearchesViewModel.apply {
-
             subscribe(searchList){handleState(it)}
             subscribe(navigation){navigateSafety(it)}
         }
-
     }
-
     override fun onStart() {
         super.onStart()
         onClickSaveSearch = object :OnClickSaveSearch{
             override fun onClickSaveSearch() {
                 tabSavedSearchesViewModel.navigate()
             }
-
             override fun onClickLike(id: String) {
-                tabSavedSearchesViewModel.deleteSaveSearch(id)
-            }
-
+                tabSavedSearchesViewModel.deleteSaveSearch(id) }
         }
         tabSavedSearchesViewModel.loadList()
     }
@@ -48,10 +42,7 @@ class TabSavedSearchesFragment :
         when(state){
             is ResponseState.Success -> showList(state.item)
         }
-
-
     }
-
     private fun showList(item: List<SaveSearchModel>) {
         binding.rvSearches.apply {
             layoutManager=LinearLayoutManager(requireContext())

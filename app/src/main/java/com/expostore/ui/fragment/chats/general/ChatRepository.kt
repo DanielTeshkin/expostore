@@ -31,11 +31,6 @@ class ChatRepository @Inject constructor(private val apiWorker: ApiWorker,privat
         emit(result.toModel)
    }
 
-   fun saveChatInfo(chat:InfoChat){
-        repository.insertInfo(chat)
-    }
-    fun getChatInfo()=repository.getInfoChat()
-
     fun postMessage(id: String,body: MessageRequest)=flow{
         val result=handleOrDefault( MessageRequest()){apiWorker.messageCreate(body,id)}
         emit(result)

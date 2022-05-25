@@ -20,8 +20,8 @@ class MainViewModel @Inject constructor(
     val uiState = _uiState.asSharedFlow()
 
     override fun onStart() {
-        load()}
-    private fun load() {
+       }
+    fun load() {
         interactor.load().handleResult({ isLoading ->
             emit(_uiState, MainState.Loading(isLoading))
         },{ data ->
@@ -41,4 +41,8 @@ class MainViewModel @Inject constructor(
         }, {
             emit(_uiState, MainState.Error(it))
         }) }
+
+    fun navigateToCreateProduct(){
+        navigationTo(MainFragmentDirections.actionMainFragmentToAddProductFragment())
+    }
 }

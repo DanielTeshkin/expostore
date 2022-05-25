@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.search.main.interactor
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.expostore.api.ApiWorker
 import com.expostore.ui.base.BaseInteractor
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource

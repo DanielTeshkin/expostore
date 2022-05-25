@@ -8,7 +8,7 @@ data class ProfileModel(
     val shop: ShopModel? = ShopModel(),
     val city: String? ="",
     val lastName: String? = "",
-    val avatar: String? = "",
+    val avatar: ImageModel? =ImageModel() ,
     val isEnabledPushNotify: Boolean? = false,
     val causeBlocked: String? = "",
     val isBlocked: Boolean? = false,
@@ -18,7 +18,7 @@ data class ProfileModel(
     val isEnabledNotifyEmail: Boolean? = false,
     val email: String? = "",
     val pushToken: String? = "",
-    val username: String? = ""
+    val username: String = ""
 ) {
     data class ShopModel(
         val owner: String = "",
@@ -30,6 +30,11 @@ data class ProfileModel(
         val shoppingCenter: String = ""
     )
 }
+
+fun ProfileModel.name():String= "$firstName $lastName"
+
+
+
 
 val GetProfileResponseData.toModel: ProfileModel
     get() = ProfileModel(
@@ -44,7 +49,7 @@ val GetProfileResponseData.toModel: ProfileModel
         ),
         city ?: "",
         lastName ?: "",
-        avatar ?: "",
+        avatar?.toModel,
         isEnabledPushNotify ?: false,
         causeBlocked ?: "",
         isBlocked ?: false,

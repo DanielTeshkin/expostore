@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.R
-import com.expostore.api.Retrofit
+
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData

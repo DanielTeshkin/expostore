@@ -15,7 +15,7 @@ data class GetProfileResponseData(
 	val lastName: String? = null,
 
 	@field:SerializedName("avatar")
-	val avatar: String? = null,
+	val avatar: ImageResponse? = null,
 
 	@field:SerializedName("is_enabled_push_notify")
 	val isEnabledPushNotify: Boolean? = null,

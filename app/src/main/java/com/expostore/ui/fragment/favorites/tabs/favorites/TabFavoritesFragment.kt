@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.favorites.tabs.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -26,38 +27,24 @@ class TabFavoritesFragment :
     private lateinit var mAdapter: FavoritesProductRecyclerViewAdapter
     lateinit var navController: NavController
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
          onClickFavoriteProductListener=object : OnClickFavoriteProductListener{
             override fun onClickProduct(model: ProductModel) {
-                       tabFavoritesViewModel.navigation(model)
+                       tabFavoritesViewModel.navigation()
             }
 
             override fun onClickLike(id: String) {
                 tabFavoritesViewModel.apply {
                     update(id)
-                    updateState()
                 }
-                     viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                         tabFavoritesViewModel.state.collect {
-                             mAdapter.update(it)
-                         }
-                     }
-
             }
-
-        }
+         }
           tabFavoritesViewModel.apply {
               loadFavoriteList()
               subscribe(favoriteList){handleState(it)}
               subscribe(navigation){navigateSafety(it)}
           }
-
-
     }
 
     private fun handleState(state: ResponseState<List<FavoriteProduct>>) {
@@ -67,22 +54,14 @@ class TabFavoritesFragment :
        }
     }
 
-    private fun showFavorites(item: List<FavoriteProduct>) {
-        binding.rvFavorites.apply {
+    private fun showFavorites(item: List<FavoriteProduct>) =
+        binding.apply {
+            rvFavorites.apply {
             layoutManager=LinearLayoutManager(requireContext())
-
-            mAdapter= FavoritesProductRecyclerViewAdapter(
-                item,
+            mAdapter= FavoritesProductRecyclerViewAdapter(item,
                 onClickFavoriteProductListener,
-                requireContext()
-            )
-
-                adapter = mAdapter
-
-
-        }
-
+                requireContext())
+            adapter = mAdapter
+            progressBar4.visibility=View.GONE
+        }}
     }
-
-
-}

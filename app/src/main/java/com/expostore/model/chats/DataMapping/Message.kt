@@ -30,3 +30,7 @@ val MessageResponse.toModel:Message
 fun <T> List<T>.cast():ArrayList<T>{
   return  this as ArrayList<T>
 }
+
+fun createMessage(text:String,author:String,images:List<ImageModel>): Message {
+    return Message(text = text, author = author, images = images)
+}

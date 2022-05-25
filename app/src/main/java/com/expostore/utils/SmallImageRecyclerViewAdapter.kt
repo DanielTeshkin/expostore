@@ -7,10 +7,13 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
 import com.expostore.api.response.ImageResponse
+import com.expostore.model.chats.DataMapping.ImageChat
+import com.expostore.ui.fragment.chats.loadAvatar
+import com.expostore.ui.fragment.chats.reviewImage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.tender_create_image_item.view.*
 
-class SmallImageRecyclerViewAdapter(private var images: ArrayList<ImageResponse>) : RecyclerView.Adapter<SmallImageRecyclerViewAdapter.SmallImageImageViewHolder>() {
+class SmallImageRecyclerViewAdapter(private var images: List<ImageChat>) : RecyclerView.Adapter<SmallImageRecyclerViewAdapter.SmallImageImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallImageImageViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.tender_create_image_item, parent, false)
@@ -29,6 +32,6 @@ class SmallImageRecyclerViewAdapter(private var images: ArrayList<ImageResponse>
 
     override fun onBindViewHolder(holder: SmallImageImageViewHolder, position: Int) {
         val image = images[position]
-        if (image.file != null) Picasso.get().load(image.file).into(holder.imageView)
+        if (image.file != null) holder.imageView.reviewImage(image.file)
     }
 }

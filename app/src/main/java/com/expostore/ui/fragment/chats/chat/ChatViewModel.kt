@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.chats.chat
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.chats.general.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,13 +20,16 @@ class ChatViewModel @Inject constructor( private val repository: ChatRepository)
      val name=_name.asStateFlow()
    private val _chatId= MutableStateFlow("")
     val chatId =_chatId.asStateFlow()
+
+    private val _info=MutableStateFlow<InfoItemChat?>(InfoItemChat())
+    val info=_info.asStateFlow()
     fun loadName(name:String){
         _name.value= name
     }
-    fun changeChat(id:String){
-        _chatId.value=id
+    fun saveInfo(infoItemChat: InfoItemChat?){
+       _info.value=infoItemChat
     }
-    fun getChatInfo()=repository.getChatInfo()
+
 
     override fun onStart() {
         TODO("Not yet implemented")

@@ -3,6 +3,7 @@ package com.expostore.api
 import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
+import com.expostore.api.pojo.addshop.AddShopRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
@@ -11,10 +12,7 @@ import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
-
 import com.expostore.api.pojo.getchats.*
-
-import com.expostore.api.pojo.getcities.City
 import com.expostore.api.pojo.getcities.CityResponse
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
@@ -57,8 +55,14 @@ interface ServerApi {
     @POST("/api/sign-up/")
     suspend fun registration(@Body request: SignUpRequestData): Response<SignUpResponseData>
 
-    @POST("/api/chat/create/")
-    suspend fun chatCreate(@Body request:ResponseMainChat,@Path("id") id: String):Response<ResponseMainChat>
+    @POST("/api/shop/create/")
+    suspend fun shopCreate(@Body request:AddShopRequestData):Response<ShopResponse>
+
+    @PUT("/api/shop/")
+    suspend fun editShop(@Body request:AddShopRequestData):Response<ShopResponse>
+
+    @GET("/api/shop/create/")
+    suspend fun getMyShop():Response<ShopResponse>
 
     @Multipart
     @POST("/api/chat/file/create/")
@@ -80,7 +84,7 @@ interface ServerApi {
     suspend fun editProfile(@Body request: EditProfileRequestData): Response<EditProfileResponseData>
 
     @PATCH("/api/profile/")
-    suspend fun patchProfile(@Body request: EditProfileRequest): Response<EditProfileRequest>
+    suspend fun patchProfile(@Body request: EditProfileRequest): Response<EditResponseProfile>
 
     @GET("/api/selection/product/")
     suspend fun getCategories(): Response<List<CategoryResponse>>
@@ -122,6 +126,9 @@ interface ServerApi {
     @GET("/api/tender/")
     suspend fun getTenders(): Response<List<Tender>>
 
+    @GET("/api/tender/my")
+    suspend fun getMyTenders(): Response<List<Tender>>
+
     @GET("/api/product/{id}/")
     suspend fun getProduct(@Path("id") id: String): Response<ProductResponseData>
 
@@ -134,26 +141,37 @@ interface ServerApi {
     @GET("/api/product/")
     suspend fun getListProduct(@Query("page") page: Int?, @Query("q") query: String?): Response<BaseListResponse<ProductResponse>>
 
-    @GET("/api/chat/")
-    suspend fun getChats(): Response<List<ResponseMainChat>>
-
-    @GET("/api/chat/item/{id}/")
-    suspend fun getChat(@Path("id") id: String): Response<ItemChatResponse>
+    @GET("/api/product/my")
+    suspend fun getMyListProduct(@Query("status") status: String?): Response<BaseListResponse<ProductResponse>>
 
     @GET("/api/shop/{id}/")
     suspend fun getShop(@Path("id") id: String): Response<GetShopResponseData>
-
-    @DELETE("api/chat/{id}")
-    suspend fun deleteMainChat(@Path("id") id: String):Response<ResponseMainChat>
-
-    @DELETE("api/chat/item/{id}")
-    suspend fun deleteChat(@Path("id") id: String):Response<ItemChatResponse>
 
     @DELETE("/api/selection/user/product/{id}/")
     suspend fun deleteUserSelection(@Path("id") id:String):Response<CategoryResponse>
 
     @DELETE("/api/search/{id}/")
     suspend fun deleteSaveSearch(@Path("id") id:String) : Response<SaveSearchResponse>
+
+    @GET("/api/reviews/")
+    suspend fun getReviews():Response<ReviewsResponse>
+
+
+    //chat
+    @POST("/api/chat/create/")
+    suspend fun chatCreate(@Body request:ResponseMainChat,@Path("id") id: String):Response<ResponseMainChat>
+
+    @GET("/api/chat/")
+    suspend fun getChats(): Response<List<ResponseMainChat>>
+
+    @GET("/api/chat/item/{id}/")
+    suspend fun getChat(@Path("id") id: String): Response<ItemChatResponse>
+
+    @DELETE("api/chat/{id}")
+    suspend fun deleteMainChat(@Path("id") id: String):Response<ResponseMainChat>
+
+    @DELETE("api/chat/item/{id}")
+    suspend fun deleteChat(@Path("id") id: String):Response<ItemChatResponse>
 
 
 

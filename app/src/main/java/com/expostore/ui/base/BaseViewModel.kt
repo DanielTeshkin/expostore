@@ -103,30 +103,14 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun handleUI( action: suspend ( ) -> Unit){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                action()
-            }
-        }
-    }
-     fun <T> stateResponse(state: ResponseState<T>){
-        when(state){
-            is ResponseState.Loading -> handleLoading(state.isLoading)
-            is ResponseState.Success -> handleSuccess(state.item)
-        }
-    }
-
-     fun <T> handleSuccess(item: T):T{
-         return item
-     }
-
-
-     fun handleLoading(loading: Boolean):Boolean{
-        return loading
-    }
 
     protected fun navigationTo(directions: NavDirections) {
         emit(_navigation, directions)
     }
+
+    protected open fun back(){
+        navController.popBackStack()
+    }
+
+
 }

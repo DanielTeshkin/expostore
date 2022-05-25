@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -20,6 +21,7 @@ import com.expostore.api.pojo.getchats.UserResponse
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.DataMapping.User
 import com.expostore.model.profile.ProfileModel
+import com.expostore.ui.fragment.chats.list.ChatsRecyclerViewAdapter
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 
@@ -56,16 +58,17 @@ fun checkName(user: User):String{
 }
 
 fun MainChat.productsName():Array<String>{
-    return itemsChat!!.map { it.product?.name!! }.toTypedArray()
+    return itemsChat.map { it.product.name!! }.toTypedArray()
 }
 fun MainChat.lastMessage():String{
-    return if(itemsChat!![0].messages.size!=0) {
-        val index = itemsChat!![0].messages.lastIndex
-        if(itemsChat[0].messages[index].text!=""){
-        itemsChat[0].messages[index].text}
-        else if(itemsChat[0].messages[index].images?.size!=0)
-            " новое изображение"
-        else{"Новый файл" }
+    return if(itemsChat[0].messages.size!=0) {
+        val index = itemsChat[0].messages.lastIndex
+        when {
+            itemsChat[0].messages[index].text!="" -> {
+                itemsChat[0].messages[index].text}
+            itemsChat[0].messages[index].images?.size!=0 -> " новое изображение"
+            else -> {"Новый файл" }
+        }
     }
     else{
         "нет сообщений"
@@ -74,7 +77,7 @@ fun MainChat.lastMessage():String{
 
 fun ImageView.loadAvatar(profileModel: ProfileModel){
     when(profileModel.avatar){
-        null->Glide.with(context).load(R.mipmap.avatar).circleCrop().into(this)
+        null->Glide.with(context).load(R.drawable.avatar).circleCrop().into(this)
     else ->{Glide.with(context)
         .load(profileModel.avatar)
         .circleCrop()
@@ -93,6 +96,13 @@ fun ImageView.loadImage(url:String){
         .load(url)
         .override(300,400 )
         .transform(RoundedCorners(10))
+        .into(this)
+}
+
+fun ImageView.reviewImage(url:String){
+    Glide.with(context)
+        .load(url)
+        .centerCrop()
         .into(this)
 }
 
@@ -122,11 +132,12 @@ fun ClipData.listPath():ArrayList<Uri>{
     return list
 }
 fun ImageView.loadAvatar(url: String){
-    when(url.isBlank()){
-        true ->Glide.with(context).load(R.mipmap.avatar).circleCrop().into(this)
+    when(url.isEmpty()){
+        true ->Glide.with(context).load(R.drawable.avatar).circleCrop().placeholder(R.drawable.ic_avatar).into(this)
         else ->{Glide.with(context)
             .load(url)
             .circleCrop()
+            . placeholder(R.drawable.ic_avatar)
             .into(this)}}
 }
 
@@ -143,6 +154,22 @@ fun ProgressBar.visible(state: Boolean){
         false -> View.GONE
     }
 
+
+
+}
+fun EditText.textChange(imageFirst: ImageView,imageSecond: ImageView){
+    val stroke = this.text.toString()
+    imageFirst.visible(stroke.isNotEmpty())
+    imageSecond.visible(stroke.isEmpty())
+}
+
+fun RecyclerView.install(manager: LinearLayoutManager,adapter:RecyclerView.Adapter<RecyclerView.ViewHolder>){
+         this.layoutManager=manager
+         this.adapter=adapter
+}
+fun RecyclerView.install(manager: LinearLayoutManager,adapter:ChatsRecyclerViewAdapter){
+    this.layoutManager=manager
+    this.adapter=adapter
 }
 
 

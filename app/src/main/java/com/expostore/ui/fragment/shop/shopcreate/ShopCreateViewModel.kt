@@ -1,21 +1,52 @@
 package com.expostore.ui.fragment.shop.shopcreate
 
-import android.annotation.SuppressLint
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.widget.Button
-import androidx.lifecycle.ViewModel
+import com.expostore.api.pojo.addshop.AddShopRequestData
+import com.expostore.api.response.ShopResponse
+import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.profile.ShopInfoModel
+import com.expostore.ui.state.ResponseState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+@HiltViewModel
+class ShopCreateViewModel @Inject constructor(private val interactor: InteractorShopCreate) : BaseViewModel() {
+    private val _shopEdit= MutableSharedFlow<ResponseState<ShopResponse>>()
+    val shopEdit=_shopEdit.asSharedFlow()
+    private val _exist=MutableStateFlow<Boolean>(false)
+    val exist=_exist.asStateFlow()
+    private val _shopInfo= MutableStateFlow<ShopInfoModel>(ShopInfoModel())
+            val shopInfo=_shopInfo.asStateFlow()
 
-class ShopCreateViewModel : ViewModel() {
+    fun shopEdit(requestData: AddShopRequestData,state:Boolean)=
+        when(state){
+            true-> interactor.editShop(requestData).handleResult(_shopEdit,{navigateToProfile()})
+            false->interactor.shopCreate(requestData).handleResult(_shopEdit,{navigateToProfile()})
+        }
 
-    var name: String = ""
-    var address: String = ""
-    var shoppingCenter: String = ""
-    var office: String = ""
-
-    fun createShop(view: View){
-
+    private fun navigateToProfile(){
+        navigationTo(
+            ShopCreateFragmentDirections.actionShopCreateToProfileFragment())
     }
+
+    fun saveExist(exist:Boolean){
+        _exist.value=exist
+    }
+    fun saveInfo(shopInfoModel: ShopInfoModel){
+        _shopInfo.value=shopInfoModel
+    }
+
+
+
+
+
+
+
+    override fun onStart() {
+        TODO("Not yet implemented")
+    }
+
 
 }

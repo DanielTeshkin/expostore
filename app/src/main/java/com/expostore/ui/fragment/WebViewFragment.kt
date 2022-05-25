@@ -11,6 +11,6 @@ class WebViewFragment : BaseFragment<WebViewFragmentBinding>(WebViewFragmentBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.webView.webViewClient = WebViewClient()
-        arguments?.getString("url")?.let { binding.webView.loadUrl(it) }
+         binding.webView.loadUrl("https://expostore.ru/")
     }
 }

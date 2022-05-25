@@ -76,7 +76,7 @@ class FileDialog(val list: ArrayList<Uri>, val id:String) : DialogFragment(), Di
                     }
                 }
 
-                GlobalScope.launch {
+                lifecycleScope.launch {
                     delay(15000)
                     if(binding.send.text.isEmpty()){
 

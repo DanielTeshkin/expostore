@@ -1,16 +1,20 @@
 package com.expostore.api.pojo.gettenderlist
 
 import com.expostore.api.pojo.getcategory.ImageResponseData
+import com.expostore.api.response.AuthorResponse
+import com.expostore.api.response.ImageResponse
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.gson.annotations.SerializedName
 
 data class Tender(
-    @JsonProperty("id") val id: String,
-    @JsonProperty("title") val title: String?,
-    @JsonProperty("description") val description: String?,
-    @JsonProperty("price_from") val priceFrom: String?,
-    @JsonProperty("price_up_to") val priceUpTo: String?,
-    @JsonProperty("location") val location: String?,
-    @JsonProperty("author") val author: String,
-    @JsonProperty("images") val images: ArrayList<ImageResponseData>,
-    @JsonProperty("category") val category: ArrayList<TenderCategory>
+    @SerializedName("id") val id: String,
+    @SerializedName("title") val title: String?,
+    @SerializedName("description") val description: String?,
+    @SerializedName("price_from") val priceFrom: String?,
+    @SerializedName("price_up_to") val priceUpTo: String?,
+    @SerializedName("location") val location: String?,
+    @SerializedName("author") val author:AuthorResponse,
+    @SerializedName("date_created") val  date_created :String,
+    @SerializedName("images") val images: ArrayList<ImageResponse>,
+    @SerializedName("category") val category: ArrayList<TenderCategory>
 )

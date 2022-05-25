@@ -20,5 +20,8 @@ data class AuthorResponse(
 	val email: String? = null,
 
 	@field:SerializedName("username")
-	val username: String? = null
+	val username: String? = null,
+
+	@field:SerializedName("avatar")
+	val avatar:ImageResponse?
 )

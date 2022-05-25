@@ -1,23 +1,10 @@
 package com.expostore.ui.fragment.authorization.registration.confirmcode
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.expostore.R
-import com.expostore.api.Retrofit
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
+
+
+
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
+
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.authorization.login.LoginFragmentDirections
 import com.expostore.ui.fragment.authorization.registration.completion.CompletionFragmentDirections
@@ -48,8 +35,8 @@ class ConfirmCodeViewModel @Inject constructor(private val registration: Interac
         })
 
     }
-    fun back(){
-        navigationTo(ConfirmCodeFragmentDirections.actionConfirmNumberFragmentToNumberFragment())
+   public override fun back(){
+       navigationTo(ConfirmCodeFragmentDirections.actionConfirmNumberFragmentToNumberFragment())
     }
 
     override fun onStart() {

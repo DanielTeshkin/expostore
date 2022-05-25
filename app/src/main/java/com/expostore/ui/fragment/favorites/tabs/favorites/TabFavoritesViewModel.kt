@@ -36,8 +36,8 @@ class TabFavoritesViewModel @Inject constructor(private val repository: Favorite
             false->_state.value = true
         }
     }
-    fun navigation(model:ProductModel){
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2(model))
+    fun navigation(){
+        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2())
     }
 
     override fun onStart() {

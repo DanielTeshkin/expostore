@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.R
-import com.expostore.api.Retrofit
+
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.data.AppPreferences

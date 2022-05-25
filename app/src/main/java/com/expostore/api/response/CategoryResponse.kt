@@ -14,5 +14,9 @@ data class CategoryResponse(
 	val id: String? = null,
 
 	@field:SerializedName("products")
-	val products: List<ProductResponse>? = null
+	val products: List<ProductResponse>? = null,
+
+	@field:SerializedName("date_create")
+val date_create: String? = null
+
 )

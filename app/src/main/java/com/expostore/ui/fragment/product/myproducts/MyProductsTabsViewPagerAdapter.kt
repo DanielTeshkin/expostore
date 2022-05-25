@@ -36,9 +36,9 @@ class MyProductsTabsViewPagerAdapter(val fragment: Fragment, val context: Contex
         var result: Fragment? = null
 
         when(position){
-            0 -> { result = TabFavoritesFragment() }
-            1 -> { result = TabSavedSearchesFragment() }
-            2 -> { result = TabSelectionsFragment() }
+            0 -> { result = PublicProductFragment() }
+            1 -> { result = MyDraftFragment()}
+            2 -> { result = ArchiveFragment() }
         }
         return result!!
     }

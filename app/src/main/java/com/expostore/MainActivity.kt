@@ -40,10 +40,15 @@ class MainActivity : AppCompatActivity() {
                 R.id.chatFragment -> navigation.visibility = View.GONE
                 R.id.productFragment->navigation.visibility = View.GONE
                 R.id.profileFragment->navigation.visibility = View.GONE
-
+                R.id.EditProfileFragment ->navigation.visibility = View.GONE
+                R.id.shop_create->navigation.visibility = View.GONE
+                R.id.myProductsFragment->navigation.visibility = View.GONE
+                R.id.my_tenders->navigation.visibility = View.GONE
+                R.id.webViewFragment ->navigation.visibility = View.GONE
+                R.id.reviewsFragment ->navigation.visibility = View.GONE
+                R.id.support_fragment ->navigation.visibility = View.GONE
                 else -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
-
                 }
             }
         }
