@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,137 +26,179 @@
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back">
+        app:layout_constraintTop_toBottomOf="@+id/back"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/in_stock"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:drawableRight="@drawable/selector_checkbox"
-                android:text="@string/search_filter_fragment_in_stock"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_tl"
+
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+
+                android:layout_marginBottom="17dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toTopOf="@+id/til_city"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/production"
-                android:layout_width="0dp"
+                <EditText
+
+                    android:id="@+id/search_et"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+                    android:autofillHints=""
+
+                    android:background="@drawable/style_edit_text"
+
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="16dp"
+
+                    android:hint="@string/search_fragment_search"
+                    android:inputType="text"
+
+                    android:maxLines="1"
+                    android:paddingStart="16dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="0dp"
+
+                    android:textColorHint="#8C162344"
+                    android:textIsSelectable="false"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_city"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
-                android:drawableEnd="@drawable/selector_dropdown"
-                android:text="@string/search_filter_fragment_production"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+
+                android:layout_marginBottom="18dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:endIconDrawable="@drawable/ic_dropdown_menu"
+                app:endIconMode="dropdown_menu"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toTopOf="@+id/select"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/in_stock" />
+                app:layout_constraintTop_toBottomOf="@+id/search_tl">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/et_city"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:autofillHints=""
+                    android:background="@drawable/style_edit_text"
+                    android:hint="@string/completion_et_city_hint"
+                    android:maxLines="1"
+                    android:paddingStart="16dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="16dp"
+                    android:textColorHint="#8C162344"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/select"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:background="@drawable/style_list"
+                android:orientation="horizontal"
+
+                app:layout_constraintBottom_toTopOf="@+id/category"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_city">
+
+                <TextView
+                    android:id="@+id/select_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Выбор области на карте"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="18dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_open"
+                    tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/style_list"
+
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/price_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/select">
+
+                <TextView
+                    android:id="@+id/category_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Категория"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="18dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_open"
+                    tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
 
             <TextView
-                android:id="@+id/production_title"
+                android:id="@+id/price_title"
+
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="51dp"
-                android:text="@string/search_filter_fragment_production"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/production" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/start_days_input_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintAnimationEnabled="false"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toStartOf="@+id/end_days_input_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/production_title">
-
-                <EditText
-                    android:id="@+id/start_days"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:autofillHints=""
-                    android:background="@drawable/style_edit_text"
-                    android:hint="@string/search_filter_fragment_one_day"
-                    android:inputType="number"
-                    android:maxLength="11"
-                    android:maxLines="1"
-                    android:paddingStart="16dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="0dp"
-                    android:textColorHint="#8C162344" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/end_days_input_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintAnimationEnabled="false"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/start_days_input_layout"
-                app:layout_constraintTop_toTopOf="@+id/start_days_input_layout">
-
-                <EditText
-                    android:id="@+id/end_days"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:autofillHints=""
-                    android:background="@drawable/style_edit_text"
-                    android:hint="@string/search_filter_fragment_five_day"
-                    android:inputType="number"
-                    android:maxLength="11"
-                    android:maxLines="1"
-                    android:paddingStart="16dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="0dp"
-                    android:textColorHint="#8C162344" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <CheckBox
-                android:id="@+id/delivery"
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:button="@null"
-                android:drawableRight="@drawable/selector_checkbox"
-                android:text="@string/search_filter_fragment_delivery"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Цена   "
+
                 android:textColor="@color/big_stone"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/category"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/start_days_input_layout" />
-
-            <TextView
-                android:id="@+id/size_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="@string/search_filter_fragment_size"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/delivery" />
-
+                app:layout_constraintTop_toTopOf="@id/width_input_layout"
+                app:layout_constraintVertical_bias="0.47"
+                tools:ignore="MissingConstraints" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/width_input_layout"
@@ -168,16 +211,16 @@
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toStartOf="@+id/height_input_layout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/size_title">
+                app:layout_constraintTop_toBottomOf="@+id/price_title">
 
                 <EditText
-                    android:id="@+id/width"
+                    android:id="@+id/price_min"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:autofillHints=""
                     android:background="@drawable/style_edit_text"
-                    android:hint="@string/search_filter_fragment_width"
+                    android:hint="От"
                     android:inputType="number"
                     android:maxLength="11"
                     android:maxLines="1"
@@ -202,13 +245,13 @@
                 app:layout_constraintTop_toTopOf="@+id/width_input_layout">
 
                 <EditText
-                    android:id="@+id/height"
+                    android:id="@+id/price_max"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:autofillHints=""
                     android:background="@drawable/style_edit_text"
-                    android:hint="@string/search_filter_fragment_height"
+                    android:hint="До"
                     android:inputType="number"
                     android:maxLength="11"
                     android:maxLines="1"
@@ -219,76 +262,62 @@
                     android:textColorHint="#8C162344" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/material_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="@string/search_filter_fragment_material"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/width_input_layout" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/material_chip_group"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/material_title">
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <TextView
-                android:id="@+id/color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
-                android:text="@string/search_filter_fragment_color"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/material_chip_group" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_filter_fragment_not_selected"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/color" />
-
-            <TextView
-                android:id="@+id/select_on_map"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:drawableEnd="@drawable/ic_open"
-                android:text="@string/search_filter_fragment_select_on_map"
-                android:textColor="@color/big_stone"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/color" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/apply"
                 style="@style/BoldTextView"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="76dp"
+                android:layout_marginBottom="344dp"
                 android:backgroundTint="@drawable/selector_blue_button"
                 android:letterSpacing="0.01"
-                android:text="@string/search_filter_fragment_apply_a_filter"
+                android:text="Поиск"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/saving"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scroll" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saving"
+                style="@style/BoldTextView"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@drawable/selector_blue_button"
+                android:letterSpacing="0.01"
+                android:text="Сохранить поиск"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:cornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/select_on_map" />
+                app:layout_constraintTop_toBottomOf="@+id/apply" />
+
+            <CheckBox
+
+                android:id="@+id/in_stock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:button="@null"
+                android:drawableRight="@drawable/selector_checkbox"
+                android:text="@string/search_filter_fragment_in_stock"
+                android:textColor="@color/big_stone"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/apply"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/height_input_layout"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/save"
@@ -298,21 +327,36 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="23dp"
                 android:enabled="false"
-                android:text="@string/search_filter_fragment_save"
+                android:text="Сбросить фильтр"
                 android:textAlignment="center"
                 android:textColor="@color/dodger_blue"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/apply" />
+                app:layout_constraintTop_toBottomOf="@+id/saving"
+                app:layout_constraintVertical_bias="0.0" />
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/production_group"
-                android:layout_width="wrap_content"
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                app:layout_constraintTop_toBottomOf="@+id/in_stock"
+                android:layout_width="match_parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_filters"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="production_title, start_days_input_layout, end_days_input_layout" />
+                android:orientation="vertical"
+                android:visibility="visible"
+              />
+            </androidx.core.widget.NestedScrollView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

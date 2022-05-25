@@ -40,9 +40,14 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
         fetchLocation()
     }
 
+
+
+
     abstract fun onLocationChange(location: Location)
 
     abstract fun onLocationFind(location: Location): Boolean
+
+    abstract fun noPermission()
 
     @SuppressLint("MissingPermission")
     private fun fetchLocation() {
@@ -62,7 +67,6 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 )
             )
-
             return
         } else {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->

@@ -5,12 +5,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.expostore.R
+import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.LoginFragmentBinding
 import com.expostore.model.auth.SignInResponseDataModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::inflate) {
@@ -19,16 +22,14 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
 
     private val loginViewModel: LoginViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+          val saveToken :Show<SignInResponseDataModel> = { handleItem(it)}
         loginViewModel.apply {
             subscribe(navigation) { navigateSafety(it) }
-            subscribe(uiState) { handleState(it) }
+            subscribe(uiState) { handleState(it,saveToken) }
         }
 
         binding.btnSignInNext.setOnClickListener {
@@ -55,29 +56,15 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
         //binding.etPassword.addTextChangedListener(loginViewModel.phonePasswordTextWatcher)
     }
 
-    private fun handleState(state: ResponseState<SignInResponseDataModel>) {
-        when (state) {
-            is ResponseState.Loading -> handleLoading(state.isLoading)
-            is ResponseState.Error -> handleError(state.throwable)
-            is ResponseState.Success -> handleItem(state.item)
-        }
-    }
+
 
     private fun handleItem(item: SignInResponseDataModel) {
-        AppPreferences.getSharedPreferences(requireContext()).edit().putString("token", item.access)
-            .putString("refresh", item.refresh)
-            .apply()
-    }
-
-    private fun handleError(throwable: Throwable) {
-        // TODO: сделать отображение ошибки с сервера
-        //временная реализация
-        throwable.message?.takeIf { it.isNotEmpty() }?.let {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        runBlocking {
+            loginViewModel.saveToken(item.refresh, item.access)
         }
     }
 
-    private fun handleLoading(loading: Boolean) {
-        // TODO: сделать отображение загрузки
-    }
+
+
+
 }

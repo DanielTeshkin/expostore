@@ -81,26 +81,23 @@ class ImageDialog(val list: MutableList<Uri>, val id:String) : DialogFragment() 
         _binding.messageSen.setOnClickListener {
            val path= ImageMessage().encodeBitmapList(bitmapList)
 
-           val saveId=ArrayList<String>()
-           path.map {image->
+            val list = mutableListOf<SaveImageRequestData>()
             dialogViewModel.apply {
-                saveMessage(SaveImageRequestData(image,"png"))
+                path.map { list.add(SaveImageRequestData(it,"png"))  }
+                saveMessage(list)
                 single_subscribe(save) {
                     when (it) {
                         is ResponseState.Loading -> _binding.progressBar.visibility=View.VISIBLE
                         is ResponseState.Success -> {
-                            saveId.add(it.item.id)
+                            sendImage(it.item.id)
                             Toast.makeText(requireContext(), "Идёт загрузка...", Toast.LENGTH_LONG).show()
                         }
                         is ResponseState.Error -> Toast.makeText(requireContext(),it.throwable.message , Toast.LENGTH_LONG).show()
                     }
                 }
             }
-           }
-           lifecycleScope.launch {
-               delay(5000)
-           sendImage(saveId)
-        }}
+
+        }
     }
 
 
@@ -113,14 +110,14 @@ class ImageDialog(val list: MutableList<Uri>, val id:String) : DialogFragment() 
     }
 
 
-    private  fun sendImage(list:ArrayList<String>){
+    private  fun sendImage(list:List<String>){
         val text=_binding.send.text.toString()
          if(text.isNotEmpty()){
 
-            dialogViewModel.sentMessageOrUpdate(id, MessageRequest(text =text, images = list) )
+            dialogViewModel.sentMessageOrUpdate(id, MessageRequest(text =text, images = list as ArrayList<String>) )
         }
         else{
-             dialogViewModel.sendFileOrImage(id,FileOrImageMessage(images = list) )
+             dialogViewModel.sendFileOrImage(id,FileOrImageMessage(images = list as ArrayList<String>) )
         }
 
         dialogViewModel.apply {

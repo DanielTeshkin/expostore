@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.response.CategoryResponse
+
 import com.expostore.api.response.ProductResponse
+import com.expostore.model.category.SelectionModel
+import com.expostore.model.product.ProductModel
 
 import kotlinx.android.synthetic.main.category_item.view.*
 
-class CategoryRecyclerViewAdapter(private val product_list:MutableList<CategoryResponse>, val context: Context) :
+class CategoryRecyclerViewAdapter(private val product_list:MutableList<SelectionModel>, val context: Context) :
     RecyclerView.Adapter<CategoryRecyclerViewAdapter.CategoryViewHolder>() {
 
 
@@ -34,8 +36,8 @@ class CategoryRecyclerViewAdapter(private val product_list:MutableList<CategoryR
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-          fun bind(item:CategoryResponse){
-              val list= ArrayList<ProductResponse>()
+          fun bind(item:SelectionModel){
+              val list= ArrayList<ProductModel>()
               Log.i("qqq",itemCount.toString())
              item.products?.map { list.add(it) }
               itemView.category_name.text=item.name

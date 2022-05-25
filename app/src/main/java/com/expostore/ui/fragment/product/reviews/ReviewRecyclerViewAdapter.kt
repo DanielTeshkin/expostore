@@ -13,13 +13,15 @@ import com.expostore.api.pojo.getreviews.Review
 import com.expostore.model.product.name
 import com.expostore.model.review.ReviewModel
 import com.expostore.ui.fragment.chats.loadAvatar
+import com.expostore.utils.OnClickImage
 import com.expostore.utils.SmallImageRecyclerViewAdapter
 import kotlinx.android.synthetic.main.product_review_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReviewRecyclerViewAdapter(private val reviews: List<ReviewModel>) : RecyclerView.Adapter<ReviewRecyclerViewAdapter.ReviewViewHolder>() {
+class ReviewRecyclerViewAdapter(private val reviews: List<ReviewModel>, private val onClickImage:OnClickImage
+) : RecyclerView.Adapter<ReviewRecyclerViewAdapter.ReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.product_review_item, parent, false)
@@ -56,7 +58,7 @@ class ReviewRecyclerViewAdapter(private val reviews: List<ReviewModel>) : Recycl
         if (!review.images.isNullOrEmpty()) {
             holder.images.apply {
                 layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-                adapter = SmallImageRecyclerViewAdapter(review.images)
+                adapter = SmallImageRecyclerViewAdapter(review.images,onClickImage)
             }
         }
         else holder.images.visibility = View.GONE

@@ -1,35 +1,49 @@
 package com.expostore.ui.fragment.search.main.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.expostore.api.ApiWorker
+import com.expostore.api.ServerApi
+import com.expostore.api.base.BaseApiResponse
+import com.expostore.api.base.BaseListResponse
+import com.expostore.api.response.ProductResponse
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class ProductListPagingSource @Inject constructor(private val apiWorker: ApiWorker) :
+typealias LoaderProducts = suspend (page:Int?) -> BaseApiResponse<BaseListResponse<ProductResponse>>
+class ProductListPagingSource (private val loader:LoaderProducts) :
     PagingSource<Int, ProductModel>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductModel> {
-        //for first case it will be null, then we can pass some default value, in our case it's 1
-        val page = params.key ?: 0
-        return try {
-            val response = apiWorker.getListProduct(page.takeIf { it > 0 })
-            LoadResult.Page(
-                response.result?.results?.map { it.toModel } ?: emptyList(),
-                prevKey = if (page <= 0) null else page - 1,
-                nextKey = if (response.result?.next.isNullOrEmpty()) null else page + 1
-            )
-        } catch (exception: IOException) {
-            return LoadResult.Error(exception)
-        } catch (exception: HttpException) {
-            return LoadResult.Error(exception)
+
+
+      return  try {
+            val pageNumber = params.key?:1
+
+            val response= loader.invoke(pageNumber).result?.results?: emptyList()
+           // val response = serverApi.getListProduct(page = pageNumber,null,null,null,null,null)
+
+
+                val products = response.map { it.toModel }
+                val nextPageNumber = if (products.isEmpty()) null else pageNumber+1
+                val prevPageNumber = if (pageNumber > 1) pageNumber-1 else null
+               LoadResult.Page(products?: emptyList(), prevPageNumber, nextPageNumber)
+
+
+        } catch (e: HttpException) {
+            return LoadResult.Error(e)
+        } catch (e: Exception) {
+            return LoadResult.Error(e)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, ProductModel>): Int? {
-        return null
+        val anchorPosition = state.anchorPosition ?: return null
+        val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
+        return anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 }

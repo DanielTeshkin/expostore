@@ -14,7 +14,10 @@
         android:paddingHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+
+    </androidx.viewpager2.widget.ViewPager2>
 
     <TextView
         android:id="@+id/price"
@@ -22,20 +25,29 @@
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:textColor="@color/blue"
-        android:textSize="16sp"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="#111B33"
+        android:textColorHighlight="#111B33"
+        android:textColorHint="#111B33"
+        android:textColorLink="#111B33"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_pager"
-        tools:hint="25 000руб" />
+        tools:hint="25 000 руб" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="20dp"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="#111B33"
+        android:textColorHighlight="#111B33"
+        android:textColorHint="#111B33"
+        android:textColorLink="#111B33"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +59,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
+        android:fontFamily="@font/roboto_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
@@ -59,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +83,10 @@
         android:id="@+id/ll_search_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +98,7 @@
             style="@style/BoldTextView"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
+           android:layout_weight="1"
             android:backgroundTint="@drawable/selector_blue_button"
             android:letterSpacing="0.01"
             android:text="Позвонить"
@@ -91,25 +107,47 @@
             android:textSize="16sp"
             app:cornerRadius="10dp" />
 
-        <ImageButton
-            android:id="@+id/other"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/write"
+            style="@style/BoldTextView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
             android:layout_marginStart="10dp"
-            android:background="@drawable/other_btn_background"
-            android:src="@drawable/ic_other_btn" />
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:letterSpacing="0.01"
+            android:text="Написать"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp" />
+
+
+
+
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/like"
+        android:id="@+id/another"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="128dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/selector_like" />
+        app:srcCompat="@drawable/ic_baseline_more_vert_27" />
+
+    <CheckBox
+        android:id="@+id/like"
+        android:layout_width="25dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/selector_like"
+        android:button="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

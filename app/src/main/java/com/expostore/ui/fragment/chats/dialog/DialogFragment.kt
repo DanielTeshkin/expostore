@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.expostore.model.chats.DataMapping.ItemChat
 import com.expostore.model.chats.DataMapping.Message
 import com.expostore.model.chats.DataMapping.createMessage
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.state.ResponseState
 import com.expostore.ui.fragment.chats.dialog.adapter.DialogRecyclerViewAdapter
@@ -31,6 +33,8 @@ import kotlin.collections.ArrayList
 /**
  * @author Teshkin Daniel
  */
+
+
 @AndroidEntryPoint
 open class DialogFragment(val id: String, val author:String) : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),
     BottomSheetImage.OnImagesSelectedListener {
@@ -43,16 +47,22 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
         super.onViewCreated(view, savedInstanceState)
         subscribeViewModel()
     }
+
     override fun onStart() {
         super.onStart()
         init()
+        textListener()
     }
 
-    private fun subscribeViewModel() = viewModel.apply {
+    private fun subscribeViewModel() {
+        val load={ handleLoading()}
+        val show:Show<ItemChat> = { it?.messages?.let { messages -> loadOrUpdate(messages) } }
+        viewModel.apply {
             updateMessages(id)
-            subscribe(item) { handleState(it) }
-            subscribe(message) { handleSent(it) }
+            subscribe(item) { handleState(it,load,show) }
+            subscribe(message) { handleState(it) }
         }
+    }
 
     private fun init() {
          onClickImage = object : OnClickImage {
@@ -63,13 +73,16 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
         binding.apply {
             messageSend.click{sendMessage()}
             messageSendBtn.click{openGallery()}
-            imageView4.click{openBottomMenu()}
-        }
-        textListener()
+            imageView4.click{openBottomMenu()} }
     }
 
-    private fun textListener() =  binding.apply { etInput.textChange(messageSend, imageView4) }
-
+    private fun textListener() {
+        binding.apply {
+            etInput.apply {
+                addTextChangedListener { textChange(messageSend, imageView4) }
+            }
+        }
+    }
 
     private fun sendMessage() {
         val message = MessageRequest(text = binding.etInput.text.toString())
@@ -77,39 +90,29 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
              adapterDialog.addMessage(
                  createMessage(binding.etInput.text.toString(),author,ArrayList())
              )
-        binding.rvMessages.down(adapterDialog.itemCount)
+        binding.rvMessages.downSmooth(0)
         binding.etInput.text.clear()
     }
 
     private fun openGallery()=ImagePicker().bottomSheetImageSetting().show(childFragmentManager)
 
-    private fun handleSent(state: ResponseState<MessageRequest>) = when (state) {
-            is ResponseState.Success -> binding.rvMessages.down(adapterDialog.itemCount)
-            is ResponseState.Error -> handleError(state.throwable.message!!)
-        else -> {}
-    }
-
-    private fun handleState(state: ResponseState<ItemChat>) = when (state) {
-            is ResponseState.Loading -> handleLoading()
-            is ResponseState.Error -> handleError(state.throwable.message!!)
-            is ResponseState.Success -> loadOrUpdate(state.item.messages)
-        }
-
-    private fun handleLoading() = viewModel.instanceProgressBar.observe(viewLifecycleOwner, Observer {
+    private fun handleLoading() {
+        viewModel.instanceProgressBar.observe(viewLifecycleOwner, Observer {
             binding.progressBar2.visible(it)
         })
+    }
 
-
-    private fun loadOrUpdate(messageResponses: MutableList<Message>) = viewModel
+    private fun loadOrUpdate(messageResponses: List<Message>) = viewModel
         .instanceAdapter
         .observe(viewLifecycleOwner, Observer {
             when (it) {
-                false -> load(messageResponses)
-                true -> update(messageResponses)}})
-
+                false -> load(messageResponses as MutableList<Message>)
+                true -> update(messageResponses as MutableList<Message>)}})
 
     private fun load(messages: MutableList<Message>) {
-        manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+
         adapterDialog = DialogRecyclerViewAdapter(messages, author, requireContext(), onClickImage)
         binding.rvMessages.apply {
             install(manager,adapterDialog)
@@ -118,7 +121,6 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
         viewModel.apply { changeProgressBarInstance()
       changeAdapterInstance()}
     }
-
     private fun update(messages: MutableList<Message>) = adapterDialog.addData(messages)
     private fun openBottomMenu() = resultLauncher.launch(FileStorage(requireContext()).openStorage())
     private var resultLauncher =
@@ -139,7 +141,6 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
 
     override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) = ImageDialog(uris , id)
         .show(requireActivity().supportFragmentManager, "image")
-
     }
 
 

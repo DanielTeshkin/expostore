@@ -2,6 +2,8 @@ package com.expostore.model.chats.DataMapping
 
 import android.os.Parcelable
 import com.expostore.api.pojo.getchats.MessageResponse
+import com.expostore.databinding.MessageSentItemBinding
+import com.expostore.db.enities.chat.MessageDao
 import com.expostore.model.ImageModel
 import com.expostore.model.toModel
 import kotlinx.android.parcel.Parcelize
@@ -9,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Message(
     val id: String="",
-    val images: List<ImageModel>? = null,
+    val images: List<ImageModel>? = emptyList(),
     val text: String,
     val dateCreated: String="",
     val status: String?="",
@@ -24,8 +26,16 @@ val MessageResponse.toModel:Message
          dateCreated=dateCreated,
          status=status,
          author=author,
-         chatFiles?.map { it.toModel }
+         chatFiles.map { it.toModel }
      )
+
+val MessageDao.toModel :Message
+get() = Message(id,images.orEmpty().map { it.toModel },
+    text,
+    dateCreated,
+    status,
+    author,
+    chatFiles?.map { it.toModel })
 
 fun <T> List<T>.cast():ArrayList<T>{
   return  this as ArrayList<T>

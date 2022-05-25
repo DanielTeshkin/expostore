@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.TabSavedSearchesFragmentBinding
 import com.expostore.model.SaveSearchModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
 import com.expostore.ui.state.ResponseState
 import com.expostore.utils.OnClickSaveSearch
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,8 +22,9 @@ class TabSavedSearchesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val showList:Show<List<SaveSearchModel>> ={showList(it)}
         tabSavedSearchesViewModel.apply {
-            subscribe(searchList){handleState(it)}
+            subscribe(searchList){handleState(it,showList)}
             subscribe(navigation){navigateSafety(it)}
         }
     }
@@ -38,11 +40,7 @@ class TabSavedSearchesFragment :
         tabSavedSearchesViewModel.loadList()
     }
 
-    private fun handleState(state: ResponseState<List<SaveSearchModel>>) {
-        when(state){
-            is ResponseState.Success -> showList(state.item)
-        }
-    }
+
     private fun showList(item: List<SaveSearchModel>) {
         binding.rvSearches.apply {
             layoutManager=LinearLayoutManager(requireContext())

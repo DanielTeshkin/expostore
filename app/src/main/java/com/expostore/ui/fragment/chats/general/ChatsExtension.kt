@@ -1,10 +1,9 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package com.expostore.ui.fragment.chats
+package  com.expostore.ui.fragment.chats
 
 import android.content.ClipData
 import android.graphics.Bitmap
-import android.media.tv.TvContract
 import android.net.Uri
 import android.util.Base64
 import android.view.View
@@ -16,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.expostore.R
-import com.expostore.api.pojo.getchats.ResponseMainChat
-import com.expostore.api.pojo.getchats.UserResponse
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.DataMapping.User
 import com.expostore.model.profile.ProfileModel
@@ -31,8 +28,8 @@ import java.io.ByteArrayOutputStream
  */
 fun MainChat.imagesProduct(): Array<String> {
     return itemsChat
-        .map { it!!.product }
-        .map { it!!.images[0].file }.toTypedArray()
+        .map { it.product }
+        .map { it.images[0].file }.toTypedArray()
 }
 fun MainChat.chatsId():Array<String>{
     val list=ArrayList<String>()
@@ -47,26 +44,25 @@ fun MainChat.checkNumber(): User {
 }
 fun MainChat.identify():Array<String>{
     val user=checkNumber()
-    return  arrayOf(user.username,checkName(user),user.avatar?:"", request_user.id)
+    return  arrayOf(user.username,checkName(user),user.avatar?.file?:"", request_user.id)
 }
 fun checkName(user: User):String{
-    return if(user!!.firstName!=null){
-
-        user!!.firstName+" "+user!!.lastName
-
-    } else user!!.username!!
+    return if(user.firstName!=null&&user.lastName!=null){
+        user.firstName+" "+user.lastName
+    } else user.username
 }
 
 fun MainChat.productsName():Array<String>{
     return itemsChat.map { it.product.name!! }.toTypedArray()
 }
-fun MainChat.lastMessage():String{
-    return if(itemsChat[0].messages.size!=0) {
-        val index = itemsChat[0].messages.lastIndex
+fun MainChat.firstMessage():String{
+    return if(itemsChat[0].messages?.size!=0) {
+        val index = 0
         when {
-            itemsChat[0].messages[index].text!="" -> {
-                itemsChat[0].messages[index].text}
-            itemsChat[0].messages[index].images?.size!=0 -> " новое изображение"
+            itemsChat[0].messages?.get(index)?.text ?:"" !="" -> {
+                itemsChat[0].messages?.get(index)?.text?:""
+            }
+            itemsChat[0].messages?.get(index)?.images?.size!=0 -> " новое изображение"
             else -> {"Новый файл" }
         }
     }
@@ -75,14 +71,7 @@ fun MainChat.lastMessage():String{
     }
 }
 
-fun ImageView.loadAvatar(profileModel: ProfileModel){
-    when(profileModel.avatar){
-        null->Glide.with(context).load(R.drawable.avatar).circleCrop().into(this)
-    else ->{Glide.with(context)
-        .load(profileModel.avatar)
-        .circleCrop()
-        .into(this)}}
-}
+
 
 fun ImageView.loadTabImage(url:String){
     Glide.with(context)
@@ -121,8 +110,12 @@ fun CoroutineScope.repeat(repeatMillis: Long, action: () -> Unit) = this.launch 
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 fun RecyclerView.down(position:Int){
+    this.scrollToPosition(position)
+}
+fun RecyclerView.downSmooth(position:Int){
     this.smoothScrollToPosition(position)
 }
+
 fun ClipData.listPath():ArrayList<Uri>{
     val size=this.itemCount
     val list=ArrayList<Uri>()
@@ -137,7 +130,16 @@ fun ImageView.loadAvatar(url: String){
         else ->{Glide.with(context)
             .load(url)
             .circleCrop()
-            . placeholder(R.drawable.ic_avatar)
+            .placeholder(R.drawable.ic_avatar)
+            .into(this)}}
+}
+fun ImageView.loadChatAvatar(url: String){
+    when(url.isEmpty()){
+        true ->Glide.with(context).load(R.drawable.avatar).circleCrop().placeholder(R.drawable.ic_avatar).into(this)
+        else ->{Glide.with(context)
+            .load(url)
+            .circleCrop()
+
             .into(this)}}
 }
 

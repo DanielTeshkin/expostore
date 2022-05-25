@@ -26,7 +26,7 @@ class MyProductsViewModel @Inject constructor(private val repository: MyProducts
     }
 
     fun navigate(){
-        navigationTo(MyProductsFragmentDirections.actionMyProductsFragmentToProductFragment())
+        navigationTo(MyProductsFragmentDirections.actionMyProductsFragmentToEditMyProduct())
     }
 
     override fun onStart() {

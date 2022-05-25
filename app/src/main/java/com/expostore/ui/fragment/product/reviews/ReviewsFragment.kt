@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.product.reviews
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,8 +13,10 @@ import com.expostore.databinding.ReviewsFragmentBinding
 import com.expostore.model.review.ReviewModel
 import com.expostore.model.review.Reviews
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.fragment.chats.general.ControllerUI
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.state.ResponseState
+import com.expostore.utils.OnClickImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -27,7 +30,6 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("requestKey"){_, bundle->
             val result=bundle.getString("name")
-            Toast.makeText(requireContext(),result,Toast.LENGTH_SHORT).show()
             if(result!=null) {
                 reviewsViewModel.whoUpdate(result)
             }
@@ -44,12 +46,7 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        binding.imageButton.click {
-            reviewsViewModel.navigate()
-        }
-    }
+
     fun handleResult(state:ResponseState<Reviews>){
         when(state) {
             is ResponseState.Success -> loadReviews(state.item)
@@ -59,10 +56,17 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
 
     private fun loadReviews(reviews: Reviews) {
         val list = check(reviews)
+        val onClickImage=object :OnClickImage{
+            override fun click(bitmap: Bitmap) {
+                ControllerUI(requireContext()).openImageFragment(bitmap)
+                    .show(requireActivity().supportFragmentManager, "DialogImage")
+            }
+
+        }
         binding.apply {
             rvReviews.apply {
                 layoutManager = LinearLayoutManager(requireContext())
-                adapter = ReviewRecyclerViewAdapter(list)
+                adapter = ReviewRecyclerViewAdapter(list,onClickImage)
             }
            progressBar6.visibility = View.GONE
         }

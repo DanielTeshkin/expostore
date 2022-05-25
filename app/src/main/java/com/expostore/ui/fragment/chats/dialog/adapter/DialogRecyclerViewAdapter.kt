@@ -42,8 +42,8 @@ class DialogRecyclerViewAdapter(private var messages:MutableList<Message>,
         }
          fun addMessage(message: Message){
              val list= ArrayList<Message>()
-             list.addAll(messages)
              list.add(message)
+             list.addAll(messages)
              diffUtil=DiffUtil.calculateDiff(DiffUtilDialog(messages,list))
              diffUtil.dispatchUpdatesTo(this)
              messages=list

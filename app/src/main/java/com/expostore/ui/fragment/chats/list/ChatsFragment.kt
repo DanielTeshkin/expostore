@@ -7,11 +7,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.expostore.data.AppPreferences
 import com.expostore.databinding.ChatsFragmentBinding
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Load
 import com.expostore.ui.fragment.chats.*
+import com.expostore.ui.fragment.main.MainFragmentDirections
 import com.expostore.ui.state.ResponseState
 import com.expostore.utils.OnClick
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 /**
  * @author Teshkin Daniel
  */
+
+typealias Show = (List<MainChat>) -> Unit
 @AndroidEntryPoint
 class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::inflate) {
     private lateinit var mAdapter: ChatsRecyclerViewAdapter
@@ -29,11 +34,7 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatsViewModel.apply {
-            chatsList()
-            singleSubscribe(chats) { handleState(it)}
-            subscribe(navigation) { navigateSafety(it) }
-        }
+        subscribeViewModel()
     }
 
     override fun onStart() {
@@ -49,17 +50,26 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
                 setFragmentResult("requestKey", bundleOf("info" to result))
                 chatsViewModel.openChatItem()}} }
 
-    private fun handleState(state: ResponseState<List<MainChat>>) = when (state) {
-        is ResponseState.Error -> handleError(state.throwable.message!!)
-        is ResponseState.Success -> showChats(state.item as MutableList<MainChat>)
-        is ResponseState.Loading -> Log.i("dddf","Fff")
+   private fun subscribeViewModel(){
+        val show:Show = {showChats(it as MutableList<MainChat>)}
+        val load:Load={loading(it)}
+        chatsViewModel.apply {
+            chatsList()
+            singleSubscribe(chats) { handleState(it, load,show)}
+            subscribe(navigation) { navigateSafety(it) }
+        }
     }
-
+ fun loading(state:Boolean){
+     when(state){
+       true->  binding.progressBar3.visibility=View.VISIBLE
+         false->  binding.progressBar3.visibility=View.GONE
+     }
+ }
     private fun showChats(list: MutableList<MainChat>) {
+        if(list.isNotEmpty()) binding.progressBar3.visibility=View.GONE
         mAdapter = ChatsRecyclerViewAdapter(list, onClick)
         binding.apply {
             rvChats.install(manager,mAdapter)
-        binding.progressBar3.visibility=View.GONE
         }
     }
 }

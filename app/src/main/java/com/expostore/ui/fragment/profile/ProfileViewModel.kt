@@ -10,25 +10,28 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.expostore.api.pojo.addshop.AddShopRequestData
-import com.expostore.api.pojo.editprofile.EditProfileResponseData
+
 import com.expostore.api.pojo.getprofile.EditProfileRequest
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.response.EditResponseProfile
 import com.expostore.api.response.ShopResponse
+import com.expostore.data.repositories.ProfileRepository
 import com.expostore.model.profile.ProfileModel
-import com.expostore.model.profile.name
+
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.chats.toBase64
 import com.expostore.ui.fragment.shop.shopcreate.InteractorShopCreate
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository,private val shopInteractor: InteractorShopCreate) : BaseViewModel() {
+class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository, private val shopInteractor: InteractorShopCreate) : BaseViewModel() {
          private val _profile=MutableSharedFlow<ResponseState<ProfileModel>>()
     val profile=_profile.asSharedFlow()
     private val _title=MutableStateFlow<String>("Создать магазин")
@@ -43,37 +46,46 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
     val shopEdit=_shopEdit.asSharedFlow()
    private val _myAvatar=MutableStateFlow<String>("")
     val myAvatar=_myAvatar.asStateFlow()
-
+   private val _shop =MutableStateFlow(ProfileModel.ShopModel())
+    val shop =_shop.asStateFlow()
     private val _shopAvatar=MutableStateFlow<String>("")
     val shopAvatar=_shopAvatar.asStateFlow()
     private val _name=MutableStateFlow<String>("")
     val name=_name.asStateFlow()
     private val _username=MutableStateFlow<String>("")
     val username=_username.asStateFlow()
+    private val _profileInfo=MutableStateFlow<ProfileModel>(ProfileModel())
+            val profileInfo=_profileInfo.asStateFlow()
+
+    private val _tag=MutableStateFlow<String>("")
 
 
     fun loadProfile(){
         profileRepository.getProfile().handleResult(_profile)
     }
+
+    fun updateTag(tag:String){
+        _tag.value=tag
+    }
     fun save(model:ProfileModel){
-        if(model.shop!=null){
+
+        if(model.shop?.id!=""){
             _title.value="Редактировать магазин"
         _exist.value=true
         }
-        _myAvatar.value= model.avatar?.file ?: ""
-        _shopAvatar.value= model.shop?.image?.file ?: ""
-        _name.value=model.name()
-        _username.value=model.username
+        _profileInfo.value=model
+
     }
-    fun updateAvatar(context: Context, uri: Uri, tag: String?) {
+
+    fun updateAvatar(context: Context, uri: Uri) {
         saveImage(context, uri)
         Log.i("show", uri.toString())
         viewModelScope.launch {
             _save.collect {
                 when (it) {
                     is ResponseState.Success -> {
-                        Log.i("show", it.item.id)
-                        update(it.item, tag)
+                        Log.i("show", it.item.id[0])
+                        update(it.item.id[0], _tag.value)
                     }
                     is ResponseState.Error -> it.throwable.message?.let { it1 ->
                         Log.i("error",
@@ -82,9 +94,9 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
                 } } }
     }
 
-    private fun update(model:SaveImageResponseData,tag: String?){
+    private fun update(model:String,tag: String?){
         if(tag=="avatar"){
-        profileRepository.patchProfile(EditProfileRequest(avatar = model.id)).handleResult(_changeProfile)
+        profileRepository.patchProfile(EditProfileRequest(avatar = model)).handleResult(_changeProfile)
             viewModelScope.launch {
                 _changeProfile.collect {
                     when (it) {
@@ -92,7 +104,7 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
                     } } }
 
         }
-        else{shopInteractor.editShop(AddShopRequestData(image = model.id)).handleResult(_shopEdit) }
+        else{shopInteractor.editShop(AddShopRequestData(image = model)).handleResult(_shopEdit) }
         viewModelScope.launch {
             _shopEdit.collect {
                 when (it) {
@@ -103,6 +115,12 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
     override fun onStart() {
         TODO("Not yet implemented")
     }
+       fun removeToken(){
+           viewModelScope.launch {
+               withContext(Dispatchers.IO) {
+                   profileRepository.deleteAll() }
+           }
+       }
 
 
 
@@ -117,7 +135,9 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
                 transition: Transition<in Bitmap>?
             ) {
                  val image =resource.toBase64()
-                profileRepository.saveImage(SaveImageRequestData(image!!,"png")).handleResult(_save)
+                val list= listOf<SaveImageRequestData>(SaveImageRequestData(image!!,"png"))
+
+                profileRepository.saveImage(list).handleResult(_save)
             }
             override fun onLoadCleared(placeholder: Drawable?) {
             }

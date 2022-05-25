@@ -17,32 +17,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_specifications"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_specifications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
-        <Button
-            android:id="@+id/btn_save"
-            style="@style/BoldTextView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="20dp"
-            android:backgroundTint="@drawable/selector_blue_button"
-            android:letterSpacing="0.01"
-            android:onClick="@{specificationsVM::saveCategories}"
-            android:text="Сохранить"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:cornerRadius="10dp"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_specifications" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

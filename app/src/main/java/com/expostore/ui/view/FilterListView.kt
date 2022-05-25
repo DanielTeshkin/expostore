@@ -27,11 +27,11 @@ class FilterListView(context: Context) : LinearLayout(context) {
     private fun notifyDataSetChanged() {
         list.forEach {
             when (it.type) {
-                CharacteristicType.SINGLE_INPUT -> addSingleInputItem(it)
-                CharacteristicType.DOUBLE_INPUT -> addDoubleInputItem(it)
-                CharacteristicType.SELECT -> addSelectItem(it)
-                CharacteristicType.CHECKBOX -> addCheckboxItem(it)
-                CharacteristicType.RADIO -> addRadioItem(it)
+               //CharacteristicType.INPUT -> addSingleInputItem(it)
+               // CharacteristicType.DOUBLE_INPUT -> addDoubleInputItem(it)
+              //  CharacteristicType.SELECT -> addSelectItem(it)
+              //  CharacteristicType.CHECKBOX -> addCheckboxItem(it)
+              //  CharacteristicType.RADIO -> addRadioItem(it)
                 else -> {
                     /* no-op */
                 }
@@ -43,7 +43,7 @@ class FilterListView(context: Context) : LinearLayout(context) {
         val singleInputItem =
             SingleInptutItemBinding.inflate(LayoutInflater.from(context), this, true).apply {
                 title.text = item.name
-                start.hint = item.fieldName
+             //   start.hint = item.fieldName
             }
         addView(singleInputItem.root)
     }
@@ -52,8 +52,8 @@ class FilterListView(context: Context) : LinearLayout(context) {
         val doubleInputItem =
             DoubleInptutItemBinding.inflate(LayoutInflater.from(context), this, true).apply {
                 title.text = item.name
-                start.hint = item.leftName
-                end.hint = item.rightName
+                    //  start.hint = item.leftName
+               // end.hint = item.rightName
             }
         addView(doubleInputItem.root)
     }
@@ -79,7 +79,7 @@ class FilterListView(context: Context) : LinearLayout(context) {
         val radioItem =
             RadioItemBinding.inflate(LayoutInflater.from(context), this, true).apply {
                 title.text = item.name
-                item.listValue.forEach { chipGroup.addView(createTagChip(it)) }
+               // item.listValue.forEach { chipGroup.addView(createTagChip(it)) }
             }
         addView(radioItem.root)
     }

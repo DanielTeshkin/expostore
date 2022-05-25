@@ -2,6 +2,8 @@ package com.expostore.model.product
 
 import android.os.Parcelable
 import com.expostore.api.pojo.getcategory.Characteristic
+import com.expostore.api.pojo.getcategory.CharacteristicResponse
+import com.expostore.api.pojo.getproduct.ProductPromotion
 import com.expostore.api.response.ProductResponse
 import com.expostore.model.ImageModel
 import com.expostore.model.toModel
@@ -29,9 +31,9 @@ data class ProductModel(
     val id: String = "",
     val category: String = "",
     val isLiked: Boolean = false,
-    val promotion: String = "",
+    val promotion: PromotionModel = PromotionModel(),
     val status: String = "",
-    val communicationType: String = ""
+    val communicationType: String =""
 ):Parcelable
 
 val ProductResponse.toModel: ProductModel
@@ -55,13 +57,40 @@ val ProductResponse.toModel: ProductModel
         id ?: "",
         category ?: "",
         isLiked ?: false,
-        promotion ?: "",
+        promotion?.toModel ?: PromotionModel(),
         status ?: "",
         communicationType ?: ""
     )
+
+
 @Parcelize
-data class Character( val characteristic: String,
-                     val id: String,
-                    val value: String):Parcelable
+data class Character(val characteristic: CharacteristicModeL?= CharacteristicModeL(),
+                     val id: String?="",
+                     val char_value:String?="",
+                     val bool_value:Boolean?=false
+                    ):Parcelable
 val Characteristic.toModel:Character
-get()= Character(characteristic, id, value)
+get()= Character(id = id?:"",  characteristic = characteristic?.toModel, char_value = char_value, bool_value = bool_value)
+
+
+@Parcelize
+data class CharacteristicModeL(
+                      val id: String="",
+                      val value: List<String>? = listOf(),
+                       val name:String? ="",
+                      val type: String?=""):Parcelable
+
+
+val CharacteristicResponse.toModel :CharacteristicModeL
+get() = CharacteristicModeL(id,value,name,type)
+
+
+
+@Parcelize
+data class PromotionModel(
+    val percentageDiscount: Int?=0,
+     val valueDiscount: String?="",
+     val end_time: String?=""
+):Parcelable
+val ProductPromotion.toModel: PromotionModel
+get() = PromotionModel(percentageDiscount, valueDiscount, endTime)

@@ -3,7 +3,7 @@ package com.expostore.ui.fragment.favorites.tabs.savedsearches
 import com.expostore.api.response.SaveSearchResponse
 import com.expostore.model.SaveSearchModel
 import com.expostore.ui.base.BaseViewModel
-import com.expostore.ui.fragment.favorites.FavoriteRepository
+import com.expostore.data.repositories.FavoriteRepository
 import com.expostore.ui.fragment.favorites.FavoritesFragmentDirections
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -15,8 +15,12 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.expostore.MainActivity
+import com.expostore.model.chats.DataMapping.ItemChat
+import com.expostore.ui.fragment.chats.repeat
 import com.expostore.ui.state.ResponseState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -25,6 +29,8 @@ import kotlinx.coroutines.launch
  * @author Fedotov Yakov
  */
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
+typealias Show<T> = (T) -> Unit
+typealias Load = (Boolean) -> Unit
 
 abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<Binding>) :
     Fragment() {
@@ -49,6 +55,8 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,23 +89,64 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         }
     }
 
-    protected fun state(action:suspend ()->Unit){
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+    protected fun state(action:suspend ()->Unit) {
+        lifecycleScope.launchWhenStarted {
             action.invoke()
         }
     }
 
-    protected fun updateStateUI(action:suspend ()->Unit){
-        viewLifecycleOwner.lifecycleScope.launch{
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                action.invoke()
-        }}
+
+    
+
+    protected fun <T> handleState(state:ResponseState<T>,loader: (Boolean) -> Unit,show:Show<T>){
+        when(state){
+            is ResponseState.Error->handleError(state.throwable.message!!)
+            is ResponseState.Loading-> loader.invoke(state.isLoading)
+            is ResponseState.Success -> show.invoke(state.item)
+        }
     }
+
+
+    protected fun <T> handleState(state:ResponseState<T>,show:Show<T>){
+        when(state){
+            is ResponseState.Error->handleError(state.throwable.message!!)
+            is ResponseState.Success -> show.invoke(state.item)
+        }
+    }
+
+    protected fun <T> handleState(state:ResponseState<T>){
+        if(state is ResponseState.Error){
+         handleError(state.throwable.message!!)
+        }
+    }
+
+    protected fun <T> handleState(state:ResponseState<T>,loader:()->Unit,show:Show<T>){
+        when(state){
+            is ResponseState.Error->handleError(state.throwable.message!!)
+            is ResponseState.Loading-> loader.invoke()
+            is ResponseState.Success -> show.invoke(state.item)
+        }
+    }
+
 
 
 
     protected fun handleError(message:String){
         Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+    }
+
+    protected suspend fun <T> StateFlow<T>.subscribe(action:  (T) -> Unit) {
+        collect {
+            action.invoke(it)
+        }
+    }
+
+    protected suspend fun <T,A> subscribeOnStateFlows( a:StateFlow<T>, b:StateFlow<A>,action:  (T,A) -> Unit){
+              a.collect { param1->
+                  b.collect{ param2->
+                      action.invoke(param1,param2)
+                  }
+              }
     }
 
 
@@ -123,6 +172,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         super.onDestroy()
         _binding = null
     }
+
 
 
 

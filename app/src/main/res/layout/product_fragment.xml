@@ -23,51 +23,14 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/btn_qr_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="15dp"
-            android:background="@null"
-            android:onClick="@{productVM::navigateToQrCode}"
-            android:src="@drawable/ic_btn_qr_code"
-            app:layout_constraintEnd_toStartOf="@+id/btn_call"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/btn_call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="15dp"
-            android:background="@null"
-            android:src="@drawable/ic_btn_phone_call"
-            app:layout_constraintEnd_toStartOf="@+id/btn_more_info"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription,TouchTargetSizeCheck" />
-
-        <ImageButton
-            android:id="@+id/btn_more_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@null"
-            android:src="@drawable/ic_btn_more_info"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_call"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_call"
-            tools:ignore="ContentDescription" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/rv_product_images"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="170dp"
+            android:layout_marginTop="20dp"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:layout_marginTop="20dp"
             android:paddingStart="10dp"
             android:paddingEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,13 +101,184 @@
             android:id="@+id/tv_product_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="20dp"
             android:text="Здесь отображается полное описание к товару"
+            app:layout_constraintBottom_toTopOf="@+id/character"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_description_title" />
+
+        <LinearLayout
+            android:id="@+id/character"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/presentaton"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_description"
+            >
+
+            <TextView
+                android:id="@+id/category_name"
+                style="@style/BoldTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Характеристики "
+                android:textColor="#111B33"
+                android:textColorHint="#111B33"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/category_open"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Посмотреть"
+                android:textColor="#2677F1" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/presentaton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/instruction"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/character"
+            >
+
+            <TextView
+                android:id="@+id/presentaton_name"
+                style="@style/BoldTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Презентация"
+                android:textColor="#111B33"
+                android:textColorHint="#111B33"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/presentaton_open"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Посмотреть"
+                android:textColor="#2677F1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_note_title"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/presentaton">
+
+            <TextView
+                android:id="@+id/text_instruction"
+                style="@style/BoldTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Инструкция"
+                android:textColor="#111B33"
+                android:textColorHint="#111B33"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/open"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Посмотреть"
+                android:textColor="#2677F1" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_product_note_title"
+            style="@style/BoldTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Ваша заметка"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instruction" />
+
+        <TextView
+            android:id="@+id/tv_product_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:text="Описание заметки"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_note_title" />
+
+        <TextView
+            android:id="@+id/edit_note"
+            android:layout_width="0dp"
+
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/other_btn_background"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="Редактировать заметку"
+
+
+            android:textColor="#2677F1"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_note"
+            tools:ignore="MissingConstraints" />
+
 
         <TextView
             android:id="@+id/tv_product_rating"
@@ -157,7 +291,7 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_description" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_note" />
 
         <com.willy.ratingbar.BaseRatingBar
             android:id="@+id/rb_product_rating"
@@ -166,44 +300,20 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
 
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
 
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_rating"
             app:srb_drawableEmpty="@drawable/ic_empty_star_with_padding"
-            app:srb_drawableFilled="@drawable/ic_star_with_padding"
 
+            app:srb_drawableFilled="@drawable/ic_star_with_padding"
             app:srb_isIndicator="true"
             app:srb_numStars="5"
             app:srb_starPadding="0dp"
             app:srb_stepSize="1"
             tools:ignore="SpeakableTextPresentCheck" />
-
-        <TextView
-            android:id="@+id/tv_product_note_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="Заметка"
-            style="@style/BoldTextView"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rb_product_rating" />
-
-        <TextView
-            android:id="@+id/tv_product_note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="Описание заметки"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_note_title" />
 
         <LinearLayout
             android:id="@+id/linearLayout4"
@@ -215,7 +325,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_product_note">
+            app:layout_constraintTop_toBottomOf="@id/rb_product_rating">
 
             <TextView
                 android:id="@+id/tv_product_reviews_title"

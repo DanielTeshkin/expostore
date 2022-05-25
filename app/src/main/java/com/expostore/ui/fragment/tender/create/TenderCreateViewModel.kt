@@ -2,6 +2,9 @@ package com.expostore.ui.fragment.tender.create
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
@@ -10,9 +13,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.expostore.MainActivity
 import com.expostore.R
 
@@ -20,105 +28,102 @@ import com.expostore.api.ServerApi
 import com.expostore.api.pojo.createtender.CreateTenderRequestData
 import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.productcategory.ProductCategory
+import com.expostore.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.AppPreferences
+import com.expostore.data.repositories.MultimediaRepository
+import com.expostore.data.repositories.TenderRepository
+import com.expostore.ui.base.BaseViewModel
+
+import com.expostore.ui.fragment.chats.general.ImageMessage
+
+import com.expostore.ui.state.ResponseState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 
-@SuppressLint("StaticFieldLeak")
-class TenderCreateViewModel : ViewModel() {
+@HiltViewModel
+class TenderCreateViewModel @Inject constructor(private val multimediaRepository: MultimediaRepository, private val tenderRepository: TenderRepository) : BaseViewModel() {
 
-    lateinit var context:Context
-    lateinit var navController: NavController
 
-    var title: String = ""
-    var description: String = ""
-    var priceFrom: String = ""
-    var priceUpTo: String = ""
-    var location: String = ""
-    var imagesId: ArrayList<String> = arrayListOf()
-    var category: ArrayList<String> = arrayListOf()
-
-    var btnCancel: Button? = null
-    var btnSaveDraft: Button? = null
-    var btnSave: Button? = null
-
-    val bundle = Bundle()
-
-    val tenderTextWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        override fun afterTextChanged(s: Editable) {
-            if (title.isNotEmpty() && description.isNotEmpty() && priceFrom.isNotEmpty() && priceUpTo.isNotEmpty() && location.isNotEmpty() && imagesId.isNotEmpty()) {
-                btnCancel!!.visibility = View.VISIBLE
-                btnSaveDraft!!.visibility = View.VISIBLE
-                btnSave!!.isEnabled = true
-            }
-        }
+    private val _imageList=MutableStateFlow<MutableList<String>>(mutableListOf())
+    private val  imageList=_imageList.asStateFlow()
+    private val uriSource=MutableStateFlow<MutableList<Uri>>(mutableListOf())
+    private val save= MutableSharedFlow<ResponseState<SaveImageResponseData>>()
+    private val category= MutableStateFlow<String?>(null)
+    private val tenderResponse= MutableSharedFlow<ResponseState<CreateTenderResponseData>>()
+    override fun onStart() {
+        TODO("Not yet implemented")
     }
 
-    fun getProductCategory(view: View){
-        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
-        /*val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
+    fun createTender(name:String,location:String,count:String,priceFrom:String,priceUp:String,description:String,
+                     contact:String,
+                     context: Context){
+      //  if(uriSource.value.size>0) {
+            //saveImages(uriSource.value, context)
+          //  viewModelScope.launch {
+              //  save.collect { images ->
+                   // if (images is ResponseState.Success) {
+                      //  addPhoto(images.item.id[0])
+                       // val requestData=CreateTenderRequestData(images = imageList.value,
+                        //    title = name, location = location, count = count.toIntOrNull(), priceFrom = priceFrom, priceUpTo = priceUp,
+                      //  description = description, category =category.value, communicationType = contact )
+                     //  tenderRepository.createTender(requestData).handleResult(tenderResponse,{
+                        //   navigationTo(TenderCreateFragmentDirections.actionTenderCreateFragmentToMyTenders())
+                      // })
+                 //   }
+               // }
+           // }
+       // }
+            val requestData=CreateTenderRequestData(images = imageList.value,
+                title = name, location = location, count = count.toIntOrNull(), priceFrom = priceFrom, priceUpTo = priceUp,
+                description = description, category =category.value, communicationType = contact )
+            tenderRepository.createTender(requestData).handleResult(tenderResponse,{
+                navigationTo(TenderCreateFragmentDirections.actionTenderCreateFragmentToMyTenders())
+            })
 
-        serverApi.getProductCategory("Bearer $token").enqueue(object : Callback<ArrayList<ProductCategory>> {
-            override fun onResponse(call: Call<ArrayList<ProductCategory>>, response: Response<ArrayList<ProductCategory>>) {
-                try {
-                    if (response.isSuccessful) {
-                        navController = Navigation.findNavController(view)
-                        bundle.putParcelableArrayList("specifications",response.body())
-
-                        navController.navigate(R.id.action_tenderCreateFragment_to_specificationsFragment, bundle)
-                    } else {
-                        if (response.errorBody() != null) {
-                            val jObjError = JSONObject(response.errorBody()!!.string())
-                            val message = jObjError.getString("detail")
-                            if (message.isNotEmpty())
-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
+    }
+    private fun saveImages(list:List<Uri>,context:Context){
+        val bitmapList=ArrayList<Bitmap>()
+        list.map{ uri ->
+            Glide.with(context).asBitmap().load(uri).into(object :
+                CustomTarget<Bitmap>(){
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?){
+                    bitmapList.add(resource)
+                    val path= ImageMessage().encodeBitmapList(bitmapList)
+                    val images = mutableListOf<SaveImageRequestData>()
+                    path.map { images.add(SaveImageRequestData(it,"png")) }
+                    multimediaRepository.saveImage(images).handleResult(save)
                 }
-                catch (e: Exception){
-                    Log.d("exception", e.toString())
+                override fun onLoadCleared(placeholder: Drawable?) {
                 }
-            }
+            }) }
 
-            override fun onFailure(call: Call<ArrayList<ProductCategory>>, t: Throwable) {
-                Toast.makeText(context, (context as MainActivity).getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-            }
-        })*/
+    }
+    fun  saveCategory(id: String){
+        category.value=id
+    }
+    fun navigateToCategory(){
+        navigationTo(TenderCreateFragmentDirections.actionTenderCreateFragmentToSpecificationsFragment())
     }
 
-    fun createTender(view: View){
-        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
-        //val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-        val requestData = CreateTenderRequestData(title,description,priceFrom,priceUpTo,location,imagesId,category)
 
-        /*serverApi.createTender("Bearer $token", requestData).enqueue(object : Callback<CreateTenderResponseData> {
-            override fun onResponse(call: Call<CreateTenderResponseData>, response: Response<CreateTenderResponseData>) {
-                try {
-                    if (response.isSuccessful) {
-                        navController = Navigation.findNavController(view)
-                        navController.popBackStack()
-                    } else {
-                        if (response.errorBody() != null) {
-                            val jObjError = JSONObject(response.errorBody()!!.string())
-                            val message = jObjError.getString("detail")
-                            if (message.isNotEmpty())
-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                catch (e: Exception){
-                    Log.d("exception", e.toString())
-                }
-            }
-
-            override fun onFailure(call: Call<CreateTenderResponseData>, t: Throwable) {
-                Toast.makeText(context, (context as MainActivity).getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-            }
-        })*/
+    private fun  addPhoto(id:String){
+        _imageList.value.add(id)
     }
+    fun saveUri(image:Uri){
+        uriSource.value.add(image)
+    }
+
 }

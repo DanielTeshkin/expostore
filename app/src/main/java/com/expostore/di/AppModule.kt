@@ -1,20 +1,24 @@
 package com.expostore.di
 
-import android.app.Application
 import android.content.Context
-import androidx.room.Room
 import com.expostore.BuildConfig
 import com.expostore.api.ApiWorker
 import com.expostore.api.ApiWorkerImpl
 import com.expostore.api.Interceptor
 import com.expostore.api.ServerApi
-import com.expostore.data.LocalDataApi
+import com.expostore.db.LocalDataApi
 import com.expostore.db.LocalDatabase
+import com.expostore.db.LocalWorker
+import com.expostore.db.LocalWorkerImpl
+import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -43,8 +47,7 @@ object AppModule {
     fun provideHttpClient(@ApplicationContext context: Context, interceptor: Interceptor):OkHttpClient  {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY )
-
-      return  OkHttpClient.Builder()
+        return  OkHttpClient.Builder()
             .addInterceptor(interceptor).
               addInterceptor(loggingInterceptor)
           .connectTimeout(30, TimeUnit.SECONDS)
@@ -66,11 +69,22 @@ object AppModule {
     @Provides
     fun provideContext(@ApplicationContext context: Context): Context = context
 
+
+    @Singleton
+    @Provides
+    fun providesCoroutineScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext appContext: Context)=LocalDatabase.getDatabase(appContext)
 
     @Singleton
     @Provides
-    fun provideLocalApi(localDatabase: LocalDatabase):LocalDataApi=localDatabase.getDao()
+    fun provideLocalApi(localDatabase: LocalDatabase): LocalDataApi =localDatabase.getDao()
+
+    @Singleton
+    @Provides
+    fun provideLocalWorker(localDataApi: LocalDataApi,@ApplicationContext context: Context) : LocalWorker=
+        LocalWorkerImpl(localDataApi,context)
 }

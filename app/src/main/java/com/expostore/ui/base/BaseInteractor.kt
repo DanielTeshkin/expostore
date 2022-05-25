@@ -3,11 +3,10 @@ package com.expostore.ui.base
 import com.expostore.api.base.ApiErrorResponse
 import com.expostore.api.base.ApiResponse
 import com.expostore.api.base.BaseApiResponse
+import kotlinx.coroutines.flow.flow
 
 
-/**
- * @author Fedotov Yakov
- */
+
 open class BaseInteractor {
 
     protected suspend inline fun <T> handleOrDefault(
@@ -34,4 +33,15 @@ open class BaseInteractor {
             else -> throw IllegalStateException()
         }
     }
+    protected fun <T> operator (databaseQuery: suspend ()-> T,
+                      networkCall: suspend () ->  T,
+                      saveCallResult: suspend  (T) -> Unit) = flow{
+        val result = databaseQuery.invoke()
+        emit(result)
+        val response=networkCall.invoke()
+        saveCallResult(response)
+        emit(response)
+    }
+
+
 }

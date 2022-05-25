@@ -3,7 +3,6 @@
     android:id="@+id/checkbox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
     android:button="@null"
     android:drawableRight="@drawable/selector_checkbox"
     android:text="@string/search_filter_fragment_delivery"

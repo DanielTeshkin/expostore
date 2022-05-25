@@ -19,14 +19,6 @@ class SplashViewModel @Inject constructor(
 
 
     override fun onStart() {
-        interactor.fetchUser().handleResult(onSuccess =  {
-            navController.navigate(R.id.action_splashFragment_to_mainFragment)
-        }, onError =  {
-            if (AppPreferences.getSharedPreferences(context).getString("token", "")
-                    .isNullOrEmpty()
-            ) {
-                navController.navigate(R.id.action_splashFragment_to_loginFragment)
-            }
-        })
+        navController.navigate(R.id.action_splashFragment_to_mainFragment)
     }
 }

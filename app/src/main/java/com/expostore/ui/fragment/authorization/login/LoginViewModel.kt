@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.api.ServerApi
@@ -20,6 +21,8 @@ import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
@@ -65,6 +68,13 @@ class LoginViewModel @Inject constructor(
                 navigationTo(LoginFragmentDirections.actionLoginFragmentToMainFragment())
             })
     }
+
+   fun saveToken(refresh:String,access:String) =
+       viewModelScope.launch {
+           interactor.saveToken(refresh, access)
+       }
+
+
 
     fun confirmNumber(view: View, phone: String) {
         val request = ConfirmNumberRequestData(phone)

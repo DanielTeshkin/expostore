@@ -1,10 +1,8 @@
 package com.expostore.ui.fragment.chats.chat
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseViewModel
-import com.expostore.ui.fragment.chats.general.ChatRepository
+import com.expostore.data.repositories.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

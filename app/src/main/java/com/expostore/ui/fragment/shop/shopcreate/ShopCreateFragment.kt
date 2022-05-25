@@ -3,6 +3,7 @@ package com.expostore.ui.fragment.shop.shopcreate
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -31,7 +32,8 @@ class ShopCreateFragment :
             val model = ShopInfoModel(
                 address = info!!.address,
                 name = info.name,
-                shopping_center = info.shopping_center
+                shopping_center = info.shopping_center,
+                floor_and_office_number = info.floor_and_office_number
             )
             shopCreateViewModel.apply {
                 saveInfo(model)
@@ -63,12 +65,12 @@ class ShopCreateFragment :
         }
         binding.apply {
 
-
             btnSave.click {
                 val request = returnShopModel(
                     binding.etShopName.text.toString(),
                     binding.etShopAddress.text.toString(),
-                    binding.etShopShoppingCenter.text.toString() + "" + " " + binding.etShopOffice.text.toString()
+                    binding.etShopShoppingCenter.text.toString(),
+                    binding.etShopOffice.text.toString()
                 )
                 state {
                     editRequest(request)
@@ -84,7 +86,9 @@ class ShopCreateFragment :
             binding.apply {
                 etShopAddress.setText(it.address)
                 etShopName.setText(it.name)
-                etShopShoppingCenter.setText(it.shopping_center)} }
+                etShopShoppingCenter.setText(it.shopping_center)
+                 etShopOffice.setText(it.floor_and_office_number)
+            } }
     }
 
     private suspend fun editRequest( requestData: AddShopRequestData){

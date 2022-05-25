@@ -13,12 +13,12 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true"
+
             app:destination="@id/openFragment"/>
         <action
             android:id="@+id/action_splashFragment_to_mainFragment"
             app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true"
+
             app:destination="@id/mainFragment"/>
     </fragment>
 
@@ -29,9 +29,13 @@
         tools:layout="@layout/open_fragment" >
         <action
             android:id="@+id/action_openFragment_to_loginFragment"
+            app:popUpTo="@id/nav_graph"
+
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_openFragment_to_numberFragment"
+            app:popUpTo="@id/nav_graph"
+
             app:destination="@id/numberFragment" />
         <action
             android:id="@+id/action_openFragment_to_mainFragment"
@@ -77,12 +81,18 @@
         tools:layout="@layout/detail_category_fragment" >
         <action
             android:id="@+id/action_detailCategoryFragment_to_productFragment"
-            app:destination="@id/productFragment" />
-        <argument
-            android:name="category"
-            android:defaultValue="@null"
-            app:argType="com.expostore.model.category.CategoryModel"
-            app:nullable="true"/>
+            app:destination="@id/productFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_detailCategoryFragment_to_chatFragment"
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/numberFragment"
@@ -170,27 +180,35 @@
         tools:layout="@layout/profile_fragment">
         <action
             android:id="@+id/action_profileFragment_to_myProductsFragment"
+
             app:destination="@id/myProductsFragment" />
         <action
             android:id="@+id/action_profileFragment_to_EditProfileFragment"
+
             app:destination="@id/EditProfileFragment" />
         <action
             android:id="@+id/action_profileFragment_to_shop_create"
+
             app:destination="@id/shop_create" />
         <action
             android:id="@+id/action_profileFragment_to_reviewsFragment"
+
             app:destination="@id/reviewsFragment" />
         <action
             android:id="@+id/action_profileFragment_to_webViewFragment"
+
             app:destination="@id/webViewFragment" />
         <action
             android:id="@+id/action_profileFragment_to_support_fragment"
+
             app:destination="@id/support_fragment" />
         <action
             android:id="@+id/action_profileFragment_to_my_tenders"
+
             app:destination="@id/my_tenders" />
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
+
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
@@ -203,6 +221,13 @@
         <action
             android:id="@+id/action_searchFragment_to_searchFilterFragment"
             app:destination="@id/searchFilterFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_selection_create"
+            app:destination="@id/selection_create" />
+
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -231,6 +256,18 @@
         <action
             android:id="@+id/action_tenderListFragment_to_tenderCreateFragment"
             app:destination="@id/tenderCreateFragment" />
+        <action
+            android:id="@+id/action_tenderListFragment_to_openFragment"
+            app:destination="@id/openFragment" />
+        <action
+            android:id="@+id/action_tenderListFragment_to_searchFilterFragment"
+            app:destination="@id/searchFilterFragment" />
+        <action
+            android:id="@+id/action_tenderListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_tenderListFragment_to_tender_item"
+            app:destination="@id/tender_item" />
     </fragment>
     <fragment
         android:id="@+id/tenderCreateFragment"
@@ -240,12 +277,25 @@
         <action
             android:id="@+id/action_tenderCreateFragment_to_specificationsFragment"
             app:destination="@id/specificationsFragment" />
+        <action
+            android:id="@+id/action_tenderCreateFragment_to_my_tenders"
+            app:destination="@id/my_tenders" />
     </fragment>
     <fragment
         android:id="@+id/specificationsFragment"
         android:name="com.expostore.ui.fragment.specifications.SpecificationsFragment"
         android:label="specifications_fragment"
-        tools:layout="@layout/specifications_fragment" />
+        tools:layout="@layout/specifications_fragment" >
+        <action
+            android:id="@+id/action_specificationsFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_specificationsFragment_to_searchFilterFragment"
+            app:destination="@id/searchFilterFragment" />
+        <action
+            android:id="@+id/action_specificationsFragment_to_tenderCreateFragment"
+            app:destination="@id/tenderCreateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productFragment"
         android:name="com.expostore.ui.fragment.product.ProductFragment"
@@ -291,12 +341,16 @@
         <action
             android:id="@+id/action_chatsFragment_to_chatFragment"
             app:destination="@id/chatFragment"
-            app:enterAnim="@anim/slide_out"
-            app:exitAnim="@anim/slide_out"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
 
-            >
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
 
         </action>
+        <action
+            android:id="@+id/action_chatsFragment_to_openFragment"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -312,8 +366,8 @@
         android:label="my_products_fragment"
         tools:layout="@layout/my_products_fragment" >
         <action
-            android:id="@+id/action_myProductsFragment_to_productFragment"
-            app:destination="@id/productFragment" />
+            android:id="@+id/action_myProductsFragment_to_edit_my_product"
+            app:destination="@id/edit_my_product" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -332,11 +386,28 @@
         <action
             android:id="@+id/action_addProductFragment_to_specificationsFragment"
             app:destination="@id/specificationsFragment" />
+        <action
+            android:id="@+id/action_addProductFragment_to_edit_my_product"
+            app:destination="@id/edit_my_product" />
+        <action
+            android:id="@+id/action_addProductFragment_to_myProductsFragment"
+            app:destination="@id/myProductsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFilterFragment"
         android:name="com.expostore.ui.fragment.search.filter.SearchFilterFragment"
-        android:label="SearchFilterFragment" />
+        android:label="SearchFilterFragment" >
+        <action
+            android:id="@+id/action_searchFilterFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_searchFilterFragment_to_tenderListFragment"
+            app:destination="@id/tenderListFragment" />
+        <action
+            android:id="@+id/action_searchFilterFragment_to_specificationsFragment"
+            app:destination="@id/specificationsFragment" />
+
+    </fragment>
     <fragment
         android:id="@+id/EditProfileFragment"
         android:name="com.expostore.ui.fragment.profile.profile_edit.EditProfileFragment"
@@ -376,6 +447,39 @@
                 android:id="@+id/action_my_tenders_to_tenderCreateFragment"
                 app:destination="@id/tenderCreateFragment" />
         </fragment>
+    <fragment
+        android:id="@+id/edit_my_product"
+        android:name="com.expostore.ui.fragment.product.myproducts.edit.EditMyProductFragment"
+        android:label="support"
+        tools:layout="@layout/edit_my_product_fragment"
+        >
+        <action
+            android:id="@+id/action_edit_my_product_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_edit_my_product_to_myProductsFragment"
+            app:destination="@id/myProductsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tender_item"
+        android:name="com.expostore.ui.fragment.tender.item.TenderItemFragment"
+        android:label="support"
+        tools:layout="@layout/tender_item" >
+        <action
+            android:id="@+id/action_tender_item_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+<fragment
+    android:id="@+id/selection_create"
+    android:name="com.expostore.ui.fragment.category.personal.create.CreatePersonalSelectionFragment"
+    android:label="support"
+    tools:layout="@layout/create_personal_selection_fragment">
+
+    <action
+        android:id="@+id/action_selection_create_to_searchFragment"
+        app:destination="@id/searchFragment" />
+</fragment>
 
 
 </navigation>

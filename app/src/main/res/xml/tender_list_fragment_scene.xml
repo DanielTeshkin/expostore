@@ -38,6 +38,12 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"/>
+        <Constraint
+            motion:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/constraintLayout2"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/search_map_view" />
 
     </ConstraintSet>
 
@@ -66,5 +72,8 @@
             motion:layout_constraintBottom_toBottomOf="parent"/>
 
     </ConstraintSet>
+    <ConstraintSet
+        android:id="@+id/constraint"
+        motion:deriveConstraintsFrom="@+id/start" />
 
 </MotionScene>

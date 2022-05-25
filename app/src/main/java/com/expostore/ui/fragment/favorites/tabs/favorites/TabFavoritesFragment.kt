@@ -8,10 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.expostore.api.request.NoteRequest
 import com.expostore.databinding.TabFavoritesFragmentBinding
 import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
 import com.expostore.ui.state.ResponseState
 
 import com.expostore.utils.FavoritesProductRecyclerViewAdapter
@@ -38,27 +40,27 @@ class TabFavoritesFragment :
                 tabFavoritesViewModel.apply {
                     update(id)
                 }
+
             }
+
+             override fun createNote(id: String, text: String) {
+                tabFavoritesViewModel.updateOrCreateNote(id, NoteRequest(text = text))
+             }
          }
           tabFavoritesViewModel.apply {
               loadFavoriteList()
-              subscribe(favoriteList){handleState(it)}
-              subscribe(navigation){navigateSafety(it)}
-          }
+              val show:Show<List<FavoriteProduct>> = {showFavorites(it)}
+              subscribe(favoriteList){handleState(it,show)}
+              subscribe(navigation){navigateSafety(it)} }
     }
 
-    private fun handleState(state: ResponseState<List<FavoriteProduct>>) {
-       when(state){
-           is ResponseState.Success ->showFavorites(state.item)
-           is ResponseState.Error->Toast.makeText(requireContext(),state.throwable.message,Toast.LENGTH_LONG).show()
-       }
-    }
+
 
     private fun showFavorites(item: List<FavoriteProduct>) =
         binding.apply {
             rvFavorites.apply {
             layoutManager=LinearLayoutManager(requireContext())
-            mAdapter= FavoritesProductRecyclerViewAdapter(item,
+            mAdapter= FavoritesProductRecyclerViewAdapter(item as MutableList<FavoriteProduct>,
                 onClickFavoriteProductListener,
                 requireContext())
             adapter = mAdapter

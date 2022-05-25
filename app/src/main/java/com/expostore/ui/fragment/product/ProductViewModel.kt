@@ -15,42 +15,26 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.MainActivity
 import com.expostore.R
+import com.expostore.model.product.ProductModel
+import com.expostore.ui.base.BaseViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-class ProductViewModel : ViewModel() {
+class ProductViewModel : BaseViewModel() {
+    private val _product=MutableStateFlow<ProductModel>(ProductModel())
+    val product=_product.asStateFlow()
 
-    @SuppressLint("StaticFieldLeak")
-    lateinit var context: Context
-    lateinit var navController: NavController
-    lateinit var id: String
-    lateinit var phoneSeller: String
-    lateinit var shopId: String
-    var bundle = Bundle()
 
-    fun navigateToReviews(view: View){
-        bundle.putString("id",id)
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_productFragment_to_reviewsFragment,bundle)
+    override fun onStart() {
+        TODO("Not yet implemented")
+    }
+    fun saveProduct(item:ProductModel){
+        _product.value=item
+    }
+    fun navigation(){
+
     }
 
-    fun navigateToAddReview(view: View){
-        bundle.putString("id",id)
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_productFragment_to_addReviewFragment,bundle)
-    }
 
-    fun navigateBack(view: View){
-        navController = Navigation.findNavController(view)
-        navController.popBackStack()
-    }
 
-    fun navigateToQrCode(view: View){
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_productFragment_to_productQrCodeFragment)
-    }
-
-    fun navigateToShop(view: View){
-        bundle.putString("shopId",shopId)
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_productFragment_to_shopFragment, bundle)
-    }
 }

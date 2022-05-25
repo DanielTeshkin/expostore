@@ -9,9 +9,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class AuthorModel(
     val city: String? = "",
-    val lastName: String = "",
+    val lastName: String? = null,
     val id: String = "",
-    val firstName: String = "",
+    val firstName: String? = null,
     val email: String = "",
     val username: String = "",
     val avatar:ImageModel = ImageModel()
@@ -19,16 +19,16 @@ data class AuthorModel(
 ): Parcelable
 
 fun AuthorModel.name():String{
-   return if(lastName!=null&&firstName!=null) "$firstName $lastName"
-    else{ username }
+   return if(firstName!=null) "$firstName $lastName"
+    else username
 }
 
 val AuthorResponse.toModel: AuthorModel
     get() = AuthorModel(
         city ?: "",
-        lastName ?: "",
+        lastName ,
         id ?: "",
-        firstName ?: "",
+        firstName ,
         email ?: "",
         username ?: "",
         avatar?.toModel ?:  ImageModel()

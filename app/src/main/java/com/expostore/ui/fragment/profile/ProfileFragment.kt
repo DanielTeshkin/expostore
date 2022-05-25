@@ -1,11 +1,13 @@
 package com.expostore.ui.fragment.profile
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -17,38 +19,38 @@ import com.expostore.model.profile.name
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
-import com.expostore.ui.fragment.chats.general.ImagePicker
+
 import com.expostore.ui.fragment.profile.profile_edit.click
 
 import com.expostore.ui.state.ResponseState
+import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBinding::inflate),
-    BottomSheetImage.OnImagesSelectedListener {
+class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBinding::inflate)
+   {
 
     private val profileViewModel: ProfileViewModel by viewModels()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         profileViewModel.apply {
             loadProfile()
             subscribe(profile) { handleResult(it) }
             subscribe(navigation) { navigateSafety(it) }
+
         }
+       subscribeUI()
+       }
 
-    }
 
-    override fun onStart() {
-        super.onStart()
-        connectUI()
 
-    }
+
 
     private fun handleResult(state: ResponseState<ProfileModel>) {
         when (state) {
+            is ResponseState.Loading->Log.i("fff","ff")
             is ResponseState.Success -> handleSuccess(state.item)
             is ResponseState.Error -> Toast.makeText(
                 requireContext(),
@@ -60,13 +62,27 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
     }
 
     private fun handleSuccess(profileModel: ProfileModel) {
-        controllerData(profileModel)
-    }
-
-    private fun controllerData(profileModel: ProfileModel){
         saveData(profileModel)
         setClickListeners(profileModel)
     }
+
+       private fun subscribeUI(){
+           binding.apply {
+               subscribe(profileViewModel.profileInfo){
+                   Log.i("avatar",it.name())
+                   val image=ivAvatar
+                   image.loadAvatar(it.avatar?.file?:"")
+                   tvNumber.text = it.username
+                   tvName.text = it.name()
+                   it.shop?.image?.let { it1 -> ivBackground.loadBanner(it1.file) }
+               }
+
+               profileViewModel.apply {
+                   subscribe(title) { btnShop.text = it }
+               }
+           }
+       }
+
 
     private fun saveData(profileModel: ProfileModel) {
         profileViewModel.apply {
@@ -75,30 +91,13 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
 
     }
 
-    private fun connectUI() {
-        binding.apply {
-            val image=ivAvatar
-            profileViewModel.apply {
-                    state {
-                    myAvatar.collect { image.loadAvatar(it) }}
-                    state {
-                    username.collect { tvNumber.text = it }}
-                    state {
-                    name.collect { tvName.text = it }}
-                    state {
-                    title.collect { btnShop.text = it }}
-                    state {
-                    shopAvatar.collect { ivBackground.loadBanner(it) } } }}
-
-    }
-
-   private fun setClickListeners(profileModel: ProfileModel){
+       private fun setClickListeners(profileModel: ProfileModel){
         val shop = profileModel.shop
            binding.apply {
                btnShop.click {
                    state {
                        profileViewModel.exist.collect {
-                           val info = ShopInfoModel(shop!!.name, shop.shoppingCenter, shop.address, it)
+                           val info = ShopInfoModel(shop!!.name, shop.shoppingCenter, shop.address,shop.floor_and_office_number, it)
                            setFragmentResult("requestKey", bundleOf("name" to info))
                            profileViewModel.navigateShop()
                        }
@@ -146,23 +145,44 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
                    profileViewModel.navigateToWeb()
                }
                logout.click {
-                   AppPreferences
-                       .getSharedPreferences(requireContext())
-                       .edit().remove("token")
-                       .remove("refresh")
-                       .commit()
-                   profileViewModel.navigateToLogin()
-
+                   profileViewModel.apply {
+                       removeToken()
+                       navigateToLogin() }
                }
            }
     }
 
     private fun openGallery(tag: String) {
-            ImagePicker().bottomSheetSingleImageSetting().requestTag(tag).show(childFragmentManager)
+       profileViewModel.updateTag(tag)
+       ImagePicker.with(this)
+            .crop()
+            .compress(1024)
+            .maxResultSize(1080, 1080)
+            .createIntent { intent -> startForProfileImageResult.launch(intent) }
         }
 
-        override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
-            profileViewModel.updateAvatar(requireContext(), uris[0], tag)
+
+
+
+    private val startForProfileImageResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result  ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+
+                    val fileUri = data?.data!!
+                    profileViewModel.updateAvatar(requireContext(), fileUri)
+
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Вы вышли", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
     }

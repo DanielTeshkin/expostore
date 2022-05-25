@@ -1,203 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <ProgressBar
-        android:id="@+id/progressBar7"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/shop_title"
-        style="@style/BoldTextView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Магазин"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/shop_description"
-        style="@style/BoldTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Заполните информацию о магазине"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_title" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_shop_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shop_description">
+        <ProgressBar
+            android:id="@+id/progressBar7"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.468"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.57" />
 
-        <EditText
-            android:id="@+id/et_shop_name"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+        <TextView
+            android:id="@+id/shop_title"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:autofillHints=""
-            android:background="@drawable/style_edit_text"
-            android:hint="Название"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="16dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="0dp"
-            android:textColorHint="#8C162344"
-            tools:ignore="LabelFor,TextFields" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Магазин"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_shop_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_shop_name">
-
-        <EditText
-            android:id="@+id/et_shop_address"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+        <TextView
+            android:id="@+id/shop_description"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:autofillHints=""
-            android:background="@drawable/style_edit_text"
-            android:hint="Адрес"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="16dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="0dp"
-            android:textColorHint="#8C162344"
-            tools:ignore="LabelFor,TextFields" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Заполните информацию о магазине"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shop_title" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_shop_shopping_center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_shop_address">
-
-        <EditText
-            android:id="@+id/et_shop_shopping_center"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_shop_name"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:autofillHints=""
-            android:background="@drawable/style_edit_text"
-            android:hint="Название ТЦ"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="16dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shop_description">
 
-            android:textColorHint="#8C162344"
-            tools:ignore="LabelFor,TextFields" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/et_shop_name"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:autofillHints=""
+                android:background="@drawable/style_edit_text"
+                android:hint="Название"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingTop="0dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="0dp"
+                android:textColorHint="#8C162344"
+                tools:ignore="LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_shop_office"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_shop_shopping_center">
-
-        <EditText
-            android:id="@+id/et_shop_office"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_shop_address"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:autofillHints=""
-            android:background="@drawable/style_edit_text"
-            android:hint="Офис, этаж"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="16dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_shop_name">
 
-            android:textColorHint="#8C162344"
-            tools:ignore="LabelFor,TextFields" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/et_shop_address"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:autofillHints=""
+                android:background="@drawable/style_edit_text"
+                android:hint="Адрес"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingTop="0dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="0dp"
+                android:textColorHint="#8C162344"
+                tools:ignore="LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btn_save"
-        style="@style/BoldTextView"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@drawable/selector_blue_button"
-        android:letterSpacing="0.01"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_shop_shopping_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_shop_address">
 
-        android:text="Сохранить"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/et_shop_shopping_center"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:autofillHints=""
+                android:background="@drawable/style_edit_text"
+                android:hint="Название ТЦ"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingTop="0dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="0dp"
 
+                android:textColorHint="#8C162344"
+                tools:ignore="LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_shop_office"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_shop_shopping_center">
+
+            <EditText
+                android:id="@+id/et_shop_office"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:autofillHints=""
+                android:background="@drawable/style_edit_text"
+                android:hint="Офис, этаж"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingTop="0dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="0dp"
+
+                android:textColorHint="#8C162344"
+                tools:ignore="LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/BoldTextView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:letterSpacing="0.01"
+
+            android:text="Сохранить"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_shop_office"
+            app:layout_constraintVertical_bias="1.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

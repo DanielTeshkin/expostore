@@ -70,7 +70,7 @@ class FileStorage(val context: Context) {
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, imageOutStream)
         imageOutStream.close()
-        Toast.makeText(context, "save", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Файл сохранен", Toast.LENGTH_LONG).show()
 
     }
 
@@ -82,7 +82,7 @@ class FileStorage(val context: Context) {
             }
             mimeType?.let {
                 val file =
-                    createTmpFileFromUri(context, FileUri, "лол", ".$it")
+                    createTmpFileFromUri(context, FileUri, "file", ".$it")
                 file?.let { Log.d("image Url = ", file.absolutePath) }
                 return file
             }
@@ -91,18 +91,14 @@ class FileStorage(val context: Context) {
     }
 
     private fun getMimeType(context: Context, uri: Uri): String? {
-        //Check uri format to avoid null
+
         val extension: String? = if (uri.scheme == ContentResolver.SCHEME_FILE) {
-            //If scheme is a content
             val mime = MimeTypeMap.getSingleton()
             mime.getExtensionFromMimeType(context.contentResolver.getType(uri))
         } else {
-            //If scheme is a File
-            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
             MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(File(uri.lastPathSegment)).toString())
         }
-        return extension
-    }
+        return extension }
 
     private fun createTmpFileFromUri(
         context: Context,
@@ -137,7 +133,6 @@ class FileStorage(val context: Context) {
 
     fun request(uri: Uri): Pair<RequestBody, MultipartBody.Part> {
         val file=getImageFromUri(uri)
-        Log.i("what",file?.exists().toString())
         val requestBody =
             file!!.name.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val multipartBody = MultipartBody.Part.createFormData(

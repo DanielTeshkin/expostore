@@ -63,7 +63,7 @@ class AddReviewFragment :
         val bmp = Bitmap.createBitmap(100, 100, conf)
         images = arrayListOf(bmp)
 
-        mAdapter = TenderCreateImageRecyclerViewAdapter(images)
+            // mAdapter = TenderCreateImageRecyclerViewAdapter(images)
         binding.rvReviewImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
@@ -106,7 +106,7 @@ class AddReviewFragment :
     private fun saveImage(image: String) {
         val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
         //val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-        val requestData = SaveImageRequestData(image, "jpeg")
+       // val requestData = SaveImageRequestData(image, "jpeg")
 
        /* serverApi.saveImage("Bearer $token", requestData).enqueue(object :
             Callback<SaveImageResponseData> {
@@ -147,7 +147,7 @@ class AddReviewFragment :
         addReviewViewModel.imagesId.add(id)
         images.add(decodeImage(image))
 
-        mAdapter = TenderCreateImageRecyclerViewAdapter(images)
+        //mAdapter = TenderCreateImageRecyclerViewAdapter(images)
         binding.rvReviewImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter

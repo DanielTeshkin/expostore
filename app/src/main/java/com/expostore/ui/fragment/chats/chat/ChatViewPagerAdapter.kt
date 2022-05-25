@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.expostore.R
 import com.expostore.ui.fragment.chats.dialog.DialogFragment
@@ -34,6 +36,7 @@ class ChatViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
+
         return DialogFragment(id[position],  author)
     }
 }

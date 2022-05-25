@@ -50,7 +50,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={tenderCreateVM.title}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -61,7 +61,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/style_list"
-            android:onClick="@{tenderCreateVM::getProductCategory}"
+
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +119,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={tenderCreateVM.priceUpTo}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -167,7 +167,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={tenderCreateVM.priceFrom}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -215,7 +215,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={tenderCreateVM.priceFrom}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -260,7 +260,7 @@
                 android:paddingTop="0dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="0dp"
-                android:text="@={tenderCreateVM.location}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -296,7 +296,7 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
-                android:text="@={tenderCreateVM.description}"
+
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -314,6 +314,80 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_tender_description" />
+
+        <LinearLayout
+            android:id="@+id/ll_add_product_connections"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/style_list"
+
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_tender_images">
+
+            <TextView
+                android:id="@+id/tv_add_product_connections_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/selector_dropdown"
+                android:text="Способы связи"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+
+        </LinearLayout>
+
+
+
+            <CheckBox
+                android:id="@+id/message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableRight="@drawable/selector_checkbox"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Сообщения"
+                android:textColor="@color/big_stone"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/call"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ll_add_product_connections" />
+
+            <CheckBox
+                android:id="@+id/call"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:button="@null"
+                android:checked="true"
+                android:drawableRight="@drawable/selector_checkbox"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Сообщения и звонки"
+                android:textColor="@color/big_stone"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/message" />
+
+
+
+
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
@@ -333,7 +407,7 @@
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_tender_images"
+            app:layout_constraintTop_toBottomOf="@+id/call"
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
