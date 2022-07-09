@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.SaveSelectionBinding
+import com.expostore.model.category.CategoryModel
+import com.expostore.utils.OnClickSelectionCategory
 
-import com.expostore.model.category.SelectionModel
-
-
-class TabSelectionAdapter(private val list: MutableList<SelectionModel>, val onClickSelectionCategory: OnClickCategory): RecyclerView.Adapter<TabSelectionAdapter.TabSelectionHolder>() {
+class TabSelectionAdapter(private val list: MutableList<CategoryModel>, val onClickSelectionCategory: OnClickSelectionCategory): RecyclerView.Adapter<TabSelectionAdapter.TabSelectionHolder>() {
     inner class TabSelectionHolder(val binding:SaveSelectionBinding):RecyclerView.ViewHolder(binding.root) {
                            @SuppressLint("SetTextI18n")
-                           fun bind(model: SelectionModel){
+                           fun bind(model: CategoryModel){
                                binding.apply {
                                    nameCategory.text = model.name
 
@@ -41,5 +40,3 @@ class TabSelectionAdapter(private val list: MutableList<SelectionModel>, val onC
 
     override fun getItemCount(): Int=list.size
 }
-
-

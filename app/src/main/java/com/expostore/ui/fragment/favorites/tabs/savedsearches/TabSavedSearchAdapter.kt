@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.SaveSearchItemBinding
 import com.expostore.model.SaveSearchModel
-
+import com.expostore.model.category.CategoryModel
 import com.expostore.utils.OnClickFavoriteProductListener
 import com.expostore.utils.OnClickSaveSearch
 
@@ -15,7 +15,7 @@ class TabSavedSearchAdapter(private val list: MutableList<SaveSearchModel>,priva
                   fun bind(model: SaveSearchModel){
                       binding.apply {
                           model.name?.let {nameCategory.text=it}?:run {  nameCategory.text="Нет категории"}
-                          textView4.text=model.params?.q
+                          textView4.text=model.params
                           textView5.text="Cоздан:"+model.date_create
                           cvSaveSearch.setOnClickListener {
                               onClickFavoriteProductListener.onClickSaveSearch()

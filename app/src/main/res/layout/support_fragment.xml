@@ -1,79 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/support_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     tools:context=".ui.support.SupportFragment">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
     <LinearLayout
-        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-16dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/shop_title"
-            style="@style/BoldTextView"
+        <EditText
+            android:id="@+id/subject_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-           android:layout_marginTop="20dp"
-            android:text="Обратная связь"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
+            android:layout_marginBottom="5dp"
+            android:text="Ваша почта"
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_surname"
+            />
+
+        <EditText
+            android:id="@+id/message_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle">
-
-            <EditText
-                android:id="@+id/message"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-
-                android:background="@drawable/edit_support"
-                android:breakStrategy="balanced"
-                android:fitsSystemWindows="true"
-                android:gravity="top"
-
-                android:hint="Ваше обращение"
-                android:inputType="textMultiLine"
-                android:padding="10dp"
-                android:singleLine="false" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:gravity="top"
+            android:hint="Сообщение"
+            android:inputType="textMultiLine"
+            android:lines="5" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_edit_profile"
             style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_gravity="bottom"
             android:layout_marginTop="15dp"
             android:backgroundTint="@drawable/selector_blue_button"
-
             android:letterSpacing="0.01"
+
             android:text="Отправить"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -85,9 +57,5 @@
             app:layout_constraintTop_toBottomOf="@+id/til_email"
             app:layout_constraintVertical_bias="1.0" />
 
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</ScrollView>
