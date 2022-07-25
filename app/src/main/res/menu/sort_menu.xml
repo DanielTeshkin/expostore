@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/newList"
+
+        android:iconTint="#F44336"
+        android:iconTintMode="src_in"
+        android:title="По новизне" />
+    <item
+        android:id="@+id/ratingList"
+
+        android:iconTint="#FFEB3B"
+        android:iconTintMode="src_in"
+        android:title="По рейтингу" />
+    <item
+        android:id="@+id/priceList"
+
+        android:iconTint="#4CAF50"
+        android:iconTintMode="src_in"
+        android:title="По цене" />
+    <item
+        android:id="@+id/popularList"
+
+        android:iconTint="#4CAF50"
+        android:iconTintMode="src_in"
+        android:title="По популярности" />
+
+    <item
+        android:id="@+id/publicList"
+
+        android:iconTint="#4CAF50"
+        android:iconTintMode="src_in"
+        android:title="По дате публикации" />
+
+</menu>
