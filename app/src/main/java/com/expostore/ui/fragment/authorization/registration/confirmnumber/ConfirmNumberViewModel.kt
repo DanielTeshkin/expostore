@@ -1,36 +1,12 @@
 package com.expostore.ui.fragment.authorization.registration.confirmnumber
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.text.style.ClickableSpan
-import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import br.com.sapereaude.maskedEditText.MaskedEditText
-import com.expostore.R
-
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
-import com.expostore.data.repositories.IdentificationRepository
+import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
-import com.expostore.utils.hideKeyboard
-import com.expostore.utils.makeLinks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 const val MAX_LENGTH = 12
@@ -39,7 +15,7 @@ const val PHONE_INPUT = 11
  * @author Teshkin Daniel
  */
 @HiltViewModel
-class ConfirmNumberViewModel@Inject constructor(private val registration: IdentificationRepository) : BaseViewModel() {
+class ConfirmNumberViewModel@Inject constructor(private val registration: AuthorizationRepository) : BaseViewModel() {
 
  private val _confirmState= MutableSharedFlow<ResponseState<ConfirmNumberResponseData>>()
     val confirmState=_confirmState.asSharedFlow()

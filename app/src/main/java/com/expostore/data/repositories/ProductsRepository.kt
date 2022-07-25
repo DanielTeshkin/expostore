@@ -1,23 +1,16 @@
 package com.expostore.data.repositories
 
-import android.util.Log
 import com.expostore.api.ApiWorker
 import com.expostore.api.base.BaseApiResponse
 import com.expostore.api.base.BaseListResponse
-import com.expostore.api.request.FilterRequest
 import com.expostore.api.request.ProductUpdateRequest
 
-import com.expostore.api.request.toRequestModel
-import com.expostore.api.request.toStroke
 import com.expostore.api.response.ProductResponse
 import com.expostore.api.response.ProductResponseUpdate
 import com.expostore.db.LocalWorker
-import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.product.toModel
-import com.expostore.ui.base.BaseInteractor
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.filter.models.toRequest
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.expostore.data.repositories.CategoryRepository
 import com.expostore.model.category.ProductCategoryModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 @HiltViewModel
-class SpecificationsViewModel @Inject constructor(private val specificationsInteractor: SpecificationsInteractor) : BaseViewModel() {
+class SpecificationsViewModel @Inject constructor(private val categoryRepository: CategoryRepository) : BaseViewModel() {
 
     private val selectCategory= MutableStateFlow<String>("")
     private val _categories= MutableSharedFlow<ResponseState<List<ProductCategoryModel>>>()
@@ -25,7 +26,7 @@ class SpecificationsViewModel @Inject constructor(private val specificationsInte
         TODO("Not yet implemented")
     }
     fun getCategories(){
-        specificationsInteractor.getCategories().handleResult(_categories)
+        categoryRepository.getCategories().handleResult(_categories)
     }
         fun saveFlag(name:String){
             flag.value=name

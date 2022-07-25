@@ -21,7 +21,6 @@ import com.expostore.model.profile.ProfileModel
 
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.chats.toBase64
-import com.expostore.ui.fragment.shop.shopcreate.InteractorShopCreate
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

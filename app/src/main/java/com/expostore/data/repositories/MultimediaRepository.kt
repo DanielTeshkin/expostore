@@ -5,7 +5,6 @@ import com.expostore.api.pojo.getchats.ResponseFile
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.db.LocalWorker
-import com.expostore.ui.base.BaseInteractor
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

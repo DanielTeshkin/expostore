@@ -4,7 +4,7 @@ package com.expostore.ui.fragment.authorization.registration.confirmcode
 
 
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
-import com.expostore.data.repositories.IdentificationRepository
+import com.expostore.data.repositories.AuthorizationRepository
 
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
@@ -16,7 +16,7 @@ import javax.inject.Inject
  * @author Teshkin Daniel
  */
 @HiltViewModel
-class ConfirmCodeViewModel @Inject constructor(private val registration: IdentificationRepository) : BaseViewModel() {
+class ConfirmCodeViewModel @Inject constructor(private val registration: AuthorizationRepository) : BaseViewModel() {
     private val _state=MutableSharedFlow<ResponseState<ConfirmCodeResponseData>>()
        var state=_state.asSharedFlow()
 

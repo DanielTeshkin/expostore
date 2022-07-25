@@ -2,9 +2,10 @@ package com.expostore.ui.fragment.product.myproducts.edit
 
 import androidx.lifecycle.ViewModel
 import com.expostore.api.response.ProductResponse
+import com.expostore.data.repositories.ProductsRepository
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
-import com.expostore.ui.fragment.product.myproducts.MyProductsRepository
+
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class EditMyProductViewModel @Inject constructor(private val repository: MyProductsRepository): BaseViewModel() {
+class EditMyProductViewModel @Inject constructor(private val repository: ProductsRepository): BaseViewModel() {
           private val _takeOff=MutableSharedFlow<ResponseState<ProductResponse>>()
     val taleOff=_takeOff.asSharedFlow()
     private val _product=MutableStateFlow<ProductModel>(ProductModel())

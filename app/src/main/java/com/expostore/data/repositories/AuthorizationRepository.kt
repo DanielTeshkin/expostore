@@ -16,7 +16,7 @@ import com.expostore.model.auth.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class IdentificationRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker):BaseRepository() {
+class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker):BaseRepository() {
 
     fun confirmNumber(phone:String)= flow{
         val result=handleOrDefault(ConfirmNumberResponseData()){apiWorker.confirmNumber(

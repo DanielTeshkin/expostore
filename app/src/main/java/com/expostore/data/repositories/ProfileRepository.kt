@@ -10,7 +10,6 @@ import com.expostore.api.response.EditResponseProfile
 import com.expostore.db.LocalWorker
 import com.expostore.db.enities.toDao
 import com.expostore.model.profile.toModel
-import com.expostore.ui.base.BaseInteractor
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -38,7 +37,7 @@ class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, pr
             emit(result)
         }
 
-    suspend fun getToken()= localWorker.getToken()
+    fun getToken()= localWorker.getToken()
 
     suspend fun deleteAll() {
         localWorker.removeToken()

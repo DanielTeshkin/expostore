@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.shop.shopcreate
 
 import com.expostore.api.pojo.addshop.AddShopRequestData
 import com.expostore.api.response.ShopResponse
+import com.expostore.data.repositories.ShopRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.profile.ShopInfoModel
 import com.expostore.ui.state.ResponseState
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 @HiltViewModel
-class ShopCreateViewModel @Inject constructor(private val interactor: InteractorShopCreate) : BaseViewModel() {
+class ShopCreateViewModel @Inject constructor(private val repository: ShopRepository) : BaseViewModel() {
     private val _shopEdit= MutableSharedFlow<ResponseState<ShopResponse>>()
     val shopEdit=_shopEdit.asSharedFlow()
     private val _exist=MutableStateFlow<Boolean>(false)
@@ -22,8 +23,8 @@ class ShopCreateViewModel @Inject constructor(private val interactor: Interactor
 
     fun shopEdit(requestData: AddShopRequestData,state:Boolean)=
         when(state){
-            true-> interactor.editShop(requestData).handleResult(_shopEdit,{navigateToProfile()})
-            false->interactor.shopCreate(requestData).handleResult(_shopEdit,{navigateToProfile()})
+            true-> repository.editShop(requestData).handleResult(_shopEdit,{navigateToProfile()})
+            false->repository.shopCreate(requestData).handleResult(_shopEdit,{navigateToProfile()})
         }
 
     private fun navigateToProfile(){

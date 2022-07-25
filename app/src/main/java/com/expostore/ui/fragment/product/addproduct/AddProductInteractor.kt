@@ -1,23 +1,16 @@
 package com.expostore.ui.fragment.product.addproduct
 
-import com.expostore.api.ApiWorker
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.request.ProductRequest
 import com.expostore.api.request.ProductUpdateRequest
-import com.expostore.api.response.ProductResponse
-import com.expostore.api.response.ProductResponseUpdate
-import com.expostore.data.repositories.BaseRepository
 import com.expostore.data.repositories.CategoryRepository
 import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.data.repositories.ProductsRepository
 import com.expostore.model.category.CharacteristicFilterModel
-import com.expostore.ui.base.BaseInteractor
 import com.expostore.ui.base.UiCharacteristicState
 import com.expostore.ui.fragment.search.filter.models.CheckBoxStateModel
 import com.expostore.ui.fragment.search.filter.models.InputStateModel
 import com.expostore.ui.fragment.search.filter.models.RadioStateModel
 import com.expostore.ui.fragment.search.filter.models.SelectStateModel
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AddProductInteractor @Inject constructor( private val productsRepository: ProductsRepository,

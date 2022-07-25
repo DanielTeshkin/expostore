@@ -96,12 +96,7 @@ class MainViewModel @Inject constructor(
 
    fun saveProfileInfo(model: ProfileModel) {
         _profileModel.value = model
-
-       viewModelScope.launch(Dispatchers.IO) {
-           interactor.saveProfile(model).collect()
-      }
-
-    }
+   }
 
     fun navigateToProfileOrOpen(){
         when(token.value.access.isNullOrEmpty()){

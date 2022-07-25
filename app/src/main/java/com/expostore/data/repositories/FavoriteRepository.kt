@@ -6,14 +6,9 @@ import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.api.request.NoteRequest
 
 import com.expostore.api.response.NoteResponse
-import com.expostore.api.response.SaveSearchResponse
-import com.expostore.api.response.SelectionResponse
 import com.expostore.db.LocalWorker
 
-import com.expostore.model.category.toModel
 import com.expostore.model.favorite.toModel
-import com.expostore.model.toModel
-import com.expostore.ui.base.BaseInteractor
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 

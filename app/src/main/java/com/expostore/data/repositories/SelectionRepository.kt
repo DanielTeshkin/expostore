@@ -5,6 +5,7 @@ import com.expostore.api.request.ProductsSelection
 import com.expostore.api.request.SelectionRequest
 import com.expostore.api.response.SelectionResponse
 import com.expostore.db.LocalWorker
+import com.expostore.db.enities.selection.toModel
 import com.expostore.model.category.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -29,4 +30,10 @@ class SelectionRepository @Inject constructor(private val apiWorker: ApiWorker, 
          val result=handleOrDefault(SelectionResponse()){apiWorker.addProductToUserSelection(id, products)}
          emit(result)
      }
+
+    fun getSelections()= operator(
+        databaseQuery = {localWorker.getSelection().map { it.toModel }},
+        networkCall ={ handleOrEmptyList { apiWorker.getCategories() }.map { it.toModel }},
+        saveCallResult = {localWorker.saveSelections(it)}
+    )
 }

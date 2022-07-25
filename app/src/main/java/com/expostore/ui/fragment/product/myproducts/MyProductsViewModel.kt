@@ -5,6 +5,7 @@ package com.expostore.ui.fragment.product.myproducts
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import com.expostore.data.repositories.ProductsRepository
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyProductsViewModel @Inject constructor(private val repository: MyProductsRepository) : BaseViewModel() {
+class MyProductsViewModel @Inject constructor(private val repository: ProductsRepository) : BaseViewModel() {
 
     private val _list= MutableSharedFlow<ResponseState<List<ProductModel>>>()
     val list= _list.asSharedFlow()

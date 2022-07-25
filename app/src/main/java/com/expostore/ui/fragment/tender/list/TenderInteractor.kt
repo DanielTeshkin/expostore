@@ -42,8 +42,6 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
 
     fun chatCreate(id:String)=chatRepository.createChat(id,"tender")
     fun selectFavorite(id:String)=favoriteRepository.updateSelectedTender(id)
-
-
     private fun getDefaultPageConfig(): PagingConfig {
         return PagingConfig(pageSize = 10, enablePlaceholders = false)
     }

@@ -3,16 +3,10 @@ package com.expostore.ui.fragment.search.main.interactor
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.expostore.api.request.ChatCreateRequest
-import com.expostore.api.request.ProductChat
 import com.expostore.api.request.ProductsSelection
-import com.expostore.api.request.toRequestModel
 import com.expostore.data.repositories.*
-import com.expostore.model.category.CharacteristicFilterModel
-import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.model.profile.ProfileModel
-import com.expostore.ui.base.BaseInteractor
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.main.paging.LoaderProducts
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
@@ -28,7 +22,7 @@ class SearchInteractor @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val chatRepository: ChatRepository,
     private val selectionRepository: SelectionRepository
-) : BaseInteractor() {
+) {
 
     private val profileModel =MutableStateFlow<ProfileModel>(ProfileModel())
     fun selectFavorite(id: String) = favoriteRepository.updateSelected(id)

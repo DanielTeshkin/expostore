@@ -3,7 +3,6 @@ package com.expostore.data.repositories
 import com.expostore.api.ApiWorker
 import com.expostore.db.LocalWorker
 import com.expostore.model.category.toModel
-import com.expostore.ui.base.BaseInteractor
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 

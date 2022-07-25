@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.product.myproducts
 
 import androidx.paging.PagingData
+import com.expostore.data.repositories.ProductsRepository
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 @HiltViewModel
-class ArchiveViewModel @Inject constructor(private val repository: MyProductsRepository):BaseViewModel() {
+class ArchiveViewModel @Inject constructor(private val repository: ProductsRepository):BaseViewModel() {
     private val _list= MutableSharedFlow<ResponseState<List<ProductModel>>>()
     val list= _list.asSharedFlow()
     fun navigate(){

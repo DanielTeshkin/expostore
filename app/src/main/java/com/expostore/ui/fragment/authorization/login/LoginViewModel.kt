@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.signin.SignInRequestData
-import com.expostore.data.repositories.IdentificationRepository
+import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.model.auth.SignInResponseDataModel
 import com.expostore.ui.base.BaseViewModel
 
@@ -23,13 +23,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val identification: IdentificationRepository
+    private val authorization: AuthorizationRepository
 ) : BaseViewModel() {
 
     private val _uiState = MutableSharedFlow<ResponseState<SignInResponseDataModel>>()
@@ -64,7 +63,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signIn(phone: String, password: String) {
-       identification.login(phone, password)
+       authorization.login(phone, password)
             .handleResult(_uiState, {
                 navigationTo(LoginFragmentDirections.actionLoginFragmentToMainFragment())
             })
@@ -72,7 +71,7 @@ class LoginViewModel @Inject constructor(
 
    fun saveToken(refresh:String,access:String) =
        viewModelScope.launch {
-           identification.saveToken(refresh, access)
+           authorization.saveToken(refresh, access)
        }
 
 
