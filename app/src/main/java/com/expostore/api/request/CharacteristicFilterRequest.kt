@@ -4,6 +4,7 @@ import com.expostore.model.category.CharacteristicFilterModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import retrofit2.http.Query
 
 
 data class FilterRequest(
@@ -11,7 +12,12 @@ data class FilterRequest(
     @SerializedName("price_min") val price_min : Int?=null,
     @SerializedName("price_max") val price_max : Int?=null,
     @SerializedName("promotion") val promotion : Boolean?=null,
-    @SerializedName("characteristics") val characteristics : List<CharacteristicFilterRequest>?=null
+    @SerializedName("characteristics") val characteristics : List<CharacteristicFilterRequest>?=null,
+    @SerializedName("q") val q: String?=null,
+    @SerializedName("lat")val lat: Double?=null,
+    @SerializedName("long") val long: Double?=null,
+    @SerializedName("city") val city: String?=null,
+    @SerializedName("sort") val sort: String?=null,
 )
 
 data class CharacteristicFilterRequest(

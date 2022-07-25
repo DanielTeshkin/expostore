@@ -31,7 +31,6 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
         fun bind(item: ProductModel) {
             val  adapter=ImageAdapter()
             adapter.items=item.images.map { it.file }
-         //   adapter.onItemClickListener = { onClick.onClickProduct(item)}
             binding.apply {
                 name.text=item.name
                 price.text=item.price
@@ -43,6 +42,7 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
                 call.click { onClick?.onClickCall(item.author.username) }
                 root.click { onClick?.onClickProduct(item) }
                 write.click { onClick?.onClickMessage(item) }
+                another.click { onClick?.onClickAnother(model = item) }
 
             }
 

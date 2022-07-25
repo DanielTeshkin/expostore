@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * @author Teshkin Daniel
  */
-class ChatRepository @Inject constructor(private val apiWorker: ApiWorker,private val localWorker: LocalWorker): BaseRepository() {
+class ChatRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker) : BaseRepository() {
 
 
     fun createChat(id: String,flag:String)= flow {
@@ -39,12 +39,6 @@ class ChatRepository @Inject constructor(private val apiWorker: ApiWorker,privat
     }
     fun sendFileOrImage(id: String,body: FileOrImageMessage)=flow{
         val result=handleOrDefault( MessageRequest()){apiWorker.messageFileOrImage(body,id)}
-        emit(result)
-    }
-
-
-    fun saveFile(multipartBody: MultipartBody.Part,name:RequestBody) = flow {
-        val result=handleOrDefault(ResponseFile()){apiWorker.fileCreate(multipartBody,name)}
         emit(result)
     }
 

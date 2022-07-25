@@ -2,14 +2,10 @@ package com.expostore
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.expostore.data.AppPreferences
 import com.expostore.databinding.ActivityMainBinding
-import com.expostore.ui.ActivityViewModel
-import com.expostore.ui.general.ImagePick
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

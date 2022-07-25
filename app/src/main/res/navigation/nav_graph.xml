@@ -93,6 +93,12 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_detailCategoryFragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
+        <action
+            android:id="@+id/action_detailCategoryFragment_to_selection_create"
+            app:destination="@id/selection_create" />
     </fragment>
     <fragment
         android:id="@+id/numberFragment"
@@ -227,6 +233,9 @@
         <action
             android:id="@+id/action_searchFragment_to_selection_create"
             app:destination="@id/selection_create" />
+        <action
+            android:id="@+id/action_searchFragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
 
     </fragment>
     <fragment
@@ -247,6 +256,15 @@
         <action
             android:id="@+id/action_favoritesFragment_to_detailCategoryFragment2"
             app:destination="@id/detailCategoryFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_tenderListFragment"
+            app:destination="@id/tenderListFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
     </fragment>
     <fragment
         android:id="@+id/tenderListFragment"
@@ -268,6 +286,9 @@
         <action
             android:id="@+id/action_tenderListFragment_to_tender_item"
             app:destination="@id/tender_item" />
+        <action
+            android:id="@+id/action_tenderListFragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
     </fragment>
     <fragment
         android:id="@+id/tenderCreateFragment"
@@ -280,6 +301,9 @@
         <action
             android:id="@+id/action_tenderCreateFragment_to_my_tenders"
             app:destination="@id/my_tenders" />
+        <action
+            android:id="@+id/action_tenderCreateFragment_to_tenderListFragment"
+            app:destination="@id/tenderListFragment" />
     </fragment>
     <fragment
         android:id="@+id/specificationsFragment"
@@ -313,6 +337,12 @@
         <action
             android:id="@+id/action_productFragment_to_shopFragment"
             app:destination="@id/shopFragment" />
+        <action
+            android:id="@+id/action_productFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_productFragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
 
     </fragment>
     <fragment
@@ -469,6 +499,9 @@
         <action
             android:id="@+id/action_tender_item_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_tender_item_to_note_fragment"
+            app:destination="@id/note_fragment" />
     </fragment>
 <fragment
     android:id="@+id/selection_create"
@@ -480,6 +513,30 @@
         android:id="@+id/action_selection_create_to_searchFragment"
         app:destination="@id/searchFragment" />
 </fragment>
+    <fragment android:name="com.expostore.ui.fragment.note.NoteFragment"
+        android:id="@+id/note_fragment"
+        android:label="support"
+        tools:layout="@layout/note_fragment">
+
+        <action
+            android:id="@+id/action_note_fragment_to_productFragment"
+            app:destination="@id/productFragment" />
+        <action
+            android:id="@+id/action_note_fragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_note_fragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_note_fragment_to_tenderListFragment"
+            app:destination="@id/tenderListFragment" />
+        <action
+            android:id="@+id/action_note_fragment_to_detailCategoryFragment"
+            app:destination="@id/detailCategoryFragment" />
+        <action
+            android:id="@+id/action_note_fragment_to_tender_item"
+            app:destination="@id/tender_item" />
+    </fragment>
 
 
 </navigation>

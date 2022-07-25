@@ -22,7 +22,7 @@ class SelectFilterHolder(
     override fun bind(categoryCharacteristicModel: CategoryCharacteristicModel) {
         val name=categoryCharacteristicModel.name
         binding.title.text=name
-        checkAdapter=CheckBoxAdapter(categoryCharacteristicModel.listValue,categoryCharacteristicModel.name,state)
+        checkAdapter=CheckBoxAdapter(categoryCharacteristicModel.listValue,categoryCharacteristicModel.id,state)
         binding.recyclerView.apply {
             layoutManager=LinearLayoutManager(contextOur)
             adapter= checkAdapter

@@ -22,7 +22,7 @@ class MyTenderListAdapter(private val products: List<TenderModel>):
                 tvDetailProductName.text = model.title
                 address.text = model.description
                 val adapter= ImageAdapter()
-                adapter.items=model.images.map { it.file }
+                adapter.items=model.images?.map { it.file }?: listOf()
 
                 rvDetailProductImages.adapter=adapter
             }

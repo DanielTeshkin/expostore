@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.expostore.api.response.ImageResponse
-@Entity
+@Entity(tableName = "dddd")
 class AvatarDao(
     @PrimaryKey
 @ColumnInfo(name = "id") val id: String  ,
@@ -13,3 +13,4 @@ class AvatarDao(
 
 val ImageResponse.toDaoAvatar : AvatarDao
     get() = AvatarDao(id,file)
+

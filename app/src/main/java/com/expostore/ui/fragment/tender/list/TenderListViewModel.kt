@@ -2,10 +2,13 @@ package com.expostore.ui.fragment.tender.list
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.api.request.ChatCreateRequest
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.data.repositories.TenderRepository
+import com.expostore.ui.fragment.search.filter.models.FilterModel
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,10 +27,12 @@ class TenderListViewModel @Inject constructor( private val interactor: TenderInt
     private val _sort=MutableStateFlow<String?>(null)
     val sort=_sort.asStateFlow()
     private val token=MutableStateFlow<String?>(null)
-
+    private val select = MutableSharedFlow<ResponseState<SelectFavoriteTenderResponseData>>()
     fun createTender(){
         navigationTo(TenderListFragmentDirections.actionTenderListFragmentToTenderCreateFragment())
     }
+
+    fun selectFavorite(id: String) = interactor.selectFavorite(id).handleResult(select)
  val tender=interactor.letTenderFlow().cachedIn(viewModelScope)
     fun newSort(){
         if(_sort.value==null){
@@ -49,11 +54,9 @@ class TenderListViewModel @Inject constructor( private val interactor: TenderInt
     fun changeState(state:Boolean){
         this._state.value=state
     }
+    fun loadTenderList() = interactor.letTenderFlow().cachedIn(viewModelScope)
 
-    fun loadTenderList(lat:Double?=null,long: Double?=null,sort:String?=null,category:String?=null,
-                       priceFrom:String?=null,priceUp:String?=null,
-                       title:String?=null,city:String?=null) = interactor.letTenderFlow(category = category,
-        long = long, lat = lat, sort = sort, priceMax = priceUp, priceMin = priceFrom, title = title, city = city).cachedIn(viewModelScope)
+    fun loadTenderListWithFilters(filterModel: FilterModel) = interactor.letTenderFlow(filterModel = filterModel).cachedIn(viewModelScope)
 
      fun navigateToFilter(){
          navigationTo(TenderListFragmentDirections.actionTenderListFragmentToSearchFilterFragment())

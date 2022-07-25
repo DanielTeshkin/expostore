@@ -10,11 +10,16 @@ import com.expostore.R
 import com.expostore.ui.fragment.favorites.tabs.favorites.TabFavoritesFragment
 import com.expostore.ui.fragment.favorites.tabs.savedsearches.TabSavedSearchesFragment
 import com.expostore.ui.fragment.favorites.tabs.selections.TabSelectionsFragment
+import com.expostore.ui.fragment.favorites.tabs.tenders.FavoriteTendersFragment
 import kotlinx.android.synthetic.main.favorites_tab_item.view.*
 
-class FavoritesTabsViewPagerAdapter(val fragment: Fragment, val context: Context): FragmentStateAdapter(fragment) {
+class FavoritesTabsViewPagerAdapter(
+    val fragment: Fragment,
+    val context: Context,
+   val installClickListener: FavoritesClickListener
+): FragmentStateAdapter(fragment) {
 
-    private val tabs = listOf("Избранное", "Сохранённые поиски", "Подборки")
+    private val tabs = listOf("Продукты","Тендеры", "Сохранённые поиски", "Подборки")
 
     override fun getItemCount(): Int = tabs.size
 
@@ -30,9 +35,11 @@ class FavoritesTabsViewPagerAdapter(val fragment: Fragment, val context: Context
         var result: Fragment? = null
 
         when(position){
-            0 -> { result = TabFavoritesFragment() }
-            1 -> { result = TabSavedSearchesFragment() }
-            2 -> { result = TabSelectionsFragment() }
+            0 -> { result = TabFavoritesFragment(installClickListener) }
+            1 -> {result=FavoriteTendersFragment(installClickListener)}
+            2 -> { result = TabSavedSearchesFragment(installClickListener) }
+            3 -> { result = TabSelectionsFragment(installClickListener) }
+
         }
         return result!!
     }

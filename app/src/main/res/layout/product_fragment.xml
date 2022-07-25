@@ -17,7 +17,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:background="@null"
-            android:onClick="@{productVM::navigateBack}"
+
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -367,7 +367,7 @@
 
             android:layout_weight="1"
             android:backgroundTint="#2677F1"
-            android:onClick="@{productVM::navigateToAddReview}"
+
             android:text="Написать отзыв"
 
             android:textAllCaps="false"
@@ -386,7 +386,7 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:background="@drawable/style_list"
-            android:onClick="@{productVM::navigateToShop}"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_product_add_review">
@@ -503,19 +503,20 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/write"
+                style="@style/BoldTextView"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="2dp"
 
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:textColor="@color/white"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#2677F1"
                 android:text="Написать"
 
-                android:backgroundTint="#2677F1"
-                style="@style/BoldTextView"
-                app:cornerRadius="10dp"/>
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/btn_call_down"

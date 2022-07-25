@@ -42,8 +42,8 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
     val author = _author.asStateFlow()
     private val select = MutableSharedFlow<ResponseState<SelectFavoriteResponseData>>()
     private val product=MutableSharedFlow<ResponseState<List<ProductResponse>>>()
-    private val _selectionList= MutableStateFlow<List<SelectionModel>>(mutableListOf())
-    val selectionList=_selectionList.asStateFlow()
+    private val _selectionList= MutableSharedFlow<ResponseState<List<SelectionModel>>>()
+    val selectionList=_selectionList.asSharedFlow()
     private val selectionModel=MutableSharedFlow<ResponseState<SelectionResponse>>()
 
 
@@ -53,7 +53,7 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
     override fun onStart() {
       //  loadUserInfo()
     }
-     fun getSelections() = interactor.getPersonalSelections()
+     fun getSelections() = interactor.getPersonalSelections().handleResult(_selectionList)
 
 
     fun saveLocation(latitude: Double, longitude: Double) {
@@ -61,15 +61,10 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
         myLong.value = longitude
     }
 
-    fun search(name: String) =
-        interactor.searchProducts(name = name, lat = myLat.value, long = myLong.value)
-            .sample(100)
-            .distinctUntilChanged()
-            .cachedIn(viewModelScope)
+
 
     fun searchWithFilters(filterModel: FilterModel) =
-        interactor.searchProducts(name = filterModel.name, lat = myLat.value, long = myLong.value, city = filterModel.city,
-        priceMin = filterModel.price_min, priceMax = filterModel.price_max, category = filterModel.category, characteristics = filterModel.characteristics).cachedIn(viewModelScope)
+        interactor.searchProducts(filterModel = filterModel).cachedIn(viewModelScope)
 
 
     private fun loadUserInfo() {
@@ -102,6 +97,9 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
     }
     fun navigateToSelectionCreate(){
         navigationTo(SearchFragmentDirections.actionSearchFragmentToSelectionCreate())
+    }
+    fun navigateToNote(){
+        navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment())
     }
 
 

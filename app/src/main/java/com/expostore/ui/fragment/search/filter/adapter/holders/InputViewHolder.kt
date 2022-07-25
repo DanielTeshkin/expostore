@@ -18,12 +18,12 @@ class InputViewHolder(val binding:DoubleInptutItemBinding, private val myContext
             start.hint="От"
             end.hint="До"
             start.addTextChangedListener {start->
-                  state?.inputListener(start.toString(),end.text.toString(),categoryCharacteristicModel.name)
+                  state?.inputListener(start.toString(),end.text.toString(),categoryCharacteristicModel.id)
 
             }
             end.addTextChangedListener { end->
                 Log.i("not",start.toString())
-                state?.inputListener(start.text.toString(),end.toString(),categoryCharacteristicModel.name)
+                state?.inputListener(start.text.toString(),end.toString(),categoryCharacteristicModel.id)
             }
 
         }

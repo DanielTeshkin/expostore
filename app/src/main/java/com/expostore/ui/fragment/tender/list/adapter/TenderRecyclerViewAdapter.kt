@@ -24,7 +24,7 @@ class TenderAdapter :
     var onLikeItemClickListener: ((String) -> Unit)? = null
     var onCallItemClickListener: ((String) -> Unit)? = null
     var onMessageItemClickListener:((String)->Unit)? = null
-
+    var onAnotherItemClickListener:((TenderModel)->Unit)? =null
     private val queueLikes = mutableMapOf<String, (() -> Unit)>()
 
     fun processLike(id: String, isSuccess: Boolean) {
@@ -85,8 +85,11 @@ class TenderAdapter :
                 write.click {
                     onMessageItemClickListener?.invoke(item.id)
                 }
+                another.click {
+                    onAnotherItemClickListener?.invoke(item)
+                }
             }
-            adapter.items = item.images.map { it.file }
+            adapter.items = item.images?.map { it.file }?: listOf()
         }
     }
 

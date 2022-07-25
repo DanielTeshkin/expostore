@@ -8,6 +8,7 @@ import com.expostore.data.repositories.FavoriteRepository
 import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.favorites.FavoritesFragmentDirections
+import com.expostore.ui.fragment.favorites.FavoritesInteractor
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class TabFavoritesViewModel @Inject constructor(private val repository: FavoriteRepository) : BaseViewModel() {
+class TabFavoritesViewModel @Inject constructor(private val interactor: FavoritesInteractor) : BaseViewModel() {
     private val _favoriteList= MutableSharedFlow<ResponseState<List<FavoriteProduct>>>()
    val favoriteList=_favoriteList.asSharedFlow()
     private val _delete=MutableSharedFlow<ResponseState<SelectFavoriteResponseData>>()
@@ -29,13 +30,13 @@ class TabFavoritesViewModel @Inject constructor(private val repository: Favorite
 
 
     fun loadFavoriteList(){
-        repository.getFavoritesList().handleResult(_favoriteList)
+        interactor.getProductFavoriteList().handleResult(_favoriteList)
     }
     fun update(id:String){
-        repository.updateSelected(id).handleResult(_delete)
+        interactor.updateSelected(id).handleResult(_delete)
     }
     fun updateOrCreateNote(id:String,text:NoteRequest){
-        repository.createNote(id,text).handleResult(_note)
+
     }
 
 

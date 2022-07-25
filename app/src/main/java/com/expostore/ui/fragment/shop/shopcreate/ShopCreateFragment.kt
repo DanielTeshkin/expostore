@@ -87,7 +87,7 @@ class ShopCreateFragment :
                 etShopAddress.setText(it.address)
                 etShopName.setText(it.name)
                 etShopShoppingCenter.setText(it.shopping_center)
-                 etShopOffice.setText(it.floor_and_office_number)
+                // etShopOffice.setText(it.floor_and_office_number)
             } }
     }
 

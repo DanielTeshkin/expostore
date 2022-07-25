@@ -1,7 +1,10 @@
 package com.expostore.api.response
 
+import com.expostore.api.pojo.getcategory.CategoryProduct
 import com.expostore.api.pojo.getcategory.Characteristic
 import com.expostore.api.pojo.getproduct.ProductPromotion
+import com.expostore.api.pojo.productcategory.ProductCategory
+import com.expostore.model.chats.DataMapping.FileChat
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
@@ -58,7 +61,7 @@ data class ProductResponse(
 	val id: String? = null,
 
 	@field:SerializedName("category")
-	val category: String? = null,
+	val category: ProductCategory? = null,
 
 	@field:SerializedName("is_liked")
 	val isLiked: Boolean? = null,
@@ -70,7 +73,14 @@ data class ProductResponse(
 	val status: String? = null,
 
 	@field:SerializedName("communication_type")
-	val communicationType: String? = null
+	val communicationType: String? = null,
+	@field:SerializedName("presentation_file") val presentationFile: FileChat?    = null,
+
+	@field:SerializedName("instruction_file") val instructionFile: FileChat? = null,
+
+	@SerializedName("articul" ) val articul : String?= null
+
+
 )
 data class ProductResponseUpdate(
 

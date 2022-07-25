@@ -32,10 +32,10 @@ class SearchFilterViewModel @Inject constructor(
     val cities=_cities.asSharedFlow()
     private val _citiesList= MutableStateFlow<MutableMap<String,Int>>(mutableMapOf())
     val citiesList=_citiesList.asStateFlow()
-    private val flag= MutableStateFlow("")
+    val flag= MutableStateFlow("")
     private val _characteristics=MutableSharedFlow<ResponseState<List<CategoryCharacteristicModel>>>()
     val characteristics=_characteristics.asSharedFlow()
-    val category= MutableStateFlow("")
+    val category= MutableStateFlow<ProductCategoryModel?>(null)
     private val filterInputList= MutableStateFlow<InputStateModel>(InputStateModel(hashMapOf()))
     private val filterSelectList= MutableStateFlow<SelectStateModel>(SelectStateModel(hashMapOf()))
     private val filterRadioList= MutableStateFlow(RadioStateModel(hashMapOf()))
@@ -43,6 +43,8 @@ class SearchFilterViewModel @Inject constructor(
     private val _filterCharacteristic= MutableStateFlow<List<CharacteristicFilterModel>>(mutableListOf())
     val filterCharacteristic=_filterCharacteristic.asStateFlow()
     private val saveSearchResponse= MutableSharedFlow<ResponseState<SaveSearchResponse>>()
+    private val _categories= MutableSharedFlow<ResponseState<List<ProductCategoryModel>>>()
+    val categories=_categories.asSharedFlow()
 
     override fun onStart() {
         /* no-op */
@@ -62,10 +64,10 @@ class SearchFilterViewModel @Inject constructor(
                 priceMin,
                 priceMax,
                 city,
-                category.value,
+                category = category.value?.name,
                 characteristics = filterCharacteristic.value
             )
-            interactor.searchSave(filterModel).handleResult(saveSearchResponse)
+            interactor.searchSave(filterModel, type = flag.value).handleResult(saveSearchResponse)
         }
 
     }
@@ -75,7 +77,6 @@ class SearchFilterViewModel @Inject constructor(
         interactor.getCategoryCategory(id).handleResult(_characteristics)
 
     fun addFilterInput(left:String,right:String,name:String){
-        Log.i("input",left)
         filterInputList.value.inputFilter[name] = Pair(left,right)
     }
 
@@ -94,22 +95,22 @@ class SearchFilterViewModel @Inject constructor(
 
     fun searchFilter(){
         viewModelScope.launch(Dispatchers.IO) {
-            _filterCharacteristic.value = interactor.saveFilter(
+            _filterCharacteristic.value = interactor.saveFiltersState(
                 filterInputList.value,
-                filterRadioList.value, filterSelectList.value, filterCheckBox.value
-            )
-
+                filterRadioList.value, filterSelectList.value, filterCheckBox.value)
         }
     }
 
-    fun saveCategory(model: ProductCategoryModel){
-        category.value=model.name?:""
+    fun saveCategory(model:ProductCategoryModel){
+        category.value=model
+        getCategoryCharacteristic(model.id)
     }
+    fun getListCategories()=interactor.getCategories().handleResult(_categories)
 
     fun navigateToSearch(){
         if (flag.value == "product")
                 navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToSearchFragment())
-            else navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToTenderListFragment())
+            else if(flag.value=="tender") navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToTenderListFragment())
 
     }
     fun navigateToCategory(){

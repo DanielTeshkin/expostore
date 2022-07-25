@@ -2,9 +2,12 @@ package com.expostore.model.favorite
 
 import android.os.Parcelable
 import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
+import com.expostore.api.response.TenderFavoriteResponse
 
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
+import com.expostore.model.tender.TenderModel
+import com.expostore.model.tender.toModel
 
 import kotlinx.android.parcel.Parcelize
 
@@ -23,3 +26,14 @@ val GetFavoritesListResponseData.toModel:FavoriteProduct
             notes=notes,
             user=user
         )
+
+@Parcelize
+data class FavoriteTender(
+    val id: String?,
+    val tender: TenderModel,
+    val notes: String?,
+    val user: String?
+): Parcelable
+
+val TenderFavoriteResponse.toModel:FavoriteTender
+get() = FavoriteTender(id,tender.toModel,notes, user)

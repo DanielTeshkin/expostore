@@ -1,11 +1,15 @@
 package com.expostore.model.product
 
 import android.os.Parcelable
+import com.expostore.api.pojo.getcategory.Category
+import com.expostore.api.pojo.getcategory.CategoryProduct
 import com.expostore.api.pojo.getcategory.Characteristic
 import com.expostore.api.pojo.getcategory.CharacteristicResponse
 import com.expostore.api.pojo.getproduct.ProductPromotion
 import com.expostore.api.response.ProductResponse
 import com.expostore.model.ImageModel
+import com.expostore.model.category.ProductCategoryModel
+import com.expostore.model.category.toModel
 import com.expostore.model.toModel
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -29,7 +33,7 @@ data class ProductModel(
     val price: String = "",
     val name: String = "",
     val id: String = "",
-    val category: String = "",
+    val category: ProductCategoryModel?=null,
     val isLiked: Boolean = false,
     val promotion: PromotionModel = PromotionModel(),
     val status: String = "",
@@ -55,7 +59,7 @@ val ProductResponse.toModel: ProductModel
         price ?: "",
         name ?: "",
         id ?: "",
-        category ?: "",
+        category?.toModel ?: null,
         isLiked ?: false,
         promotion?.toModel ?: PromotionModel(),
         status ?: "",

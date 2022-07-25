@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Product(var id: String         = "",
                    var name: String          = "",
-                   var images: List<ImageChat> = listOf()):Parcelable
+                   var images: List<ImageChat>? = null):Parcelable
 
 val ProductResponse.toModel:Product
          get() = Product(

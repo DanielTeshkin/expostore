@@ -21,7 +21,7 @@ class RadioViewHolder(private val binding:RadioFilterItemBinding, private val ou
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(ourContext, R.layout.simple_dropdown_item_1line, array)
         binding.etCity.setAdapter(adapter)
         binding.etCity.addTextChangedListener {
-            state?.radioListener(hashMap.getValue(it.toString()),categoryCharacteristicModel.name)
+            state?.radioListener(hashMap.getValue(it.toString()),categoryCharacteristicModel.id)
         }
     }
 }

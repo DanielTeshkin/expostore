@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class MainRepository @Inject constructor(private val apiWorker: ApiWorker,private val localWorker: LocalWorker):BaseRepository(){
+class MainRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker) :BaseRepository(){
 
     fun getSelections()= operator(
         databaseQuery = {localWorker.getSelection().map { it.toModel }},

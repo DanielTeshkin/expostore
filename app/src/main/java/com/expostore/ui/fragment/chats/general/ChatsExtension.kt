@@ -27,10 +27,15 @@ import java.io.ByteArrayOutputStream
  * @author Teshkin Daniel
  */
 fun MainChat.imagesProduct(): Array<String> {
-    return itemsChat
-        .map { it.product }
-        .map { it.images[0].file }.toTypedArray()
+    val list= mutableListOf<String>()
+     for (i in itemsChat.indices){
+         if (itemsChat[i].product!=null)list.add(itemsChat[i].product?.images?.get(0)?.file?:"")
+         else if(itemsChat[i].tender!=null) itemsChat[i].tender?.images?.get(0)?.let { list.add(it.file) }
+     }
+
+   return list.toTypedArray()
 }
+
 fun MainChat.chatsId():Array<String>{
     val list=ArrayList<String>()
       itemsChat
@@ -53,7 +58,12 @@ fun checkName(user: User):String{
 }
 
 fun MainChat.productsName():Array<String>{
-    return itemsChat.map { it.product.name!! }.toTypedArray()
+    val list = mutableListOf<String>()
+    for (i in itemsChat.indices){
+        if(itemsChat[i].product!=null) itemsChat[i].product?.name?.let { list.add(it) }
+        else itemsChat[i].tender?.title?.let { list.add(it) }
+    }
+    return list.toTypedArray()
 }
 fun MainChat.firstMessage():String{
     return if(itemsChat[0].messages?.size!=0) {

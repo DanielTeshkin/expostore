@@ -32,7 +32,7 @@ class ChatsRecyclerViewAdapter(private var chats: MutableList<MainChat>, val onC
 
         fun bind(item: MainChat) {
             val list = item.identify()
-            Log.i("product",item.itemsChat[0].product.name?:"")
+          //  Log.i("product",item.itemsChat[0].product.name?:"")
             var image: ImageView = binding.ivChatImage
             var name: TextView = binding.tvChatName
             var message: TextView = binding.tvChatMessage

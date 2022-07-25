@@ -30,6 +30,7 @@ import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.imagesProduct
 import com.expostore.ui.fragment.chats.productsName
+import com.expostore.ui.fragment.search.other.showBottomSheet
 import com.expostore.utils.DetailCategoryRecyclerViewAdapter
 import com.expostore.utils.FavoritesProductRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
@@ -54,6 +55,10 @@ class DetailCategoryFragment :
                Log.i("my",result?.id?:"")
                result?.let { showUI(it) }
            }
+       // setFragmentResultListener("requestKey"){_,bundle->
+          //  val result=bundle.getString("flag")
+
+      //  }
         detailCategoryViewModel.apply {
           //  subscribe(selection){showUI(it)}
             subscribe(navigation){navigateSafety(it)}
@@ -71,34 +76,49 @@ class DetailCategoryFragment :
     }
 
     private fun showUI(model: SelectionModel) {
-        val onClickListener= object :OnClickListener{
+
+        binding.apply {
+            tvCategoryName.text=model.name
+            rvDetailProduct.apply {
+                layoutManager=LinearLayoutManager(requireContext())
+                mAdapter= ProductSelectionAdapter(model.products as MutableList<ProductModel>)
+                mAdapter.onClick=initClickListener(false)
+
+                adapter=mAdapter
+
+            }
+        }
+
+    }
+    fun initClickListener(state:Boolean):OnClickListener{
+        return  object :OnClickListener{
             override fun onClickLike(id: String) {
                 detailCategoryViewModel.updateSelected(id)
             }
 
             override fun onClickProduct(model: ProductModel) {
-               setFragmentResult("requestKey", bundleOf("product" to model))
+                setFragmentResult("requestKey", bundleOf("product" to model))
                 detailCategoryViewModel.navigateToProduct()
 
             }
 
             override fun onClickMessage(model: ProductModel) {
-              detailCategoryViewModel.apply {
-                  state {
-                      createChat(model.id).collect {
+                detailCategoryViewModel.apply {
+                    state {
+                        createChat(model.id).collect {
 
-                          val result = InfoItemChat(
-                              it.identify()[1],
-                              it.identify()[0],
-                              it.chatsId(),
-                              it.imagesProduct(),
-                              it.productsName(), it.identify()[3]
-                          )
-                          setFragmentResult("new_key", bundleOf("info" to result))
-                          navigateToChat()
-                      }
-                  }
-              }
+                            val result = InfoItemChat(
+                                it.identify()[1],
+                                it.identify()[0],
+                                it.chatsId(),
+                                it.imagesProduct(),
+                                it.productsName(), it.identify()[3]
+                            )
+                            setFragmentResult("new_key", bundleOf("info" to result))
+                            navigateToChat()
+                        }
+                    }
+                }
 
             }
 
@@ -106,19 +126,11 @@ class DetailCategoryFragment :
                 navigateToCall(phone)
             }
 
-        }
-        binding.apply {
-            tvCategoryName.text=model.name
-            rvDetailProduct.apply {
-                layoutManager=LinearLayoutManager(requireContext())
-                mAdapter= ProductSelectionAdapter(model.products as MutableList<ProductModel>)
-                mAdapter.onClick=onClickListener
-
-                adapter=mAdapter
-
+            override fun onClickAnother(model: ProductModel) {
+               //showBottomSheet(requireContext(),model, personalOrNot = state, list = listOf())
             }
-        }
 
+        }
     }
 
 

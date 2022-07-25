@@ -1,6 +1,7 @@
 package com.expostore.model.category
 
 import android.os.Parcelable
+import com.expostore.api.request.CharacteristicFilterRequest
 
 import kotlinx.android.parcel.Parcelize
 
@@ -15,3 +16,5 @@ val left_input:String?=null,
 val right_input:String?=null
 
  ):Parcelable
+val CharacteristicFilterRequest.toModel:CharacteristicFilterModel
+get() = CharacteristicFilterModel(characteristic, char_value, bool_value, selected_item, selected_items, left_input,right_input)

@@ -16,13 +16,13 @@ data class MainChat(val id : String,
       get()=MainChat(
           id=id?:"",
           itemsChatResponse.orEmpty().map{it.toModel},
-          seller?.toModel?:User(),
-          buyer?.toModel?:User(),
-          request_user?.toModel?:User()
+          seller.toModel ?:User(),
+          buyer.toModel ?:User(),
+          request_user.toModel ?:User()
       )
 
 val ChatDao.toModel:MainChat
-get() = MainChat(id,itemsChat.map { it.toModel },seller,buyer,request_user)
+get() = MainChat(id,itemsChat.map { it.toModel },seller.toModel,buyer.toModel,request_user.toModel)
 
 
 

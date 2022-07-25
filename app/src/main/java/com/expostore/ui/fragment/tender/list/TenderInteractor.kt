@@ -9,33 +9,26 @@ import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.request.ChatCreateRequest
 import com.expostore.api.request.TenderChat
 import com.expostore.data.repositories.ChatRepository
+import com.expostore.data.repositories.FavoriteRepository
 import com.expostore.data.repositories.TenderRepository
 import com.expostore.db.LocalWorker
 import com.expostore.model.product.ProductModel
 import com.expostore.model.tender.TenderModel
 import com.expostore.model.tender.toModel
+import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
 import com.expostore.ui.fragment.tender.list.pagging.LoadTenders
 import com.expostore.ui.fragment.tender.list.pagging.TenderListPagingSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class TenderInteractor @Inject constructor(private val tenderRepository: TenderRepository,private val chatRepository: ChatRepository) {
+class TenderInteractor @Inject constructor(private val tenderRepository: TenderRepository,
+                                           private val chatRepository: ChatRepository,
+                                                     private val favoriteRepository: FavoriteRepository) {
     fun letTenderFlow(pagingConfig: PagingConfig = getDefaultPageConfig(),
-        category:String?=null,title:String?=null,
-                      lat:Double?=null,
-                      long:Double?=null,
-                    sort:String?=null,
-    priceMin:String?=null,
-     priceMax:String?=null,
-     city:String?=null): Flow<PagingData<TenderModel>> {
+       filterModel: FilterModel=FilterModel()): Flow<PagingData<TenderModel>> {
         val loaderProducts: LoadTenders = { it ->
-            tenderRepository.getTenders(page = it,
-                name = title,
-                category = category,
-                lat = lat,
-                long = long, price_max = priceMax,
-            price_min = priceMin, sort = sort, city = city).result?.cast()
+            tenderRepository.getTenders(page = it, filterModel = filterModel).result?.cast()
         }
 
         val pagingSource =TenderListPagingSource( loaderProducts)
@@ -48,6 +41,7 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
     }
 
     fun chatCreate(id:String)=chatRepository.createChat(id,"tender")
+    fun selectFavorite(id:String)=favoriteRepository.updateSelectedTender(id)
 
 
     private fun getDefaultPageConfig(): PagingConfig {

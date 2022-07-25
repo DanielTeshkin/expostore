@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -12,20 +13,28 @@ import com.bumptech.glide.request.transition.Transition
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.request.createProductRequest
+import com.expostore.api.request.toRequestModel
 import com.expostore.api.response.ProductResponseUpdate
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.data.repositories.MultimediaRepository
+import com.expostore.model.category.CategoryCharacteristicModel
+import com.expostore.model.category.CharacteristicFilterModel
+import com.expostore.model.category.ProductCategoryModel
 import com.expostore.ui.fragment.chats.general.ImageMessage
+import com.expostore.ui.fragment.search.filter.models.CheckBoxStateModel
+import com.expostore.ui.fragment.search.filter.models.InputStateModel
+import com.expostore.ui.fragment.search.filter.models.RadioStateModel
+import com.expostore.ui.fragment.search.filter.models.SelectStateModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddProductViewModel @Inject constructor(private val multimediaRepository: MultimediaRepository,
-                                              private val addProductInteractor: AddProductInteractor
+class AddProductViewModel @Inject constructor(private val addProductInteractor: AddProductInteractor
                                                ) : BaseViewModel() {
     private val _addProduct= MutableSharedFlow<ResponseState<ProductResponseUpdate>>()
     val addProduct= _addProduct.asSharedFlow()
@@ -38,6 +47,17 @@ class AddProductViewModel @Inject constructor(private val multimediaRepository: 
     private val connectionFlag=MutableStateFlow("call_and_chatting")
     private val shopId=MutableStateFlow<String>("")
     private val save=MutableSharedFlow<ResponseState<SaveImageResponseData>>()
+    private val _categories= MutableSharedFlow<ResponseState<List<ProductCategoryModel>>>()
+    val categories=_categories.asSharedFlow()
+    private val _characteristics=MutableSharedFlow<ResponseState<List<CategoryCharacteristicModel>>>()
+    val characteristics=_characteristics.asSharedFlow()
+    val category=MutableStateFlow<String>("")
+    private val filterInputList= MutableStateFlow<InputStateModel>(InputStateModel(hashMapOf()))
+    private val filterSelectList= MutableStateFlow<SelectStateModel>(SelectStateModel(hashMapOf()))
+    private val filterRadioList= MutableStateFlow(RadioStateModel(hashMapOf()))
+    private val filterCheckBox= MutableStateFlow(CheckBoxStateModel(hashMapOf()))
+    private val _filterCharacteristic= MutableStateFlow<List<CharacteristicFilterModel>>(mutableListOf())
+    val filterCharacteristic=_filterCharacteristic.asStateFlow()
 
     fun createOrUpdateProduct(context: Context,
 
@@ -76,7 +96,10 @@ class AddProductViewModel @Inject constructor(private val multimediaRepository: 
             connectionType
         )}
 
-
+    }
+    fun saveCategory(id: String){
+        category.value=id
+        loadCategoryCharacteristic(id)
     }
     fun saveProductInformation(product:ProductModel){
         _product.value=product
@@ -120,7 +143,7 @@ class AddProductViewModel @Inject constructor(private val multimediaRepository: 
 
     private fun saveImages(list:List<Uri>,context:Context){
         val bitmapList=ArrayList<Bitmap>()
-        list.map{
+        list.map{ it ->
             Glide.with(context).asBitmap().load(it).into(object :
                 CustomTarget<Bitmap>(){
                 override fun onResourceReady(
@@ -130,13 +153,15 @@ class AddProductViewModel @Inject constructor(private val multimediaRepository: 
                     val path= ImageMessage().encodeBitmapList(bitmapList)
                     val images = mutableListOf<SaveImageRequestData>()
                     path.map { images.add(SaveImageRequestData(it,"png")) }
-                    multimediaRepository.saveImage(images).handleResult(save)
-                }
+                    addProductInteractor.saveImage(images).handleResult(save) }
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
                 }) }
 
     }
+
+    fun loadCategories()=addProductInteractor.getCategories().handleResult(_categories)
+     private fun loadCategoryCharacteristic(id:String)=addProductInteractor.getCategoryCharacteristic(id).handleResult(_characteristics)
 
 
     private fun  addPhoto(id:String){
@@ -149,14 +174,26 @@ class AddProductViewModel @Inject constructor(private val multimediaRepository: 
      fun navigateToMyProducts(){
         navigationTo(AddProductFragmentDirections.actionAddProductFragmentToMyProductsFragment())
     }
-    private fun navigateToEditMy(){
-        navigationTo(AddProductFragmentDirections.actionAddProductFragmentToEditMyProduct())
-    }
-    fun navigationToCategory(){
-        navigationTo(AddProductFragmentDirections.actionAddProductFragmentToSpecificationsFragment())
+    fun addFilterInput(left:String,right:String,name:String){
+        filterInputList.value.inputFilter[name] = Pair(left,right)
     }
 
-
+    fun addFilterSelect(name: String,list:List<String>){
+        filterSelectList.value.select[name] = list
+    }
+    fun addFilterRadio(id:String,name: String){
+        filterRadioList.value.radioFilter[name]=id
+    }
+    fun addFilterCheckbox(name: String,check:Boolean){
+        filterCheckBox.value.checkboxFilter[name]=check
+    }
+    fun searchFilter(){
+        viewModelScope.launch(Dispatchers.IO) {
+            _filterCharacteristic.value =addProductInteractor.saveCharacteristicsState(
+                filterInputList.value,
+                filterRadioList.value, filterSelectList.value, filterCheckBox.value)
+        }
+    }
 
 
     override fun onStart() {

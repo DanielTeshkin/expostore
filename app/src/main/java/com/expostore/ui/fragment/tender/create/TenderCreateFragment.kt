@@ -25,9 +25,16 @@ import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.TenderCreateFragmentBinding
+import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.ProductCategoryModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.profile.profile_edit.click
+import com.expostore.ui.fragment.search.filter.adapter.utils.FilterState
+import com.expostore.ui.fragment.specifications.CategoryChose
+import com.expostore.ui.fragment.specifications.DataModel
+import com.expostore.ui.fragment.specifications.showBottomSpecifications
+import com.expostore.ui.other.showCharacteristics
 import com.expostore.utils.TenderCreateImageRecyclerViewAdapter
 import com.expostore.utils.decodeImage
 import com.expostore.utils.encodeImage
@@ -48,25 +55,16 @@ class TenderCreateFragment :
     private lateinit var images: ArrayList<Uri>
 
 
-    //TODO доделать работу кнопки сохранить (выключение и включение)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setFragmentResultListener("category") { _, bundle ->
-            val result = bundle.getParcelable<ProductCategoryModel>("intent")
-            if (result != null) {
-                tenderCreateViewModel.apply {
-                    saveCategory(result.id)
-                }
-            }
-        }
-        binding.llTenderCreateCategory.click {
-            setFragmentResult("requestKey", bundleOf("flag" to "tender"))
-            tenderCreateViewModel.navigateToCategory()
-        }
+        tenderCreateViewModel.getMyShop()
+        tenderCreateViewModel.getCategories()
+          val showCategories:Show<List<ProductCategoryModel>> = { showBottomSheetCategories(it)}
+          val showCharacteristics: Show<List<CategoryCharacteristicModel>> = { showBottomSheetCharacteristics(it) }
         tenderCreateViewModel.apply {
             subscribe(navigation){navigateSafety(it)}
+            subscribe(categories){handleState(it,showCategories)}
+            subscribe(characteristics){handleState(it,showCharacteristics)}
         }
 
         images = ArrayList<Uri>()
@@ -91,10 +89,31 @@ class TenderCreateFragment :
                 priceFrom = etTenderPriceFrom.text.toString(),
                 priceUp = etTenderPriceFrom.text.toString(),
                 contact = connect,
-                context = requireContext()
+                context = requireContext(),
+                status = null
 
             )
-        }}
+        }
+        btnSaveDraft.click {
+            val connect= if(message.isChecked) "chatting"
+            else "call_and_chatting"
+            tenderCreateViewModel.createTender(
+                name = etTenderName.text.toString(),
+                description = etTenderDescription.text.toString(),
+                count = etTenderCount.text.toString(),
+                location = etTenderLocation.text.toString(),
+                priceFrom = etTenderPriceFrom.text.toString(),
+                priceUp = etTenderPriceFrom.text.toString(),
+                contact = connect,
+                context = requireContext(),
+                status = "draft"
+
+            )
+        }
+            btnCancel.click {
+                tenderCreateViewModel.navigateToTendersList()
+            }
+        }
 
     }
 
@@ -132,6 +151,59 @@ class TenderCreateFragment :
         }
 
 
+     private fun showBottomSheetCategories(list:List<ProductCategoryModel>){
+         binding.llTenderCreateCategory.click {
+             val categoryChose: CategoryChose = {
+                 tenderCreateViewModel.saveCategory(it.id)
 
 
+             }
+             showBottomSpecifications(
+                 context = requireContext(),
+                 categoryChose = categoryChose,
+                 list = list
+             )
+         }
+     }
+
+    private fun showBottomSheetCharacteristics(list:List<CategoryCharacteristicModel>){
+        binding.llAddTenderCharacteristic.click {
+            Log.i("tom",list.size.toString())
+
+            showCharacteristics(
+                list = list,
+                context = requireContext(),
+                filterState = initFilterState()
+            )
+        }
+    }
+
+    private fun initFilterState() : FilterState {
+        return  object : FilterState {
+            override fun inputListener(left: String, right: String?, name: String) {
+                Log.i("input",name)
+               // viewModel.addFilterInput(left,right?:"",name)
+            }
+
+            override fun radioListener(id: String, name: String) {
+                Log.i("radio",name)
+              //  viewModel.addFilterRadio(id,name)
+            }
+
+            override fun selectListener(id:String,name: String,checked: Boolean) {
+                Log.i("select",name)
+                when(checked){
+                 //   true-> myAdapter.addSelect(id)
+                  //  false->myAdapter.removeSelect(id)
+                }
+                //viewModel.addFilterSelect(name,myAdapter.selectList)
+            }
+
+            override fun checkBoxListener(name: String, checked: Boolean) {
+                Log.i("check",checked.toString())
+               // viewModel.addFilterCheckbox(name,checked)
+            }
+
+        }
+    }
 }

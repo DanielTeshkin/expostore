@@ -9,8 +9,8 @@
         android:id="@+id/ll_add_product_connections"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="?android:attr/selectableItemBackground"
 
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

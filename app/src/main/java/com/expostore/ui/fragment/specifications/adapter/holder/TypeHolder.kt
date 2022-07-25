@@ -6,9 +6,14 @@ import android.view.ViewGroup
 import com.expostore.R
 import com.expostore.databinding.CategoryMultiItemBinding
 import com.expostore.databinding.CategorySingleItemBinding
-import com.expostore.ui.fragment.specifications.adapter.utils.OnClickSelectionCategory
+import com.expostore.ui.fragment.specifications.CategoryChose
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class TypeHolder(private val context:Context,private val onClickSelectionCategory: OnClickSelectionCategory) {
+class TypeHolder(
+    private val context: Context,
+    private val onClickSelectionCategory: CategoryChose,
+   private val bottomSheetDialog: BottomSheetDialog
+) {
     fun getType(have_child: Boolean):Int =when(have_child){
         false -> R.layout.category_single_item
         true-> R.layout.category_multi_item
@@ -16,8 +21,11 @@ class TypeHolder(private val context:Context,private val onClickSelectionCategor
 
     fun createHolder( type:Int,parent: ViewGroup):SpecificationViewHolder{
      return   if(type==R.layout.category_single_item){
-         SingleSpecificationHolder(CategorySingleItemBinding.inflate(LayoutInflater.from(parent.context),parent,false),context,onClickSelectionCategory)
+         SingleSpecificationHolder(CategorySingleItemBinding
+             .inflate(LayoutInflater.from(parent.context),parent,false),
+             context,onClickSelectionCategory,bottomSheetDialog
+         )
      }
-         else{ MultiSpecificationHolder(CategoryMultiItemBinding.inflate(LayoutInflater.from(parent.context),parent,false),context,onClickSelectionCategory)}
+         else{ MultiSpecificationHolder(CategoryMultiItemBinding.inflate(LayoutInflater.from(parent.context),parent,false),context,onClickSelectionCategory,bottomSheetDialog)}
     }
 }

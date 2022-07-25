@@ -4,13 +4,14 @@ import com.expostore.api.ApiWorker
 import com.expostore.api.pojo.getchats.ResponseFile
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.db.LocalWorker
 import com.expostore.ui.base.BaseInteractor
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 
-class MultimediaRepository @Inject constructor( private val apiWorker: ApiWorker): BaseRepository() {
+class MultimediaRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker): BaseRepository() {
 
     fun saveFile(multipartBody: MultipartBody.Part, name: RequestBody) = flow {
         val result=handleOrDefault(ResponseFile()){apiWorker.fileCreate(multipartBody,name)}

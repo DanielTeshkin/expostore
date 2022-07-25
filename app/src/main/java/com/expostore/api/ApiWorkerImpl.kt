@@ -1,6 +1,7 @@
 package com.expostore.api
 
 import android.content.Context
+import android.provider.ContactsContract
 import com.expostore.R
 import com.expostore.api.base.ApiException
 import com.expostore.api.base.ApiResponse
@@ -28,10 +29,13 @@ import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.pojo.gettenderlist.TenderPage
+import com.expostore.api.pojo.gettenderlist.TenderRequest
+import com.expostore.api.pojo.gettenderlist.TenderResponse
 import com.expostore.api.pojo.productcategory.ProductCategory
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.api.pojo.signin.SignInRequestData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
@@ -175,16 +179,39 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     }
 
     override suspend fun selectFavorite(
-        id: String
+        id: String,
+        note:NoteRequest
     ): BaseApiResponse<SelectFavoriteResponseData> =
-        processResponse { serverApi.selectFavorite(id) }
+        processResponse { serverApi.selectFavorite(id,note) }
+
+    override suspend fun updateFavoriteProduct(
+        id: String,
+        notes: NoteRequest
+    ): BaseApiResponse<SelectFavoriteResponseData> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun getFavoritesList(): BaseApiResponse<List<GetFavoritesListResponseData>> =
         processListResponse { serverApi.getFavoritesList() }
 
+    override suspend fun selectFavoriteTender(
+        id: String,
+        note: NoteRequest
+    ): BaseApiResponse<SelectFavoriteTenderResponseData> =processResponse { serverApi.selectFavoriteTender(id, note) }
+
+    override suspend fun updateFavoriteTender(
+        id: String,
+        note: NoteRequest
+    ): BaseApiResponse<SelectFavoriteTenderResponseData> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getFavoritesTenderList(): BaseApiResponse<List<TenderFavoriteResponse>>
+    = processListResponse { serverApi.getFavoritesTenderList() }
+
     override suspend fun createTender(
-        requestData: CreateTenderRequestData
-    ): BaseApiResponse<CreateTenderResponseData> =
+        requestData: TenderRequest
+    ): BaseApiResponse<TenderResponse> =
         processResponse { serverApi.createTender(requestData) }
 
     override suspend fun saveImage(
@@ -205,10 +232,8 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun getCategoryCharacteristic(id: String): BaseApiResponse<List<CategoryCharacteristicResponse>> =
         processListResponse { serverApi.getCategoryCharacteristic(id) }
 
-    override suspend fun getTenders(page: Int?,name:String?,lat:Double?,long:Double?,distance:Double?,sort:String?,category:String?, price_max:String?,
-                                    price_min:String?,city: String?,  promotion: Boolean?,
-                                    characteristics: List<String>?): BaseApiResponse<BaseListResponse<Tender>> =
-        processResponse { serverApi.getTenders(page,name,lat, long, distance,sort,category,price_max,price_min,city,promotion) }
+    override suspend fun getTenders(page: Int?,filterRequest: FilterRequest): BaseApiResponse<BaseListResponse<Tender>> =
+        processResponse { serverApi.getTenders(page,filterRequest) }
 
     override suspend fun getMyTenders(): BaseApiResponse<TenderPage> =
         processResponse { serverApi.getMyTenders() }
@@ -239,21 +264,11 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
 
     override suspend fun getListProduct(
         page: Int?,
-        q:String?,
-        lat: Double?,
-        long: Double?,
-        city:String?,
-        sort: String?,
-        category: String?,
-        price_min: Int?,
-        price_max: Int?,
-        promotion: Boolean?,
-        vararg characteristics: String?
+        filterRequest: FilterRequest
     ): BaseApiResponse<BaseListResponse<ProductResponse>> =
-        processResponse { serverApi.getListProduct(page,q,lat,long,city,sort,category, price_min, price_max, promotion) }
+        processResponse { serverApi.getListProduct(page,filterRequest) }
 
     override suspend fun getProducts(
-
         page: Int?,
         filterRequest: FilterRequest?
     ): BaseApiResponse<BaseListResponse<ProductResponse>> = processResponse { serverApi.getProducts(page,filterRequest?: FilterRequest()) }

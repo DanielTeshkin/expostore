@@ -1,9 +1,10 @@
 package com.expostore.api.pojo.addreview
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.gson.annotations.SerializedName
 
 data class AddReviewRequestData(
-    @JsonProperty("rating") val rating: Int,
-    @JsonProperty("text") val text: String?,
-    @JsonProperty("images") val images: ArrayList<String>
+    @SerializedName("rating") val rating: Int,
+    @SerializedName("text") val text: String?,
+    @SerializedName("images") val images: ArrayList<String>
 )

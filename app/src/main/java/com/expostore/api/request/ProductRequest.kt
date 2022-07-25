@@ -67,13 +67,17 @@ fun createProductRequest(count:Int?,name:String,
                          longDescription:String?,
                          shortDescription: String?,
                          images:MutableList<String>,
-communicationType: String?) =
+                         communicationType: String?,
+                         characteristics: List<Characteristic>?=null
+
+                         ) =
     ProductUpdateRequest(count = count,
         name = name, price = price,
         longDescription = longDescription,
         shortDescription = shortDescription,
         images = images,
-        communicationType = communicationType
+        communicationType = communicationType,
+        characteristics = characteristics
     )
 data class ProductUpdateRequest(
     @field:SerializedName("owner")

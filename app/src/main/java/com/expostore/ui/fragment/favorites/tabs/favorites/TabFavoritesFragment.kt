@@ -1,11 +1,8 @@
 package com.expostore.ui.fragment.favorites.tabs.favorites
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.api.request.NoteRequest
@@ -14,15 +11,14 @@ import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
-import com.expostore.ui.state.ResponseState
+import com.expostore.ui.fragment.favorites.FavoritesClickListener
 
 import com.expostore.utils.FavoritesProductRecyclerViewAdapter
 import com.expostore.utils.OnClickFavoriteProductListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class TabFavoritesFragment :
+class TabFavoritesFragment( private val installClickListener: FavoritesClickListener) :
     BaseFragment<TabFavoritesFragmentBinding>(TabFavoritesFragmentBinding::inflate){
  private  lateinit var onClickFavoriteProductListener:OnClickFavoriteProductListener
     private val tabFavoritesViewModel: TabFavoritesViewModel by viewModels()
@@ -62,6 +58,7 @@ class TabFavoritesFragment :
             layoutManager=LinearLayoutManager(requireContext())
             mAdapter= FavoritesProductRecyclerViewAdapter(item as MutableList<FavoriteProduct>,
                 onClickFavoriteProductListener,
+                installClickListener,
                 requireContext())
             adapter = mAdapter
             progressBar4.visibility=View.GONE

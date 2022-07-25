@@ -66,10 +66,10 @@ class AddReviewFragment :
             // mAdapter = TenderCreateImageRecyclerViewAdapter(images)
         binding.rvReviewImages.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+           // adapter = mAdapter
         }
-        mAdapter.onClick = addPhoto()
-        mAdapter.notifyDataSetChanged()
+        //mAdapter.onClick = addPhoto()
+       // mAdapter.notifyDataSetChanged()
     }
 
     private fun addPhoto(): TenderCreateImageRecyclerViewAdapter.OnClickListener {
@@ -149,13 +149,13 @@ class AddReviewFragment :
 
         //mAdapter = TenderCreateImageRecyclerViewAdapter(images)
         binding.rvReviewImages.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+          //  layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+          //  adapter = mAdapter
             context
             Log.d("1","addImage2")
         }
-        mAdapter.onClick = addPhoto()
-        mAdapter.notifyDataSetChanged()
+        //mAdapter.onClick = addPhoto()
+      //  mAdapter.notifyDataSetChanged()
         Toast.makeText(context,"QQQ",Toast.LENGTH_LONG).show()
     }
 

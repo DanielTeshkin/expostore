@@ -50,18 +50,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
 
     override fun onStart() {
         super.onStart()
-        state {
-           // viewModel.ad.collect {
-              //  handleAdvertising(it)
-            //}
-        }
 
-       // state {
-          //  viewModel.profileModel.collect { profile->
-            //    profile
-          //          .avatar?.let { image-> binding.ivProfile.loadAvatar(image.file) } }
-//
-      // }
         binding.btnAddAdvertisement.click {
             viewModel.navigateToCreateProductOrOpen()
         }

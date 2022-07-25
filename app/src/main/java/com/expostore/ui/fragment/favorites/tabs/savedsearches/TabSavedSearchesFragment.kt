@@ -1,20 +1,20 @@
 package com.expostore.ui.fragment.favorites.tabs.savedsearches
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.TabSavedSearchesFragmentBinding
 import com.expostore.model.SaveSearchModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
-import com.expostore.ui.state.ResponseState
+import com.expostore.ui.fragment.favorites.FavoritesClickListener
 import com.expostore.utils.OnClickSaveSearch
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TabSavedSearchesFragment :
+class TabSavedSearchesFragment( val installClickListener: FavoritesClickListener) :
     BaseFragment<TabSavedSearchesFragmentBinding>(TabSavedSearchesFragmentBinding::inflate) {
 
     private val tabSavedSearchesViewModel:TabSavedSearchesViewModel by viewModels()
@@ -31,8 +31,8 @@ class TabSavedSearchesFragment :
     override fun onStart() {
         super.onStart()
         onClickSaveSearch = object :OnClickSaveSearch{
-            override fun onClickSaveSearch() {
-                tabSavedSearchesViewModel.navigate()
+            override fun onClickSaveSearch(model:SaveSearchModel) {
+                Log.i("ddd","fff")
             }
             override fun onClickLike(id: String) {
                 tabSavedSearchesViewModel.deleteSaveSearch(id) }
@@ -44,7 +44,7 @@ class TabSavedSearchesFragment :
     private fun showList(item: List<SaveSearchModel>) {
         binding.rvSearches.apply {
             layoutManager=LinearLayoutManager(requireContext())
-            adapter=TabSavedSearchAdapter(item as MutableList<SaveSearchModel>,onClickSaveSearch)
+            adapter=TabSavedSearchAdapter(item as MutableList<SaveSearchModel>,onClickSaveSearch,installClickListener)
         }
 
     }

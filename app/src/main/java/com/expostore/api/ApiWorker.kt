@@ -25,10 +25,13 @@ import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.pojo.gettenderlist.TenderPage
+import com.expostore.api.pojo.gettenderlist.TenderRequest
+import com.expostore.api.pojo.gettenderlist.TenderResponse
 import com.expostore.api.pojo.productcategory.ProductCategory
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
 import com.expostore.api.pojo.signup.SignUpResponseData
@@ -38,9 +41,7 @@ import com.expostore.api.response.ProductResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface ApiWorker {
@@ -101,11 +102,19 @@ interface ApiWorker {
 
     suspend fun saveSearch( saveSearchRequest: SaveSearchRequest):BaseApiResponse<SaveSearchResponse>
     //TODO изменить
-    suspend fun selectFavorite(id: String): BaseApiResponse<SelectFavoriteResponseData>
+    suspend fun selectFavorite(id: String, notes: NoteRequest): BaseApiResponse<SelectFavoriteResponseData>
+
+    suspend fun updateFavoriteProduct(id: String, notes: NoteRequest): BaseApiResponse<SelectFavoriteResponseData>
 
     suspend fun getFavoritesList(): BaseApiResponse<List<GetFavoritesListResponseData>>
 
-    suspend fun createTender(requestData: CreateTenderRequestData): BaseApiResponse<CreateTenderResponseData>
+    suspend fun selectFavoriteTender( id: String, notes: NoteRequest): BaseApiResponse<SelectFavoriteTenderResponseData>
+
+    suspend fun updateFavoriteTender( id: String,  note: NoteRequest): BaseApiResponse<SelectFavoriteTenderResponseData>
+
+    suspend fun getFavoritesTenderList(): BaseApiResponse<List<TenderFavoriteResponse>>
+
+    suspend fun createTender(requestData: TenderRequest): BaseApiResponse<TenderResponse>
 
     suspend fun saveImage(request: List<SaveImageRequestData>): BaseApiResponse<SaveImageResponseData>
 
@@ -119,18 +128,8 @@ interface ApiWorker {
 
     suspend fun getCategoryCharacteristic(id: String): BaseApiResponse<List<CategoryCharacteristicResponse>>
 
-    suspend fun getTenders(page: Int?,
-                           name: String?=null,
-                           lat:Double?=null,
-                           long:Double?=null,
-                           distance:Double?=null,
-                           sort:String?=null,
-                           category:String?=null,
-                           price_max:String?=null,
-                           price_min:String?=null,
-                           city: String?=null,
-                           promotion: Boolean?=null,
-                          characteristics: List<String>?=null): BaseApiResponse<BaseListResponse<Tender>>
+    suspend fun getTenders(  page: Int?=null,
+                             filterRequest: FilterRequest): BaseApiResponse<BaseListResponse<Tender>>
 
     suspend fun getMyTenders(): BaseApiResponse<TenderPage>
 
@@ -147,17 +146,8 @@ interface ApiWorker {
 
     suspend fun getListProduct(
 
-        page: Int? = null,
-        q:String?=null,
-        lat: Double?=null,
-        long: Double?=null,
-        city:String?=null,
-        sort: String?=null,
-        category: String?=null,
-        price_min: Int?=null,
-        price_max: Int?=null,
-        promotion: Boolean?=null,
-        vararg characteristics: String?
+         page: Int?=null,
+         filterRequest: FilterRequest
 
     ): BaseApiResponse<BaseListResponse<ProductResponse>>
     suspend fun getProducts(

@@ -15,7 +15,8 @@ data class ShopModel(
     val id: String = "",
     val lat: Double = 0.0,
     val lng: Double = 0.0,
-    val shoppingCenter: String = ""
+    val shoppingCenter: String = "",
+    val phone:String? =""
 ): Parcelable
 
 val ShopResponse.toModel: ShopModel
@@ -27,5 +28,6 @@ val ShopResponse.toModel: ShopModel
         id ?: "",
         lat ?: 0.0,
         lng ?: 0.0,
-        shoppingCenter ?: ""
+        shoppingCenter ?: "",
+        phone
     )

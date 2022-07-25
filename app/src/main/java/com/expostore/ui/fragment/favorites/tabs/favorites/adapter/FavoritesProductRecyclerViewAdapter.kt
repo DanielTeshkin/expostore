@@ -11,15 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.DetailProductItemBinding
 import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.ui.base.ImageAdapter
+import com.expostore.ui.fragment.favorites.FavoritesClickListener
 import com.expostore.ui.fragment.product.addproduct.stroke
 import com.expostore.ui.fragment.profile.profile_edit.click
 import kotlinx.android.synthetic.main.detail_product_item.view.*
 
 
-class FavoritesProductRecyclerViewAdapter(private val products: MutableList<FavoriteProduct>,val onClickListener: OnClickFavoriteProductListener,val context: Context) : RecyclerView.Adapter<FavoritesProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
+class FavoritesProductRecyclerViewAdapter(
+    private val products: MutableList<FavoriteProduct>,
+    val onClickListener: OnClickFavoriteProductListener,
+  private val  installClickListener: FavoritesClickListener,
+    val context: Context
+) : RecyclerView.Adapter<FavoritesProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
 
 
-    var onClick: OnClickRecyclerViewListener? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
         val v =DetailProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -36,40 +42,27 @@ class FavoritesProductRecyclerViewAdapter(private val products: MutableList<Favo
         @SuppressLint("SetTextI18n")
         fun bind(item:FavoriteProduct,index: Int){
             val product= item.product
-            binding.tvDetailProductPrice.text=product.price +" " +"рублей"
+            binding.price.text=product.price +" " +"рублей"
             val list=ArrayList<String>()
 
            product.images.map { list.add(it.file) }
-            binding.tvDetailProductName.text = product.name
-            binding.rvDetailProductImages.apply {
+            binding.name.text = product.name
+            binding.viewPager.apply {
                val tabProductPagerAdapter=ImageAdapter()
                 tabProductPagerAdapter.items=list
-                tabProductPagerAdapter.onItemClickListener= { onClickListener.onClickProduct(product) }
+                tabProductPagerAdapter.onItemClickListener= { installClickListener.onClickProduct(item) }
                 adapter=tabProductPagerAdapter
             }
 
             if(item.notes!=null){
-                binding.tvDetailProductNote.text=item.notes
+                binding.note.text=item.notes
             }
             else{
-                binding.tvDetailProductNote.text="Нет заметки"
+                binding.note.text="Нет заметки"
             }
-            binding.tvDetailProductNote.click {
-                val switcher = binding.mySwitcher
-                switcher.showNext()
-                switcher.hidden_edit_view.setText(binding.tvDetailProductNote.text)
-            }
-            binding.hiddenEditView.click {
-                val switcher = binding.mySwitcher
-                binding.tvDetailProductNote.text=binding.hiddenEditView.text.toString()
-                onClickListener.createNote(item.product.id,binding.hiddenEditView.text.toString())
-                switcher.showNext()
-
-            }
-
             binding.like.click {
                 onClickListener.onClickLike(product.id)
-                removeAt(index)
+
             }
         }
 
@@ -79,11 +72,7 @@ class FavoritesProductRecyclerViewAdapter(private val products: MutableList<Favo
                         holder.bind(products[position],position)
 
     }
-    fun removeAt(index: Int) {
-        products.removeAt(index)
-        notifyItemRemoved(index)
-        notifyItemRangeChanged(index,itemCount);
-    }
+
 
 }
 

@@ -2,9 +2,7 @@ package com.expostore.api.base
 
 import retrofit2.Response
 
-/**
- * @author Fedotov Yakov
- */
+
 data class ApiResponse<T>(
     override var result: T? = null,
     val message: String = ""

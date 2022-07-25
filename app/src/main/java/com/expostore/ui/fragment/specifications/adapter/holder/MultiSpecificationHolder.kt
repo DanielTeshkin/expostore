@@ -2,17 +2,20 @@ package com.expostore.ui.fragment.specifications.adapter.holder
 
 import android.content.Context
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.CategoryMultiItemBinding
 import com.expostore.model.category.ProductCategoryModel
 import com.expostore.ui.fragment.profile.profile_edit.selectListener
+import com.expostore.ui.fragment.search.other.OnClickBottomSheetFragment
+import com.expostore.ui.fragment.specifications.CategoryChose
 import com.expostore.ui.fragment.specifications.adapter.SpecificationsRecyclerViewAdapter
-import com.expostore.ui.fragment.specifications.adapter.utils.OnClickSelectionCategory
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class MultiSpecificationHolder( val binding:CategoryMultiItemBinding,
-                                val context: Context,
-                                val onClickSelectionCategory: OnClickSelectionCategory) :SpecificationViewHolder(binding.root,context,onClickSelectionCategory) {
+class MultiSpecificationHolder(val binding:CategoryMultiItemBinding,
+                               val context: Context,
+                               val onClickSelectionCategory: CategoryChose,
+                               private val bottomSheetDialog: BottomSheetDialog
+) :SpecificationViewHolder(binding.root,context,onClickSelectionCategory) {
 
     override fun bind(item: ProductCategoryModel) {
         binding.apply {
@@ -24,7 +27,12 @@ class MultiSpecificationHolder( val binding:CategoryMultiItemBinding,
                         rvChilds.visibility= View.VISIBLE
                         rvChilds.apply {
                             layoutManager=LinearLayoutManager(context)
-                            adapter=SpecificationsRecyclerViewAdapter(item.child_category!!,context,onClickSelectionCategory!!)
+                            adapter=SpecificationsRecyclerViewAdapter(
+                                item.child_category!!,
+                                context,
+                                onClickSelectionCategory!!,
+                                bottomSheetDialog
+                            )
                         }
                     }
                     false -> rvChilds.visibility=View.GONE

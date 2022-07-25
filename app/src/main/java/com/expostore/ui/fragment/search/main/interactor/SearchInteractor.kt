@@ -13,6 +13,7 @@ import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.model.profile.ProfileModel
 import com.expostore.ui.base.BaseInteractor
+import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.main.paging.LoaderProducts
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
 import kotlinx.coroutines.flow.Flow
@@ -48,43 +49,27 @@ class SearchInteractor @Inject constructor(
     fun getPersonalSelections()=selectionRepository.userSelectionList()
 
 
-    fun searchProducts(pagingConfig: PagingConfig = getDefaultPageConfig(),name: String?=null,
-                       lat: Double,long: Double, priceMin:Int?=null,priceMax: Int?=null,city: String?=null,category:String?=null,characteristics:List<CharacteristicFilterModel>?=null
+    fun searchProducts(pagingConfig: PagingConfig = getDefaultPageConfig(),filterModel: FilterModel
    ): Flow<PagingData<ProductModel>> {
-       return if (lat == 0.0) {
+
             val loaderProducts: LoaderProducts = { it ->
                 productsRepository.getProducts(
-                    page = it,
-                    q = name,
-                    city =city, price_max = priceMax, price_min = priceMin , category = category, characteristics = characteristics )
+                    page = it,filterModel
+                    )
             }
            val pagingSource =  ProductListPagingSource( loaderProducts)
-           Pager(
+        return   Pager(
                config = pagingConfig,
                pagingSourceFactory =
                { pagingSource }
            ).flow
-        } else {
-            val loaderProducts: LoaderProducts = { it ->
-                productsRepository.getProducts(
-                    page = it, q = name, lat = lat, long = long,
-                    city =city,
-                    characteristics = characteristics)
-            }
-           val pagingSource = ProductListPagingSource( loaderProducts)
-           Pager(
-               config = pagingConfig,
-               pagingSourceFactory =
-               { pagingSource }
-           ).flow
-        }
 
-        }
+    }
 
     fun letProductFlow(pagingConfig: PagingConfig = getDefaultPageConfig(),
     ): Flow<PagingData<ProductModel>> {
         val loaderProducts: LoaderProducts = { it ->
-            productsRepository.getProducts(page = it)
+            productsRepository.getProducts(page = it,FilterModel())
         }
 
         val pagingSource = ProductListPagingSource( loaderProducts)

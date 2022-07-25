@@ -36,6 +36,7 @@ class DetailCategoryViewModel @Inject constructor(private val profileRepository:
     private val select=MutableSharedFlow<ResponseState<SelectFavoriteResponseData>>()
     private val profile =MutableSharedFlow<ProfileModel>()
 
+
     fun saveSelection(selectionModel: SelectionModel){
         _selection.value=selectionModel
     }

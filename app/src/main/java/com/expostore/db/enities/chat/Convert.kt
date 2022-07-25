@@ -319,4 +319,34 @@ class ConvertProductModel{
         return gson.fromJson(value, type)
     }
 }
+class ConvertUserDaoModel{
+    @TypeConverter
+    fun mapListToString(value: List<UserDao>): String {
+        val gson = Gson()
+        val type = object : TypeToken<List<UserDao>>() {}.type
+        return gson.toJson(value, type)
+    }
+
+    @TypeConverter
+    fun mapObjectToString(value: String): UserDao {
+        val gson = Gson()
+        val type = object :TypeToken<UserDao>(){}.type
+        return gson.fromJson(value,type)
+    }
+
+
+    @TypeConverter
+    fun mapObjectToString(value:UserDao): String{
+        val gson = Gson()
+        val type = object :TypeToken<UserDao>(){}.type
+        return gson.toJson(value,type)
+    }
+
+    @TypeConverter
+    fun mapStringToList(value: String): List<UserDao> {
+        val gson = Gson()
+        val type = object : TypeToken<List<UserDao>>() {}.type
+        return gson.fromJson(value, type)
+    }
+}
 

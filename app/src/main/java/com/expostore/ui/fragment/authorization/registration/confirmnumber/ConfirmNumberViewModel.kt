@@ -20,8 +20,8 @@ import com.expostore.R
 import com.expostore.api.ServerApi
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
+import com.expostore.data.repositories.IdentificationRepository
 import com.expostore.ui.base.BaseViewModel
-import com.expostore.ui.fragment.authorization.registration.interactor.InteractorRegistration
 import com.expostore.ui.state.ResponseState
 import com.expostore.utils.hideKeyboard
 import com.expostore.utils.makeLinks
@@ -39,7 +39,7 @@ const val PHONE_INPUT = 11
  * @author Teshkin Daniel
  */
 @HiltViewModel
-class ConfirmNumberViewModel@Inject constructor(private val registration: InteractorRegistration) : BaseViewModel() {
+class ConfirmNumberViewModel@Inject constructor(private val registration: IdentificationRepository) : BaseViewModel() {
 
  private val _confirmState= MutableSharedFlow<ResponseState<ConfirmNumberResponseData>>()
     val confirmState=_confirmState.asSharedFlow()

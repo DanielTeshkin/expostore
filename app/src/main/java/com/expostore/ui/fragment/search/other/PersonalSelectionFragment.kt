@@ -12,19 +12,24 @@ import com.expostore.R
 import com.expostore.databinding.CategorySingleItemBinding
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
+import com.expostore.model.tender.TenderModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
-fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionModel>, onClickBottomFragment: OnClickBottomSheetFragment){
+fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionModel>?,
+                    onClickBottomFragment: OnClickBottomSheetFragment,personalOrNot:Boolean=false){
+
+
 
     val bottomSheetDialog = BottomSheetDialog(context)
     bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
     val note = bottomSheetDialog.findViewById<LinearLayout>(R.id.note)
     note?.click {
-        onClickBottomFragment.createNote(model.id)
+        onClickBottomFragment.createNote(model)
         bottomSheetDialog.hide()
     }
+
 
     val calling= bottomSheetDialog.findViewById<LinearLayout>(R.id.calling)
     calling?.click {
@@ -48,10 +53,14 @@ fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionMo
     }
     val personalSelection=bottomSheetDialog.findViewById<LinearLayout>(R.id.personal)
     if(model.communicationType=="chatting")personalSelection?.visibility= View.GONE
-    personalSelection?.click { showSelection(context,list,model.id,onClickBottomFragment)
+    personalSelection?.click { showSelection(context,list?: listOf(),model.id,onClickBottomFragment)
     bottomSheetDialog.hide()
     }
-
+val block=bottomSheetDialog.findViewById<LinearLayout>(R.id.block)
+    block?.click {
+        onClickBottomFragment.block()
+        bottomSheetDialog.hide()
+    }
 
     bottomSheetDialog.show()
 }
@@ -110,9 +119,61 @@ interface OnClickBottomSheetFragment{
     fun createSelection(product:String)
     fun addToSelection(id:String,product: String)
     fun call(username:String)
+    fun createNote(product:ProductModel)
+    fun chatCreate(id:String)
+    fun share()
+    fun block()
+
+}
+
+interface OnClickBottomSheetTenderFragment{
+
+    fun call(username:String)
     fun createNote(id:String)
     fun chatCreate(id:String)
     fun share()
     fun block()
 
+}
+fun showBottomSheetTender(context: Context, model:TenderModel,
+                    onClickBottomFragment: OnClickBottomSheetTenderFragment){
+
+
+
+    val bottomSheetDialog = BottomSheetDialog(context)
+    bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
+    val note = bottomSheetDialog.findViewById<LinearLayout>(R.id.note)
+    note?.click {
+        onClickBottomFragment.createNote(model.id)
+        bottomSheetDialog.hide()
+    }
+    val calling= bottomSheetDialog.findViewById<LinearLayout>(R.id.calling)
+    calling?.click {
+        onClickBottomFragment.call(model.author.username)
+        bottomSheetDialog.hide()
+    }
+    val compare = bottomSheetDialog.findViewById<LinearLayout>(R.id.compare)
+
+    val chat=bottomSheetDialog.findViewById<LinearLayout>(R.id.chat_write)
+    chat?.click {
+        onClickBottomFragment.chatCreate(model.id)
+        bottomSheetDialog.hide()
+    }
+    val share=bottomSheetDialog.findViewById<LinearLayout>(R.id.share)
+    share?.click {
+        onClickBottomFragment.share()
+        bottomSheetDialog.hide()
+    }
+    val personalSelection=bottomSheetDialog.findViewById<LinearLayout>(R.id.personal)
+    if(model.communicationType=="chatting")calling?.visibility= View.GONE
+    personalSelection?.visibility=View.GONE
+    compare?.visibility=View.GONE
+    val block=bottomSheetDialog.findViewById<LinearLayout>(R.id.block)
+    block?.click {
+        onClickBottomFragment.block()
+        bottomSheetDialog.hide()
+    }
+
+
+    bottomSheetDialog.show()
 }

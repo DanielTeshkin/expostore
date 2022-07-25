@@ -15,12 +15,15 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.expostore.MainActivity
 import com.expostore.R
+import com.expostore.data.repositories.ChatRepository
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
-class ProductViewModel : BaseViewModel() {
+import javax.inject.Inject
+@HiltViewModel
+class ProductViewModel @Inject constructor(private val chatRepository: ChatRepository) : BaseViewModel() {
     private val _product=MutableStateFlow<ProductModel>(ProductModel())
     val product=_product.asStateFlow()
 
@@ -31,9 +34,14 @@ class ProductViewModel : BaseViewModel() {
     fun saveProduct(item:ProductModel){
         _product.value=item
     }
-    fun navigation(){
-
+    fun navigationChat(){
+          navigationTo(ProductFragmentDirections.actionProductFragmentToChatFragment())
     }
+
+    fun navigationToAddReview(){
+        navigationTo(ProductFragmentDirections.actionProductFragmentToAddReviewFragment())
+    }
+    fun createChat(id:String,flag:String) = chatRepository.createChat(id,flag)
 
 
 

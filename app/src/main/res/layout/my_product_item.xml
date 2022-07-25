@@ -57,7 +57,7 @@
             style="@style/BoldTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:textColor="#111B33"
             android:textColorHint="#111B33"
@@ -69,7 +69,7 @@
             style="@style/BoldTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="8dp"
 
             android:text="Дата окончания публикации"
             android:textSize="14sp" />
@@ -78,7 +78,7 @@
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/roboto_medium"
             tools:hint="Адрес" />
 

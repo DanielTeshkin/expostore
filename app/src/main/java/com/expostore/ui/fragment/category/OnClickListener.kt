@@ -7,4 +7,5 @@ interface OnClickListener {
     fun onClickProduct(model: ProductModel)
     fun onClickMessage(model: ProductModel)
     fun onClickCall(phone:String)
+    fun onClickAnother(model: ProductModel)
 }

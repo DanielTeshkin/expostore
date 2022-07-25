@@ -31,18 +31,18 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
     override fun getItemCount(): Int = products!!.size
 
     inner class DetailCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name: TextView = itemView.tv_detail_product_name
-        var price: TextView = itemView.tv_detail_product_price
+      //  var name: TextView = itemView.tv_detail_product_name
+       // var price: TextView = itemView.tv_detail_product_price
        // var rvImages: RecyclerView = itemView.rv_detail_product_images
-        var noteTitle: TextView = itemView.tv_detail_product_note_title
-        var note: TextView = itemView.tv_detail_product_note
+       // var noteTitle: TextView = itemView.tv_detail_product_note_title
+      // var note: TextView = itemView.tv_detail_product_note
     }
 
     override fun onBindViewHolder(holder: DetailCategoryViewHolder, position: Int) {
         val product = products!![position]
 
-        holder.name.text = product.name
-        holder.price.text = product.price
+       // holder.name.text = product.name
+        //holder.price.text = product.price
 /*
         holder.itemView.setOnClickListener{
             onClick!!.onDetailCategoryProductItemClick(product.id)
@@ -58,14 +58,14 @@ class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<Category
 
         //todo тестовый костыль
         if (position == 0){
-            holder.noteTitle.visibility = View.VISIBLE
-            holder.note.visibility = View.VISIBLE
+            //holder.noteTitle.visibility = View.VISIBLE
+            //holder.note.visibility = View.VISIBLE
             //todo убрать и чекать по наличию отзыва
-            holder.note.text = "Хочу купить себе на кухню"
+          //  holder.note.text = "Хочу купить себе на кухню"
         }
         else{
-            holder.noteTitle.visibility = View.GONE
-            holder.note.visibility = View.GONE
+            //holder.noteTitle.visibility = View.GONE
+           // holder.note.visibility = View.GONE
         }
 
         val snapHelper = PagerSnapHelper() // Or PagerSnapHelper

@@ -9,7 +9,7 @@ class CheckBoxHolder(private val binding:CheckBoxItemBinding,context: Context,pr
     override fun bind(categoryCharacteristicModel: CategoryCharacteristicModel) {
      binding.checkbox.text=categoryCharacteristicModel.name
         binding.checkbox.setOnCheckedChangeListener { _, b ->
-            state?.checkBoxListener(categoryCharacteristicModel.name,b)
+            state?.checkBoxListener(categoryCharacteristicModel.id,b)
         }
     }
 }

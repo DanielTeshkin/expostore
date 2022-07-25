@@ -11,6 +11,7 @@ import com.expostore.db.LocalDatabase
 import com.expostore.db.LocalWorker
 import com.expostore.db.LocalWorkerImpl
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

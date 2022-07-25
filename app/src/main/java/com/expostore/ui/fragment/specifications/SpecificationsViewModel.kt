@@ -19,6 +19,7 @@ class SpecificationsViewModel @Inject constructor(private val specificationsInte
     private val _categories= MutableSharedFlow<ResponseState<List<ProductCategoryModel>>>()
     val categories=_categories.asSharedFlow()
     private val flag= MutableStateFlow<String>("")
+    private  val flagPage= MutableStateFlow<String>("")
 
     override fun onStart() {
         TODO("Not yet implemented")
@@ -38,7 +39,7 @@ class SpecificationsViewModel @Inject constructor(private val specificationsInte
         when (flag.value) {
             "" -> navigationTo(SpecificationsFragmentDirections.actionSpecificationsFragmentToAddProductFragment())
             "filter" -> navigationTo(SpecificationsFragmentDirections.actionSpecificationsFragmentToSearchFilterFragment())
-            else -> navigationTo(SpecificationsFragmentDirections.actionSpecificationsFragmentToTenderCreateFragment())
+            "tender" -> navigationTo(SpecificationsFragmentDirections.actionSpecificationsFragmentToTenderCreateFragment())
         }
     }
 

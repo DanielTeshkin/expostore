@@ -14,8 +14,7 @@ import com.expostore.ui.base.BaseInteractor
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProfileRepository@Inject constructor( private val apiWorker: ApiWorker,private val localWorker: LocalWorker):BaseRepository() {
-
+class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker) :BaseRepository() {
 
 
     fun getProfile()= operator(
@@ -23,7 +22,6 @@ class ProfileRepository@Inject constructor( private val apiWorker: ApiWorker,pri
         networkCall = { handleOrDefault(GetProfileResponseData()){apiWorker.getProfile()}.toModel},
         saveCallResult = { localWorker.saveProfile(it.toDao) }
     )
-
 
     fun patchProfile( editProfileRequest: EditProfileRequest)= flow {
         val result=handleOrDefault(EditResponseProfile()){apiWorker.patchProfile(editProfileRequest)}

@@ -9,11 +9,11 @@ import com.expostore.ui.fragment.search.filter.adapter.holders.InputViewHolder
 import com.expostore.ui.fragment.search.filter.adapter.holders.TypeFilterHolder
 import com.expostore.ui.fragment.search.filter.adapter.utils.FilterState
 
-class FilterRecyclerAdapter(val context: Context,private  val filterState: FilterState): RecyclerView.Adapter<BaseFilterHolder>() {
+class FilterRecyclerAdapter(val context: Context, private val filterState: FilterState, private val filter: String): RecyclerView.Adapter<BaseFilterHolder>() {
 
 
      val selectList= mutableListOf<String>()
-    private val typeHolder=TypeFilterHolder(context,filterState)
+    private val typeHolder=TypeFilterHolder(context,filterState,filter)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseFilterHolder {
         return typeHolder.createHolder(viewType, parent)

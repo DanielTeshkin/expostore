@@ -22,10 +22,13 @@ import com.expostore.api.pojo.getreviews.ReviewsResponseData
 import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.gettenderlist.Tender
 import com.expostore.api.pojo.gettenderlist.TenderPage
+import com.expostore.api.pojo.gettenderlist.TenderRequest
+import com.expostore.api.pojo.gettenderlist.TenderResponse
 import com.expostore.api.pojo.productcategory.ProductCategory
 import com.expostore.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.api.pojo.signin.SignInRequestData
 import com.expostore.api.pojo.signin.SignInResponseData
 import com.expostore.api.pojo.signup.SignUpRequestData
@@ -64,7 +67,7 @@ interface ServerApi {
     @PUT("/api/shop/")
     suspend fun editShop(@Body request:AddShopRequestData):Response<ShopResponse>
 
-    @GET("/api/shop/create/")
+    @GET("/api/shop/")
     suspend fun getMyShop():Response<ShopResponse>
 
     @Multipart
@@ -125,18 +128,14 @@ interface ServerApi {
     @POST("/api/search/save/")
     suspend fun saveSearch(@Body saveSearchRequest: SaveSearchRequest):Response<SaveSearchResponse>
 
-    //TODO изменить
-    @POST("/api/product/{id}/elected/select/")
-    suspend fun selectFavorite(@Path("id") id: String): Response<SelectFavoriteResponseData>
 
-    @GET("/api/product/elected/list/")
-    suspend fun getFavoritesList(): Response<List<GetFavoritesListResponseData>>
+
 
     //@GET("/api/product/elected/list/")
    // suspend fun getSearchList(): Response<List<GetFavoritesListResponseData>>
 
-    @POST("/api/tender/create/")
-    suspend fun createTender(@Body requestData: CreateTenderRequestData): Response<CreateTenderResponseData>
+    @POST("api/tender/create/")
+    suspend fun createTender(@Body tender: TenderRequest): Response<TenderResponse>
 
     @POST("/api/image/save/")
     suspend fun saveImage(@Body request: List<SaveImageRequestData>): Response<SaveImageResponseData>
@@ -147,19 +146,10 @@ interface ServerApi {
     @GET("/api/product/category/{id}/characteristic/")
     suspend fun getCategoryCharacteristic(@Path("id") id: String): Response<List<CategoryCharacteristicResponse>>
 
-    @GET("/api/tender/")
+    @POST("/api/tender/")
     suspend fun getTenders(
         @Query("page") page: Int?,
-        @Query("q") name: String?,
-        @Query("lat") lat: Double?,
-        @Query("long") long: Double?,
-        @Query("distance") distance: Double?,
-        @Query("sort") sort: String?,
-        @Query("category") category: String?,
-        @Query("price_max") price_max:String?,
-        @Query("price_min")  price_min:String?,
-        @Query("city")  city:String?,
-        @Query("promotion") promotion: Boolean?,
+        @Body filterRequest: FilterRequest
 
         ): Response<BaseListResponse<Tender>>
 
@@ -182,20 +172,10 @@ interface ServerApi {
     @POST("/api/product/{id}/review/add/")
     suspend fun addReview(@Path("id") id: String, @Body requestData: AddReviewRequestData): Response<AddReviewResponseData>
 
-    @GET("/api/product/")
+    @POST("/api/product/")
     suspend fun getListProduct(
         @Query("page") page: Int?,
-        @Query("q") q: String?,
-        @Query("lat") lat: Double?,
-        @Query("long") long: Double?,
-        @Query("city") city: String?,
-        @Query("sort") sort: String?,
-        @Query("category") category: String?,
-        @Query("price_min") price_min: Int?,
-        @Query("price_max") price_max: Int?,
-        @Query("promotion") promotion: Boolean?
-
-
+        @Body filterRequest: FilterRequest
     ): Response<BaseListResponse<ProductResponse>>
 
     @GET("/api/product/")
@@ -223,9 +203,24 @@ interface ServerApi {
     suspend fun getReviews():Response<ReviewsResponse>
 
 
+    //favorite
+    @POST("/api/product/{id}/elected/select/")
+    suspend fun selectFavorite(@Path("id") id: String, @Body note: NoteRequest): Response<SelectFavoriteResponseData>
 
+    @POST("/api/product/{id}/elected/update/")
+    suspend fun updateFavoriteProduct(@Path("id") id: String, @Body note: NoteRequest): Response<SelectFavoriteResponseData>
 
+    @GET("/api/product/elected/list/")
+    suspend fun getFavoritesList(): Response<List<GetFavoritesListResponseData>>
 
+    @POST("/api/tender/{id}/elected/select/")
+    suspend fun selectFavoriteTender(@Path("id") id: String,@Body notes: NoteRequest): Response<SelectFavoriteTenderResponseData>
+
+    @POST("/api/tender/{id}/elected/update/")
+    suspend fun updateFavoriteTender(@Path("id") id: String, @Body note: NoteRequest): Response<SelectFavoriteTenderResponseData>
+
+    @GET("/api/tender/elected/list/")
+    suspend fun getFavoritesTenderList(): Response<List<TenderFavoriteResponse>>
 
     //chat
     @POST("/api/chat/create/")

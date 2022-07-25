@@ -11,10 +11,7 @@ import javax.inject.Inject
 
 class UserActivityInteractor @Inject constructor(private val apiWorker: ApiWorker, private val localWorker: LocalWorker) :
     BaseInteractor() {
-    fun updateSelected(id:String)= flow{
-        val result=handleOrDefault(SelectFavoriteResponseData("","","","")){apiWorker.selectFavorite(id)}
-        emit(result)
-    }
+
 
 
 }

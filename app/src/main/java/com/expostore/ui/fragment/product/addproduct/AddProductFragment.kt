@@ -22,7 +22,9 @@ import com.expostore.api.response.ImageResponse
 import com.expostore.api.response.ProductResponse
 import com.expostore.api.response.ProductResponseUpdate
 import com.expostore.databinding.AddProductFragmentBinding
+import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.ProductCategoryModel
+import com.expostore.model.product.CharacteristicModeL
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
@@ -30,6 +32,10 @@ import com.expostore.ui.fragment.product.addproduct.adapter.ProductCreateImageAd
 import com.expostore.ui.fragment.product.addproduct.adapter.utils.OnClick
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.profile.profile_edit.selectListener
+import com.expostore.ui.fragment.search.filter.adapter.utils.FilterState
+import com.expostore.ui.fragment.specifications.CategoryChose
+import com.expostore.ui.fragment.specifications.showBottomSpecifications
+import com.expostore.ui.other.showCharacteristics
 import com.expostore.utils.TenderCreateImageRecyclerViewAdapter
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,26 +46,24 @@ import kotlinx.android.synthetic.main.imagepicker.*
 class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFragmentBinding::inflate) {
     private  val addProductViewModel: AddProductViewModel by viewModels()
      private lateinit var mAdapter: ProductCreateImageAdapter
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("requestKey") { _, bundle ->
             val result = bundle.getParcelable<ProductModel>("product")
-            if(result!=null) {
+            if (result != null) {
                 addProductViewModel.saveProductInformation(result)
-                init(result)
             }
+                init(result)
         }
-        val show:Show<ProductResponseUpdate> ={ addRR(it)}
+         val installBottomSheetCategories:Show<List<ProductCategoryModel>> = { installCategories(it)}
+         val installBottomSheetCharacteristic : Show<List<CategoryCharacteristicModel>> = { installCharacteristic(it)}
         addProductViewModel.apply {
             subscribe(navigation){navigateSafety(it)}
-            subscribe(addProduct){handleState(it,show)}
+            subscribe(addProduct){handleState(it)}
+            subscribe(categories){handleState(it,installBottomSheetCategories)}
+            subscribe(characteristics){ handleState(it,installBottomSheetCharacteristic)}
         }
 
-    }
-
-    private fun addRR(it: ProductResponseUpdate) {
-        it.id?.let { it1 -> Log.i("s", it1) }
     }
 
     override fun onResume() {
@@ -67,7 +71,22 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
         clickInstall()
     }
 
-    fun init(productModel: ProductModel){
+    private fun installCategories(list: List<ProductCategoryModel>){
+        binding.llAddProductCategory.click {
+            val categoryChose: CategoryChose = {
+                addProductViewModel.saveCategory(it.id)
+            }
+            showBottomSpecifications(list, requireContext(), categoryChose)
+        }
+    }
+    private fun installCharacteristic(list: List<CategoryCharacteristicModel>){
+        binding.llAddProductCharacteristic.click {
+          showCharacteristics(requireContext(),list,initFilterState())
+        }
+
+    }
+
+    fun init(productModel: ProductModel?){
         val onClick=object :OnClick{
             override fun openGallery() {
                 addPhoto()
@@ -76,18 +95,19 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
         }
         binding.apply {
             val list= mutableListOf<String>("")
-            list.addAll(productModel.images.map { it.file })
-            addProductTitle.text="Редактировать продукт"
-            etProductName.setText(productModel.name)
-            etProductCount.setText(productModel.count.toString())
-            etProductPrice.setText(productModel.price)
-            etProductDescription.setText(productModel.shortDescription)
-            etLongDescription.setText(productModel.longDescription)
-            
+            if (productModel != null) {
+                list.addAll(productModel.images.map { it.file })
+                addProductTitle.text="Редактировать продукт"
+                etProductName.setText(productModel.name)
+                etProductCount.setText(productModel.count.toString())
+                etProductPrice.setText(productModel.price)
+                etProductDescription.setText(productModel.shortDescription)
+                etLongDescription.setText(productModel.longDescription)
+            }
+
             rvProductImages.apply {
                 layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-               mAdapter = ProductCreateImageAdapter(list,onClick)
-
+                mAdapter = ProductCreateImageAdapter(list,onClick)
                 adapter=mAdapter
             }
         }
@@ -130,7 +150,7 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
                    addProductViewModel.navigateToMyProducts()
              }
               tvAddProductCategoryName.click {
-                  addProductViewModel.navigationToCategory()
+
               }
 
 
@@ -159,6 +179,34 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
              }
          }
      }
+    private fun initFilterState() : FilterState {
+        return  object : FilterState {
+            override fun inputListener(left: String, right: String?, name: String) {
+                Log.i("input",name)
+                addProductViewModel.addFilterInput(left,right?:"",name)
+            }
+
+            override fun radioListener(id: String, name: String) {
+                Log.i("radio",name)
+                addProductViewModel.addFilterRadio(id,name)
+            }
+
+            override fun selectListener(id:String,name: String,checked: Boolean) {
+                Log.i("select",name)
+                when(checked){
+                  //  true-> myAdapter.addSelect(id)
+                   // false->myAdapter.removeSelect(id)
+                }
+                //addProductViewModel.addFilterSelect(name,myAdapter.selectList)
+            }
+
+            override fun checkBoxListener(name: String, checked: Boolean) {
+                Log.i("check",checked.toString())
+                addProductViewModel.addFilterCheckbox(name,checked)
+            }
+
+        }
+    }
 
 
 }

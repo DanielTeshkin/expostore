@@ -16,13 +16,13 @@ data class ChatDao(
     @PrimaryKey
     @ColumnInfo(name="id") val id : String,
                    @ColumnInfo(name="items_chat" ) val itemsChat : List<ItemChatDao> = listOf(),
-                   @ColumnInfo(name="seller") val seller : User,
-                   @ColumnInfo(name="buyer" ) val buyer : User,
-                   @ColumnInfo(name="request_user") val request_user: User
+                   @ColumnInfo(name="seller") val seller : UserDao,
+                   @ColumnInfo(name="buyer" ) val buyer : UserDao,
+                   @ColumnInfo(name="request_user") val request_user: UserDao
 )
 
 
 
 
 val MainChat.toDao: ChatDao
-get() = ChatDao(id,itemsChat.map { it.toDao },seller,buyer,request_user)
+get() = ChatDao(id,itemsChat.map { it.toDao },seller.toDao,buyer.toDao,request_user.toDao)

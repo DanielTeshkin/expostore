@@ -28,6 +28,7 @@ data class ShopResponse(
 	@field:SerializedName("shopping_center")
 	val shoppingCenter: String? = null,
 	@field:SerializedName("floor_and_office_number")
-    val floor_and_office_number:String?=null
+    val floor_and_office_number:String?=null,
+	@SerializedName("phone") val phone: String? = null
 
 )

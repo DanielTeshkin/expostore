@@ -10,11 +10,13 @@ import com.bumptech.glide.Glide
 import com.expostore.R
 import com.expostore.databinding.DetailProductImageItemBinding
 import com.expostore.extension.loadBanner
+import com.expostore.ui.fragment.favorites.FavoritesClickListener
+import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.utils.OnClickFavoriteProductListener
 
 
 
-class TabProductPagerAdapter(private val images:MutableList<String>,val onClickListener: OnClickFavoriteProductListener, val id:String,val context: Context) : RecyclerView.Adapter<TabProductPagerAdapter.PagerVH>() {
+class TabProductPagerAdapter(private val images:MutableList<String>,val onClickListener: OnClickFavoriteProductListener, val id:String,val context: Context,favoritesClickListener: FavoritesClickListener) : RecyclerView.Adapter<TabProductPagerAdapter.PagerVH>() {
 
     private var state=true
 
@@ -30,6 +32,7 @@ class TabProductPagerAdapter(private val images:MutableList<String>,val onClickL
                 ibDetailProductLike.setOnClickListener {
                         onClickListener.onClickLike(id)
                     }
+                root.click {  }
             }
      }
     }

@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.api.pojo.getcities.City
@@ -19,7 +18,9 @@ import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.search.filter.adapter.FilterRecyclerAdapter
 import com.expostore.ui.fragment.search.filter.adapter.utils.FilterState
 import com.expostore.ui.fragment.search.filter.models.FilterModel
-import com.expostore.ui.fragment.search.filter.models.ResultModel
+import com.expostore.ui.fragment.specifications.CategoryChose
+import com.expostore.ui.fragment.specifications.DataModel
+import com.expostore.ui.fragment.specifications.showBottomSpecifications
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -32,25 +33,33 @@ class SearchFilterFragment :
     private lateinit var myAdapter: FilterRecyclerAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //loadCharacteristic()
-        setFragmentResultListener("new_key") { _, bundle ->
-            val result = bundle.getParcelable<ResultModel>("info")!!
-            viewModel.saveFlag(result.flag)
-            binding.etCity.setText(result.city)
-        }
+        installBundleResultListeners()
         binding.category.click {
             setFragmentResult("requestKey", bundleOf("flag" to "filter"))
-            viewModel.navigateToCategory()
+            binding.apply {
+                val data = DataModel(
+                    name = searchEt.text.toString(),
+                    priceMin = priceMin.text.toString(),
+                    priceMax = priceMax.text.toString(),
+                    city = etCity.text.toString(),
+                    flag = viewModel.flag.value
+                )
+                setFragmentResult("key", bundleOf("data" to data))
+
+
+                     //viewModel.navigateToCategory()
+            }
+
         }
 
-
-            val load: Show<List<City>> = { loadCities(it) }
+        val load: Show<List<City>> = { loadCities(it) }
             val loadCharacteristics:Show<List<CategoryCharacteristicModel>> = { loadCharacteristic(it)}
-
+        val loadCategories:Show<List<ProductCategoryModel>> = { initBottomCategoriesSheet(it)}
             viewModel.apply {
                 getCities()
                 subscribe(navigation) { navigateSafety(it) }
                 subscribe(cities) { handleState(it, load) }
+                subscribe(categories){ handleState(it,loadCategories)}
                     subscribe(characteristics){handleState(it,loadCharacteristics)}
             }
 
@@ -65,7 +74,8 @@ class SearchFilterFragment :
                                     price_min = priceMin.text.toString().toIntOrNull(),
                                     price_max = priceMax.text.toString().toIntOrNull(),
                                     city = etCity.text.toString(),
-                                     characteristics = it as MutableList<CharacteristicFilterModel>
+                                     characteristics = it as MutableList<CharacteristicFilterModel>,
+                                    category = category.value?.id
 
                                 )
 
@@ -82,14 +92,6 @@ class SearchFilterFragment :
 
     override fun onStart() {
         super.onStart()
-        setFragmentResultListener("category") { _, bundle ->
-            val result = bundle.getParcelable<ProductCategoryModel>("intent")
-            if (result != null) {
-                viewModel.apply {
-                    saveCategory(result)
-                    getCategoryCharacteristic(result.id)
-                }
-            } }
         binding.apply {
             saving.click {
                 viewModel.saveSearch(searchEt.text.toString(),
@@ -100,10 +102,29 @@ class SearchFilterFragment :
                 )
             }
         }
-
+        viewModel.getListCategories()
     }
 
+        private   fun installBundleResultListeners() {
 
+                // setFragmentResultListener("category") { _, bundle ->
+                  // val result = bundle.getParcelable<ProductCategoryModel>("intent")
+                  // if (result != null) {
+                  //     viewModel.apply {
+                      //     saveCategory(result)
+                        //   getCategoryCharacteristic(result.id)
+                      // }
+                  // } }
+              // setFragmentResultListener("new_key") { _, bundle ->
+                //   val result = bundle.getParcelable<DataModel>("info")!!
+               //    viewModel.saveFlag(result.flag)
+               //    binding.etCity.setText(result.city)
+               //    binding.searchEt.setText(result.name)
+                //   binding.priceMin.setText(result.priceMin)
+                  // binding.priceMax.setText(result.priceMax)
+              // }
+
+           }
 
 
     private fun loadCities(item: List<City>) {
@@ -120,25 +141,35 @@ class SearchFilterFragment :
     private fun loadCharacteristic(list:List<CategoryCharacteristicModel>) {
         binding.rvFilters.visibility = View.VISIBLE
         val filterState=initFilterState()
-        myAdapter = FilterRecyclerAdapter(requireContext(),filterState)
+        myAdapter = FilterRecyclerAdapter(requireContext(),filterState,"filter")
 
         myAdapter.addElement(list )
         binding.rvFilters.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = myAdapter
-            Log.i("gone", "starts")
+
         }
 
 
+    }
+    private  fun initBottomCategoriesSheet(list:List<ProductCategoryModel>){
+        binding.category.click {
+            val categoryChose: CategoryChose = { viewModel.saveCategory(it) }
+            showBottomSpecifications(
+                context = requireContext(),
+                categoryChose = categoryChose,
+                list = list
+            )
+        }
     }
 
 
 
    private fun initFilterState() : FilterState{
         return  object :FilterState{
-            override fun inputListener(left: String, right: String, name: String) {
+            override fun inputListener(left: String, right: String?, name: String) {
                 Log.i("input",name)
-                viewModel.addFilterInput(left,right,name)
+                viewModel.addFilterInput(left,right?:"",name)
             }
 
             override fun radioListener(id: String, name: String) {

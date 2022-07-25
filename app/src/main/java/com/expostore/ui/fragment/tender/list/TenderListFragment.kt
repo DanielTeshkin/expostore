@@ -9,6 +9,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -17,6 +18,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.R
@@ -30,16 +32,18 @@ import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.BaseLocationFragment
 import com.expostore.ui.base.Show
-import com.expostore.ui.fragment.chats.chatsId
-import com.expostore.ui.fragment.chats.identify
-import com.expostore.ui.fragment.chats.imagesProduct
-import com.expostore.ui.fragment.chats.productsName
+import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.filter.models.ResultModel
 
 import com.expostore.ui.fragment.search.main.SearchViewModel
 import com.expostore.ui.fragment.search.main.adapter.ProductsAdapter
+import com.expostore.ui.fragment.search.other.OnClickBottomSheetFragment
+import com.expostore.ui.fragment.search.other.OnClickBottomSheetTenderFragment
+import com.expostore.ui.fragment.search.other.showBottomSheet
+import com.expostore.ui.fragment.search.other.showBottomSheetTender
+import com.expostore.ui.fragment.specifications.DataModel
 import com.expostore.ui.fragment.tender.list.adapter.TenderAdapter
 import com.expostore.ui.state.ResponseState
 
@@ -73,29 +77,25 @@ class TenderListFragment :
 
         myAdapter.onCallItemClickListener={navigateToCall(it)}
         myAdapter.onMessageItemClickListener={ model->
-            viewModel.apply {
-                state {
-                    createChat(model).collect {
-
-                        val result = InfoItemChat(
-                            it.identify()[1],
-                            it.identify()[0],
-                            it.chatsId(),
-                            it.imagesProduct(),
-                            it.productsName(), it.identify()[3]
-                        )
-                        setFragmentResult("new_key", bundleOf("info" to result))
-                        viewModel.navigateToChat()
-                    }
-                }
-            }
+            createChat(model)
         }
         myAdapter.onItemClickListener={
             viewModel.navigateToItem()
         }
+        myAdapter.onLikeItemClickListener={
+            viewModel.selectFavorite(it)
+        }
+        myAdapter.onAnotherItemClickListener={
+            showBottomSheetTender(requireContext(),it,initPersonalSelectionCLick())
+        }
         binding.rvTenderList.apply {
             layoutManager=LinearLayoutManager(requireContext())
             adapter = myAdapter
+        }
+        myAdapter.addLoadStateListener { loadState->
+            if (loadState.refresh== LoadState.Loading)
+                binding.progressBar9.visibility=View.VISIBLE
+            else binding.progressBar9.visibility=View.GONE
         }
  binding.createTender.click { viewModel.createTender() }
 
@@ -103,8 +103,8 @@ class TenderListFragment :
             subscribe(navigation){navigateSafety(it)}
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
-                    loadTenderList()
-                        .collectLatest {
+                   loadTenderList()
+                        .collect {
                             myAdapter.submitData(it)
                         }
                 }
@@ -123,9 +123,45 @@ class TenderListFragment :
                     myLocation()
                 }
             }
+            val popupMenu= PopupMenu(requireContext(),binding.newFilter)
+            popupMenu.inflate(R.menu.sort_menu)
+            popupMenu.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.newList ->{
+                        val sort="date_created"
+                        binding.newFilter.text = "По новизне"
+                        searchWithFilters(FilterModel(sort=sort))
+                    }
+                    R.id.ratingList ->{
+                        val sort="avg"
+                        binding.newFilter.text ="По рейтингу"
+                        searchWithFilters(FilterModel(sort=sort))
+                    }
+                    R.id.priceList ->{
+                        val sort="price"
+                        binding.newFilter.text = "По цене"
+                        searchWithFilters(FilterModel(sort=sort))
+                    }
+                    R.id.popularList->{
+                        val sort="count_views"
+                        binding.newFilter.text = "По популярности"
+                        searchWithFilters(FilterModel(sort=sort))
+                    }
+                    R.id.publicList->{
+                        val sort="end_date_of_publication"
+                        binding.newFilter.text = "По дате публикации"
+                        searchWithFilters(FilterModel(sort=sort))
+                    }
+
+                }
+                false
+            }
+            binding.newFilter.click {
+                popupMenu.show()
+            }
 
             filter.setOnClickListener {
-                val result= ResultModel("Москва","tender")
+                val result= DataModel(city = "Москва", flag  ="tender")
                 setFragmentResult("new_key", bundleOf("info" to result))
                 viewModel.navigateToFilter()
 
@@ -139,10 +175,9 @@ class TenderListFragment :
     private fun searchWithFilters(result: FilterModel) {
         viewModel.apply {
             lifecycleScope.launch {
-                viewModel.loadTenderList(priceFrom = result.price_min.toString(), priceUp = result.price_max.toString(), title = result.name, city = result.city
-                )
-                    .collectLatest{
-                        myAdapter.submitData(lifecycle, PagingData.empty())
+                loadTenderListWithFilters(result)
+                    .collect{
+
                         myAdapter.submitData(it)
                     }
             }
@@ -200,10 +235,7 @@ class TenderListFragment :
                 return@let
             }
             val latLng = LatLng(location.latitude, location.longitude)
-            viewModel.apply {
-                //  fetchLocationProduct(lat = location.latitude, long = location.latitude, name = null)
-               // saveLocation(location.latitude,location.longitude)
-            }
+
 
             val markerOptions = MarkerOptions().position(latLng)
                 .icon(
@@ -228,6 +260,50 @@ class TenderListFragment :
 
     override fun noPermission() {
         /// viewModel.fetchProduct()
+    }
+
+    fun createChat(id:String){
+        viewModel.apply {
+            state {
+                createChat(id).collect {
+
+                    val result = InfoItemChat(
+                        it.identify()[1],
+                        it.identify()[0],
+                        it.chatsId(),
+                        it.imagesProduct(),
+                        it.productsName(), it.identify()[3]
+                    )
+                    setFragmentResult("new_key", bundleOf("info" to result))
+                    viewModel.navigateToChat()
+                }
+            }
+        }
+    }
+    private fun initPersonalSelectionCLick(): OnClickBottomSheetTenderFragment {
+        return object : OnClickBottomSheetTenderFragment {
+
+            override fun call(username: String) {
+                navigateToCall(username)
+            }
+
+            override fun createNote(id: String) {
+                Log.i("ddd","dsdsd")
+            }
+
+            override fun chatCreate(id: String) {
+                createChat(id)
+            }
+
+            override fun share() {
+                Log.i("ddd","dsdsd")
+            }
+
+            override fun block() {
+                Log.i("ddd","dsdsd")
+            }
+
+        }
     }
 
 
