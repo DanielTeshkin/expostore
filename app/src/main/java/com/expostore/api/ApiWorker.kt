@@ -5,6 +5,8 @@ import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.addshop.AddShopRequestData
+import com.expostore.api.pojo.comparison.ComparisonProductData
+import com.expostore.api.pojo.comparison.ComparisonResult
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
@@ -74,13 +76,13 @@ interface ApiWorker {
 
     suspend fun getProfile(): BaseApiResponse<GetProfileResponseData>
 
-    suspend fun createProduct(id: String,request: ProductUpdateRequest):BaseApiResponse<ProductResponseUpdate>
+    suspend fun createProduct(id: String,request: ProductUpdateRequest):BaseApiResponse<CreateResponseProduct>
 
-    suspend fun updateProduct(id: String, request: ProductUpdateRequest):BaseApiResponse<ProductResponseUpdate>
+    suspend fun updateProduct(id: String, request: ProductUpdateRequest):BaseApiResponse<CreateResponseProduct>
 
     suspend fun getReviews():BaseApiResponse<ReviewsResponse>
 
-    suspend fun saveToDraft( id: String,request: ProductUpdateRequest): BaseApiResponse<ProductResponseUpdate>
+    suspend fun saveToDraft( id: String,request: ProductUpdateRequest): BaseApiResponse<ProductResponse>
 
     suspend fun editProfile(request: EditProfileRequestData): BaseApiResponse<EditProfileResponseData>
 
@@ -131,9 +133,11 @@ interface ApiWorker {
     suspend fun getTenders(  page: Int?=null,
                              filterRequest: FilterRequest): BaseApiResponse<BaseListResponse<Tender>>
 
-    suspend fun getMyTenders(): BaseApiResponse<TenderPage>
+    suspend fun getMyTenders(status: String): BaseApiResponse<TenderPage>
 
     suspend fun getProduct(id: String): BaseApiResponse<ProductResponseData>
+
+    suspend fun publishedProduct( id:String): BaseApiResponse<ProductResponse>
 
     suspend fun takeOffProduct(id: String): BaseApiResponse<ProductResponse>
 
@@ -146,8 +150,8 @@ interface ApiWorker {
 
     suspend fun getListProduct(
 
-         page: Int?=null,
-         filterRequest: FilterRequest
+        page: Int?=null,
+        filterRequest: FilterRequest
 
     ): BaseApiResponse<BaseListResponse<ProductResponse>>
     suspend fun getProducts(
@@ -178,6 +182,35 @@ interface ApiWorker {
     suspend fun deleteUserSelection( id:String):BaseApiResponse<SelectionResponse>
 
     suspend fun deleteSaveSearch( id:String) : BaseApiResponse<SaveSearchResponse>
+
+
+    suspend fun publishedTender(
+        id:String
+    ): BaseApiResponse<TenderResponse>
+
+
+    suspend fun takeOffTender( id: String): BaseApiResponse<TenderResponse>
+
+
+    suspend fun updateTender( id: String, request:TenderRequest):BaseApiResponse<TenderResponse>
+
+    //comparison
+
+    suspend fun addProductToComparison( products:List<ComparisonProductData>):BaseApiResponse<List<ComparisonProductData>>
+
+
+    suspend fun comparison( products:List<ComparisonProductData>):BaseApiResponse<ComparisonResult>
+
+    suspend fun getComparisonProducts(): BaseApiResponse<ProductResponse>
+
+    //personal product
+
+    suspend fun createPersonalProduct(request:ProductUpdateRequest):BaseApiResponse<CreateResponseProduct>
+
+    suspend fun getPersonalProducts():BaseApiResponse<BaseListResponse<ProductResponse>>
+
+
+    suspend fun deletePersonalProduct(id: String):BaseApiResponse<ProductResponse>
 
 
 }

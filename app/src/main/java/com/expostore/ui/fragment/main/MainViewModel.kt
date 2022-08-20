@@ -15,6 +15,7 @@ import com.expostore.db.enities.AdvertisingDao
 import com.expostore.db.model.TokenModel
 import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.SelectionModel
+import com.expostore.model.product.ProductModel
 import com.expostore.model.profile.ProfileModel
 import com.expostore.model.profile.name
 import com.expostore.ui.base.BaseViewModel
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -96,6 +98,9 @@ class MainViewModel @Inject constructor(
 
    fun saveProfileInfo(model: ProfileModel) {
         _profileModel.value = model
+       viewModelScope.launch(Dispatchers.IO) {
+           interactor.saveProfile(model)
+       }
    }
 
     fun navigateToProfileOrOpen(){
@@ -117,7 +122,12 @@ class MainViewModel @Inject constructor(
     fun navigateToCreateProductOrOpen(){
         when(token.value.access.isNullOrEmpty()){
             true->navigateToOpen()
-            false->navigateToCreateProduct() }
+            false-> {
+                if (profileModel.value.shop!=null)
+                navigateToCreateProduct()
+                else navigationTo(MainFragmentDirections.actionMainFragmentToShopCreate())
+            }
+        }
     }
     private fun navigateToCreateProduct() {
         navigationTo(MainFragmentDirections.actionMainFragmentToAddProductFragment())
@@ -134,7 +144,7 @@ class MainViewModel @Inject constructor(
         navigationTo(MainFragmentDirections.actionMainFragmentToDetailCategoryFragment())
     }
 
-    fun navigateToProduct(){
-        navigationTo(MainFragmentDirections.actionMainFragmentToProductFragment())
+    fun navigateToProduct(model:ProductModel){
+        navigationTo(MainFragmentDirections.actionMainFragmentToProductFragment(model))
     }
 }

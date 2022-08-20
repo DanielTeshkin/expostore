@@ -12,6 +12,7 @@ import com.expostore.databinding.SearchProductItemBinding
 import com.expostore.extension.dp
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
+import com.expostore.model.product.priceSeparator
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.fragment.profile.profile_edit.click
 
@@ -54,7 +55,7 @@ class ProductsAdapter(context:Context) :
                 binding.apply {
                     like.isChecked = item.isLiked
                     name.text = item.name
-                    price.text = item.price + " " + "руб"
+                    price.text = item.price.priceSeparator() + " " + "руб"
                     description.text = item.shortDescription
                     address.text = "Адрес:"+" "+item.shop.address
                 }

@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.chats.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.os.bundleOf
@@ -10,6 +11,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.expostore.R
 import com.expostore.ui.fragment.chats.dialog.DialogFragment
+import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.loadTabImage
 import kotlinx.android.synthetic.main.chat_tablayout_item.view.*
 
@@ -32,11 +34,18 @@ class ChatViewPagerAdapter(
             val view: View = LayoutInflater.from(context).inflate(R.layout.chat_tablayout_item, null)
             view.text.text = product_name[position]
                  view.image.loadTabImage(images[position])
+
         return view
     }
 
     override fun createFragment(position: Int): Fragment {
-
-        return DialogFragment(id[position],  author)
+        val bundle=Bundle()
+        bundle.apply {
+            putString("id",id[position])
+            putString("author",author)
+        }
+        val fragment=DialogFragment()
+        fragment.arguments=bundle
+        return fragment
     }
 }

@@ -3,11 +3,14 @@ package com.expostore.ui.base
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,7 +19,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.expostore.MainActivity
 import com.expostore.model.chats.DataMapping.ItemChat
+import com.expostore.model.product.ProductModel
 import com.expostore.ui.fragment.chats.repeat
+import com.expostore.ui.fragment.note.NoteData
+import com.expostore.ui.fragment.note.NoteFragmentDirections
+import com.expostore.ui.general.other.OnClickBottomSheetFragment
 import com.expostore.ui.state.ResponseState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,9 +96,11 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         }
     }
 
-    protected fun state(action:suspend ()->Unit) {
-        lifecycleScope.launchWhenStarted {
-            action.invoke()
+    protected fun state(action:suspend ()-> Unit) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                action.invoke()
+            }
         }
     }
 
@@ -128,6 +137,11 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         }
     }
 
+    protected fun <T> handleLoadingState(state:ResponseState<T>,loader:Load){
+        if(state is ResponseState.Loading){
+            loader.invoke(state.isLoading)
+        }
+    }
 
 
 
@@ -172,6 +186,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         super.onDestroy()
         _binding = null
     }
+
 
 
 

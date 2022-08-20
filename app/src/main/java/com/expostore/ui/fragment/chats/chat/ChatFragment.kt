@@ -7,9 +7,11 @@ import android.widget.ImageButton
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.expostore.databinding.ChatFragmentBinding
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -24,14 +26,8 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
     private lateinit var tabLayoutMediator: TabLayoutMediator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val result = bundle.getParcelable<InfoItemChat>("info")
-          chatViewModel.saveInfo(result)
-        }
-        setFragmentResultListener("new_key") { _, bundle ->
-            val result = bundle.getParcelable<InfoItemChat>("info")
-            chatViewModel.saveInfo(result)
-        }
+        val result=ChatFragmentArgs.fromBundle(requireArguments()).info
+        chatViewModel.saveInfo(result)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +52,7 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
                 info.id_image!!,
                 info.author!!
             )
+          PagerChatRepository.getInstance().getAuthorMessage().value=info.author
             chatVp2.adapter = chatViewPagerAdapter
            chatVp2.offscreenPageLimit = chatViewPagerAdapter.itemCount
             tabLayoutMediator =
@@ -63,7 +60,22 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
                     tab.customView = chatViewPagerAdapter.getTabView(position)
                 }
             tabLayoutMediator.attach()
+            chatVp2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                }
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    //  PagerChatRepository.getInstance().getIdChat().value=info.id_list[position]
+                }
+            })
+
         }
+
     }
 }
 

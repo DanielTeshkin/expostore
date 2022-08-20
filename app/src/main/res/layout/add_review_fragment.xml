@@ -117,7 +117,7 @@
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:letterSpacing="0.01"
-            android:onClick="@{addReviewVM::saveReview}"
+
             android:text="Сохранить"
             android:textAllCaps="false"
             android:textColor="@color/white"

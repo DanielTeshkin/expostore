@@ -1,18 +1,16 @@
-package com.expostore.ui.fragment.tender
+package com.expostore.ui.fragment.tender.my
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.expostore.databinding.MyProductItemBinding
 import com.expostore.databinding.MyTenderItemBinding
-import com.expostore.model.product.ProductModel
 import com.expostore.model.tender.TenderModel
 import com.expostore.model.tender.priceRange
 import com.expostore.ui.base.ImageAdapter
-import com.expostore.ui.fragment.product.myproducts.OnClickMyProduct
 
 class MyTenderListAdapter(private val products: List<TenderModel>):
     RecyclerView.Adapter<MyTenderListAdapter.MyTenderHolder>() {
+    var  onClickMyTender:OnClickMyTender?=null
 
     inner class MyTenderHolder(val binding: MyTenderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -22,6 +20,7 @@ class MyTenderListAdapter(private val products: List<TenderModel>):
                 tvDetailProductName.text = model.title
                 address.text = model.description
                 val adapter= ImageAdapter()
+                adapter.onItemClickListener={onClickMyTender?.onClickTender(model)}
                 adapter.items=model.images?.map { it.file }?: listOf()
 
                 rvDetailProductImages.adapter=adapter

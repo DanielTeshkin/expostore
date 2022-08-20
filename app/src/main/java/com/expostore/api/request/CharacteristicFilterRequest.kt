@@ -8,16 +8,16 @@ import retrofit2.http.Query
 
 
 data class FilterRequest(
-    @SerializedName("category") val category : String?="",
-    @SerializedName("price_min") val price_min : Int?=null,
-    @SerializedName("price_max") val price_max : Int?=null,
-    @SerializedName("promotion") val promotion : Boolean?=null,
-    @SerializedName("characteristics") val characteristics : List<CharacteristicFilterRequest>?=null,
+    @SerializedName("category") val category: String?="",
+    @SerializedName("price_min") val price_min: Int?=null,
+    @SerializedName("price_max") val price_max: Int?=null,
+    @SerializedName("promotion") val promotion: Boolean?=null,
+    @SerializedName("characteristics") val characteristics: List<CharacteristicFilterRequest>?=null,
     @SerializedName("q") val q: String?=null,
-    @SerializedName("lat")val lat: Double?=null,
+    @SerializedName("lat") val lat: Double?=null,
     @SerializedName("long") val long: Double?=null,
     @SerializedName("city") val city: String?=null,
-    @SerializedName("sort") val sort: String?=null,
+    @SerializedName("sort") val sort: List<String?>? = null,
 )
 
 data class CharacteristicFilterRequest(

@@ -18,7 +18,6 @@ import com.expostore.model.chats.DataMapping.createMessage
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.*
-import com.expostore.ui.state.ResponseState
 import com.expostore.ui.fragment.chats.dialog.adapter.DialogRecyclerViewAdapter
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 import com.expostore.ui.fragment.chats.fragment.FileDialog
@@ -36,12 +35,22 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-open class DialogFragment(val id: String, val author:String) : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),
+ class DialogFragment() : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),
     BottomSheetImage.OnImagesSelectedListener {
     private val viewModel: DialogViewModel by viewModels()
-    private lateinit var manager: LinearLayoutManager
-    private lateinit var adapterDialog: DialogRecyclerViewAdapter
-    private lateinit var onClickImage:OnClickImage
+    private  val manager: LinearLayoutManager by lazy { LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true) }
+    private val messages:MutableList<Message> = mutableListOf()
+    private val author:String by lazy {arguments?.getString("author")!!  }
+    private val id:String by lazy { arguments?.getString("id")!! }
+    private  val adapterMessages: DialogRecyclerViewAdapter by lazy {
+        DialogRecyclerViewAdapter(messages, author, requireContext(), onClickImage)  }
+    private val onClickImage:OnClickImage by lazy {
+        object : OnClickImage {
+            override fun click(bitmap: Bitmap) {
+                ControllerUI(requireContext()).openImageFragment(bitmap)
+                    .show(requireActivity().supportFragmentManager, "DialogImage") }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,20 +65,14 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
 
     private fun subscribeViewModel() {
         val load={ handleLoading()}
-        val show:Show<ItemChat> = { it?.messages?.let { messages -> loadOrUpdate(messages) } }
+        val show:Show<ItemChat> = { it.messages?.let { messages -> loadOrUpdate(messages) } }
         viewModel.apply {
             updateMessages(id)
             subscribe(item) { handleState(it,load,show) }
             subscribe(message) { handleState(it) }
         }
     }
-
     private fun init() {
-         onClickImage = object : OnClickImage {
-            override fun click(bitmap: Bitmap) {
-                ControllerUI(requireContext()).openImageFragment(bitmap)
-                    .show(requireActivity().supportFragmentManager, "DialogImage") }
-        }
         binding.apply {
             messageSend.click{sendMessage()}
             messageSendBtn.click{openGallery()}
@@ -78,16 +81,14 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
 
     private fun textListener() {
         binding.apply {
-            etInput.apply {
-                addTextChangedListener { textChange(messageSend, imageView4) }
-            }
+            etInput.apply { addTextChangedListener { textChange(messageSend, imageView4) } }
         }
     }
 
     private fun sendMessage() {
         val message = MessageRequest(text = binding.etInput.text.toString())
         viewModel.sentMessageOrUpdate(id, message)
-             adapterDialog.addMessage(
+             adapterMessages.addMessage(
                  createMessage(binding.etInput.text.toString(),author,ArrayList())
              )
         binding.rvMessages.downSmooth(0)
@@ -109,23 +110,23 @@ open class DialogFragment(val id: String, val author:String) : BaseFragment<Dial
                 false -> load(messageResponses as MutableList<Message>)
                 true -> update(messageResponses as MutableList<Message>)}})
 
-    private fun load(messages: MutableList<Message>) {
-
-        manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
-
-        adapterDialog = DialogRecyclerViewAdapter(messages, author, requireContext(), onClickImage)
+    private fun load(messagesList: MutableList<Message>) {
+        messages.addAll(messagesList)
         binding.rvMessages.apply {
-            install(manager,adapterDialog)
-            down(adapterDialog.itemCount)
+            install(manager,adapterMessages)
+            down(adapterMessages.itemCount)
         }
-        viewModel.apply { changeProgressBarInstance()
-      changeAdapterInstance()}
+        viewModel.apply {
+            changeProgressBarInstance()
+            changeAdapterInstance()
+        }
     }
-    private fun update(messages: MutableList<Message>) = adapterDialog.addData(messages)
+    private fun update(messages: MutableList<Message>) = adapterMessages.addData(messages)
     private fun openBottomMenu() = resultLauncher.launch(FileStorage(requireContext()).openStorage())
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+
                 val a = result.data?.clipData
                 if (a != null) {
                     val fragment = FileDialog(a.listPath(), id)

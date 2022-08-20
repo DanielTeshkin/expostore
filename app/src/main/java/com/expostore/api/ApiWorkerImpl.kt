@@ -1,7 +1,6 @@
 package com.expostore.api
 
 import android.content.Context
-import android.provider.ContactsContract
 import com.expostore.R
 import com.expostore.api.base.ApiException
 import com.expostore.api.base.ApiResponse
@@ -10,12 +9,12 @@ import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.addshop.AddShopRequestData
+import com.expostore.api.pojo.comparison.ComparisonProductData
+import com.expostore.api.pojo.comparison.ComparisonResult
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
-import com.expostore.api.pojo.createtender.CreateTenderRequestData
-import com.expostore.api.pojo.createtender.CreateTenderResponseData
 import com.expostore.api.pojo.editprofile.EditProfileRequestData
 import com.expostore.api.pojo.editprofile.EditProfileResponseData
 import com.expostore.api.pojo.getchats.*
@@ -129,12 +128,12 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun createProduct(
         id: String,
         request: ProductUpdateRequest
-    ): BaseApiResponse<ProductResponseUpdate> =processResponse { serverApi.createProduct(id,request) }
+    ): BaseApiResponse<CreateResponseProduct> =processResponse { serverApi.createProduct(id,request) }
 
     override suspend fun updateProduct(
         id: String,
         request: ProductUpdateRequest
-    ): BaseApiResponse<ProductResponseUpdate> = processResponse { serverApi.updateProduct(id,request) }
+    ): BaseApiResponse<CreateResponseProduct> = processResponse { serverApi.updateProduct(id,request) }
 
 
     override suspend fun getReviews(): BaseApiResponse<ReviewsResponse> = processResponse {
@@ -235,13 +234,17 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun getTenders(page: Int?,filterRequest: FilterRequest): BaseApiResponse<BaseListResponse<Tender>> =
         processResponse { serverApi.getTenders(page,filterRequest) }
 
-    override suspend fun getMyTenders(): BaseApiResponse<TenderPage> =
-        processResponse { serverApi.getMyTenders() }
+    override suspend fun getMyTenders(status: String): BaseApiResponse<TenderPage> =
+        processResponse { serverApi.getMyTenders(status) }
 
     override suspend fun getProduct(
         id: String
     ): BaseApiResponse<ProductResponseData> =
         processResponse { serverApi.getProduct(id) }
+
+    override suspend fun publishedProduct(id: String): BaseApiResponse<ProductResponse> =processResponse {
+          serverApi.publishedProduct(id) }
+
 
     override suspend fun takeOffProduct(id: String): BaseApiResponse<ProductResponse> =
         processResponse { serverApi.takeOffProduct(id) }
@@ -254,7 +257,7 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun saveToDraft(
         id: String,
         request: ProductUpdateRequest
-    ): BaseApiResponse<ProductResponseUpdate> =processResponse { serverApi.saveToDraft(id,request) }
+    ): BaseApiResponse<ProductResponse> =processResponse { serverApi.saveToDraft(id,request) }
 
     override suspend fun addReview(
         id: String,
@@ -300,6 +303,41 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun deleteUserSelection(id: String): BaseApiResponse<SelectionResponse> =processResponse {serverApi.deleteUserSelection(id) }
 
     override suspend fun deleteSaveSearch(id: String): BaseApiResponse<SaveSearchResponse> =processResponse { serverApi.deleteSaveSearch(id) }
+
+
+    override suspend fun publishedTender(id: String): BaseApiResponse<TenderResponse> = processResponse {
+        serverApi.publishedTender(id)
+    }
+
+    override suspend fun takeOffTender(id: String): BaseApiResponse<TenderResponse> = processResponse {
+        serverApi.takeOffTender(id)
+    }
+
+    override suspend fun updateTender(
+        id: String,
+        request: TenderRequest
+    ): BaseApiResponse<TenderResponse> = processResponse {
+        serverApi.updateTender(id,request)
+    }
+
+    override suspend fun addProductToComparison(products: List<ComparisonProductData>):
+            BaseApiResponse<List<ComparisonProductData>> = processListResponse { serverApi.addProductToComparison(products) }
+
+
+
+    override suspend fun comparison(products: List<ComparisonProductData>): BaseApiResponse<ComparisonResult> = processResponse {
+        serverApi.comparison(products)
+    }
+
+    override suspend fun getComparisonProducts(): BaseApiResponse<ProductResponse> =processResponse { serverApi.getComparisonProducts() }
+
+    override suspend fun createPersonalProduct(request: ProductUpdateRequest): BaseApiResponse<CreateResponseProduct> =
+        processResponse { serverApi.createPersonalProduct(request) }
+    override suspend fun getPersonalProducts(): BaseApiResponse<BaseListResponse<ProductResponse>> =
+        processResponse { serverApi.getPersonalProducts() }
+
+    override suspend fun deletePersonalProduct(id: String): BaseApiResponse<ProductResponse> =
+        processResponse { serverApi.deletePersonalProduct(id) }
 
 
 }

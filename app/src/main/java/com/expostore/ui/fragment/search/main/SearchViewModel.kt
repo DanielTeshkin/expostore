@@ -12,8 +12,13 @@ import com.expostore.data.repositories.ChatRepository
 import com.expostore.data.repositories.ProductsRepository
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.chats.chatsId
+import com.expostore.ui.fragment.chats.identify
+import com.expostore.ui.fragment.chats.imagesProduct
+import com.expostore.ui.fragment.chats.productsName
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 
 import com.expostore.ui.fragment.search.main.interactor.SearchInteractor
@@ -45,15 +50,16 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
     private val _selectionList= MutableSharedFlow<ResponseState<List<SelectionModel>>>()
     val selectionList=_selectionList.asSharedFlow()
     private val selectionModel=MutableSharedFlow<ResponseState<SelectionResponse>>()
-
-
-
     val search = interactor.letProductFlow().cachedIn(viewModelScope)
+    private val chatUi=MutableSharedFlow<ResponseState<MainChat>>()
+    private val _productsMarkerUI= MutableSharedFlow<ResponseState<List<ProductModel>>>()
+    val productsMarkerUI=_productsMarkerUI.asSharedFlow()
 
     override fun onStart() {
-      //  loadUserInfo()
+
     }
      fun getSelections() = interactor.getPersonalSelections().handleResult(_selectionList)
+     fun getBaseProducts()=interactor.getBaseListProducts().handleResult(_productsMarkerUI)
 
 
     fun saveLocation(latitude: Double, longitude: Double) {
@@ -62,38 +68,32 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
     }
 
 
+    fun searchWithFilters(filterModel: FilterModel) = interactor.searchProducts(filterModel = filterModel).cachedIn(viewModelScope)
 
-    fun searchWithFilters(filterModel: FilterModel) =
-        interactor.searchProducts(filterModel = filterModel).cachedIn(viewModelScope)
-
-
-    private fun loadUserInfo() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val profileModel = interactor.getProfile()
-                if (profileModel != null) {
-                    _author.value = profileModel.id ?: ""
-                    _city.value=profileModel.city?:"Москва"
-                }
-            }
-        }
-    }
 
     fun addToSelection(id: String,product:String)=interactor.addToSelection(id, product).handleResult(selectionModel)
 
-    fun createChat(id: String,flag:String) = interactor.createChat(id, flag)
+    fun createChat(id: String) = interactor.createChat(id).handleResult(chatUi,{
+        val result = InfoItemChat(it.identify()[1], it.identify()[0], it.chatsId(), it.imagesProduct(), it.productsName(),
+            it.identify()[3])
+        navigateToChat(result)
+
+    })
 
     fun selectFavorite(id: String) = interactor.selectFavorite(id).handleResult(select)
 
-    fun navigateToProduct() {
-        navigationTo(SearchFragmentDirections.actionSearchFragmentToProductFragment())
+    fun navigateToProduct(productModel: ProductModel) {
+        navigationTo(SearchFragmentDirections.actionSearchFragmentToProductFragment(productModel))
+    }
+    fun navigateToBlock(){
+        navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment())
     }
 
     fun navigateToFilter() {
         navigationTo(SearchFragmentDirections.actionSearchFragmentToSearchFilterFragment())
     }
-  fun navigateToChat(){
-        navigationTo(SearchFragmentDirections.actionSearchFragmentToChatFragment())
+  private fun navigateToChat(info:InfoItemChat){
+        navigationTo(SearchFragmentDirections.actionSearchFragmentToChatFragment(info))
     }
     fun navigateToSelectionCreate(){
         navigationTo(SearchFragmentDirections.actionSearchFragmentToSelectionCreate())

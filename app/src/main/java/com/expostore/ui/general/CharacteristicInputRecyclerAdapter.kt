@@ -1,4 +1,4 @@
-package com.expostore.ui.fragment.search.filter.adapter
+package com.expostore.ui.general
 
 import android.content.Context
 import android.view.ViewGroup
@@ -7,13 +7,14 @@ import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.ui.fragment.search.filter.adapter.holders.BaseFilterHolder
 import com.expostore.ui.fragment.search.filter.adapter.holders.InputViewHolder
 import com.expostore.ui.fragment.search.filter.adapter.holders.TypeFilterHolder
-import com.expostore.ui.fragment.search.filter.adapter.utils.FilterState
 
-class FilterRecyclerAdapter(val context: Context, private val filterState: FilterState, private val filter: String): RecyclerView.Adapter<BaseFilterHolder>() {
+class CharacteristicInputRecyclerAdapter(val context: Context, private val filterState: CharacteristicState,
+                            private val filter: String,
+                            private val characteristicsStateModel: CharacteristicsStateModel?=null): RecyclerView.Adapter<BaseFilterHolder>() {
 
 
-     val selectList= mutableListOf<String>()
-    private val typeHolder=TypeFilterHolder(context,filterState,filter)
+      val selectList= mutableListOf<String>()
+    private val typeHolder=TypeFilterHolder(context,filterState,filter,characteristicsStateModel)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseFilterHolder {
         return typeHolder.createHolder(viewType, parent)

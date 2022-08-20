@@ -16,10 +16,10 @@ import kotlinx.android.synthetic.main.favorites_tab_item.view.*
 class FavoritesTabsViewPagerAdapter(
     val fragment: Fragment,
     val context: Context,
-   val installClickListener: FavoritesClickListener
+   private val installClickListener: FavoritesClickListener
 ): FragmentStateAdapter(fragment) {
 
-    private val tabs = listOf("Продукты","Тендеры", "Сохранённые поиски", "Подборки")
+    private val tabs = listOf("Продукты","Тендеры", "Поиски", "Подборки")
 
     override fun getItemCount(): Int = tabs.size
 
@@ -27,7 +27,6 @@ class FavoritesTabsViewPagerAdapter(
     fun getTabView(position: Int): View {
         val view: View = LayoutInflater.from(context).inflate(R.layout.favorites_tab_item, null)
         view.text.text = tabs[position]
-
         return view
     }
 
@@ -35,7 +34,10 @@ class FavoritesTabsViewPagerAdapter(
         var result: Fragment? = null
 
         when(position){
-            0 -> { result = TabFavoritesFragment(installClickListener) }
+            0 -> {
+                result = TabFavoritesFragment(installClickListener)
+
+            }
             1 -> {result=FavoriteTendersFragment(installClickListener)}
             2 -> { result = TabSavedSearchesFragment(installClickListener) }
             3 -> { result = TabSelectionsFragment(installClickListener) }

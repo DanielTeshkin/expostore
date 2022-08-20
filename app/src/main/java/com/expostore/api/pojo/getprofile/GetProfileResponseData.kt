@@ -45,7 +45,9 @@ data class GetProfileResponseData(
 	val pushToken: String? = null,
 
 	@field:SerializedName("username")
-	val username: String? = null
+	val username: String? = null,
+	@field:SerializedName("balance")
+	val balance: Double = 0.0
 ) {
 	data class Shop(
 

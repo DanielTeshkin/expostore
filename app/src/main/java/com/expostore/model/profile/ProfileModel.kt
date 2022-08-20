@@ -18,12 +18,12 @@ data class ProfileModel(
     val causeBlocked: String? = "",
     val isBlocked: Boolean? = false,
     val patronymic: String? = "",
-
     val firstName: String? = "",
     val isEnabledNotifyEmail: Boolean? = false,
     val email: String? = "",
     val pushToken: String? = "",
-    val username: String = ""
+    val username: String = "",
+    val balance:Double=0.0
 ): Parcelable {
     @Parcelize
     data class ShopModel(
@@ -70,7 +70,8 @@ val GetProfileResponseData.toModel: ProfileModel
         isEnabledNotifyEmail ?: false,
         email ?: "",
         pushToken ?: "",
-        username ?: ""
+        username ?: "",
+        balance
     )
 val ProfileDao.toModel:ProfileModel
-get() = ProfileModel(id,shop, city, lastName, avatar, isEnabledPushNotify, causeBlocked, isBlocked, patronymic, firstName, isEnabledNotifyEmail, email, pushToken, username)
+get() = ProfileModel(id,shop, city, lastName, avatar, isEnabledPushNotify, causeBlocked, isBlocked, patronymic, firstName, isEnabledNotifyEmail, email, pushToken, username,balance)

@@ -66,7 +66,7 @@ class TenderAdapter :
             binding.apply {
 
                 name.text = item.title
-                price.text = item.priceFrom
+                price.text = item.price
                description.text = item.description
                 address.text = item.location
                 adapter.onItemClickListener = {

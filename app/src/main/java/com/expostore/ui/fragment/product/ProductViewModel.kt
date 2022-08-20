@@ -1,31 +1,27 @@
 package com.expostore.ui.fragment.product
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Bundle
-import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.expostore.MainActivity
-import com.expostore.R
 import com.expostore.data.repositories.ChatRepository
+import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.chats.chatsId
+import com.expostore.ui.fragment.chats.identify
+import com.expostore.ui.fragment.chats.imagesProduct
+import com.expostore.ui.fragment.chats.productsName
+import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(private val chatRepository: ChatRepository) : BaseViewModel() {
-    private val _product=MutableStateFlow<ProductModel>(ProductModel())
+    private val _product=MutableStateFlow(ProductModel())
     val product=_product.asStateFlow()
+    private val _chatUI=MutableSharedFlow<ResponseState<MainChat>>()
+    val chatUI=_chatUI.asSharedFlow()
 
 
     override fun onStart() {
@@ -34,14 +30,35 @@ class ProductViewModel @Inject constructor(private val chatRepository: ChatRepos
     fun saveProduct(item:ProductModel){
         _product.value=item
     }
-    fun navigationChat(){
-          navigationTo(ProductFragmentDirections.actionProductFragmentToChatFragment())
+   private fun navigationChat(result: InfoItemChat) {
+          navigationTo(ProductFragmentDirections.actionProductFragmentToChatFragment(result))
     }
-
+    fun navigationToReview(){
+        navigationTo(ProductFragmentDirections.actionProductFragmentToReviewsFragment())
+    }
+  fun navigationToShop(){
+      navigationTo(ProductFragmentDirections.actionProductFragmentToShopFragment())
+  }
     fun navigationToAddReview(){
         navigationTo(ProductFragmentDirections.actionProductFragmentToAddReviewFragment())
     }
-    fun createChat(id:String,flag:String) = chatRepository.createChat(id,flag)
+    fun createChat(id:String,flag:String) = chatRepository.createChat(id,flag).handleResult(_chatUI,{chat->
+        val result = InfoItemChat(
+            chat.identify()[1],
+            chat.identify()[0],
+            chat.chatsId(),
+            chat.imagesProduct(),
+            chat.productsName(), chat.identify()[3]
+        )
+        navigationChat(result)
+    })
+
+    fun navigationToNote(){
+        navigationTo(ProductFragmentDirections.actionProductFragmentToNoteFragment())
+    }
+    fun navigationToQrCodeFragment(){
+        navigationTo(ProductFragmentDirections.actionProductFragmentToProductQrCodeFragment())
+    }
 
 
 

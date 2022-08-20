@@ -4,6 +4,8 @@ import com.expostore.api.base.BaseListResponse
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.addshop.AddShopRequestData
+import com.expostore.api.pojo.comparison.ComparisonProductData
+import com.expostore.api.pojo.comparison.ComparisonResult
 import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
@@ -70,6 +72,8 @@ interface ServerApi {
     @GET("/api/shop/")
     suspend fun getMyShop():Response<ShopResponse>
 
+
+
     @Multipart
     @POST("/api/chat/file/create/")
     suspend fun fileCreate(@Part file: MultipartBody.Part, @Part("filename")name: RequestBody):Response<ResponseFile>
@@ -84,10 +88,10 @@ interface ServerApi {
     suspend fun getCities(): Response<List<CityResponse>>
 
     @POST("/api/shop/{id}/product/create/")
-    suspend fun createProduct(@Path("id") id: String,@Body request:ProductUpdateRequest):Response<ProductResponseUpdate>
+    suspend fun createProduct(@Path("id") id: String,@Body request:ProductUpdateRequest):Response<CreateResponseProduct>
 
     @PUT("api/product/{id}/update/")
-    suspend fun updateProduct(@Path("id") id: String,@Body request:ProductUpdateRequest):Response<ProductResponseUpdate>
+    suspend fun updateProduct(@Path("id") id: String,@Body request:ProductUpdateRequest):Response<CreateResponseProduct>
 
     @GET("/api/profile/")
     suspend fun getProfile(): Response<GetProfileResponseData>
@@ -134,8 +138,6 @@ interface ServerApi {
     //@GET("/api/product/elected/list/")
    // suspend fun getSearchList(): Response<List<GetFavoritesListResponseData>>
 
-    @POST("api/tender/create/")
-    suspend fun createTender(@Body tender: TenderRequest): Response<TenderResponse>
 
     @POST("/api/image/save/")
     suspend fun saveImage(@Body request: List<SaveImageRequestData>): Response<SaveImageResponseData>
@@ -146,15 +148,6 @@ interface ServerApi {
     @GET("/api/product/category/{id}/characteristic/")
     suspend fun getCategoryCharacteristic(@Path("id") id: String): Response<List<CategoryCharacteristicResponse>>
 
-    @POST("/api/tender/")
-    suspend fun getTenders(
-        @Query("page") page: Int?,
-        @Body filterRequest: FilterRequest
-
-        ): Response<BaseListResponse<Tender>>
-
-    @GET("/api/tender/my")
-    suspend fun getMyTenders(): Response<TenderPage>
 
     @GET("/api/product/{id}/")
     suspend fun getProduct(@Path("id") id: String): Response<ProductResponseData>
@@ -162,8 +155,8 @@ interface ServerApi {
     @PATCH("/api/product/{id}/status/draft/")
     suspend fun takeOffProduct(@Path("id") id: String): Response<ProductResponse>
 
-    @PUT("/api/product/{id}/status/draft/")
-    suspend fun saveToDraft(@Path("id") id: String,@Body request: ProductUpdateRequest): Response<ProductResponseUpdate>
+    @PATCH("/api/product/{id}/status/draft/")
+    suspend fun saveToDraft(@Path("id") id: String,@Body request: ProductUpdateRequest): Response<ProductResponse>
 
 
     @GET("/api/product/{id}/review/")
@@ -184,7 +177,10 @@ interface ServerApi {
         @Body filterRequest: FilterRequest
     ): Response<BaseListResponse<ProductResponse>>
 
-
+    @PATCH("/api/product/{id}/status/published/")
+    suspend fun publishedProduct(
+        @Path("id") id:String
+    ): Response<ProductResponse>
 
 
     @GET("/api/product/my")
@@ -201,6 +197,40 @@ interface ServerApi {
 
     @GET("/api/reviews/")
     suspend fun getReviews():Response<ReviewsResponse>
+
+
+
+    //tender
+
+    @POST("/api/tender/")
+    suspend fun getTenders(
+        @Query("page") page: Int?,
+        @Body filterRequest: FilterRequest
+
+    ): Response<BaseListResponse<Tender>>
+
+    @GET("/api/tender/my")
+    suspend fun getMyTenders(@Query("status") status: String?): Response<TenderPage>
+
+    @POST("api/tender/create/")
+    suspend fun createTender(@Body tender: TenderRequest): Response<TenderResponse>
+
+    @PATCH("/api/tender/{id}/status/published/")
+    suspend fun publishedTender(
+        @Path("id") id:String
+    ): Response<TenderResponse>
+
+    @PATCH("/api/tender/{id}/status/draft/")
+    suspend fun takeOffTender(@Path("id") id: String): Response<TenderResponse>
+
+    @PATCH("api/tender/{id}/update/")
+    suspend fun updateTender(@Path("id") id: String,@Body request:TenderRequest):Response<TenderResponse>
+
+
+
+
+
+
 
 
     //favorite
@@ -240,6 +270,30 @@ interface ServerApi {
 
     @DELETE("api/chat/item/{id}")
     suspend fun deleteChat(@Path("id") id: String):Response<ItemChatResponse>
+
+
+    //comparison
+    @POST("/api/product/select_for_comparison/")
+    suspend fun addProductToComparison(@Body products:List<ComparisonProductData>):Response<List<ComparisonProductData>>
+
+    @POST("/api/product/comparison/")
+    suspend fun comparison(@Body products:List<ComparisonProductData>):Response<ComparisonResult>
+
+    @GET("/api/product/get_select_for_comparison/")
+    suspend fun getComparisonProducts(): Response<ProductResponse>
+
+    //personal product
+    @POST("/api/product/personal/create/")
+    suspend fun createPersonalProduct(@Body request:ProductUpdateRequest):Response<CreateResponseProduct>
+
+    @GET("/api/product/personal/")
+    suspend fun getPersonalProducts():Response<BaseListResponse<ProductResponse>>
+
+    @DELETE("/api/product/personal/{id}")
+    suspend fun deletePersonalProduct(@Path("id") id: String):Response<ProductResponse>
+
+
+
 
 
 

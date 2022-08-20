@@ -23,6 +23,13 @@ class EditProfileViewModel @Inject constructor(private val profileRepository: Pr
     val cities=_cities.asSharedFlow()
     private val _citiesList= MutableStateFlow<MutableMap<String,Int>>(mutableMapOf())
     val citiesList=_citiesList.asStateFlow()
+    private val _enabledState=MutableStateFlow(false)
+    val enabledState=_enabledState.asStateFlow()
+    private val name= MutableStateFlow("")
+    private val surname= MutableStateFlow("")
+    private val city= MutableStateFlow("")
+    private val patronymic=MutableStateFlow("")
+    private val email= MutableStateFlow("")
 
     override fun onStart() {
         TODO("Not yet implemented")
@@ -46,9 +53,7 @@ class EditProfileViewModel @Inject constructor(private val profileRepository: Pr
     fun toBack(){
        back()
     }
-    fun saveInfo(model:InfoProfileModel){
 
-    }
 
 
 }

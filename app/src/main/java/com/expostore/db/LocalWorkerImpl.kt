@@ -4,6 +4,7 @@ import com.expostore.db.enities.AdvertisingDao
 import com.expostore.db.enities.ProfileDao
 import com.expostore.db.enities.chat.ChatDao
 import com.expostore.db.enities.chat.toDao
+import com.expostore.db.enities.favorites.FavoriteProductDao
 import com.expostore.db.enities.selection.SelectionDao
 import com.expostore.db.enities.selection.toDao
 import com.expostore.db.enities.toDao
@@ -43,6 +44,13 @@ class LocalWorkerImpl(private val localDataApi: LocalDataApi,context: Context):L
     override suspend fun saveAdvertising(advertising: List<CategoryAdvertisingModel>) =localDataApi.saveAdvertising(advertising.map { it.toDao })
 
     override suspend fun removeAdvertising() =localDataApi.removeAdvertising()
+
+    override suspend fun getFavoritesProduct(): List<FavoriteProductDao> = localDataApi.getFavoritesProduct()
+
+    override suspend fun saveFavorites(list: List<FavoriteProductDao>) = localDataApi.saveFavorites(list)
+
+    override suspend fun removeFavorites() =localDataApi.removeFavorites()
+
 
 }
 

@@ -6,6 +6,8 @@ import com.expostore.db.enities.ProfileDao
 
 import com.expostore.db.enities.TokenDao
 import com.expostore.db.enities.chat.ChatDao
+import com.expostore.db.enities.favorites.FavoriteProductDao
+
 import com.expostore.db.enities.selection.SelectionDao
 import com.expostore.model.chats.DataMapping.MainChat
 
@@ -32,7 +34,7 @@ interface LocalDataApi {
     @Query("Select * from profile")
     suspend fun getProfile(): ProfileDao
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveProfile(model: ProfileDao)
 
     @Query("DELETE FROM profile")
@@ -41,7 +43,7 @@ interface LocalDataApi {
     @Query("Select * from selection")
     suspend fun getSelection():List<SelectionDao>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveSelections(selections:List<SelectionDao>)
 
     @Query("DELETE FROM selection")
@@ -50,17 +52,19 @@ interface LocalDataApi {
     @Query("Select * from advertising")
     suspend fun getAdvertising():List<AdvertisingDao>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveAdvertising(advertising:List<AdvertisingDao>)
 
     @Query("DELETE FROM selection")
     suspend fun removeAdvertising()
 
+    @Query("Select * from favorite")
+    suspend fun getFavoritesProduct():List<FavoriteProductDao>
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveFavorites(list: List<FavoriteProductDao>)
 
-
-
-
-
+    @Query("DELETE FROM favorite")
+    suspend fun removeFavorites()
 
 }

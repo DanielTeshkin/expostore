@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.expostore.databinding.MyProductsFragmentBinding
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.fragment.product.myproducts.adapter.MyProductClickRepository
 import com.expostore.ui.fragment.product.myproducts.adapter.MyProductsTabsViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,15 +28,8 @@ class MyProductsFragment () : BaseFragment<MyProductsFragmentBinding>(MyProducts
         viewModel.apply {
             subscribe(navigation){navigateSafety(it)}
         }
-       val onClickMyProduct = object : OnClickMyProduct {
-            override fun click(model: ProductModel) {
-                Log.i("fff",model.id)
-                val a=model
-                setFragmentResult("load", bundleOf("product" to a))
-                viewModel.navigate()
-            }
-        }
-        myProductsTabsViewPagerAdapter = MyProductsTabsViewPagerAdapter(this,requireContext(),onClickMyProduct)
+
+        myProductsTabsViewPagerAdapter = MyProductsTabsViewPagerAdapter(this,requireContext())
         binding.myProductsViewPager.adapter = myProductsTabsViewPagerAdapter
         binding.myProductsViewPager.offscreenPageLimit = myProductsTabsViewPagerAdapter.itemCount
 

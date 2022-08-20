@@ -10,10 +10,13 @@ import com.expostore.model.category.ProductCategoryModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.search.filter.interactor.SearchFilterInteractor
 import com.expostore.ui.fragment.search.filter.models.*
+import com.expostore.ui.general.CheckBoxStateModel
+import com.expostore.ui.general.InputStateModel
+import com.expostore.ui.general.RadioStateModel
+import com.expostore.ui.general.SelectStateModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -77,20 +80,20 @@ class SearchFilterViewModel @Inject constructor(
         interactor.getCategoryCategory(id).handleResult(_characteristics)
 
     fun addFilterInput(left:String,right:String,name:String){
-        filterInputList.value.inputFilter[name] = Pair(left,right)
+        filterInputList.value.state[name] = Pair(left,right)
     }
 
     fun addFilterSelect(name: String,list:List<String>){
         Log.i("select",name)
-        filterSelectList.value.select[name] = list
+        filterSelectList.value.state[name] = list
     }
     fun addFilterRadio(id:String,name: String){
         Log.i("radio",id)
-            filterRadioList.value.radioFilter[name]=id
+            filterRadioList.value.state[name]=id
     }
     fun addFilterCheckbox(name: String,check:Boolean){
         Log.i("check",name)
-        filterCheckBox.value.checkboxFilter[name]=check
+        filterCheckBox.value.state[name]=check
     }
 
     fun searchFilter(){

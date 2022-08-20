@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.CategoryMultiItemBinding
 import com.expostore.model.category.ProductCategoryModel
 import com.expostore.ui.fragment.profile.profile_edit.selectListener
-import com.expostore.ui.fragment.search.other.OnClickBottomSheetFragment
+import com.expostore.ui.general.other.OnClickBottomSheetFragment
 import com.expostore.ui.fragment.specifications.CategoryChose
 import com.expostore.ui.fragment.specifications.adapter.SpecificationsRecyclerViewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog

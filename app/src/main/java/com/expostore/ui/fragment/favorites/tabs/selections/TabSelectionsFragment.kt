@@ -9,6 +9,7 @@ import com.expostore.model.category.SelectionModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.favorites.FavoritesClickListener
+import com.expostore.ui.fragment.favorites.tabs.favorites.TabFavoritesViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ class TabSelectionsFragment(private val installClickListener: FavoritesClickList
     BaseFragment<TabSelectionsFragmentBinding>(TabSelectionsFragmentBinding::inflate) {
     private val viewModel: TabSelectionsViewModel by viewModels()
   private lateinit var onClick: OnClickCategory
+  private val sharedFavoriteViewModel:TabFavoritesViewModel by viewModels()
 
   override fun onStart() {
         super.onStart()
@@ -48,6 +50,7 @@ class TabSelectionsFragment(private val installClickListener: FavoritesClickList
 
 
     private fun showUserCategory(list: MutableList<SelectionModel>){
+        sharedFavoriteViewModel.selectionsSave(list)
         binding.rvUser.apply {
             layoutManager=LinearLayoutManager(requireContext())
             adapter=TabSelectionAdapter(list,onClick,installClickListener)

@@ -13,18 +13,30 @@ import javax.inject.Inject
 
 class TenderRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker):BaseRepository() {
 
-    fun loadMyTenders()=flow{
-        val result=handleOrDefault(TenderPage()) {  apiWorker.getMyTenders()}
+    fun loadMyTenders(status:String)=flow{
+        val result=handleOrDefault(TenderPage()) {  apiWorker.getMyTenders(status)}
                   emit(result.results!!.map { it.toModel })
 
     }
 
-  suspend  fun getTenders(page: Int?,
+      suspend  fun getTenders(page: Int?,
                          filterModel: FilterModel)=apiWorker.getTenders(page, filterModel.toRequest)
      fun createTender(createTenderRequestData:TenderRequest)= flow {
          val result=handleOrDefault(TenderResponse()){apiWorker.createTender(createTenderRequestData)}
          emit(result)
      }
+    fun updateTender(id:String,request: TenderRequest)= flow {
+        val result=handleOrDefault(TenderResponse()){apiWorker.updateTender(id, request)}
+        emit(result)
+    }
+    fun takeOff(id: String)= flow{
+                val result=handleOrDefault(TenderResponse()){apiWorker.takeOffTender(id)}
+        emit(result)
+    }
+
+    fun publishedTender(id:String)= flow {
+        emit(handleOrDefault(TenderResponse()){apiWorker.publishedTender(id)})
+    }
 
      suspend fun getToken()=localWorker.getToken()
 

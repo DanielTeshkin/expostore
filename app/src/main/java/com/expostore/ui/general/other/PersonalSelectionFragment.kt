@@ -1,4 +1,4 @@
-package com.expostore.ui.fragment.search.other
+package com.expostore.ui.general.other
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionModel>?,
-                    onClickBottomFragment: OnClickBottomSheetFragment,personalOrNot:Boolean=false){
+                    onClickBottomFragment: OnClickBottomSheetFragment, personalOrNot:Boolean=false){
 
 
 
@@ -38,7 +38,7 @@ fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionMo
     }
     val compare = bottomSheetDialog.findViewById<LinearLayout>(R.id.compare)
     compare?.click {
-        onClickBottomFragment.share()
+
         bottomSheetDialog.hide()
     }
     val chat=bottomSheetDialog.findViewById<LinearLayout>(R.id.chat_write)
@@ -48,7 +48,7 @@ fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionMo
     }
     val share=bottomSheetDialog.findViewById<LinearLayout>(R.id.share)
     share?.click {
-        onClickBottomFragment.share()
+        onClickBottomFragment.share(model.qrcode.qr_code_image)
         bottomSheetDialog.hide()
     }
     val personalSelection=bottomSheetDialog.findViewById<LinearLayout>(R.id.personal)
@@ -77,10 +77,10 @@ fun showSelection(
     createSelection?.click { onClickBottomSheetFragment.createSelection(product)
     bottomSheetDialog.hide()
     }
-    val selections=bottomSheetDialog.findViewById<RecyclerView>(R.id.rv_selections)
+    val selections=bottomSheetDialog.findViewById<RecyclerView>(R.id.rv_selection)
     selections?.apply {
         layoutManager=LinearLayoutManager(context)
-        adapter=SelectionBottomAdapter(list,onClickBottomSheetFragment,product,bottomSheetDialog)
+        adapter= SelectionBottomAdapter(list,onClickBottomSheetFragment,product,bottomSheetDialog)
     }
 
     bottomSheetDialog.show()
@@ -90,7 +90,7 @@ class SelectionBottomAdapter(
     private val list: List<SelectionModel>,
     private val onClickPersonalSelectionFragment: OnClickBottomSheetFragment,
     private val product: String,
-   private val bottomSheetDialog: BottomSheetDialog
+    private val bottomSheetDialog: BottomSheetDialog
 ):
     RecyclerView.Adapter<SelectionBottomAdapter.SelectionHolder>() {
     inner class SelectionHolder(val binding:CategorySingleItemBinding):RecyclerView.ViewHolder(binding.root){
@@ -121,7 +121,7 @@ interface OnClickBottomSheetFragment{
     fun call(username:String)
     fun createNote(product:ProductModel)
     fun chatCreate(id:String)
-    fun share()
+    fun share(id: String)
     fun block()
 
 }
@@ -136,7 +136,8 @@ interface OnClickBottomSheetTenderFragment{
 
 }
 fun showBottomSheetTender(context: Context, model:TenderModel,
-                    onClickBottomFragment: OnClickBottomSheetTenderFragment){
+                    onClickBottomFragment: OnClickBottomSheetTenderFragment
+){
 
 
 

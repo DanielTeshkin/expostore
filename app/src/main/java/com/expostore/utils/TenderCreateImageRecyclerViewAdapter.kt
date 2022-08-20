@@ -13,9 +13,10 @@ import com.expostore.databinding.MyTenderItemBinding
 import com.expostore.databinding.TenderCreateImageItemBinding
 import com.expostore.extension.load
 import com.expostore.ui.fragment.chats.loadAvatar
+import com.expostore.ui.fragment.profile.profile_edit.click
 import kotlinx.android.synthetic.main.tender_create_image_item.view.*
 
-class TenderCreateImageRecyclerViewAdapter(private var images: MutableList<Uri>) : RecyclerView.Adapter<TenderCreateImageRecyclerViewAdapter.TenderImageViewHolder>() {
+class TenderCreateImageRecyclerViewAdapter(private var images: MutableList<String>) : RecyclerView.Adapter<TenderCreateImageRecyclerViewAdapter.TenderImageViewHolder>() {
 
     var onClick : OnClickListener? = null
 
@@ -45,24 +46,37 @@ class TenderCreateImageRecyclerViewAdapter(private var images: MutableList<Uri>)
 
         if (position == 0){
             holder.imageView.setImageResource(R.drawable.ic_tender_add_image)
-            holder.imageView.setOnClickListener {
+            holder.imageView.click {
                 onClick!!.addPhoto()
             }
         }
-        else holder.imageView.loadImageTender(image)
+        else{
+            holder.imageView.loadImageTender(image)
+            holder.binding.deleteImage.apply {
+                visibility= View.VISIBLE
+                click { removeAt(position)
+                 onClick!!.removePhoto(position-1)
+                }
+            }
+        }
     }
 
-    fun update( uri: Uri){
+    fun update( uri: String){
         images.add(uri)
         notifyDataSetChanged()
     }
 
     interface OnClickListener{
         fun addPhoto()
+        fun removePhoto(index: Int)
+    }
+    private fun removeAt(index: Int) {
+        images.removeAt(index)
+        notifyItemRemoved(index)
+        notifyItemRangeChanged(index,itemCount);
     }
 
-
 }
-fun ImageView.loadImageTender(uri: Uri){
+fun ImageView.loadImageTender(uri: String){
     Glide.with(this).load(uri).centerCrop().into(this)
 }

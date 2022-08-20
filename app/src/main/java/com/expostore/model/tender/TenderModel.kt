@@ -23,8 +23,7 @@ data class TenderModel(val id: String="",
                         val isLiked : Boolean? = null,
                        val title: String?="",
                        val description: String?=null,
-                       val priceFrom: String?=null,
-                       val priceUpTo: String?=null,
+                       val price: String?=null,
                        val location: String?=null,
                        val author: AuthorModel= AuthorModel(),
                        val  date_created :String="",
@@ -36,25 +35,16 @@ data class TenderModel(val id: String="",
                        val long:Double?=null,
                        var communicationType : String?= null,
                        var status : String? = null,
-                       val characteristicModel: List<Character>?=null
+                       val characteristicModel: List<Character>?=null,
+
 
 ):Parcelable
 
 val Tender.toModel : TenderModel
-get() = TenderModel(id=id?:"", isLiked = isLiked, title = title,description,priceFrom,priceUpTo,location,author?.toModel?:AuthorModel(),
+get() = TenderModel(id=id?:"", isLiked = isLiked, title = title,description,price,location,author?.toModel?:AuthorModel(),
     date_created=dateCreated?:"",images.map { it.toModel },category=category?.toModel,count=count?:0,shop?.toModel?: ShopModel(), lat = lat,
     long = long, communicationType = communicationType, status = status, characteristicModel = characteristics?.map { it.toModel }
 )
 
-fun TenderModel.priceRange():String {
-    return if(priceFrom!=null &&priceUpTo!=null) {
-        "oт $priceFrom до $priceUpTo рублей"
-    }
-           else if(priceFrom!=null&&priceUpTo==null){
-        "oт $priceFrom рублей"
-    }
-     else if(priceFrom==null&&priceUpTo!=null){
-        "до $priceUpTo рублей"
-    }
-    else{"незвестно"}
-}
+fun TenderModel.priceRange():String =price?:"неизвестно"
+

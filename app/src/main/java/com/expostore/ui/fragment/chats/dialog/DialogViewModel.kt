@@ -12,6 +12,7 @@ import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
@@ -32,6 +33,7 @@ class DialogViewModel @Inject constructor(private val chatRepository: ChatReposi
     val instanceProgressBar=_instanceProgressBar
     private val _save=MutableSharedFlow<ResponseState<SaveImageResponseData>>()
     val save=_save.asSharedFlow()
+
     override fun onStart() {
     }
 
@@ -39,7 +41,7 @@ class DialogViewModel @Inject constructor(private val chatRepository: ChatReposi
         update=viewModelScope.repeat(10000){
                       chatRepository.chatItem(id).handleResult(_item)} }
 
-    fun sentMessageOrUpdate(id: String,body:  MessageRequest){
+    fun sentMessageOrUpdate(id: String, body: MessageRequest){
           chatRepository.postMessage(id,body).handleResult(_message)
     }
 
@@ -52,6 +54,7 @@ class DialogViewModel @Inject constructor(private val chatRepository: ChatReposi
             _instanceProgressBar.value = false
     }
     }
+
 
     fun stopUpdate() {
         viewModelScope.launch {

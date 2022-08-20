@@ -6,6 +6,7 @@ import com.expostore.api.pojo.getchats.ChatResponse
 import com.expostore.db.enities.AdvertisingDao
 import com.expostore.db.enities.ProfileDao
 import com.expostore.db.enities.chat.ChatDao
+import com.expostore.db.enities.favorites.FavoriteProductDao
 import com.expostore.db.enities.selection.SelectionDao
 import com.expostore.db.model.TokenModel
 import com.expostore.model.category.CategoryAdvertisingModel
@@ -14,8 +15,7 @@ import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.profile.ProfileModel
 
 interface LocalWorker {
-
-     fun getToken(): TokenModel?
+    fun getToken(): TokenModel?
     suspend fun saveToken(tokenModel: TokenModel)
    suspend fun removeToken()
    suspend fun getChats():List<ChatDao>
@@ -30,4 +30,7 @@ interface LocalWorker {
     suspend fun getAdvertising():List<AdvertisingDao>
     suspend fun saveAdvertising(advertising: List<CategoryAdvertisingModel>)
     suspend fun removeAdvertising()
+    suspend fun getFavoritesProduct():List<FavoriteProductDao>
+    suspend fun saveFavorites(list: List<FavoriteProductDao>)
+    suspend fun removeFavorites()
 }

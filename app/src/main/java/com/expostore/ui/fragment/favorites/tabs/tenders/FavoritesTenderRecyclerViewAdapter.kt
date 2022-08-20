@@ -16,7 +16,11 @@ import com.expostore.utils.OnClickFavoriteProductListener
 import com.expostore.utils.OnClickRecyclerViewListener
 import kotlinx.android.synthetic.main.detail_product_item.view.*
 
-class FavoritesTenderRecyclerViewAdapter(private val tenders: MutableList<FavoriteTender>, val context: Context) : RecyclerView.Adapter<FavoritesTenderRecyclerViewAdapter.FavoritesTenderViewHolder>() {
+class FavoritesTenderRecyclerViewAdapter(
+    private val tenders: MutableList<FavoriteTender>,
+    val context: Context,
+  private val installClickListener: FavoritesClickListener
+) : RecyclerView.Adapter<FavoritesTenderRecyclerViewAdapter.FavoritesTenderViewHolder>() {
 
 
     var onClick: OnClickRecyclerViewListener? = null
@@ -36,7 +40,7 @@ class FavoritesTenderRecyclerViewAdapter(private val tenders: MutableList<Favori
         @SuppressLint("SetTextI18n")
         fun bind(item: FavoriteTender, index: Int){
             val product= item.tender
-            binding.price.text="От"+" "+product.priceFrom +" "+"до" +" "+product.priceUpTo+" " +"рублей"
+            binding.price.text=product.price
             val list=ArrayList<String>()
 
             product.images?.map { list.add(it.file) }
@@ -44,7 +48,7 @@ class FavoritesTenderRecyclerViewAdapter(private val tenders: MutableList<Favori
             binding.viewPager.apply {
                 val tabProductPagerAdapter= ImageAdapter()
                 tabProductPagerAdapter.items=list
-                tabProductPagerAdapter.onItemClickListener= { }
+                tabProductPagerAdapter.onItemClickListener= { installClickListener.onClickTender(item)}
                 adapter=tabProductPagerAdapter
             }
 

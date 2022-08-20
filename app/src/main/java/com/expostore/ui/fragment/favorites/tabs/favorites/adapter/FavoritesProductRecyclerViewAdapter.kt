@@ -10,6 +10,8 @@ import android.widget.ViewSwitcher
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.DetailProductItemBinding
 import com.expostore.model.favorite.FavoriteProduct
+import com.expostore.model.product.ProductModel
+import com.expostore.model.product.priceSeparator
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.fragment.favorites.FavoritesClickListener
 import com.expostore.ui.fragment.product.addproduct.stroke
@@ -19,12 +21,14 @@ import kotlinx.android.synthetic.main.detail_product_item.view.*
 
 class FavoritesProductRecyclerViewAdapter(
     private val products: MutableList<FavoriteProduct>,
-    val onClickListener: OnClickFavoriteProductListener,
-  private val  installClickListener: FavoritesClickListener,
+    private val  installClickListener: FavoritesClickListener,
     val context: Context
 ) : RecyclerView.Adapter<FavoritesProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
 
-
+    var onCallItemClickListener: ((String) -> Unit)? = null
+    var onMessageItemClickListener: ((ProductModel) -> Unit)? = null
+    var onAnotherClickListener: ((ProductModel)->Unit)?=null
+    var onClickLike: ((String) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
@@ -42,7 +46,7 @@ class FavoritesProductRecyclerViewAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(item:FavoriteProduct,index: Int){
             val product= item.product
-            binding.price.text=product.price +" " +"рублей"
+            binding.price.text=product.price.priceSeparator() +" " +"рублей"
             val list=ArrayList<String>()
 
            product.images.map { list.add(it.file) }
@@ -53,17 +57,17 @@ class FavoritesProductRecyclerViewAdapter(
                 tabProductPagerAdapter.onItemClickListener= { installClickListener.onClickProduct(item) }
                 adapter=tabProductPagerAdapter
             }
-
+            binding.call.click {onCallItemClickListener?.invoke(product.author.username) }
+            binding.write.click { onMessageItemClickListener?.invoke(product) }
+            binding.another.click { onAnotherClickListener?.invoke(product) }
+            binding.like.click { onClickLike?.invoke(product.id) }
             if(item.notes!=null){
                 binding.note.text=item.notes
             }
             else{
                 binding.note.text="Нет заметки"
             }
-            binding.like.click {
-                onClickListener.onClickLike(product.id)
 
-            }
         }
 
     }

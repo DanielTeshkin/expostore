@@ -45,5 +45,7 @@ class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWork
         emit(result.toModel)
     }
 
+        // fun recovery()=apiWorker.
+
     suspend fun saveToken( refresh:String,access:String) = localWorker.saveToken(TokenModel(refresh,access))
 }

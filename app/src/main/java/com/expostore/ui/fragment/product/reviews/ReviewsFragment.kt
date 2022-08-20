@@ -2,9 +2,7 @@ package com.expostore.ui.fragment.product.reviews
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -14,7 +12,7 @@ import com.expostore.model.review.ReviewModel
 import com.expostore.model.review.Reviews
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.chats.general.ControllerUI
-import com.expostore.ui.fragment.profile.profile_edit.click
+import com.expostore.ui.fragment.product.ReviewsModel
 import com.expostore.ui.state.ResponseState
 import com.expostore.utils.OnClickImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,24 +23,51 @@ import kotlinx.coroutines.flow.collect
 class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBinding::inflate) {
 
     private val reviewsViewModel: ReviewsViewModel by viewModels()
+    private val list= mutableListOf<ReviewModel>()
+    private val onClickImage:OnClickImage by lazy {
+        object :OnClickImage{
+            override fun click(bitmap: Bitmap) {
+                ControllerUI(requireContext()).openImageFragment(bitmap)
+                    .show(requireActivity().supportFragmentManager, "DialogImage")
+            }
+
+        }
+    }
+    private val reviewsAdapter:ReviewRecyclerViewAdapter by lazy {
+        ReviewRecyclerViewAdapter(list,onClickImage)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        installSetFragmentListeners()
+        subscribeViewModel()
+        binding.apply {
+            rvReviews.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter =reviewsAdapter
+            }
+            progressBar6.visibility = View.GONE
+        }
+    }
+
+  private fun subscribeViewModel(){
+      reviewsViewModel.apply {
+            subscribe(reviews){handleResult(it)}
+            subscribe(navigation){navigateSafety(it)}
+
+        }
+    }
+    private fun installSetFragmentListeners(){
         setFragmentResultListener("requestKey"){_, bundle->
             val result=bundle.getString("name")
             if(result!=null) {
                 reviewsViewModel.whoUpdate(result)
+                reviewsViewModel.load()
             }
         }
-        subscribeViewModel()
-    }
-
-  private  fun subscribeViewModel(){
-        reviewsViewModel.load()
-        reviewsViewModel.apply {
-            subscribe(reviews){handleResult(it)}
-            subscribe(navigation){navigateSafety(it)}
-
+        setFragmentResultListener("reviews"){_, bundle->
+            val result=bundle.getParcelable<ReviewsModel>("list")
+            if(result!=null) list.addAll(result.reviews)
         }
     }
 
@@ -55,28 +80,13 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
     }
 
     private fun loadReviews(reviews: Reviews) {
-        val list = check(reviews)
-        val onClickImage=object :OnClickImage{
-            override fun click(bitmap: Bitmap) {
-                ControllerUI(requireContext()).openImageFragment(bitmap)
-                    .show(requireActivity().supportFragmentManager, "DialogImage")
-            }
-
-        }
-        binding.apply {
-            rvReviews.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = ReviewRecyclerViewAdapter(list,onClickImage)
-            }
-           progressBar6.visibility = View.GONE
-        }
+         check(reviews)
     }
 
 
 
-   private fun check(reviews: Reviews):MutableList<ReviewModel>{
-        val list= mutableListOf<ReviewModel>()
-        state {
+   private fun check(reviews: Reviews){
+       state {
             reviewsViewModel.who.collect{
                 when(it){
                     "my" -> list.addAll(reviews.my_reviews!!)
@@ -84,7 +94,5 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
                 }
             }
         }
-
-        return list
-    }
+   }
 }

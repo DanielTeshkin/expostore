@@ -43,7 +43,7 @@ object AppModule {
             .client(httpClient)
             .build()
 
-    // TODO: поменять context на репозиторий, когда будет бд
+
     @Provides
     fun provideHttpClient(@ApplicationContext context: Context, interceptor: Interceptor):OkHttpClient  {
         val loggingInterceptor = HttpLoggingInterceptor()

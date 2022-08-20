@@ -37,10 +37,15 @@ class ProfileDao (@PrimaryKey
                   @ColumnInfo(name = "pushToken")
                   val pushToken: String? = "",
                   @ColumnInfo(name = "username")
-                  val username: String = "")
+                  val username: String = "",
+                  @ColumnInfo(name = "balance", defaultValue = 0.0.toString())
+                  val balance: Double = 0.0
+
+)
+
 
 val ProfileModel.toDao:ProfileDao
-get() = ProfileDao(id?:"",shop, city, lastName, avatar, isEnabledPushNotify, causeBlocked, isBlocked, patronymic, firstName, isEnabledNotifyEmail, email, pushToken, username)
+get() = ProfileDao(id?:"",shop, city, lastName, avatar, isEnabledPushNotify, causeBlocked, isBlocked, patronymic, firstName, isEnabledNotifyEmail, email, pushToken, username,balance)
 
 val GetProfileResponseData.toDao
     get() = ProfileDao(id?:"",ProfileModel.ShopModel(   shop?.id?:"",
@@ -51,4 +56,4 @@ val GetProfileResponseData.toDao
         shop?.lat ?: 0.0,
         shop?.lng ?: 0.0,
         shop?.shoppingCenter ?: "",
-        shop?.floor_and_office_number?:""), city, lastName, avatar?.toModel?:ImageModel(), isEnabledPushNotify, causeBlocked, isBlocked, patronymic, firstName, isEnabledNotifyEmail, email, pushToken, username?:"")
+        shop?.floor_and_office_number?:""), city, lastName, avatar?.toModel?:ImageModel(), isEnabledPushNotify, causeBlocked, isBlocked, patronymic, firstName, isEnabledNotifyEmail, email, pushToken, username?:"",balance)

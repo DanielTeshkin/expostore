@@ -36,7 +36,9 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
                 price.text=item.price
                 description.text=item.shortDescription
                 address.text= "Адрес"+" "+ item.shop.address
+                adapter.onItemClickListener={onClick?.onClickProduct(item)}
                 viewPager.adapter=adapter
+                like.isChecked=item.isLiked
                 like.click { onClick?.onClickLike(item.id) }
                 if(item.communicationType == "chatting") call.isVisible=false
                 call.click { onClick?.onClickCall(item.author.username) }

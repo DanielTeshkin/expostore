@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.category
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,11 +27,14 @@ import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.name
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.imagesProduct
 import com.expostore.ui.fragment.chats.productsName
-import com.expostore.ui.fragment.search.other.showBottomSheet
+import com.expostore.ui.fragment.note.NoteData
+import com.expostore.ui.general.other.OnClickBottomSheetFragment
+import com.expostore.ui.general.other.showBottomSheet
 import com.expostore.utils.DetailCategoryRecyclerViewAdapter
 import com.expostore.utils.FavoritesProductRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
@@ -44,81 +48,60 @@ import retrofit2.Callback
 import retrofit2.Response
 @AndroidEntryPoint
 class DetailCategoryFragment :
-    BaseFragment<DetailCategoryFragmentBinding>(DetailCategoryFragmentBinding::inflate) {
+    BaseFragment<DetailCategoryFragmentBinding>(DetailCategoryFragmentBinding::inflate) ,OnClickBottomSheetFragment{
 
     private  val detailCategoryViewModel: DetailCategoryViewModel by viewModels()
     private lateinit var  mAdapter: ProductSelectionAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
            setFragmentResultListener("requestKey"){_,bundle->
                val result=bundle.getParcelable<SelectionModel>("selection")
                Log.i("my",result?.id?:"")
                result?.let { showUI(it) }
            }
-       // setFragmentResultListener("requestKey"){_,bundle->
-          //  val result=bundle.getString("flag")
+        setFragmentResultListener("requestKey"){_,bundle->
+            val result=bundle.getString("flag")
 
-      //  }
+        }
+       observeChangeState()
+    }
+
+
+    private fun observeChangeState() {
+        val show:Show<List<SelectionModel>> ={ initClickListener(it)}
         detailCategoryViewModel.apply {
-          //  subscribe(selection){showUI(it)}
-            subscribe(navigation){navigateSafety(it)}
+            subscribe(selection) { showUI(it) }
+            subscribe(navigation) { navigateSafety(it) }
+            subscribe(selections) { handleState(it,show) }
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-       // detailCategoryViewModel.getProfile()
-    }
 
-
-  private  fun observeUI(){
-
-    }
 
     private fun showUI(model: SelectionModel) {
-
         binding.apply {
             tvCategoryName.text=model.name
             rvDetailProduct.apply {
                 layoutManager=LinearLayoutManager(requireContext())
                 mAdapter= ProductSelectionAdapter(model.products as MutableList<ProductModel>)
-                mAdapter.onClick=initClickListener(false)
-
                 adapter=mAdapter
-
             }
         }
 
     }
-    fun initClickListener(state:Boolean):OnClickListener{
-        return  object :OnClickListener{
+    private fun initClickListener(selections:List<SelectionModel>){
+        mAdapter.onClick= object :OnClickListener{
             override fun onClickLike(id: String) {
                 detailCategoryViewModel.updateSelected(id)
             }
 
             override fun onClickProduct(model: ProductModel) {
-                setFragmentResult("requestKey", bundleOf("product" to model))
-                detailCategoryViewModel.navigateToProduct()
-
+                detailCategoryViewModel.navigateToProduct(model)
             }
 
             override fun onClickMessage(model: ProductModel) {
-                detailCategoryViewModel.apply {
-                    state {
-                        createChat(model.id).collect {
-
-                            val result = InfoItemChat(
-                                it.identify()[1],
-                                it.identify()[0],
-                                it.chatsId(),
-                                it.imagesProduct(),
-                                it.productsName(), it.identify()[3]
-                            )
-                            setFragmentResult("new_key", bundleOf("info" to result))
-                            navigateToChat()
-                        }
-                    }
-                }
+             createChat(model.id)
 
             }
 
@@ -127,10 +110,52 @@ class DetailCategoryFragment :
             }
 
             override fun onClickAnother(model: ProductModel) {
-               //showBottomSheet(requireContext(),model, personalOrNot = state, list = listOf())
+
+              showBottomSheet(requireContext(),model, personalOrNot =detailCategoryViewModel.flag.value , list = selections, onClickBottomFragment =this@DetailCategoryFragment)
             }
 
+
         }
+    }
+
+
+    private fun createChat(id:String)=detailCategoryViewModel.createChat(id)
+    override fun createSelection(product: String) {
+        setFragmentResult("name", bundleOf("product" to product))
+        detailCategoryViewModel.navigateToCreateSelection()
+    }
+
+    override fun addToSelection(id: String, product: String) {
+        detailCategoryViewModel.addToSelection(id, product)
+    }
+
+    override fun call(username: String) {
+        navigateToCall(username)
+    }
+
+    override fun createNote(product: ProductModel) {
+        setFragmentResult("dataNote", bundleOf("note" to NoteData(id=product.id,
+            flag = "product", flagNavigation = "search", isLiked = product.isLiked) ))
+        detailCategoryViewModel.navigateToNote()
+    }
+
+    override fun chatCreate(id: String) {
+        chatCreate(id)
+    }
+
+    override fun share(id: String) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, id)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    override fun block() {
+        detailCategoryViewModel.navigateToBlock()
     }
 
 

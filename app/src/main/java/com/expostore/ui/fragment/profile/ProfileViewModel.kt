@@ -17,6 +17,7 @@ import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.response.EditResponseProfile
 import com.expostore.api.response.ShopResponse
 import com.expostore.data.repositories.ProfileRepository
+import com.expostore.data.repositories.ShopRepository
 import com.expostore.model.profile.ProfileModel
 
 import com.expostore.ui.base.BaseViewModel
@@ -30,7 +31,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository, private val shopInteractor: InteractorShopCreate) : BaseViewModel() {
+class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository, private val shopInteractor: ShopRepository) : BaseViewModel() {
          private val _profile=MutableSharedFlow<ResponseState<ProfileModel>>()
     val profile=_profile.asSharedFlow()
     private val _title=MutableStateFlow<String>("Создать магазин")

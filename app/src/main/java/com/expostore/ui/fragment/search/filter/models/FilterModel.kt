@@ -20,9 +20,11 @@ data class FilterModel(
     val promotion:Boolean?=null,
     val characteristics:List<CharacteristicFilterModel>?=null):Parcelable
 val FilterModel.toRequest:FilterRequest
-get() = FilterRequest(category = category, price_max = price_max, price_min = price_min,
-    city = city,q=name, characteristics = characteristics?.map { it.toRequestModel }, sort = sort, lat = lat, long = long, promotion = promotion)
+get() = FilterRequest(
+    category = category, price_max = price_max, price_min = price_min,
+    city = city,
+    q =name, characteristics = characteristics?.map { it.toRequestModel }, sort = listOf(sort,"id"), lat = lat, long = long, promotion = promotion)
 val FilterRequest.toModel : FilterModel
 get() = FilterModel(name = q, price_min = price_min, price_max = price_max, promotion = promotion, category = category,
-       sort = sort,lat=lat, city = city, long = long, characteristics = characteristics?.map { it.toModel }
+       sort = sort?.get(0),lat=lat, city = city, long = long, characteristics = characteristics?.map { it.toModel }
     )

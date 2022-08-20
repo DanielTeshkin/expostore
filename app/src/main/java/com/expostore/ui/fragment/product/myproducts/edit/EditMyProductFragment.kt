@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -30,21 +31,11 @@ class EditMyProductFragment : BaseFragment<EditMyProductFragmentBinding>(EditMyP
 
     private val viewModel: EditMyProductViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener("load") { _, bundle ->
-            val result = bundle.getParcelable<ProductModel>("product")
-            Log.i("mod",result?.id?:"d")
-            if(result!=null) {
-                 viewModel.saveProductInformation(result)
-            }
-        }
+        val result=EditMyProductFragmentArgs.fromBundle(requireArguments()).product
+        viewModel.saveProductInformation(result)
         subscribeOnChange()
          binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
@@ -99,7 +90,9 @@ class EditMyProductFragment : BaseFragment<EditMyProductFragmentBinding>(EditMyP
 
     private fun clickInstall(model: ProductModel) {
         binding.apply {
-            delete.click { viewModel.takeOffProduct(model.id) }
+            state { viewModel.textButton.collect { delete.text=it } }
+            state { viewModel.buttonVisible.collect { delete.isVisible=it} }
+            delete.click { viewModel.changeStatusPublished() }
             edit.click {
                 setFragmentResult("requestKey", bundleOf("product" to model))
                 viewModel.navigateToAddProduct()

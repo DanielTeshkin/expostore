@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/rv_tender_images"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
         android:orientation="horizontal"
+        android:layout_height="170dp"
+        android:layout_marginTop="20dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="10dp"
@@ -71,19 +78,56 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_tender_name_price" />
-
     <LinearLayout
-        android:id="@+id/ll_tender_size"
+        android:id="@+id/ll_tender_character"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/style_list"
-        android:onClick="@{tenderCreateVM::getProductCategory}"
+
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_tender_description">
+
+        <TextView
+            android:id="@+id/tv_character"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:text="Характеристики"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_tender_charcter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_open"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            tools:text="Посмотреть" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_tender_size"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/style_list"
+
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_tender_character">
 
         <TextView
             android:id="@+id/tv_tender_create_category_name"
@@ -101,13 +145,91 @@
             android:id="@+id/tv_tender_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_open"
-            tools:text="11"/>
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            tools:text="11" />
 
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_product_note_title"
+        style="@style/BoldTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Ваша заметка"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_tender_size" />
+
+    <TextView
+        android:id="@+id/tv_product_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:text="Описание заметки"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_note_title" />
+
+    <TextView
+        android:id="@+id/edit_note"
+        android:layout_width="0dp"
+
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/other_btn_background"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="center"
+        android:text="Редактировать заметку"
+
+
+        android:textColor="#2677F1"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_note"
+        tools:ignore="MissingConstraints" />
+    <LinearLayout
+        android:id="@+id/ll_product_shop"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:background="@drawable/style_list"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_note">
+
+        <ImageView
+            android:id="@+id/iv_product_shop_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:src="@color/blue"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/tv_product_shop_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Магазин"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -123,7 +245,8 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_tender_size">
+        app:layout_constraintTop_toBottomOf="@+id/ll_product_shop">
+
 
         <TextView
             android:id="@+id/tv_tender_map_title"
@@ -146,13 +269,60 @@
             app:layout_constraintTop_toBottomOf="@+id/ll_tender_name_price"
             tools:text="Здесь отображается адрес"/>
 
-        <ImageView
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/btn_specifications_background"/>
+            android:src="@drawable/btn_specifications_background" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_product_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_tender_map">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/write"
+            style="@style/BoldTextView"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+
+            android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:backgroundTint="#2677F1"
+            android:text="Написать"
+
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp" />
+
+        <Button
+            android:id="@+id/btn_call_down"
+            style="@style/BoldTextView"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="2dp"
+
+            android:layout_weight="1"
+            android:backgroundTint="#2677F1"
+            android:text="Позвонить"
+            android:textAllCaps="false"
+
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp" />
+
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

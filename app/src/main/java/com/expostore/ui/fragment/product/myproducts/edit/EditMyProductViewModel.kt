@@ -5,6 +5,7 @@ import com.expostore.api.response.ProductResponse
 import com.expostore.data.repositories.ProductsRepository
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.product.ProductInteractor
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,19 +16,32 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class EditMyProductViewModel @Inject constructor(private val repository: ProductsRepository): BaseViewModel() {
+class EditMyProductViewModel @Inject constructor(private val interactor: ProductInteractor): BaseViewModel() {
           private val _takeOff=MutableSharedFlow<ResponseState<ProductResponse>>()
     val taleOff=_takeOff.asSharedFlow()
-    private val _product=MutableStateFlow<ProductModel>(ProductModel())
+    private val _product=MutableStateFlow(ProductModel())
     val product=_product.asStateFlow()
+    val textButton= MutableStateFlow("Cнять с публикации")
+    val buttonVisible=MutableStateFlow(true)
+
     override fun onStart() {
         TODO("Not yet implemented")
     }
-    fun takeOffProduct(id:String)=repository.takeOff(id).handleResult(_takeOff,{navigateToProduct()})
 
+    fun changeStatusPublished(){
+        when(product.value.status){
+            "draft" -> interactor.publishedProduct(product.value.id).handleResult(_takeOff,{
+                navigateToProduct()
+            })
+            else -> takeOffProduct()
+        }
+    }
+   private fun takeOffProduct()=interactor.takeOff(product.value.id).handleResult(_takeOff,{navigateToProduct()})
 
     fun saveProductInformation(model: ProductModel){
         _product.value=model
+        if (model.status=="draft") textButton.value="Опубликовать"
+        if (model.status=="blocked") buttonVisible.value=false
     }
 
     fun navigateToProduct(){

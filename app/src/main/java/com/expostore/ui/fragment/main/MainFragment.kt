@@ -39,19 +39,14 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         super.onViewCreated(view, savedInstanceState)
         viewModel.getToken()
         viewModel.load()
-        //viewModel.getAdvertisingCategory()
-        //viewModel.getSelections()
-       // viewModel.getProfile()
-        //viewModel.getAdvertisingCategory()
-       subscribeOnChangeData()
-
-
-         }
+        subscribeOnChangeData()
+    }
 
     override fun onStart() {
         super.onStart()
 
         binding.btnAddAdvertisement.click {
+
             viewModel.navigateToCreateProductOrOpen()
         }
         binding.categories.adapter = adapter
@@ -63,9 +58,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         }
 
         adapter.onProductClickListener = {
-            val result=it
-            setFragmentResult("requestKey", bundleOf("product" to result))
-            viewModel.navigateToProduct()
+            viewModel.navigateToProduct(it)
         }
 
         binding.ivProfile.click { viewModel.navigateToProfileOrOpen() }
@@ -101,6 +94,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
     private fun handleProfile(item: ProfileModel) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             item.avatar?.let { binding.ivProfile.loadAvatar(it.file) }
+            setFragmentResult("shop", bundleOf("id" to item.shop?.id))
             viewModel.saveProfileInfo(item)
         }
     }

@@ -6,7 +6,9 @@ import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 const val MAX_LENGTH = 12
@@ -17,21 +19,38 @@ const val PHONE_INPUT = 11
 @HiltViewModel
 class ConfirmNumberViewModel@Inject constructor(private val registration: AuthorizationRepository) : BaseViewModel() {
 
- private val _confirmState= MutableSharedFlow<ResponseState<ConfirmNumberResponseData>>()
-    val confirmState=_confirmState.asSharedFlow()
+    private val _enabledState=MutableStateFlow(false)
+    val enabledState=_enabledState.asStateFlow()
+    private val phone= MutableStateFlow("")
 
-
-
-
-    fun confirmNumber(phone: String) {
-        if (phone.length == PHONE_INPUT) {
-         registration.confirmNumber(phone).handleResult(_confirmState,{
-             navigationTo(ConfirmNumberFragmentDirections.actionNumberFragmentToConfirmNumberFragment(phone))
-         })
-        }
+    fun confirmNumber() {
+        registration.confirmNumber("7"+phone.value).handleResult( {
+                navigationTo(
+                    ConfirmNumberFragmentDirections.actionNumberFragmentToConfirmNumberFragment(
+                        phone.value
+                    )
+                )
+            })
 
     }
-    fun toBack(){
+
+    fun checkLengthNumber(number: String){
+        if (number.length==10){
+            updateEnabled(true)
+            updatePhone(number)
+        }
+        else updateEnabled(false)
+    }
+
+   private fun updatePhone(number:String){
+        phone.value=number
+    }
+
+    fun updateEnabled(state:Boolean){
+        _enabledState.value=state
+    }
+
+    fun toBack() {
         navigationTo(ConfirmNumberFragmentDirections.actionNumberFragmentToOpenFragment())
     }
 
@@ -39,32 +58,7 @@ class ConfirmNumberViewModel@Inject constructor(private val registration: Author
         TODO("Not yet implemented")
     }
 
-    //fun setupClickableTextView(textView: TextView,context:Context) {
-
-      //  val personalData = object : ClickableSpan() {
-           // override fun onClick(view: View) {
-            //    bundle.clear()
-             //   bundle.putString("url",context.getString(R.string.terms_of_use))
-            //    navController = Navigation.findNavController(view)
-             //   navController.navigate(R.id.action_numberFragment_to_webViewFragment, bundle)
-            //}
-        //}
-
-      //  val termsOfUse = object : ClickableSpan() {
-         //   override fun onClick(view: View) {
-        //        bundle.clear()
-             //   bundle.putString("url",context.getString(R.string.terms_of_use))
-             //   navController = Navigation.findNavController(view)
-            //    navController.navigate(R.id.action_numberFragment_to_webViewFragment, bundle)
-            }
-
-       // makeLinks(
-           // textView, arrayOf(
-           //     "пользовательским соглашением",
-           //     "политикой конфиденциальности"
-          //  ), arrayOf(personalData, termsOfUse)
-        //)
-    //}
+}
 
 
 

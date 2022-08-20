@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreatePersonalSelectionViewModel @Inject constructor(private val selectionRepository: SelectionRepository) : BaseViewModel() {
-  private val product=MutableStateFlow<String>("")
+  private val product=MutableStateFlow<String?>(null)
     override fun onStart() {
         TODO("Not yet implemented")
     }
@@ -20,7 +20,7 @@ class CreatePersonalSelectionViewModel @Inject constructor(private val selection
     }
 
     fun createSelection(name:String){
-        selectionRepository.createSelection(SelectionRequest(name, listOf(product.value))).handleResult({
+        selectionRepository.createSelection(SelectionRequest(name, listOf(product.value?))).handleResult({
             navigationTo(CreatePersonalSelectionFragmentDirections.actionSelectionCreateToSearchFragment())
         })
     }

@@ -1,6 +1,7 @@
 package com.expostore.api.request
 
 import com.expostore.api.pojo.getcategory.Characteristic
+import com.expostore.api.pojo.getcategory.CharacteristicRequest
 import com.expostore.api.response.AuthorResponse
 import com.expostore.api.response.ImageResponse
 import com.expostore.api.response.ShopResponse
@@ -68,43 +69,31 @@ fun createProductRequest(count:Int?,name:String,
                          shortDescription: String?,
                          images:MutableList<String>,
                          communicationType: String?,
-                         characteristics: List<Characteristic>?=null
-
-                         ) =
+                         characteristics: List<CharacteristicRequest>?=null,
+                         category: String?
+) =
     ProductUpdateRequest(count = count,
         name = name, price = price,
         longDescription = longDescription,
         shortDescription = shortDescription,
         images = images,
         communicationType = communicationType,
-        characteristics = characteristics
+        characteristics = characteristics,
+        category = category
     )
 data class ProductUpdateRequest(
-    @field:SerializedName("owner")
-                          val owner: String? = null,
+
 
                           @field:SerializedName("short_description")
                           val shortDescription: String? = null,
 
-                          @field:SerializedName("description_blocked")
-                          val descriptionBlocked: String? = null,
+
 
                           @field:SerializedName("images")
                           val images: List<String>? = null,
 
                           @field:SerializedName("characteristics")
-                          val characteristics: List<Characteristic>? = null,
-
-                          @field:SerializedName("shop")
-                          val shop: ShopResponse? = null,
-
-                               @field:SerializedName("price_history")
-    val price_history: List<String>? = null,
-
-
-                          @field:SerializedName("date_created")
-                          val dateCreated: String? = null,
-
+                          val characteristics: List<CharacteristicRequest>? = null,
 
 
                           @field:SerializedName("count")
@@ -123,16 +112,10 @@ data class ProductUpdateRequest(
                           @field:SerializedName("category")
                           val category: String? = null,
 
-                          @field:SerializedName("is_liked")
-                          val isLiked: Boolean? = null,
 
-                          @field:SerializedName("promotion")
-                          val promotion: PromotionModel? = null,
 
-                          @field:SerializedName("status")
-                          val status: String? = null,
-    @field:SerializedName("end_date_of_publication")
-    val end_date_of_publication: String? = null,
+
+
 
 
 

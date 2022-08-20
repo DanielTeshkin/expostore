@@ -8,7 +8,14 @@ import com.expostore.api.request.ChatCreateRequest
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.data.repositories.TenderRepository
+import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.chats.InfoItemChat
+import com.expostore.ui.fragment.chats.chatsId
+import com.expostore.ui.fragment.chats.identify
+import com.expostore.ui.fragment.chats.imagesProduct
+import com.expostore.ui.fragment.chats.productsName
 import com.expostore.ui.fragment.search.filter.models.FilterModel
+import com.expostore.ui.fragment.tender.TenderInteractor
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +35,8 @@ class TenderListViewModel @Inject constructor( private val interactor: TenderInt
     val sort=_sort.asStateFlow()
     private val token=MutableStateFlow<String?>(null)
     private val select = MutableSharedFlow<ResponseState<SelectFavoriteTenderResponseData>>()
+    private val _chat=MutableSharedFlow<ResponseState<MainChat>>()
+    val chat=_chat.asSharedFlow()
     fun createTender(){
         navigationTo(TenderListFragmentDirections.actionTenderListFragmentToTenderCreateFragment())
     }
@@ -39,16 +48,16 @@ class TenderListViewModel @Inject constructor( private val interactor: TenderInt
         _sort.value="-date_created"}
         else{ _sort.value=null}
     }
-    fun navigateToItem(){
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToTenderItem())
+    fun navigateToItem(tenderModel: TenderModel){
+        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToTenderItem(tenderModel))
     }
 
    private fun navigateToOpen(){
         navigationTo(TenderListFragmentDirections.actionTenderListFragmentToOpenFragment())
     }
-    fun createChat(tender:String) = interactor.chatCreate(tender)
-    fun navigateToChat(){
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToChatFragment())
+    fun createChat(tender:String) = interactor.chatCreate(tender).handleResult(_chat)
+    fun navigateToChat(result: InfoItemChat) {
+        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToChatFragment(result))
     }
 
     fun changeState(state:Boolean){

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,13 +24,14 @@ import com.expostore.databinding.EditProfileFragmentBinding
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.profile.InfoProfileModel
+import com.expostore.ui.general.ProfileDataViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class EditProfileFragment : BaseFragment<EditProfileFragmentBinding>(EditProfileFragmentBinding::inflate) {
-    private val viewModel: EditProfileViewModel by viewModels()
+    private val viewModel: ProfileDataViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,37 +43,35 @@ class EditProfileFragment : BaseFragment<EditProfileFragmentBinding>(EditProfile
     override fun onStart() {
         super.onStart()
         completion()
-        initClick()
+        subscribeOnChange()
+        binding.apply { btnEditProfile.click { viewModel.patchProfile() } }
+    }
 
+ private fun subscribeOnChange(){
+        viewModel.run {
+            binding.apply {
+                etName.addTextChangedListener { updateName(it.toString()) }
+                etEmail.addTextChangedListener { updateEmail(it.toString()) }
+                etCity.addTextChangedListener { updateCity(it.toString()) }
+                etSurname.addTextChangedListener { updateSurname(it.toString()) }
+                state { enabledState.collect { btnEditProfile.isEnabled=it } }
+            }
+        }
     }
 
     private fun completion(){
         setFragmentResultListener("requestKey") { _, bundle ->
             val result = bundle.getParcelable<InfoProfileModel>("info")!!
-            binding.apply {
-                etName.setText(result.name)
-                etSurname.setText(result.surname)
-                etCity.setText(result.city)
-                etEmail.setText(result.email) }
-        }
-    }
-
-   private fun initClick(){
-        binding.apply {
-            btnEditProfile.click {
-                val request = EditProfileRequest(
-                    firstName = binding.etName.text.toString(),
-                    lastName = binding.etSurname.text.toString(),
-                    email = binding.etEmail.text.toString(),
-                    city = binding.etCity.text.toString()
-                )
-                viewModel.patchProfile(request)
-            }
+            viewModel.saveData(result)
+                binding.apply {
+                    etName.setText(result.name)
+                    etSurname.setText(result.surname)
+                    etCity.setText(result.city)
+                    etEmail.setText(result.email)
+                }
 
         }
     }
-
-
     private fun subscribeViewModel(){
         viewModel.apply {
             subscribe(change){handleResult(it)}
@@ -97,7 +97,6 @@ class EditProfileFragment : BaseFragment<EditProfileFragmentBinding>(EditProfile
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(requireContext(), R.layout.simple_dropdown_item_1line, array)
         binding.etCity.setAdapter(adapter)
         viewModel.saveCities(item)
-
     }
 
     private fun handleResult(state: ResponseState<EditResponseProfile>) {

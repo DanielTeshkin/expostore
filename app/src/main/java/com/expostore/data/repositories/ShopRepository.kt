@@ -2,6 +2,7 @@ package com.expostore.data.repositories
 
 import com.expostore.api.ApiWorker
 import com.expostore.api.pojo.addshop.AddShopRequestData
+import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.response.ShopResponse
 import com.expostore.db.LocalWorker
 import com.expostore.model.product.toModel
@@ -20,6 +21,10 @@ class ShopRepository  @Inject constructor(private val apiWorker: ApiWorker, priv
 
     fun editShop(request: AddShopRequestData)=flow{
         val result=handleOrDefault(ShopResponse()){apiWorker.editShop(request)}
+        emit(result)
+    }
+    fun getShop(id:String)= flow {
+        val result=handleOrDefault(GetShopResponseData()){apiWorker.getShop(id)}
         emit(result)
     }
 

@@ -35,12 +35,14 @@ class SearchInteractor @Inject constructor(
         }
 
 
-     fun  createChat(id: String,flag:String)= chatRepository.createChat(id, flag)
+     fun  createChat(id: String)= chatRepository.createChat(id, "product")
 
      fun addToSelection(id: String,product:String) =
          selectionRepository.addProductToSelection(id, ProductsSelection(listOf(product) ))
 
     fun getPersonalSelections()=selectionRepository.userSelectionList()
+
+    fun getBaseListProducts()=productsRepository.getBaseListProducts()
 
 
     fun searchProducts(pagingConfig: PagingConfig = getDefaultPageConfig(),filterModel: FilterModel
@@ -57,24 +59,19 @@ class SearchInteractor @Inject constructor(
                pagingSourceFactory =
                { pagingSource }
            ).flow
-
     }
 
     fun letProductFlow(pagingConfig: PagingConfig = getDefaultPageConfig(),
     ): Flow<PagingData<ProductModel>> {
         val loaderProducts: LoaderProducts = { it ->
-            productsRepository.getProducts(page = it,FilterModel())
-        }
-
+            productsRepository.getProducts(page = it,FilterModel()) }
         val pagingSource = ProductListPagingSource( loaderProducts)
         return Pager(
             config = pagingConfig,
             pagingSourceFactory =
             { pagingSource }
         ).flow
-
     }
-
 }
     private fun getDefaultPageConfig(): PagingConfig {
         return PagingConfig(pageSize = 10, enablePlaceholders = false)

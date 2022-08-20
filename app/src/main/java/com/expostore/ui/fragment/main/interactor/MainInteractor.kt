@@ -1,19 +1,27 @@
 package com.expostore.ui.fragment.main.interactor
 
+import com.expostore.api.ApiWorker
+import com.expostore.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.data.repositories.MainRepository
 import com.expostore.data.repositories.ProfileRepository
+import com.expostore.db.LocalWorker
+import com.expostore.db.enities.selection.toModel
+import com.expostore.db.enities.toDao
+import com.expostore.db.enities.toModel
 import com.expostore.model.category.CategoryAdvertisingModel
 
 import com.expostore.model.category.SelectionModel
+import com.expostore.model.category.toModel
 import com.expostore.model.profile.ProfileModel
+
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-/**
- * @author Fedotov Yakov
- */
-class MainInteractor @Inject constructor(private val mainRepository: MainRepository,
-                                           private val profileRepository: ProfileRepository) {
+
+class MainInteractor @Inject constructor(
+                                         private val localWorker: LocalWorker,
+                                         private val mainRepository: MainRepository,
+                                           private val profileRepository: ProfileRepository)  {
     
 
 
@@ -25,37 +33,31 @@ class MainInteractor @Inject constructor(private val mainRepository: MainReposit
         mainRepository.getAdvertising().collect {
             emit(MainData.Advertising(it))
         }
-               getProfile().collect {
-                   emit(MainData.Profile(it))
-               }
+
+            emit(MainData.Profile(profileRepository.getProfileRemote()))
+
+
+
 
     }
 
 
-    fun loadSelection()=flow{
-             mainRepository.getSelections().collect {
-                 emit(MainData.Categories(it))
-             }
-    }
 
-    fun loadProfile()=flow {
-        profileRepository.getProfile().collect {
-            emit(MainData.Profile(it))
-        }
-    }
     //fun loadAdvertising()= flow {
        // mainRepository.getAdvertising().collect {
          //   emit(MainData.Advertising(it))
        // }
    // }
+   private suspend fun getProfile(): ProfileModel =profileRepository.getProfileRemote()
+       fun getToken()= localWorker.getToken()
 
-       fun getToken()= profileRepository.getToken()
+   suspend fun saveProfile(result:ProfileModel) = localWorker.saveProfile(result.toDao)
 
-    fun getProfile()=profileRepository.getProfile()
+
 
     fun getSelection()=mainRepository.getSelections()
    // fun getAdvertisingCategory()=mainRepository.getAdvertising()
-
+     fun getMyProfile()=profileRepository.getProfile()
 
 
 

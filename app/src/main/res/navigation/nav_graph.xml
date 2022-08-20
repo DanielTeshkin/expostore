@@ -73,6 +73,9 @@
         <action
             android:id="@+id/action_mainFragment_to_addProductFragment"
             app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_shop_create"
+            app:destination="@id/shop_create" />
     </fragment>
     <fragment
         android:id="@+id/detailCategoryFragment"
@@ -99,6 +102,9 @@
         <action
             android:id="@+id/action_detailCategoryFragment_to_selection_create"
             app:destination="@id/selection_create" />
+        <action
+            android:id="@+id/action_detailCategoryFragment_to_support_fragment"
+            app:destination="@id/support_fragment" />
     </fragment>
     <fragment
         android:id="@+id/numberFragment"
@@ -236,6 +242,9 @@
         <action
             android:id="@+id/action_searchFragment_to_note_fragment"
             app:destination="@id/note_fragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_support_fragment"
+            app:destination="@id/support_fragment" />
 
     </fragment>
     <fragment
@@ -265,6 +274,15 @@
         <action
             android:id="@+id/action_favoritesFragment_to_note_fragment"
             app:destination="@id/note_fragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_tender_item"
+            app:destination="@id/tender_item" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_selection_create"
+            app:destination="@id/selection_create" />
     </fragment>
     <fragment
         android:id="@+id/tenderListFragment"
@@ -343,6 +361,9 @@
         <action
             android:id="@+id/action_productFragment_to_note_fragment"
             app:destination="@id/note_fragment" />
+        <argument
+            android:name="product"
+            app:argType="com.expostore.model.product.ProductModel" />
 
     </fragment>
     <fragment
@@ -389,6 +410,9 @@
         tools:layout="@layout/chat_fragment" >
 
 
+        <argument
+            android:name="info"
+            app:argType="com.expostore.model.chats.InfoItemChat" />
     </fragment>
     <fragment
         android:id="@+id/myProductsFragment"
@@ -407,6 +431,15 @@
         <action
             android:id="@+id/action_shopFragment_to_productFragment"
             app:destination="@id/productFragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_selection_create"
+            app:destination="@id/selection_create" />
     </fragment>
     <fragment
         android:id="@+id/addProductFragment"
@@ -468,7 +501,7 @@
         />
         <fragment
           android:id="@+id/my_tenders"
-            android:name="com.expostore.ui.fragment.tender.MyTenderListFragment"
+            android:name="com.expostore.ui.fragment.tender.my.MyTenderListFragment"
             android:label="my_tenders"
             tools:layout="@layout/my_tender_list_fragment"
             >
@@ -476,6 +509,9 @@
             <action
                 android:id="@+id/action_my_tenders_to_tenderCreateFragment"
                 app:destination="@id/tenderCreateFragment" />
+            <action
+                android:id="@+id/action_my_tenders_to_edit_tender_fragment"
+                app:destination="@id/edit_tender_fragment" />
         </fragment>
     <fragment
         android:id="@+id/edit_my_product"
@@ -489,6 +525,9 @@
         <action
             android:id="@+id/action_edit_my_product_to_myProductsFragment"
             app:destination="@id/myProductsFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.expostore.model.product.ProductModel" />
     </fragment>
 
     <fragment
@@ -502,6 +541,12 @@
         <action
             android:id="@+id/action_tender_item_to_note_fragment"
             app:destination="@id/note_fragment" />
+        <action
+            android:id="@+id/action_tender_item_to_shopFragment"
+            app:destination="@id/shopFragment" />
+        <argument
+            android:name="tender"
+            app:argType="com.expostore.model.tender.TenderModel" />
     </fragment>
 <fragment
     android:id="@+id/selection_create"
@@ -536,6 +581,20 @@
         <action
             android:id="@+id/action_note_fragment_to_tender_item"
             app:destination="@id/tender_item" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.tender.my.edit.EditMyTenderFragment"
+    android:id="@+id/edit_tender_fragment"
+    android:label="support"
+    tools:layout="@layout/edit_my_tender_fragment"
+
+        >
+        <action
+            android:id="@+id/action_edit_tender_fragment_to_tenderCreateFragment"
+            app:destination="@id/tenderCreateFragment" />
+        <argument
+            android:name="tender"
+            app:argType="com.expostore.model.tender.TenderModel" />
     </fragment>
 
 

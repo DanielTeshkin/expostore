@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +14,7 @@ import com.expostore.api.pojo.addshop.returnShopModel
 import com.expostore.api.response.ShopResponse
 import com.expostore.databinding.ShopCreateFragmentBinding
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Load
 import com.expostore.ui.fragment.profile.InfoProfileModel
 import com.expostore.ui.fragment.profile.ShopInfoModel
 import com.expostore.ui.fragment.profile.profile_edit.click
@@ -23,8 +26,8 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class ShopCreateFragment :
     BaseFragment<ShopCreateFragmentBinding>(ShopCreateFragmentBinding::inflate) {
-
     private  val shopCreateViewModel: ShopCreateViewModel by viewModels()
+    val load:Load ={ loading(it) }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("requestKey") { _, bundle ->
@@ -35,51 +38,40 @@ class ShopCreateFragment :
                 shopping_center = info.shopping_center,
                 floor_and_office_number = info.floor_and_office_number
             )
-            shopCreateViewModel.apply {
-                saveInfo(model)
-                saveExist(info.info)
-                subscribe(shopEdit){handleResult(it)}
-                subscribe(navigation){navigateSafety(it)}
-            }
+            shopCreateViewModel.apply { saveInfo(model) }
+
         }
 
     }
-
-    private fun handleResult(state: ResponseState<ShopResponse>) {
-        when(state){
-            is ResponseState.Error-> state.throwable.message?.let { handleError(it) }
-            is ResponseState.Loading ->binding.progressBar7.visibility=View.VISIBLE
-            is ResponseState.Success -> binding.progressBar7.visibility=View.GONE
-        }
-
-    }
-
     override fun onStart() {
         super.onStart()
-         init()
+        shopCreateViewModel.apply {
+            subscribe(shopEdit){handleLoadingState(it,loader =  load)}
+            subscribe(navigation){navigateSafety(it)}
+        }
+        init()
+
     }
+
+    fun loading(state:Boolean){
+        binding.progressBar7.isVisible=state
+    }
+
 
     fun init(){
-        state {
-            fillFields()
-        }
+        state { fillFields()}
         binding.apply {
-
-            btnSave.click {
-                val request = returnShopModel(
-                    binding.etShopName.text.toString(),
-                    binding.etShopAddress.text.toString(),
-                    binding.etShopShoppingCenter.text.toString(),
-                    binding.etShopOffice.text.toString()
-                )
-                state {
-                    editRequest(request)
-
-                }
+            state { shopCreateViewModel.enabledState.collect { btnSave.isEnabled=it } }
+            shopCreateViewModel.apply {
+                etShopOffice.addTextChangedListener {updateOffice(it.toString())}
+                etShopName.addTextChangedListener { updateName(it.toString()) }
+                etShopShoppingCenter.addTextChangedListener { updateShoppingCenter(it.toString()) }
+                etShopAddress.addTextChangedListener { updateLocation(it.toString()) }
+                etShopPhone.addTextChangedListener { updatePhone(it.toString()) }
             }
+            btnSave.click {shopCreateViewModel.shopEdit()}
         }
     }
-
 
     private suspend fun fillFields(){
         shopCreateViewModel.shopInfo.collect {
@@ -87,16 +79,11 @@ class ShopCreateFragment :
                 etShopAddress.setText(it.address)
                 etShopName.setText(it.name)
                 etShopShoppingCenter.setText(it.shopping_center)
-                // etShopOffice.setText(it.floor_and_office_number)
-            } }
-    }
-
-    private suspend fun editRequest( requestData: AddShopRequestData){
-        shopCreateViewModel.apply {
-            exist.collect{
-                shopEdit(requestData,it)
+                etShopOffice.setText(it.floor_and_office_number)
             }
         }
     }
+
+
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.data.repositories.ChatRepository
+import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +29,8 @@ class ChatsViewModel @Inject constructor(private val chatRepository: ChatReposit
         chatRepository.chats()
             .handleResult(_chats)
     }
-    fun openChatItem(){
-        navigationTo(ChatsFragmentDirections.actionChatsFragmentToChatFragment())
+    fun openChatItem(infoItemChat: InfoItemChat){
+        navigationTo(ChatsFragmentDirections.actionChatsFragmentToChatFragment(infoItemChat))
     }
     private fun navigateToOpen(){
         navigationTo(ChatsFragmentDirections.actionChatsFragmentToOpenFragment())

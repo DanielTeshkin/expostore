@@ -28,17 +28,21 @@ class ChatsRecyclerViewAdapter(private var chats: MutableList<MainChat>, val onC
 
     override fun getItemCount(): Int = chats.size
 
-    inner class ChatsViewHolder( val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ChatsViewHolder( val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root), View.OnLongClickListener {
 
         fun bind(item: MainChat) {
             val list = item.identify()
-          //  Log.i("product",item.itemsChat[0].product.name?:"")
-            var image: ImageView = binding.ivChatImage
-            var name: TextView = binding.tvChatName
-            var message: TextView = binding.tvChatMessage
+            val image: ImageView = binding.ivChatImage
+            val name: TextView = binding.tvChatName
+            val message: TextView = binding.tvChatMessage
             name.text = list[1]
             message.text = item.firstMessage()
             image.loadChatAvatar(list[2])
+            onLongClick(binding.root)
+        }
+
+        override fun onLongClick(p0: View?): Boolean {
+                        return false
         }
     }
 

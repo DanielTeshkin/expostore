@@ -47,8 +47,8 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
                         mainChat.chatsId(),
                         mainChat.imagesProduct(),
                         mainChat.productsName(),mainChat.identify()[3])
-                setFragmentResult("requestKey", bundleOf("info" to result))
-                chatsViewModel.openChatItem()}} }
+
+                chatsViewModel.openChatItem(result)}} }
 
    private fun subscribeViewModel(){
         val show:Show = {showChats(it as MutableList<MainChat>)}

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.MainActivity
 import com.expostore.R
@@ -39,6 +40,14 @@ class ConfirmCodeFragment : BaseFragment<ConfirmCodeFragmentBinding>(ConfirmCode
                 singleSubscribe(state){handleResult(it)}
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.etNumber.addTextChangedListener {
+            binding.btnSignInNext.isEnabled=it?.length==6
+        }
+
     }
 
     private fun handleResult(state: ResponseState<ConfirmCodeResponseData>) {

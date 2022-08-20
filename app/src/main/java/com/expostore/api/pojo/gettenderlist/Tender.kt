@@ -1,6 +1,7 @@
 package com.expostore.api.pojo.gettenderlist
 
 import com.expostore.api.pojo.getcategory.Characteristic
+import com.expostore.api.pojo.getcategory.CharacteristicRequest
 import com.expostore.api.pojo.getcategory.ImageResponseData
 import com.expostore.api.response.AuthorResponse
 import com.expostore.api.response.ImageResponse
@@ -27,8 +28,7 @@ data class Tender(
     @SerializedName("shop"               ) var shop              : ShopResponse?             = ShopResponse(),
     @SerializedName("title"              ) var title             : String?           = null,
     @SerializedName("description"        ) var description       : String?           = null,
-    @SerializedName("price_from"         ) var priceFrom         : String?           = null,
-    @SerializedName("price_up_to"        ) var priceUpTo         : String?           = null,
+    @SerializedName("price"         ) var price        : String?           = null,
     @SerializedName("location"           ) var location          : String?           = null,
     @SerializedName("date_created"       ) var dateCreated       : String?           = null,
     @SerializedName("lat"                ) var lat               : Double?           = null,
@@ -65,13 +65,15 @@ data class TenderRequest(
     @SerializedName("images"             ) var images            : List<String> = arrayListOf(),
     @SerializedName("title"              ) var title             : String?           = null,
     @SerializedName("description"        ) var description       : String?           = null,
-    @SerializedName("price_from"         ) var priceFrom         : String?           = null,
-    @SerializedName("price_up_to"        ) var priceUpTo         : String?           = null,
+    @SerializedName("price")             var price        : String?           = null,
+
     @SerializedName("location"           ) var location          : String?           = null,
     @SerializedName("lat"                ) var lat               : Double?           = null,
     @SerializedName("long"               ) var long              : Double?           = null,
     @SerializedName("count"              ) var count             : Int?              = null,
     @SerializedName("communication_type" ) var communicationType : String?           = null,
     @SerializedName("status"             ) var status            : String?           = null,
+    @SerializedName("characteristics"             ) var characteristics           : List<
+            CharacteristicRequest>?=null
 
     )

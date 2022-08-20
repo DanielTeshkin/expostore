@@ -1,56 +1,54 @@
 package com.expostore.ui.fragment.search.main
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
-import android.provider.ContactsContract
+
 import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.expostore.R
-import com.expostore.api.request.ChatCreateRequest
-import com.expostore.api.request.ProductChat
 import com.expostore.databinding.SearchFragmentBinding
 import com.expostore.extension.toMarker
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
-import com.expostore.model.product.name
 import com.expostore.ui.base.BaseLocationFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.note.NoteData
 import com.expostore.ui.fragment.profile.profile_edit.click
-
 import com.expostore.ui.fragment.search.filter.models.FilterModel
-import com.expostore.ui.fragment.search.filter.models.ResultModel
-import com.expostore.ui.fragment.search.filter.models.SelectStateModel
 import com.expostore.ui.fragment.search.main.adapter.ProductsAdapter
-import com.expostore.ui.fragment.search.other.OnClickBottomSheetFragment
-
-import com.expostore.ui.fragment.search.other.showBottomSheet
+import com.expostore.ui.general.other.OnClickBottomSheetFragment
+import com.expostore.ui.general.other.showBottomSheet
 import com.expostore.ui.fragment.specifications.DataModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.text.repeat
+
 
 @AndroidEntryPoint
 class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmentBinding::inflate),
@@ -60,60 +58,102 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
     private lateinit var googleMap: GoogleMap
     private lateinit var myAdapter: ProductsAdapter
     private var markerPosition: Marker? = null
+    private val load:Show<List<SelectionModel>> by lazy { { selectionLoad(it) }}
+    private val showMarkersProduct : Show<List<ProductModel>> by lazy { {installMarkerProducts(it) }}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       myAdapter= ProductsAdapter(requireContext())
+         initUI()
+         makeStartRequest()
+         installSubscribes()
+        binding.apply {
+            searchMapView.onCreate(savedInstanceState)
+            searchMapView.getMapAsync(this@SearchFragment)
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        binding.searchMapView.onStart()
+        setFragmentResultListener("requestKey") { _, bundle ->
+            val result = bundle.getParcelable<FilterModel>("filters")
+            if (result!=null) searchWithFilters(result)
+
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        binding.searchMapView.onResume()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.searchMapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.searchMapView.onStop()
+    }
+
+
+    private fun initUI(){
+        initAdapter()
+        buttonInstall()
+        popupMenuLoad()
+    }
+    private fun installSubscribes(){
+        viewModel.apply {
+            subscribe(navigation){navigateSafety(it)}
+            subscribe(selectionList){handleState(it,load)}
+            subscribe(productsMarkerUI){ handleState(it,showMarkersProduct)}
+        }
+    }
+
+    private fun makeStartRequest(){
+        viewModel.apply {
+            startSearch()
+            getSelections()
+            getBaseProducts()
+        }
+    }
+
+
+    private fun initAdapter(){
+        myAdapter= ProductsAdapter(requireContext())
         myAdapter.onCallItemClickListener={navigateToCall(it)}
-        myAdapter.onItemClickListener={
-            val result=it
-            setFragmentResult("new_key", bundleOf("product" to result))
-            viewModel.navigateToProduct()
-        }
-        myAdapter.onLikeItemClickListener= {
-            viewModel.selectFavorite(it)
-        }
-
-        myAdapter.onMessageItemClickListener={ model->
-            createChat(model.id)
-        }
-        binding.filter.setOnClickListener {
-            viewModel.apply {
-                val result= DataModel(city = city.value, flag = "product")
-                setFragmentResult("new_key", bundleOf("info" to result))
-                navigateToFilter()
-            }
-        }
-
-
-
-
-
+        myAdapter.onItemClickListener={ openProductScreen(it) }
+        myAdapter.onLikeItemClickListener= { viewModel.selectFavorite(it) }
+        myAdapter.onMessageItemClickListener={ model-> createChat(model.id) }
         binding.recyclerView.apply {
             layoutManager=LinearLayoutManager(requireContext())
-           adapter = myAdapter
-            }
+            adapter = myAdapter
+        }
         myAdapter.addLoadStateListener { loadState->
             if (loadState.refresh== LoadState.Loading)
                 binding.progressBar8.visibility=View.VISIBLE
             else binding.progressBar8.visibility=View.GONE
         }
+    }
 
-           viewModel.apply {
-                   startSearch()
-               subscribe(navigation){navigateSafety(it)}
-           }
-
+    private fun buttonInstall(){
         binding.apply {
-            searchMapView.onCreate(savedInstanceState)
-            searchMapView.getMapAsync(this@SearchFragment)
+            filter.click {
+                 viewModel.apply {
+                    val result= DataModel(city = city.value, flag = "product")
+                    setFragmentResult("new_key", bundleOf("info" to result))
+                    navigateToFilter()
+                }
+            }
             location.setOnClickListener {
-            this@SearchFragment.myLocation?.let {
-               myLocation()
+                this@SearchFragment.myLocation?.let {
+                    myLocation()
+                }
             }
         }
-        }
+    }
 
-
+    private fun popupMenuLoad(){
         val popupMenu=PopupMenu(requireContext(),binding.sort)
         popupMenu.inflate(R.menu.sort_menu)
         popupMenu.setOnMenuItemClickListener {
@@ -150,41 +190,20 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
         binding.sort.click {
             popupMenu.show()
         }
-
-
-
     }
 
 
+    fun createChat(id:String)= viewModel.createChat(id)
 
-fun createChat(id:String){
-    viewModel.apply {
-        state {
-            createChat(id,"product").collect {
-
-                val result = InfoItemChat(
-                    it.identify()[1],
-                    it.identify()[0],
-                    it.chatsId(),
-                    it.imagesProduct(),
-                    it.productsName(), it.identify()[3]
-                )
-                setFragmentResult("new_key", bundleOf("info" to result))
-                viewModel.navigateToChat()
-            }
-        }
-    }
-}
- private fun initPersonalSelectionCLick():OnClickBottomSheetFragment{
-       return object :OnClickBottomSheetFragment{
+     private fun initPersonalSelectionCLick(): OnClickBottomSheetFragment {
+       return object : OnClickBottomSheetFragment {
            override fun createSelection(product: String) {
                setFragmentResult("name", bundleOf("product" to product))
                viewModel.navigateToSelectionCreate()
            }
 
            override fun addToSelection(id: String, product: String) {
-               Log.i("add","dddd")
-              viewModel.addToSelection(id, product)
+               viewModel.addToSelection(id, product)
            }
 
            override fun call(username: String) {
@@ -201,12 +220,19 @@ fun createChat(id:String){
               createChat(id)
            }
 
-           override fun share() {
-               Log.i("add","dddd")
+           override fun share(id: String) {
+               val sendIntent: Intent = Intent().apply {
+                   action = Intent.ACTION_SEND
+                   putExtra(Intent.EXTRA_TEXT, id)
+                   type = "text/plain"
+               }
+
+               val shareIntent = Intent.createChooser(sendIntent, null)
+               startActivity(shareIntent)
            }
 
            override fun block() {
-               Log.i("add","dddd")
+               viewModel.navigateToBlock()
            }
 
        }
@@ -214,12 +240,13 @@ fun createChat(id:String){
 
 
 
+ private fun openProductScreen(model: ProductModel){ viewModel.navigateToProduct(model) }
+
   private fun startSearch(){
       lifecycleScope.launch {
                 viewModel.search
-                    .collect{
-
-                        myAdapter.submitData(it)
+                    .collectLatest{ model ->
+                        myAdapter.submitData(model)
                     }
             }
 
@@ -229,8 +256,7 @@ fun createChat(id:String){
        viewModel.apply {
            lifecycleScope.launch {
                searchWithFilters(result)
-               .collect {
-                   myAdapter.submitData(lifecycle, PagingData.empty())
+               .collectLatest {
                    myAdapter.submitData(it)
                }
 
@@ -239,50 +265,43 @@ fun createChat(id:String){
        }
     }
 
-
-
-    override fun onStart() {
-        super.onStart()
-        binding.searchMapView.onStart()
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val result = bundle.getParcelable<FilterModel>("filters")
-            if (result!=null) searchWithFilters(result)
-
-        }
-        val load:Show<List<SelectionModel>> = { selectionLoad(it) }
-            viewModel.apply {
-                getSelections()
-                subscribe(selectionList){
-                    handleState(it,load)
-                }
-
-            }
-
+    private fun installMarkerProducts(list:List<ProductModel>){
+         list.map {
+             addProductMarker(it)
+         }
     }
+ private fun addProductMarker(it: ProductModel){
+     val latLng=LatLng(it.shop.lat,it.shop.lng)
+      googleMap.addMarker(
+         MarkerOptions()
+             .position(latLng)
+             .icon(
+                 bitmapDescriptorFromVector(
+                     requireContext(),
+                     it.images[0].file
+                 )
+             ).title(it.name)
+     )
+     googleMap.setOnMarkerClickListener(OnMarkerClickListener { _ -> // on marker click we are getting the title of our marker
+         openProductScreen(it)
+         false
+     })
+
+
+ }
+
+
+
+
 
 
      private fun selectionLoad(list:List<SelectionModel>?){
          myAdapter.onAnotherItemClickListener = { model ->
              showBottomSheet(requireContext(), model, list, initPersonalSelectionCLick())
-
          }
      }
 
-    override fun onResume() {
-        super.onResume()
-       // binding.searchMapView.onResume()
 
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //binding.searchMapView.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-      //  binding.searchMapView.onStop()
-    }
 
     override fun onMapReady(map: GoogleMap) {
         Log.i("marker","aaa")
@@ -337,12 +356,9 @@ fun createChat(id:String){
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
     }
-
     override fun noPermission() {
       /// viewModel.fetchProduct()
     }
 
-
-
-}
+    }
 

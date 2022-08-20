@@ -1,13 +1,14 @@
 package com.expostore.api.pojo.addreview
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.gson.annotations.SerializedName
 
 data class AddReviewResponseData(
-        @JsonProperty("id") val id: String,
-        @JsonProperty("rating") val rating: Int,
-        @JsonProperty("text") val text: String?,
-        @JsonProperty("date_created") val dateCreated: String,
-        @JsonProperty("author") val author: String,
-        @JsonProperty("author") val product: String,
-        @JsonProperty("images") val images: ArrayList<String>?
+        @SerializedName("id") val id: String="",
+        @SerializedName("rating") val rating: Int=0,
+        @SerializedName("text") val text: String?="",
+        @SerializedName("date_created") val dateCreated: String="",
+        @SerializedName("author") val author: String="",
+        @SerializedName("product") val product: String="",
+        @SerializedName("images") val images: List<String>?= listOf()
 )

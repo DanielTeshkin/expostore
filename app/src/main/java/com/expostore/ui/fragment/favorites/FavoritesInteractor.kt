@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.favorites
 
+import com.expostore.api.request.ProductsSelection
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.data.repositories.FavoriteRepository
 import com.expostore.data.repositories.SearchRepository
@@ -20,5 +21,6 @@ class FavoritesInteractor @Inject constructor(private val favoriteRepository: Fa
     fun chatCreate(id: String,flag:String)=chatRepository.createChat(id, flag)
     fun userSelectionList()=selectionRepository.userSelectionList()
     fun deleteUserSelection(id:String)=selectionRepository.deleteUserSelection(id)
+    fun addToSelection(id:String,product:String)=selectionRepository.addProductToSelection(id, ProductsSelection(products = listOf(product)))
 
 }

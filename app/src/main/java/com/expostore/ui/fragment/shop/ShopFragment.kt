@@ -1,10 +1,15 @@
 package com.expostore.ui.fragment.shop
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,138 +22,159 @@ import com.expostore.api.pojo.getshop.GetShopResponseData
 import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.ShopFragmentBinding
+import com.expostore.extension.load
+import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.chats.InfoItemChat
+import com.expostore.model.product.ProductModel
+import com.expostore.model.product.ShopModel
+import com.expostore.model.product.toModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.Show
+import com.expostore.ui.fragment.category.OnClickListener
+import com.expostore.ui.fragment.category.ProductSelectionAdapter
+import com.expostore.ui.fragment.chats.chatsId
+import com.expostore.ui.fragment.chats.identify
+import com.expostore.ui.fragment.chats.imagesProduct
+import com.expostore.ui.fragment.chats.productsName
+import com.expostore.ui.fragment.note.NoteData
+import com.expostore.ui.general.other.OnClickBottomSheetFragment
+import com.expostore.ui.general.other.showBottomSheet
 import com.expostore.utils.DetailCategoryRecyclerViewAdapter
 import com.expostore.utils.OnClickRecyclerViewListener
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+@AndroidEntryPoint
 class ShopFragment : BaseFragment<ShopFragmentBinding>(ShopFragmentBinding::inflate) {
 
-    private lateinit var shopViewModel: ShopViewModel
-    private var shopId: String? = null
-    lateinit var mAdapter: DetailCategoryRecyclerViewAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        shopViewModel = ViewModelProvider(this)[ShopViewModel::class.java]
-        shopId = arguments?.getString("shopId")
+    private val shopViewModel: ShopViewModel by viewModels()
+    private val products = mutableListOf<ProductModel>()
+    private val mAdapter: ProductSelectionAdapter by lazy {
+        ProductSelectionAdapter(products)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
-        /*val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-
-        shopId?.let {
-            serverApi.getShop("Bearer $token", it).enqueue(object :
-                Callback<GetShopResponseData> {
-                override fun onResponse(
-                    call: Call<GetShopResponseData>,
-                    response: Response<GetShopResponseData>
-                ) {
-                    if (response.isSuccessful) {
-                        if (response.body() != null)
-                            setupInfo(response.body()!!)
-                    }
-                }
-
-                override fun onFailure(call: Call<GetShopResponseData>, t: Throwable) {}
-            })
-        }*/
-    }
-
-    fun setupInfo(info: GetShopResponseData) {
-        binding.tvShopName.text = info.name
-        binding.tvShopAddress.text = info.address
-        binding.tvShopShoppingCenter.text = info.shoppingCenter
-
-
-        info.products?.let {
-            mAdapter = DetailCategoryRecyclerViewAdapter(info.products, requireContext())
-            binding.rvShopProducts.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = mAdapter
+        setFragmentResultListener("shop") { _, bundle ->
+            val info = bundle.getString("model")
+            if (info != null) {
+                shopViewModel.getShop(info)
             }
-            mAdapter.onClick = onLikeClick()
-            mAdapter.notifyDataSetChanged()
+        }
+        val setupInfoShop: Show<GetShopResponseData> = { setupInfoShop(it) }
+        val writeMessage:Show<MainChat> = { chatOpen(it)}
+        shopViewModel.apply {
+            subscribe(shop) { handleState(it, setupInfoShop) }
+            subscribe(chatCreateUI){handleState(it,writeMessage)}
+            subscribe(navigation){navigateSafety(it)}
         }
     }
 
-    private fun onLikeClick(): OnClickRecyclerViewListener {
-        return object : OnClickRecyclerViewListener {
-            override fun onDetailCategoryButton(category: Category) {}
-            override fun onProductClick(id: String?) {}
+    private fun setupInfoShop(data: GetShopResponseData) {
+        binding.apply {
+            tvShopName.text = data.name
+            tvShopAddress.text = data.address
+            tvShopShoppingCenter.text = data.shoppingCenter
+            ivAvatar.load(data.image)
+            ivBackground.load(data.image)
+            products.addAll(data.products.map { it.toModel })
+            mAdapter.onClick =initClickListener(false)
+                rvShopProducts.apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = mAdapter
+                }
+        }
+    }
+   private fun chatOpen(chat: MainChat){
+        val result = InfoItemChat(
+            chat.identify()[1],
+            chat.identify()[0],
+            chat.chatsId(),
+            chat.imagesProduct(),
+            chat.productsName(), chat.identify()[3]
+        )
+        setFragmentResult("new_key", bundleOf("info" to result))
+    }
 
-            override fun onLikeClick(like: Boolean, id: String?) {
+    private fun initClickListener(state:Boolean): OnClickListener {
+        return  object : OnClickListener {
+            override fun onClickLike(id: String) {
+                shopViewModel.updateSelected(id)
+            }
 
-                val token =
-                    AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
+            override fun onClickProduct(model: ProductModel) {
+                shopViewModel.navigateToProduct(model)
+            }
 
-                if (token.isNullOrEmpty()) {
-                    //Todo Подумать над нулевым токеном (возможно кидать на экран авторизации)
-                    //navController = Navigation.findNavController(binding.root)
-                    //navController.navigate(R.id.action_mainFragment_to_openFragment)
+            override fun onClickMessage(model: ProductModel) {
+                shopViewModel.createChat(model.id)
+            }
+
+            override fun onClickCall(phone: String) {
+                navigateToCall(phone)
+            }
+
+            override fun onClickAnother(model: ProductModel) {
+                state {
+                    shopViewModel.getSelections().collect {
+                        showBottomSheet(
+                            requireContext(),
+                            model,
+                            personalOrNot = state,
+                            list = it,
+                            onClickBottomFragment = initPersonalSelectionCLick()
+                        )
+                    }
+                }
+            }
+
+        }
+    }
+    private fun initPersonalSelectionCLick(): OnClickBottomSheetFragment {
+        return object : OnClickBottomSheetFragment {
+            override fun createSelection(product: String) {
+                setFragmentResult("name", bundleOf("product" to product))
+                shopViewModel.navigateToCreateSelection()
+            }
+
+            override fun addToSelection(id: String, product: String) {
+                Log.i("add","dddd")
+                shopViewModel.addToSelection(id, product)
+            }
+
+            override fun call(username: String) {
+                navigateToCall(username)
+            }
+
+            override fun createNote(model: ProductModel) {
+                setFragmentResult("dataNote", bundleOf("note" to NoteData(id=model.id,
+                    flag = "product", flagNavigation = "search", isLiked = model.isLiked) ))
+                shopViewModel.navigateToNote()
+            }
+
+            override fun chatCreate(id: String) {
+                shopViewModel.createChat(id)
+            }
+
+            override fun share(id:String) {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, id)
+                    type = "text/plain"
                 }
 
-               /* val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-
-                if (!id.isNullOrEmpty())
-                    serverApi.selectFavorite("Bearer $token", id)
-                        .enqueue(object : Callback<SelectFavoriteResponseData> {
-                            override fun onResponse(
-                                call: Call<SelectFavoriteResponseData>,
-                                response: Response<SelectFavoriteResponseData>
-                            ) {
-                                try {
-                                    if (response.isSuccessful) {
-                                        Toast.makeText(
-                                            context,
-                                            "Toвар добавлен в избранное",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        if (response.errorBody() != null) {
-                                            val jObjError =
-                                                JSONObject(response.errorBody()!!.string())
-                                            val message = jObjError.getString("detail")
-                                            if (message.isNotEmpty())
-                                                Toast.makeText(context, message, Toast.LENGTH_SHORT)
-                                                    .show()
-                                        }
-                                    }
-                                } catch (e: Exception) {
-                                    Log.d("exception", e.toString())
-                                }
-                            }
-
-                            override fun onFailure(
-                                call: Call<SelectFavoriteResponseData>,
-                                t: Throwable
-                            ) {
-                                Toast.makeText(
-                                    context,
-                                    (context as MainActivity).getString(R.string.on_failure_text),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        })*/
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
             }
 
-            override fun onDetailCategoryProductItemClick(id: String?) {
-                val bundle = Bundle()
-                bundle.putString("id", id)
-                val navController = Navigation.findNavController(binding.root)
-                navController.navigate(R.id.action_shopFragment_to_productFragment, bundle)
+            override fun block() {
+                Log.i("add","dddd")
             }
 
-            override fun onChatClick() {
-                TODO("Not yet implemented")
-            }
         }
     }
 

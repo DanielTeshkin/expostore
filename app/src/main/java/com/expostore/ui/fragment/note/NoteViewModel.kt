@@ -41,11 +41,11 @@ class NoteViewModel @Inject constructor( private val favoriteRepository: Favorit
 
     fun navigate(){
         when (data.value.flagNavigation) {
-            "search" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToSearchFragment())
-            "product" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToProductFragment())
-            "tender" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderItem())
-            "tenderSearch" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderListFragment())
-            "favorite" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToFavoritesFragment())
+           // "search" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToSearchFragment())
+           // "product" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToProductFragment())
+           // "tender" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderItem())
+           // "tenderSearch" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderListFragment())
+            //"favorite" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToFavoritesFragment())
         }
     }
 

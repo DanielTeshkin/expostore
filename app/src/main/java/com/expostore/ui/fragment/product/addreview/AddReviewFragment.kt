@@ -1,162 +1,113 @@
 package com.expostore.ui.fragment.product.addreview
 
 import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.expostore.MainActivity
-import com.expostore.R
 
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
-import com.expostore.data.AppPreferences
 import com.expostore.databinding.AddReviewFragmentBinding
 import com.expostore.ui.base.BaseFragment
 import com.expostore.utils.TenderCreateImageRecyclerViewAdapter
-import com.expostore.utils.decodeImage
-import com.expostore.utils.encodeImage
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.InputStream
+import com.github.dhaval2404.imagepicker.ImagePicker
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddReviewFragment :
     BaseFragment<AddReviewFragmentBinding>(AddReviewFragmentBinding::inflate) {
 
-    private lateinit var addReviewViewModel: AddReviewViewModel
-    private lateinit var mAdapter: TenderCreateImageRecyclerViewAdapter
-    private lateinit var images: ArrayList<Bitmap>
-    var id: String? = null
+    private  val addReviewViewModel: AddReviewViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        addReviewViewModel = ViewModelProvider(this).get(AddReviewViewModel::class.java)
+    private  val images: MutableList<String> by lazy {
+        mutableListOf("")
     }
+    private  val mAdapter: TenderCreateImageRecyclerViewAdapter by lazy {
+        TenderCreateImageRecyclerViewAdapter(images)
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.ratingBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
-            binding.tvRating.text =
-                "Оценка: " + rating.toInt() + "/" + ratingBar.numStars.toString()
-            addReviewViewModel.rating = rating.toInt()
+        setFragmentResultListener("key_product") { _, bundle ->
+            val result = bundle.getString("productId")
+            addReviewViewModel.saveProduct(result?:"")
         }
+        binding.apply {
+            ratingBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
+                tvRating.text =
+                    "Оценка: " + rating.toInt() + "/" + ratingBar.numStars.toString()
 
-        binding.btnSaveReview.setOnClickListener {
-            addReviewViewModel.saveReview(it)
+            }
+
+            btnSaveReview.setOnClickListener {
+                addReviewViewModel.saveReview(etReview.text.toString(),ratingBar.rating.toInt(),requireContext())
+            }
         }
-        addReviewViewModel.context = requireContext()
-        id = arguments?.getString("id")
-        addReviewViewModel.id = id
-        binding.etReview.addTextChangedListener(addReviewViewModel.reviewTextWatcher)
-
-        val conf = Bitmap.Config.ARGB_8888 // see other conf types
-        val bmp = Bitmap.createBitmap(100, 100, conf)
-        images = arrayListOf(bmp)
-
-            // mAdapter = TenderCreateImageRecyclerViewAdapter(images)
+        val reviewTextWatcher: TextWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable) {
+                    if (binding.etReview.text.isNotEmpty() ) {
+                        binding.btnSaveReview.isEnabled = true
+                    }
+                }
+            }
+            binding.etReview.addTextChangedListener(reviewTextWatcher)
         binding.rvReviewImages.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-           // adapter = mAdapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = mAdapter
+            }
+            mAdapter.onClick = addPhoto()
         }
-        //mAdapter.onClick = addPhoto()
-       // mAdapter.notifyDataSetChanged()
-    }
+
+
+
 
     private fun addPhoto(): TenderCreateImageRecyclerViewAdapter.OnClickListener {
         return object : TenderCreateImageRecyclerViewAdapter.OnClickListener {
             override fun addPhoto() {
-                //TODO Добавить выборку изображения для Android 8-9
+                ImagePicker.with(this@AddReviewFragment)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .createIntent { intent -> launchSomeActivity.launch(intent) }
+            }
 
-                val intent = Intent(
-                    Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                )
-                intent.type = "*/*"
-                val mimeTypes = arrayOf("image/*")
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-                launchSomeActivity.launch(intent)
+            override fun removePhoto(index: Int) {
+                TODO()
             }
         }
     }
 
     var launchSomeActivity =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                val uri = data!!.data
-                val inputStream: InputStream? =
-                    requireContext().contentResolver.openInputStream(uri!!)
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result  ->
+            val resultCode = result.resultCode
+            val data = result.data
 
-                if (inputStream != null) saveImage(encodeImage(inputStream))
-                else Toast.makeText(context, "Не удалось добавить изображение", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    val fileUri = data?.data!!
+                    addReviewViewModel.saveUri(fileUri)
+                    mAdapter.update(fileUri.toString())
 
-    private fun saveImage(image: String) {
-        val token = AppPreferences.getSharedPreferences(requireContext()).getString("token", "")
-        //val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-       // val requestData = SaveImageRequestData(image, "jpeg")
-
-       /* serverApi.saveImage("Bearer $token", requestData).enqueue(object :
-            Callback<SaveImageResponseData> {
-            override fun onResponse(
-                call: Call<SaveImageResponseData>,
-                response: Response<SaveImageResponseData>
-            ) {
-                try {
-                    if (response.isSuccessful) {
-                        response.body()?.id?.let { addImage(image, it)
-                            Log.d("1","try/catch1")
-                        }
-
-                    } else {
-                        if (response.errorBody() != null) {
-                            val jObjError = JSONObject(response.errorBody()!!.string())
-                            val message = jObjError.getString("detail")
-                            if (message.isNotEmpty())
-                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.d("exception", e.toString())
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Вы вышли", Toast.LENGTH_SHORT).show()
                 }
             }
-
-            override fun onFailure(call: Call<SaveImageResponseData>, t: Throwable) {
-                Toast.makeText(
-                    context,
-                    (context as MainActivity).getString(R.string.on_failure_text),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })*/
-    }
-
-    private fun addImage(image: String, id: String) {
-        addReviewViewModel.imagesId.add(id)
-        images.add(decodeImage(image))
-
-        //mAdapter = TenderCreateImageRecyclerViewAdapter(images)
-        binding.rvReviewImages.apply {
-          //  layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-          //  adapter = mAdapter
-            context
-            Log.d("1","addImage2")
         }
-        //mAdapter.onClick = addPhoto()
-      //  mAdapter.notifyDataSetChanged()
-        Toast.makeText(context,"QQQ",Toast.LENGTH_LONG).show()
-    }
+
+
+
 
 }

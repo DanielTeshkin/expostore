@@ -2,15 +2,18 @@ package com.expostore.ui.fragment.product.addproduct.adapter
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.expostore.R
 import com.expostore.databinding.TenderCreateImageItemBinding
-import com.expostore.ui.fragment.product.addproduct.adapter.utils.OnClick
+import com.expostore.ui.fragment.product.addproduct.adapter.utils.ImagesEdit
 
-class ProductCreateImageAdapter(private var images: MutableList<String>,private val onClick: OnClick) : RecyclerView.Adapter<ProductCreateImageAdapter.ProductImageViewHolder>() {
+import com.expostore.ui.fragment.profile.profile_edit.click
+
+class ProductCreateImageAdapter(private var images: MutableList<String>,private val imagesEdit: ImagesEdit) : RecyclerView.Adapter<ProductCreateImageAdapter.ProductImageViewHolder>() {
 
 
 
@@ -41,10 +44,19 @@ class ProductCreateImageAdapter(private var images: MutableList<String>,private 
         if (position == 0){
             holder.imageView.setImageResource(R.drawable.ic_tender_add_image)
             holder.imageView.setOnClickListener {
-                onClick.openGallery()
+                imagesEdit.openGallery()
             }
         }
-        else holder.imageView.loadImageProduct(image)
+        else{
+            holder.imageView.loadImageProduct(image)
+            holder.binding.deleteImage.apply {
+                visibility= View.VISIBLE
+                click {
+                    imagesEdit.removePhoto(images[position-1])
+                    removeAt(position)
+                }
+            }
+        }
     }
 
     fun update( uri: String){
@@ -52,8 +64,10 @@ class ProductCreateImageAdapter(private var images: MutableList<String>,private 
         notifyDataSetChanged()
     }
 
-    interface OnClickListener{
-        fun addPhoto()
+   private fun removeAt(index: Int) {
+        images.removeAt(index)
+        notifyItemRemoved(index)
+        notifyItemRangeChanged(index,itemCount);
     }
 
 

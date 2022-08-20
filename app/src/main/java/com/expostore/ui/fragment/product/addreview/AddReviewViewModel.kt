@@ -1,6 +1,9 @@
 package com.expostore.ui.fragment.product.addreview
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,8 +14,12 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.expostore.MainActivity
 import com.expostore.R
 
@@ -20,72 +27,96 @@ import com.expostore.api.ServerApi
 import com.expostore.api.pojo.addreview.AddReviewRequestData
 import com.expostore.api.pojo.addreview.AddReviewResponseData
 import com.expostore.api.pojo.getproduct.ProductResponseData
+import com.expostore.api.pojo.gettenderlist.TenderRequest
+import com.expostore.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.pojo.signup.SignUpResponseData
 import com.expostore.data.AppPreferences
+import com.expostore.data.repositories.MultimediaRepository
+import com.expostore.data.repositories.ReviewsRepository
+import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.chats.general.ImageMessage
+import com.expostore.ui.state.ResponseState
 import com.expostore.utils.hideKeyboard
 import com.willy.ratingbar.BaseRatingBar
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 
-class AddReviewViewModel : ViewModel() {
+@HiltViewModel
+class AddReviewViewModel @Inject constructor(private val reviewsRepository: ReviewsRepository,private val multimediaRepository: MultimediaRepository) : BaseViewModel() {
+    private val _imageList= MutableStateFlow<MutableList<String>>(mutableListOf())
+    private val  imageList=_imageList.asStateFlow()
+    private val uriSource= MutableStateFlow<MutableList<Uri>>(mutableListOf())
+    private val save= MutableSharedFlow<ResponseState<SaveImageResponseData>>()
+    private  val id = MutableStateFlow<String>("")
+    private val _uiAddReview= MutableSharedFlow<ResponseState<AddReviewResponseData>>()
 
-    var rating: Int? = null
-    var id: String? = null
-    lateinit var context: Context
-    lateinit var navController: NavController
-
-    var imagesId: ArrayList<String> = arrayListOf()
-    var review: String = ""
-    var btnSaveReview: Button? = null
-
-
-
-    val reviewTextWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        override fun afterTextChanged(s: Editable) {
-            if (review.isNotEmpty() && imagesId.isNotEmpty()) {
-                btnSaveReview!!.isEnabled = true
-            }
-        }
+    override fun onStart() {
+        TODO("Not yet implemented")
     }
+    fun saveReview(text: String, rating: Int, context: Context){
 
-    fun navigateBack(view: View){
-        navController = Navigation.findNavController(view)
-        navController.popBackStack()
-    }
+            if(uriSource.value.size>0) {
+                Log.i("id",id.value)
+                saveImages(uriSource.value, context)
 
-    fun saveReview(view: View){
-        val token = AppPreferences.getSharedPreferences(context).getString("token", "")
-        //val serverApi = Retrofit.getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
+                viewModelScope.launch(Dispatchers.IO) {
+                    save.collect { images ->
+                        if (images is ResponseState.Success) {
+                            addPhoto(images.item.id[0])
 
-        if (!id.isNullOrEmpty() && rating != null){
-            /*serverApi.addReview("Bearer $token", id!!, AddReviewRequestData(rating!!,review,imagesId)).enqueue(object : Callback<AddReviewResponseData> {
-                override fun onFailure(call: Call<AddReviewResponseData>, t: Throwable) {
-                    Toast.makeText(context, context.getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-                }
+                           reviewsRepository.addReview(id.value,imageList.value,rating,text).handleResult(_uiAddReview)
 
-                override fun onResponse(call: Call<AddReviewResponseData>, response: Response<AddReviewResponseData>) {
-                    try {
-                        if (response.isSuccessful)
-                            if (response.body() != null)
-                                navigateBack(view)
-                            else {
-                                if (response.errorBody() != null) {
-                                    val jObjError = JSONObject(response.errorBody()!!.string())
-                                    val message = jObjError.getString("message")
-                                    if (message.isNotEmpty())
-                                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                    } catch (e: Exception) {
-                        Log.d("RESPONSE", e.toString())
+                        }
                     }
                 }
-            })*/
+            }
+            else {
+
+                reviewsRepository.addReview(id.value, listOf(),rating,text).handleResult(_uiAddReview)
+            }
         }
+
+    private fun saveImages(list:List<Uri>,context:Context){
+        val bitmapList=ArrayList<Bitmap>()
+        list.map{ uri ->
+            Glide.with(context).asBitmap().load(uri).into(object :
+                CustomTarget<Bitmap>(){
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?){
+                    bitmapList.add(resource)
+                    val path= ImageMessage().encodeBitmapList(bitmapList)
+                    val images = mutableListOf<SaveImageRequestData>()
+                    path.map { images.add(SaveImageRequestData(it,"png")) }
+                    multimediaRepository.saveImage(images).handleResult(save)
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            }) }
+
     }
+    fun saveProduct(idProduct:String){
+        id.value=idProduct
+    }
+
+    private fun  addPhoto(id:String){
+        _imageList.value.add(id)
+    }
+    fun saveUri(image: Uri){
+        uriSource.value.add(image)
+    }
+
+
 }

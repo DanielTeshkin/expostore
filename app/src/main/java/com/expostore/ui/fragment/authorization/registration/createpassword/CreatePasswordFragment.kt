@@ -29,14 +29,11 @@ class CreatePasswordFragment : BaseFragment<CreatePasswordFragmentBinding>(Creat
 
     private val createPasswordViewModel: CreatePasswordViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       var phone=CreatePasswordFragmentArgs.fromBundle(requireArguments()).phone
+       val phone=CreatePasswordFragmentArgs.fromBundle(requireArguments()).phone
         createPasswordViewModel.apply {
             subscribe(navigation) { navigateSafety(it) }
             subscribe(ui) { handleInstance(it) }
@@ -49,13 +46,12 @@ class CreatePasswordFragment : BaseFragment<CreatePasswordFragmentBinding>(Creat
         binding.btnSignInNext.setOnClickListener{
             val password=binding.etPassword.toStroke()
             val second =binding.etSecondPassword.toStroke()
-            Log.i("one",password)
-            Log.i("two",second)
+
                  createPasswordViewModel.checkPassword(first=password,
                      second =second )
             createPasswordViewModel.instance.observe(viewLifecycleOwner, Observer {
                 when(it){
-                    false-> Toast.makeText(requireContext(), "что-то не так", Toast.LENGTH_LONG).show()
+                    false-> Toast.makeText(requireContext(), "Пароли не совпадают", Toast.LENGTH_LONG).show()
                     true-> createPasswordViewModel.signUp(phone,password)
                 }
             })

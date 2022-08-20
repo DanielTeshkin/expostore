@@ -1,55 +1,35 @@
 package com.expostore.ui.fragment.tender.list
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.R
-import com.expostore.api.request.ChatCreateRequest
 
 import com.expostore.databinding.TenderListFragmentBinding
 import com.expostore.extension.toMarker
+import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
-import com.expostore.model.product.name
-import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.BaseLocationFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.search.filter.models.FilterModel
-import com.expostore.ui.fragment.search.filter.models.ResultModel
 
-import com.expostore.ui.fragment.search.main.SearchViewModel
-import com.expostore.ui.fragment.search.main.adapter.ProductsAdapter
-import com.expostore.ui.fragment.search.other.OnClickBottomSheetFragment
-import com.expostore.ui.fragment.search.other.OnClickBottomSheetTenderFragment
-import com.expostore.ui.fragment.search.other.showBottomSheet
-import com.expostore.ui.fragment.search.other.showBottomSheetTender
+import com.expostore.ui.general.other.OnClickBottomSheetTenderFragment
+import com.expostore.ui.general.other.showBottomSheetTender
 import com.expostore.ui.fragment.specifications.DataModel
 import com.expostore.ui.fragment.tender.list.adapter.TenderAdapter
-import com.expostore.ui.state.ResponseState
 
-import com.expostore.ui.fragment.tender.utils.OnClickTender
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -57,7 +37,6 @@ import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -80,7 +59,7 @@ class TenderListFragment :
             createChat(model)
         }
         myAdapter.onItemClickListener={
-            viewModel.navigateToItem()
+            viewModel.navigateToItem(it)
         }
         myAdapter.onLikeItemClickListener={
             viewModel.selectFavorite(it)
@@ -98,9 +77,10 @@ class TenderListFragment :
             else binding.progressBar9.visibility=View.GONE
         }
  binding.createTender.click { viewModel.createTender() }
-
+          val show:Show<MainChat> = { openChat(it)}
         viewModel.apply {
             subscribe(navigation){navigateSafety(it)}
+            subscribe(chat){handleState(it)}
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                    loadTenderList()
@@ -169,6 +149,19 @@ class TenderListFragment :
 
 
         }
+    }
+    private fun openChat(it:MainChat){
+
+            val result = InfoItemChat(
+                it.identify()[1],
+                it.identify()[0],
+                it.chatsId(),
+                it.imagesProduct(),
+                it.productsName(), it.identify()[3]
+
+            )
+            viewModel.navigateToChat(result)
+
     }
 
 
@@ -263,23 +256,15 @@ class TenderListFragment :
     }
 
     fun createChat(id:String){
-        viewModel.apply {
-            state {
-                createChat(id).collect {
+        viewModel.createChat(id)
 
-                    val result = InfoItemChat(
-                        it.identify()[1],
-                        it.identify()[0],
-                        it.chatsId(),
-                        it.imagesProduct(),
-                        it.productsName(), it.identify()[3]
-                    )
-                    setFragmentResult("new_key", bundleOf("info" to result))
-                    viewModel.navigateToChat()
-                }
+
+
+
+
             }
-        }
-    }
+
+
     private fun initPersonalSelectionCLick(): OnClickBottomSheetTenderFragment {
         return object : OnClickBottomSheetTenderFragment {
 

@@ -9,6 +9,7 @@ import com.expostore.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.api.response.EditResponseProfile
 import com.expostore.db.LocalWorker
 import com.expostore.db.enities.toDao
+import com.expostore.model.profile.ProfileModel
 import com.expostore.model.profile.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -21,6 +22,7 @@ class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, pr
         networkCall = { handleOrDefault(GetProfileResponseData()){apiWorker.getProfile()}.toModel},
         saveCallResult = { localWorker.saveProfile(it.toDao) }
     )
+    suspend fun getProfileRemote() = handleOrDefault(GetProfileResponseData()){apiWorker.getProfile()}.toModel
 
     fun patchProfile( editProfileRequest: EditProfileRequest)= flow {
         val result=handleOrDefault(EditResponseProfile()){apiWorker.patchProfile(editProfileRequest)}

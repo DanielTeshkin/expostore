@@ -23,17 +23,14 @@ class PasswordRecoveryFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnSignInNext.setOnClickListener {
-            passwordRecoveryViewModel.confirmCode(it, binding.etCode.text.toString())
+
         }
 
         binding.btnResendCode.setOnClickListener {
-            passwordRecoveryViewModel.confirmNumber(it)
+
         }
 
-        passwordRecoveryViewModel.context = requireContext()
-        passwordRecoveryViewModel.btnResendCode = binding.btnResendCode
-        passwordRecoveryViewModel.phoneInput = requireArguments().getString("phone")
-        passwordRecoveryViewModel.timer.start()
+
 
         (context as MainActivity).binding.bottomNavigationView.visibility = View.GONE
     }

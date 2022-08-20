@@ -2,22 +2,22 @@ package com.expostore.ui.fragment.product.myproducts.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.expostore.R
-import com.expostore.ui.fragment.product.myproducts.ArchiveFragment
-import com.expostore.ui.fragment.product.myproducts.MyDraftFragment
 import com.expostore.ui.fragment.product.myproducts.OnClickMyProduct
-import com.expostore.ui.fragment.product.myproducts.PublicProductFragment
+import com.expostore.ui.fragment.product.myproducts.tabs.TabMyProductFragment
 import kotlinx.android.synthetic.main.favorites_tab_item.view.text
 import kotlinx.android.synthetic.main.my_products_tab_item.view.*
 
 class MyProductsTabsViewPagerAdapter(
     val fragment: Fragment,
     val context: Context,
-    val onClickMyProduct: OnClickMyProduct
+
+
 ): FragmentStateAdapter(fragment) {
 
     private val tabs = listOf("Опубликованы", "Черновики", "Архив")
@@ -36,13 +36,23 @@ class MyProductsTabsViewPagerAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        var result: Fragment? = null
+        val result: Fragment =TabMyProductFragment()
+        val bundle=Bundle()
+
 
         when(position){
-            0 -> { result = PublicProductFragment(onClickMyProduct) }
-            1 -> { result = MyDraftFragment(onClickMyProduct)
+            0 -> {
+                bundle.putParcelable("shared",SharedMyProductsModel("my"))
+                result.arguments=bundle
             }
-            2 -> { result = ArchiveFragment(onClickMyProduct) }
+            1 -> {
+                bundle.putParcelable("shared",SharedMyProductsModel("draft"))
+                result.arguments=bundle
+            }
+            2 -> {
+                bundle.putParcelable("shared",SharedMyProductsModel("archive"))
+                result.arguments=bundle
+            }
         }
         return result!!
     }

@@ -1,4 +1,4 @@
-package com.expostore.ui.fragment.search.filter.models
+package com.expostore.ui.general
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

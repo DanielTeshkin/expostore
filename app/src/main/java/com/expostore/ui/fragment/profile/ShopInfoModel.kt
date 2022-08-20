@@ -9,7 +9,8 @@ data class ShopInfoModel(
     val shopping_center:String="",
     val address:String="",
     val floor_and_office_number:String="",
-    val info:Boolean=false
+    val info:Boolean=false,
+    val phone:String=""
 ):Parcelable
 fun shopInfoCreate(name:String,
                    shopping_center: String,
