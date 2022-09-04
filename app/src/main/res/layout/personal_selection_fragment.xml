@@ -68,6 +68,7 @@
             app:srcCompat="@drawable/ic_baseline_text_snippet_24" />
 
         <TextView
+            android:id="@+id/note_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -124,6 +125,30 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+
+            android:layout_margin="8dp"
+            app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:text="Удалить из подборки" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/compare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -145,6 +170,7 @@
             android:padding="8dp"
             android:text="Добавить в сравнения" />
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/block"

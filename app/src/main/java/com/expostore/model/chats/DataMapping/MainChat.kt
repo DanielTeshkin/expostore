@@ -1,8 +1,8 @@
 package com.expostore.model.chats.DataMapping
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getchats.ChatResponse
-import com.expostore.db.enities.chat.ChatDao
+import com.expostore.data.remote.api.pojo.getchats.ChatResponse
+import com.expostore.data.local.db.enities.chat.ChatDao
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

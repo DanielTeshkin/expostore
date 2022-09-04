@@ -1,7 +1,5 @@
 package com.expostore.ui.state
 
-import com.expostore.api.base.ErrorResponse
-
 /**
  * @author Fedotov Yakov
  */

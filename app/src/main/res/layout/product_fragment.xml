@@ -61,20 +61,46 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_back" />
 
-        <TextView
-            android:id="@+id/tv_product_price"
-            style="@style/BoldTextView"
+
+
+        <LinearLayout
+            android:id="@+id/block"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:textColor="@color/blue"
-            android:textSize="20sp"
+
+
+
+
             app:layout_constraintBottom_toTopOf="@+id/tv_product_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_product_images"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_product_price"
+                style="@style/BoldTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="25 000 руб"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                 />
+
+            <ImageView
+                android:id="@+id/history"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/graph_icon_png_12_1" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_product_name"
@@ -82,38 +108,64 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Диван Вегас"
             android:textAlignment="textStart"
-            android:textColor="@color/black"
+            android:textColor=" #515050"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/articul"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/block" />
+
+        <TextView
+            android:id="@+id/articul"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Артикул"
             app:layout_constraintBottom_toTopOf="@+id/tv_product_available"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_price" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
 
         <TextView
             android:id="@+id/tv_product_available"
+            style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="9dp"
             android:text="Нет в наличии"
-            style="@style/BoldTextView"
-            android:textSize="16sp"
             android:textColor="#F53939"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_description_title"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+            app:layout_constraintTop_toBottomOf="@+id/articul" />
 
         <TextView
             android:id="@+id/tv_product_description_title"
             style="@style/BoldTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="1dp"
             android:text="Описание товара"
             android:textColor="@color/black"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_available" />
@@ -138,7 +190,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/presentaton"
+            app:layout_constraintBottom_toTopOf="@+id/presentation"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -220,10 +272,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="40dp"
             android:orientation="horizontal"
 
-            app:layout_constraintBottom_toTopOf="@+id/tv_product_note_title"
+            app:layout_constraintBottom_toTopOf="@+id/divider_my"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/presentation">
@@ -260,7 +312,6 @@
             android:id="@+id/divider_my"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="20dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toTopOf="@+id/tv_product_note_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -273,9 +324,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:layout_marginBottom="8dp"
             android:text="Ваша заметка"
             android:textColor="@color/black"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_note"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_my" />
@@ -292,6 +345,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_note_title" />
 
+
         <TextView
             android:id="@+id/edit_note"
             android:layout_width="0dp"
@@ -301,7 +355,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/other_btn_background"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center"
@@ -310,12 +364,12 @@
             android:text="Редактировать заметку"
             android:textColor="#2677F1"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_product_rating"
+            app:layout_constraintBottom_toTopOf="@+id/divider_second"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_note"
             tools:ignore="MissingConstraints" />
-
 
         <View
             android:id="@+id/divider_second"
@@ -369,7 +423,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rb_product_rating">
@@ -399,7 +453,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />

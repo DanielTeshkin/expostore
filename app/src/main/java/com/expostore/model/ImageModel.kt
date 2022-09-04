@@ -1,10 +1,9 @@
 package com.expostore.model
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getcategory.ImageResponseData
-import com.expostore.api.response.ImageResponse
-import com.expostore.db.enities.chat.ImageDao
-import com.expostore.db.enities.chat.MessageImageDao
+import com.expostore.data.remote.api.response.ImageResponse
+import com.expostore.data.local.db.enities.chat.ImageDao
+import com.expostore.data.local.db.enities.chat.MessageImageDao
 import kotlinx.android.parcel.Parcelize
 
 /**

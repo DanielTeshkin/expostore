@@ -1,8 +1,7 @@
 package com.expostore.model.category
 
 import android.os.Parcelable
-import com.expostore.api.response.CategoryAdvertisingResponse
-import com.google.gson.annotations.SerializedName
+import com.expostore.data.remote.api.response.CategoryAdvertisingResponse
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

@@ -9,6 +9,8 @@ import com.expostore.databinding.DetailProductItemBinding
 import com.expostore.databinding.SearchProductItemBinding
 import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.favorite.FavoriteTender
+import com.expostore.model.product.ProductModel
+import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.fragment.favorites.FavoritesClickListener
 import com.expostore.ui.fragment.profile.profile_edit.click
@@ -18,12 +20,16 @@ import kotlinx.android.synthetic.main.detail_product_item.view.*
 
 class FavoritesTenderRecyclerViewAdapter(
     private val tenders: MutableList<FavoriteTender>,
-    val context: Context,
-  private val installClickListener: FavoritesClickListener
+
+
 ) : RecyclerView.Adapter<FavoritesTenderRecyclerViewAdapter.FavoritesTenderViewHolder>() {
 
+    var onCallItemClickListener: ((String) -> Unit)? = null
+    var onMessageItemClickListener: ((String) -> Unit)? = null
+    var onAnotherClickListener: ((TenderModel)->Unit)?=null
+    var onClickLike: ((String) -> Unit)? = null
+    var onItemClickListener:((TenderModel)->Unit)?=null
 
-    var onClick: OnClickRecyclerViewListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesTenderViewHolder {
         val v = DetailProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,18 +45,18 @@ class FavoritesTenderRecyclerViewAdapter(
     inner class FavoritesTenderViewHolder(val binding:DetailProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: FavoriteTender, index: Int){
-            val product= item.tender
-            binding.price.text=product.price
+            val tender= item.tender
             val list=ArrayList<String>()
-
-            product.images?.map { list.add(it.file) }
-            binding.name.text = product.title
+            binding.price.text=tender.price
+            tender.images?.map { list.add(it.file) }
+            binding.name.text = tender.title
             binding.viewPager.apply {
                 val tabProductPagerAdapter= ImageAdapter()
                 tabProductPagerAdapter.items=list
-                tabProductPagerAdapter.onItemClickListener= { installClickListener.onClickTender(item)}
+                tabProductPagerAdapter.onItemClickListener= { onItemClickListener?.invoke(tender)}
                 adapter=tabProductPagerAdapter
             }
+
 
             if(item.notes!=null){
                 binding.note.text=item.notes
@@ -58,10 +64,12 @@ class FavoritesTenderRecyclerViewAdapter(
             else{
                 binding.note.text="Нет заметки"
             }
-
+            binding.write.click { onMessageItemClickListener?.invoke(tender.id)}
+            binding.call.click { onCallItemClickListener?.invoke(tender.author.username) }
+            binding.another.click{onAnotherClickListener?.invoke(tender)}
 
             binding.like.click {
-               // onClickListener.onClickLikeTender(product.id)
+            onClickLike?.invoke(tender.id)
 
             }
         }

@@ -42,6 +42,12 @@ class TenderItemViewModel @Inject constructor(private val interactor: TenderInte
     fun saveTender(item:TenderModel){
         _tender.value=item
     }
+
+    fun navigationToNote(){
+        val model=tender.value
+        navigationTo(TenderItemFragmentDirections.actionTenderItemToNoteFragment(id=model.id,
+            isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender"))
+    }
     override fun onStart() {
         TODO("Not yet implemented")
     }

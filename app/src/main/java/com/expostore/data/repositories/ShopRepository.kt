@@ -1,10 +1,10 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.addshop.AddShopRequestData
-import com.expostore.api.pojo.getshop.GetShopResponseData
-import com.expostore.api.response.ShopResponse
-import com.expostore.db.LocalWorker
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.pojo.addshop.AddShopRequestData
+import com.expostore.data.remote.api.pojo.getshop.GetShopResponseData
+import com.expostore.data.remote.api.response.ShopResponse
+import com.expostore.data.local.db.LocalWorker
 import com.expostore.model.product.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

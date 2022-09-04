@@ -47,30 +47,32 @@ class TenderItemFragment:BaseFragment<TenderItemBinding>(TenderItemBinding::infl
         super.onStart()
         val result=TenderItemFragmentArgs.fromBundle(requireArguments()).tender
             binding.apply {
-                if (result!=null) {
-                    imageAdapter.items = result.images?.map { it.file } ?: listOf()
-                    rvTenderImages.adapter=imageAdapter
-                    tvTenderName.text = result.title
-                    tvTenderPrice.text=result.price+ " " + "руб"
-                    tvTenderDescription.text=result.description
-                    tvTenderCount.text=result.count.toString()
-                    tvTenderCharcter.click {
-                        result.characteristicModel?.let { openBottomSheet(it,requireContext()) }
-                    }
-                    tvTenderLocation.text=result.location
-                    llProductShop.click {
-                     viewModel.navigateToShop()
-                    }
-                    btnCallDown.click {
-                        navigateToCall(result.author.username)
-                    }
-                    write.click {
-                        viewModel.createChat(result.id)
-                    }
-                    viewModel.saveTender(result)
-
-
+                imageAdapter.items = result.images?.map { it.file } ?: listOf()
+                rvTenderImages.adapter=imageAdapter
+                tvTenderName.text = result.title
+                tvTenderPrice.text=result.price+ " " + "руб"
+                tvTenderDescription.text=result.description
+                tvTenderCount.text=result.count.toString()
+                tvTenderCharcter.click {
+                    result.characteristicModel?.let { openBottomSheet(it,requireContext()) }
                 }
+                tvTenderLocation.text=result.location
+                llProductShop.click {
+                 viewModel.navigateToShop()
+                }
+                btnCallDown.click {
+                    navigateToCall(result.author.username)
+                }
+                write.click {
+                    viewModel.createChat(result.id)
+                }
+                if(result.elected.notes.isEmpty()) editNote.text="Cоздать заметку"
+                else tvProductNote.text=result.elected.notes
+
+                viewModel.saveTender(result)
+                editNote.click {viewModel.navigationToNote()  }
+
+
 
             }
 

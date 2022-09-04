@@ -1,7 +1,7 @@
 package com.expostore.model.review
 
 import android.os.Parcelable
-import com.expostore.api.response.ReviewsResponse
+import com.expostore.data.remote.api.response.ReviewsResponse
 
 import kotlinx.android.parcel.Parcelize
 

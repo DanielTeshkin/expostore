@@ -2,7 +2,7 @@ package com.expostore.ui.fragment.authorization.registration.createpassword
 
 
 import androidx.lifecycle.MutableLiveData
-import com.expostore.api.pojo.signup.SignUpResponseData
+import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState

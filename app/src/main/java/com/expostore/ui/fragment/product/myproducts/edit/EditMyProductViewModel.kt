@@ -1,8 +1,6 @@
 package com.expostore.ui.fragment.product.myproducts.edit
 
-import androidx.lifecycle.ViewModel
-import com.expostore.api.response.ProductResponse
-import com.expostore.data.repositories.ProductsRepository
+import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.product.ProductInteractor

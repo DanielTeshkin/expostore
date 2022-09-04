@@ -1,8 +1,6 @@
 package com.expostore.ui.fragment.splash.interactor
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.getprofile.GetProfileResponseData
-import kotlinx.coroutines.flow.flow
+import com.expostore.data.remote.api.ApiWorker
 import javax.inject.Inject
 
 

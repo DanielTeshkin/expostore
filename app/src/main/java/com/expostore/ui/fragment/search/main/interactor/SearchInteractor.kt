@@ -3,10 +3,15 @@ package com.expostore.ui.fragment.search.main.interactor
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.expostore.api.request.ProductsSelection
+import com.expostore.data.remote.api.pojo.comparison.ComparisonProductData
+import com.expostore.data.remote.api.request.ProductsSelection
+import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.data.repositories.*
 import com.expostore.model.product.ProductModel
+import com.expostore.model.product.toModel
 import com.expostore.model.profile.ProfileModel
+import com.expostore.ui.base.Loader
+import com.expostore.ui.base.PagingSource
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.main.paging.LoaderProducts
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
@@ -21,11 +26,12 @@ class SearchInteractor @Inject constructor(
     private val favoriteRepository: FavoriteRepository,
     private val profileRepository: ProfileRepository,
     private val chatRepository: ChatRepository,
-    private val selectionRepository: SelectionRepository
+    private val selectionRepository: SelectionRepository,
+    private val comparisonRepository: ComparisonRepository
 ) {
 
     private val profileModel =MutableStateFlow<ProfileModel>(ProfileModel())
-    fun selectFavorite(id: String) = favoriteRepository.updateSelected(id)
+    fun selectFavorite(id: String) = favoriteRepository.addToFavorite(id)
 
   private suspend fun getProfileModel()= profileRepository.getProfile().collect { profileModel.value=it }
 
@@ -48,12 +54,13 @@ class SearchInteractor @Inject constructor(
     fun searchProducts(pagingConfig: PagingConfig = getDefaultPageConfig(),filterModel: FilterModel
    ): Flow<PagingData<ProductModel>> {
 
-            val loaderProducts: LoaderProducts = { it ->
+            val loaderProducts: Loader<ProductResponse> = { it ->
                 productsRepository.getProducts(
                     page = it,filterModel
                     )
             }
-           val pagingSource =  ProductListPagingSource( loaderProducts)
+           val pagingSource:PagingSource<ProductResponse,ProductModel> = PagingSource(loaderProducts)
+           { it.toModel }
         return   Pager(
                config = pagingConfig,
                pagingSourceFactory =
@@ -63,15 +70,20 @@ class SearchInteractor @Inject constructor(
 
     fun letProductFlow(pagingConfig: PagingConfig = getDefaultPageConfig(),
     ): Flow<PagingData<ProductModel>> {
-        val loaderProducts: LoaderProducts = { it ->
+        val loaderProducts: Loader<ProductResponse> = { it ->
             productsRepository.getProducts(page = it,FilterModel()) }
-        val pagingSource = ProductListPagingSource( loaderProducts)
+        val pagingSource=PagingSource( loaderProducts) { it.toModel }
         return Pager(
             config = pagingConfig,
             pagingSourceFactory =
             { pagingSource }
         ).flow
     }
+
+
+    fun addToComparison(id: String)=comparisonRepository.addToComparison(listOf(
+        ComparisonProductData(id=id)
+    ))
 }
     private fun getDefaultPageConfig(): PagingConfig {
         return PagingConfig(pageSize = 10, enablePlaceholders = false)

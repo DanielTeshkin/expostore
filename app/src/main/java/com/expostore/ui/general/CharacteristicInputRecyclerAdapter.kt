@@ -40,6 +40,11 @@ fun removeSelect(id:String){
 
  fun addElement(list:List<CategoryCharacteristicModel>){
      category.addAll(list)
+     notifyDataSetChanged()
  }
+    fun removeAll(){
+        category.clear()
+
+    }
 
 }

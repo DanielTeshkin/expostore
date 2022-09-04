@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.expostore.databinding.SaveSelectionBinding
 import com.expostore.databinding.SelectionItemBinding
 import com.expostore.model.category.SelectionModel
-import com.expostore.ui.fragment.favorites.tabs.selections.OnClickCategory
 import com.expostore.ui.fragment.profile.profile_edit.click
 
 class SelectionsAdapter(private val list: MutableList<SelectionModel>): RecyclerView.Adapter<SelectionsAdapter.SelectionsHolder>() {
@@ -17,9 +15,10 @@ class SelectionsAdapter(private val list: MutableList<SelectionModel>): Recycler
         fun bind(model: SelectionModel){
             binding.apply {
                 nameSeelction.text=model.name
-                when(val count=model.count.toString()){
-                    "1"->countProducts.text= "$count объявление"
-                    "2","3","4"->countProducts.text= "$count объявления"
+                val count=model.products.size
+                when(count){
+                    1->countProducts.text= "$count объявление"
+                    2,3,4->countProducts.text= "$count объявления"
                     else -> countProducts.text= "$count объявлений"
                 }
                 root.click {

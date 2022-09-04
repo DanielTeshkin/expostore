@@ -67,7 +67,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //mainActivity.setVisibleBottomNavView(isBottomNavViewVisible)
+        mainActivity.setVisibleBottomNavView(isBottomNavViewVisible)
     }
 
     protected fun navigateSafety(destination: NavDirections) =
@@ -103,7 +103,10 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
             }
         }
     }
+   protected fun <T> showFactory(action:(T) -> Unit) :Show<T> =action
 
+    protected fun loadFactory(action:(Boolean)->Unit):Load=action
+    protected fun loaderFactory(action: () -> Unit)=action
 
     
 

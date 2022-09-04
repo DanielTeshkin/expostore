@@ -1,8 +1,8 @@
 package com.expostore.ui.fragment.chats.fragment
 
-import com.expostore.api.pojo.getchats.FileOrImageMessage
-import com.expostore.api.pojo.getchats.MessageRequest
-import com.expostore.api.pojo.getchats.ResponseFile
+import com.expostore.data.remote.api.pojo.getchats.FileOrImageMessage
+import com.expostore.data.remote.api.pojo.getchats.MessageRequest
+import com.expostore.data.remote.api.pojo.getchats.ResponseFile
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.ui.base.BaseViewModel

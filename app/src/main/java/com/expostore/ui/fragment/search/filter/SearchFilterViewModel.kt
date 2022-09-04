@@ -2,8 +2,8 @@ package com.expostore.ui.fragment.search.filter
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.expostore.api.pojo.getcities.City
-import com.expostore.api.response.SaveSearchResponse
+import com.expostore.data.remote.api.pojo.getcities.City
+import com.expostore.data.remote.api.response.SaveSearchResponse
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.category.ProductCategoryModel
@@ -100,7 +100,7 @@ class SearchFilterViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _filterCharacteristic.value = interactor.saveFiltersState(
                 filterInputList.value,
-                filterRadioList.value, filterSelectList.value, filterCheckBox.value)
+                filterRadioList.value, filterSelectList.value, filterCheckBox.value) as List<CharacteristicFilterModel>
         }
     }
 
@@ -110,16 +110,16 @@ class SearchFilterViewModel @Inject constructor(
     }
     fun getListCategories()=interactor.getCategories().handleResult(_categories)
 
-    fun navigateToSearch(){
+    fun navigateToSearch(filterModel: FilterModel){
         if (flag.value == "product")
-                navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToSearchFragment())
-            else if(flag.value=="tender") navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToTenderListFragment())
+                navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToSearchFragment(filterModel))
+            else if(flag.value=="tender") navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToTenderListFragment(filterModel))
 
     }
     fun navigateToCategory(){
         navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToSpecificationsFragment())
     }
-
+   fun navigateToMapChoice()=navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToMapChoice())
 
 
     fun saveFlag(name:String){

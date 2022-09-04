@@ -3,6 +3,7 @@ package com.expostore
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.expostore.databinding.ActivityMainBinding
@@ -47,11 +48,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // fun setVisibleBottomNavView(isVisible: Boolean) {
-        //  if(binding.bottomNavigationView.isVisible != isVisible) {
-        //     binding.bottomNavigationView.isVisible = isVisible
-        // }
-        // }
+
+    }
+    fun setVisibleBottomNavView(isVisible: Boolean) {
+        if(binding.bottomNavigationView.isVisible != isVisible) {
+            binding.bottomNavigationView.isVisible = isVisible
+        }
     }
 
 }

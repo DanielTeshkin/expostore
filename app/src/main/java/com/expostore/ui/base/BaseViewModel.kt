@@ -10,9 +10,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * @author Fedotov Yakov
- */
+
 abstract class BaseViewModel : ViewModel() {
 
     private val _navigation = MutableSharedFlow<NavDirections>()
@@ -23,6 +21,8 @@ abstract class BaseViewModel : ViewModel() {
     lateinit var navController: NavController
 
     protected abstract fun onStart()
+
+
 
     fun start() {
         if (!isStarted) {

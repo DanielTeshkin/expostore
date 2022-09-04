@@ -2,7 +2,7 @@ package com.expostore.model.category
 
 import android.os.Parcelable
 
-import com.expostore.api.response.SelectionResponse
+import com.expostore.data.remote.api.response.SelectionResponse
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import kotlinx.android.parcel.Parcelize

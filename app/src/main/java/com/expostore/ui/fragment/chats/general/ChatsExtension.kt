@@ -61,7 +61,7 @@ fun MainChat.productsName():Array<String>{
     val list = mutableListOf<String>()
     for (i in itemsChat.indices){
         if(itemsChat[i].product!=null) itemsChat[i].product?.name?.let { list.add(it) }
-        else itemsChat[i].tender?.title?.let { list.add(it) }
+        else itemsChat[i].tender?.name?.let { list.add(it) }
     }
     return list.toTypedArray()
 }
@@ -153,7 +153,7 @@ fun ImageView.loadChatAvatar(url: String){
             .into(this)}}
 }
 
-fun ImageView.visible(state:Boolean){
+fun  View.visible(state:Boolean){
     visibility = when(state){
         true -> View.VISIBLE
         false -> View.GONE

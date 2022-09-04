@@ -1,14 +1,15 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.base.BaseApiResponse
-import com.expostore.api.base.BaseListResponse
-import com.expostore.api.request.ProductUpdateRequest
-import com.expostore.api.response.CreateResponseProduct
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.base.BaseApiResponse
+import com.expostore.data.remote.api.base.BaseListResponse
+import com.expostore.data.remote.api.request.ProductUpdateRequest
+import com.expostore.data.remote.api.response.CreateResponseProduct
 
-import com.expostore.api.response.ProductResponse
+import com.expostore.data.remote.api.response.ProductResponse
 
-import com.expostore.db.LocalWorker
+import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.remote.api.response.PersonalProductRequest
 import com.expostore.model.product.toModel
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.filter.models.toRequest
@@ -29,7 +30,7 @@ class ProductsRepository @Inject constructor(private val apiWorker: ApiWorker, p
 
   fun load(status: String) = flow {
     val result =
-      handleOrDefault(BaseListResponse<ProductResponse>()) { apiWorker.getMyListProduct(status) }.results
+      handleOrDefault(BaseListResponse()) { apiWorker.getMyListProduct(status) }.results
     emit(result.map { it.toModel })
   }
 
@@ -45,13 +46,29 @@ class ProductsRepository @Inject constructor(private val apiWorker: ApiWorker, p
         val result=handleOrDefault(CreateResponseProduct()){apiWorker.updateProduct(id, request)}
         emit(result)
     }
-    fun putToDraft(id:String,request: ProductUpdateRequest)= flow {
-        val result=handleOrDefault(ProductResponse()){apiWorker.saveToDraft(id, request)}
-        emit(result)
-    }
+
     fun publishedProduct(id:String)= flow {
         val result=handleOrDefault(ProductResponse()){apiWorker.publishedProduct(id)}
         emit(result)
     }
+
+    fun getPersonalProducts()=flow{
+        val result= handleOrDefault(BaseListResponse()){apiWorker.getPersonalProducts()}.results.map { it.toModel }
+        emit(result)
+    }
+    fun createPersonalProduct( request: PersonalProductRequest)=flow{
+        val result=handleOrDefault(CreateResponseProduct()){apiWorker.createPersonalProduct(request)}
+        emit(result)
+    }
+    fun deletePersonalProduct(id: String)= flow {
+        val result= handleOrDefault(ProductResponse()){apiWorker.deletePersonalProduct(id)}
+        emit(result)
+    }
+
+    fun getPriceHistory(id:String) = flow{
+        val result = handleOrEmptyList { apiWorker.getPriceHistory(id) }.map { it.toModel }
+        emit(result)
+    }
+
 
 }

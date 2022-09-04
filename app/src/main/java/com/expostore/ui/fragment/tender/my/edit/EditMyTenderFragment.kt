@@ -1,22 +1,13 @@
 package com.expostore.ui.fragment.tender.my.edit
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import com.expostore.R
 import com.expostore.databinding.EditMyTenderFragmentBinding
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.ImageAdapter
-import com.expostore.ui.fragment.product.myproducts.edit.EditMyProductViewModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,6 +28,10 @@ class EditMyTenderFragment : BaseFragment<EditMyTenderFragmentBinding>(EditMyTen
         editMyTenderViewModel.saveInfoTender(result)
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
+        editMyTenderViewModel.apply {
+            subscribe(navigation){navigateSafety(it)}
+        }
+
     }
 
     override fun onStart() {
@@ -69,8 +64,7 @@ class EditMyTenderFragment : BaseFragment<EditMyTenderFragmentBinding>(EditMyTen
             state { editMyTenderViewModel.buttonVisible.collect { delete.isVisible=it} }
             delete.click { editMyTenderViewModel.changeStatusPublished() }
             edit.click {
-                setFragmentResult("requestKey", bundleOf("product" to model))
-                editMyTenderViewModel.navigateToCreateTender()
+                editMyTenderViewModel.navigateToCreateTender(model)
             }
         }
     }

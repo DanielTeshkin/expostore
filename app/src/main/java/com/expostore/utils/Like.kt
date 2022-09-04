@@ -2,16 +2,7 @@ package com.expostore.utils
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import androidx.appcompat.widget.AppCompatButton
-import com.expostore.R
-
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class Like @JvmOverloads constructor(

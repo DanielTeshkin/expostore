@@ -1,16 +1,11 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.base.ApiErrorResponse
 import com.expostore.api.base.ApiResponse
-import com.expostore.api.base.BaseApiResponse
-import com.expostore.db.LocalWorker
-import com.expostore.utils.decodeImage
-import kotlinx.coroutines.flow.Flow
+import com.expostore.data.remote.api.base.ApiErrorResponse
+
+import com.expostore.data.remote.api.base.BaseApiResponse
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 /**
  * @author Teshkin Daniel
@@ -52,16 +47,16 @@ open class BaseRepository {
         emit(response)
     }
 
-    protected suspend fun <T> singleOperator(databaseQuery: suspend ()-> T,
+    protected fun <T,A> singleOperator(databaseQuery: suspend ()-> A,
+                                       mapper:(A)->T,
                                  networkCall: suspend () ->  T,
-                                 saveCallResult:   (T) -> Unit)=flow {
-        val result = databaseQuery.invoke()
-        emit(result)
+                                 saveCallResult: suspend  (T) -> Unit)=flow {
+        val result =databaseQuery.invoke()
+        if(result!=null) emit(mapper(result))
         val response=networkCall.invoke()
         saveCallResult(response)
         emit(response)
-    }.first{it!=null}
-
+    }
 
 
 

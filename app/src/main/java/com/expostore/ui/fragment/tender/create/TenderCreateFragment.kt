@@ -32,14 +32,20 @@ class TenderCreateFragment :
     private val list= mutableListOf("")
     private val selectList = mutableListOf<String>()
     private val characteristicAdapter: CharacteristicInputRecyclerAdapter by lazy {
-        CharacteristicInputRecyclerAdapter(requireContext(),this,"other")
+        CharacteristicInputRecyclerAdapter(requireContext(),this,"other",
+        tenderCreateViewModel.characteristicState.value)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
          makeStartRequest()
          observerUIStates()
-        setFragmentListeners()
+         setFragmentListeners()
+        val tender=TenderCreateFragmentArgs.fromBundle(requireArguments()).tender
+        if(tender!=null){
+            tenderCreateViewModel.saveInfo(tender)
+                    showEditInformation(tender)
+        }
     }
 
     override fun onStart() {
@@ -174,7 +180,6 @@ class TenderCreateFragment :
         binding.apply {
             llAddTenderCharacteristic.apply {
                 visibility = View.VISIBLE
-
                 characteristicAdapter.addElement(list)
                 rvTenderCharacteristic.layoutManager=LinearLayoutManager(context)
                 rvTenderCharacteristic.adapter=characteristicAdapter

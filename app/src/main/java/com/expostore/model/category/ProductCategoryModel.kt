@@ -1,9 +1,8 @@
 package com.expostore.model.category
 
 import android.os.Parcelable
-import com.expostore.api.pojo.productcategory.Parent
-import com.expostore.api.pojo.productcategory.ProductCategory
-import com.google.gson.annotations.SerializedName
+import com.expostore.data.remote.api.pojo.productcategory.Parent
+import com.expostore.data.remote.api.pojo.productcategory.ProductCategory
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

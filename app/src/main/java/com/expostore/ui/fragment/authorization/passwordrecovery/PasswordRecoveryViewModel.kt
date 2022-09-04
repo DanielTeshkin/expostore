@@ -4,52 +4,80 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
-import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.expostore.R
-import com.expostore.api.ApiWorker
+import com.expostore.data.remote.api.ApiWorker
 
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
-import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
-import com.expostore.utils.hideKeyboard
+import com.expostore.data.remote.api.ServerApi
+import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeResponseData
+import com.expostore.data.repositories.AuthorizationRepository
+import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.fragment.authorization.confirmnumberpass.ConfirmNumberResetDirections
+import com.expostore.ui.fragment.authorization.registration.confirmcode.ConfirmCodeFragmentDirections
+import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-@SuppressLint("StaticFieldLeak")
+
 @HiltViewModel
-class PasswordRecoveryViewModel @Inject constructor( private val apiWorker: ApiWorker) : ViewModel() {
-    private lateinit var serverApi: ServerApi
-    private lateinit var navController: NavController
-    lateinit var context: Context
-    var btnResendCode: TextView? = null
-    var phoneInput: String? = null
-    var code: String = ""
-    val bundle = Bundle()
+class PasswordRecoveryViewModel @Inject constructor( private val repository:AuthorizationRepository) : BaseViewModel() {
 
 
-    val timer = object : CountDownTimer(60000, 1000) {
+    private val text= MutableStateFlow("")
+    val resetText=text.asStateFlow()
+    private val code=MutableStateFlow("")
+    private val _clickable= MutableStateFlow(false)
+          val clickable=_clickable.asStateFlow()
+   private val phone=MutableStateFlow("")
+
+    private val _state= MutableSharedFlow<ResponseState<ConfirmCodeResponseData>>()
+    var state=_state.asSharedFlow()
+
+    fun saveNumber(number: String){
+        phone.value=number
+    }
+    fun saveInput(input: String){
+        code.value=input
+    }
+
+    fun confirmCode(){
+        repository.confirmCodeReset(phone.value,code.value).handleResult(_state,{
+            navigationTo(PasswordRecoveryFragmentDirections.actionPasswordRecoveryFragmentToNewPasswordFragment(phone.value))
+        })
+    }
+
+    fun confirmNumber(){
+        repository.confirmNumberReset(phone.value).handleResult()
+
+    }
+    public override fun back(){
+        navigationTo(ConfirmCodeFragmentDirections.actionConfirmNumberFragmentToNumberFragment())
+    }
+    fun timerStart(){
+        timer.start()
+    }
+
+   private val timer = object : CountDownTimer(60000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
-            btnResendCode!!.text = context.getString(R.string.confirm_code_btn_resend_code_text, millisUntilFinished / 1000)
-            btnResendCode!!.isClickable = false
+            val time=millisUntilFinished/1000
+           text.value = "Отправить код повторно (доступно через $time сек.)"
+            _clickable.value = false
         }
 
         override fun onFinish() {
-            btnResendCode!!.text = context.getString(R.string.confirm_code_btn_resend_code_title)
-            btnResendCode!!.isClickable = true
+            text.value ="Отправить код"
+            _clickable.value = true
         }
+    }
+
+    override fun onStart() {
+        TODO("Not yet implemented")
     }
 
 

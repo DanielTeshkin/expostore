@@ -9,13 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.expostore.api.pojo.addshop.AddShopRequestData
+import com.expostore.data.remote.api.pojo.addshop.AddShopRequestData
 
-import com.expostore.api.pojo.getprofile.EditProfileRequest
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
-import com.expostore.api.response.EditResponseProfile
-import com.expostore.api.response.ShopResponse
+import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.remote.api.response.EditResponseProfile
+import com.expostore.data.remote.api.response.ShopResponse
+import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.data.repositories.ProfileRepository
 import com.expostore.data.repositories.ShopRepository
 import com.expostore.model.profile.ProfileModel
@@ -31,8 +32,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository, private val shopInteractor: ShopRepository) : BaseViewModel() {
-         private val _profile=MutableSharedFlow<ResponseState<ProfileModel>>()
+class ProfileViewModel @Inject constructor(private val profileRepository: ProfileRepository,
+                                           private val shopInteractor: ShopRepository,
+                                           private val multimediaRepository: MultimediaRepository) : BaseViewModel() {
+    private val _profile=MutableSharedFlow<ResponseState<ProfileModel>>()
     val profile=_profile.asSharedFlow()
     private val _title=MutableStateFlow<String>("Создать магазин")
     val title=_title.asStateFlow()
@@ -58,7 +61,9 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
             val profileInfo=_profileInfo.asStateFlow()
 
     private val _tag=MutableStateFlow<String>("")
-
+    override fun onStart() {
+       loadProfile()
+    }
 
     fun loadProfile(){
         profileRepository.getProfile().handleResult(_profile)
@@ -70,6 +75,7 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
     fun save(model:ProfileModel){
 
         if(model.shop?.id!=""){
+            Log.i("id",model.shop?.id?:"")
             _title.value="Редактировать магазин"
         _exist.value=true
         }
@@ -91,6 +97,7 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
                         Log.i("error",
                             it1)
                     }
+                    else -> {}
                 } } }
     }
 
@@ -112,9 +119,7 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
                 } } }
     }
 
-    override fun onStart() {
-        TODO("Not yet implemented")
-    }
+
        fun removeToken(){
            viewModelScope.launch {
                withContext(Dispatchers.IO) {
@@ -123,11 +128,7 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
        }
 
 
-
-
-
     private fun saveImage(context:Context,uri: Uri){
-
         Glide.with(context).asBitmap().load(uri).into(object :
             CustomTarget<Bitmap>(720,720){
             override fun onResourceReady(
@@ -135,9 +136,9 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
                 transition: Transition<in Bitmap>?
             ) {
                  val image =resource.toBase64()
-                val list= listOf<SaveImageRequestData>(SaveImageRequestData(image!!,"png"))
+                val list= listOf(SaveImageRequestData(image!!,"png"))
 
-                profileRepository.saveImage(list).handleResult(_save)
+                multimediaRepository.saveImage(list).handleResult(_save)
             }
             override fun onLoadCleared(placeholder: Drawable?) {
             }
@@ -147,7 +148,12 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
     }
 
     fun navigateEditProfile(){
-        navigationTo(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment())
+        val model=_profileInfo.value
+        val result = InfoProfileModel(
+            model.firstName!!, model.lastName!!, model.city!!,
+            model.email!!
+        )
+        navigationTo(ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment(result))
     }
     fun navigateMyProduct(){
         when(exist.value){
@@ -155,13 +161,15 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
             else -> navigateShop()
         }
     }
-    fun navigateReviews(){
-        navigationTo(ProfileFragmentDirections.actionProfileFragmentToReviewsFragment())
+    fun navigateReviews(flag:String){
+        navigationTo(ProfileFragmentDirections.actionProfileFragmentToReviewsFragment(flag))
     }
 
 
     fun navigateShop(){
-        navigationTo(ProfileFragmentDirections.actionProfileFragmentToShopCreate())
+        val shop=_shop.value
+        val info = ShopInfoModel(shop!!.name, shop.shoppingCenter, shop.address,shop.floor_and_office_number, exist.value,shop.phone)
+        navigationTo(ProfileFragmentDirections.actionProfileFragmentToShopCreate(info))
     }
 
     fun navigationToSupport(){
@@ -169,7 +177,7 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
     }
 
     fun navigateToWeb(){
-        navigationTo(ProfileFragmentDirections.actionProfileFragmentToWebViewFragment())
+        navigationTo(ProfileFragmentDirections.actionProfileFragmentToWebViewFragment("https://expostore.ru/"))
     }
     fun navigateToTender(){
         when(exist.value){

@@ -1,15 +1,22 @@
 package com.expostore.ui.fragment.product
 
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.request.ProductUpdateRequest
+import android.graphics.Bitmap
+import android.net.Uri
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.remote.api.request.ProductUpdateRequest
+import com.expostore.data.remote.api.request.createProductRequest
+import com.expostore.data.remote.api.response.PersonalProductRequest
 import com.expostore.data.repositories.*
 import com.expostore.model.category.CharacteristicFilterModel
-import com.expostore.ui.general.UiCharacteristicState
-import com.expostore.ui.general.CheckBoxStateModel
-import com.expostore.ui.general.InputStateModel
-import com.expostore.ui.general.RadioStateModel
-import com.expostore.ui.general.SelectStateModel
+import com.expostore.model.category.toRequestCreate
+import com.expostore.model.product.Character
+import com.expostore.ui.fragment.chats.general.ImageMessage
+import com.expostore.ui.general.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class ProductInteractor @Inject constructor(private val productsRepository: ProductsRepository,
@@ -19,52 +26,139 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
                                             private val chatRepository: ChatRepository)
 
 {
-    private val filterInputList= MutableStateFlow(InputStateModel(hashMapOf()))
-    private val filterSelectList= MutableStateFlow(SelectStateModel(hashMapOf()))
-    private val filterRadioList= MutableStateFlow(RadioStateModel(hashMapOf()))
-    private val filterCheckBox= MutableStateFlow(CheckBoxStateModel(hashMapOf()))
+    private val _imageList=MutableStateFlow<MutableList<String>>(mutableListOf())
+     private val imageList=_imageList.asStateFlow()
+    val uriSource=MutableStateFlow<MutableList<Uri>>(mutableListOf())
+    private val _enabled=MutableStateFlow(false)
+    val enabled=_enabled.asStateFlow()
+    private val _characteristicState= MutableStateFlow(CharacteristicsStateModel())
+    val  characteristicState=_characteristicState.asStateFlow()
+    private val name= MutableStateFlow("")
+    private val longDescription = MutableStateFlow("")
+    private val shortDescription= MutableStateFlow("")
+    private val count = MutableStateFlow("")
+    private val price = MutableStateFlow("")
+    private val category = MutableStateFlow("")
+    private val connectionType = MutableStateFlow("call_and_chatting")
+     val shop= MutableStateFlow("")
 
-    fun addFilterInput(left:String,right:String,name:String){
-        filterInputList.value.state[name] = Pair(left,right)
+
+    fun getCharacteristicsState()=characteristicState
+
+    fun saveCharacteristic(characteristics:List<Character>){
+        _characteristicState.value=characteristics.toCharacteristicState()
+    }
+    fun changeName(text:String){
+        name.value=text
+        checkEnabled()
+    }
+    fun changeLongDescription(text:String){
+        longDescription.value=text
+        checkEnabled()
+    }
+    fun changeShortDescription(text:String){
+        shortDescription.value=text
+        checkEnabled()
+    }
+    fun changeCount(text:String){
+        count.value=text
+        checkEnabled()
+    }
+    fun changePrice(text:String){
+        price.value=text
+        checkEnabled()
     }
 
-    fun addFilterSelect(name: String,list:List<String>){
-        filterSelectList.value.state[name] = list
+    fun changeConnectionType(state: Boolean,flag:String){
+        when(state and (flag=="call")){
+            true-> connectionType.value="call_and_chatting"
+            false->connectionType.value="chatting"
+        }
+        when(state and (flag=="message")){
+            true-> connectionType.value="chatting"
+            false->connectionType.value="call_and_chatting"
+        }
     }
-    fun addFilterRadio(id:String,name: String){
-        filterRadioList.value.state[name]=id
+
+    fun saveShop(id:String){
+        shop.value=id
     }
-    fun addFilterCheckbox(name: String,check:Boolean){
-        filterCheckBox.value.state[name]=check
+
+    private fun checkEnabled()= updateEnabledState(name.value.isNotEmpty() and longDescription.value.isNotEmpty()
+                  and shortDescription.value.isNotEmpty() and count.value.isNotEmpty() and price.value.isNotEmpty() and(
+                  (_imageList.value.size!=0) or (uriSource.value.size!=0)))
+
+
+    private fun updateEnabledState(state:Boolean){_enabled.value=state}
+    fun  addPhoto(id:String)= _imageList.value.add(id)
+    fun saveUri(image:Uri){
+        uriSource.value.add(image)
+        checkEnabled()
+    }
+
+    fun removeImage(image:String){
+        if(_imageList.value.contains(image))_imageList.value.remove(image)
+        else uriSource.value.remove(Uri.parse(image))
+        checkEnabled()
     }
 
 
+    fun addFilterInput(left:String,right:String,name:String)=
+        _characteristicState.value.inputStateModel.state.set(name, Pair(left,right))
 
-    fun createProduct(id:String,request: ProductUpdateRequest) = productsRepository.createProduct(id, request)
+
+
+    fun addFilterSelect(name: String,list:List<String>)=
+        _characteristicState.value.selectStateModel.state.set(name, list)
+
+
+    fun addFilterRadio(id:String,name: String)=
+        _characteristicState.value.radioStateModel.state.set(name, id)
+
+
+    fun addFilterCheckbox(name: String,check:Boolean)= _characteristicState.value
+        .checkBoxStateModel.state.set(name, check)
+
+    fun saveCategory(id: String){
+        category.value=id
+    }
+    private fun characteristicLoad()=saveCharacteristicsState().map { it?.toRequestCreate }
+
+    fun createRequest()= createProductRequest(count.value.toInt(), name.value,price.value,
+        longDescription.value, shortDescription.value, imageList.value, connectionType.value,
+        characteristicLoad(),
+        category = category.value)
+
+    fun checkUriSource():Boolean= uriSource.value.isNotEmpty()
+    fun createProduct() = productsRepository.createProduct(shop.value, createRequest())
     fun updateProduct(id:String,request: ProductUpdateRequest)= productsRepository.updateProduct(id, request)
-    fun putToDraft(id:String,request: ProductUpdateRequest)= productsRepository.putToDraft(id,request)
     fun getCategories()=categoryRepository.getCategories()
     fun getCategoryCharacteristic(id:String)=categoryRepository.getCategoryCharacteristic(id)
-
-    fun saveImage(saveImageRequestData: List<SaveImageRequestData>)=multimediaRepository.saveImage(saveImageRequestData)
-
+    fun saveImage(resource:Bitmap): Flow<SaveImageResponseData> = multimediaRepository.saveImage(imageData(resource))
+    private fun imageData(resource: Bitmap):MutableList<SaveImageRequestData>{
+        val bitmapList=ArrayList<Bitmap>()
+        bitmapList.add(resource)
+        val path= ImageMessage().encodeBitmapList(bitmapList)
+        val images = mutableListOf<SaveImageRequestData>()
+        path.map { images.add(SaveImageRequestData(it,"png")) }
+        return images
+    }
+    fun getPriceHistory(id:String)=productsRepository.getPriceHistory(id)
     fun takeOff(id:String)=productsRepository.takeOff(id)
 
-    fun saveCharacteristicsState(): List<CharacteristicFilterModel> =
-        UiCharacteristicState().saveFilter(
-            filterInputList.value,
-            filterRadioList.value,
-            filterSelectList.value,
-            filterCheckBox.value
+    private fun saveCharacteristicsState(
+
+    ): List<CharacteristicFilterModel?> =
+        UiCharacteristicState().saveFilter(_characteristicState.value.inputStateModel,
+            _characteristicState.value.radioStateModel,
+            _characteristicState.value.selectStateModel,
+            _characteristicState.value.checkBoxStateModel
         )
 
-
     suspend fun getProfile()=profileRepository.getProfileRemote()
-
     fun publishedProduct(id: String)=productsRepository.publishedProduct(id)
-
     fun load(status:String)=productsRepository.load(status)
-
     fun createChat(id: String)=chatRepository.createChat(id,"product")
+    fun createPersonalProduct()=productsRepository.createPersonalProduct(PersonalProductRequest())
 
 }

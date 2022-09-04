@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.response.ProductResponse
 import com.expostore.extension.load
 import com.expostore.model.product.ProductModel
 import kotlinx.android.synthetic.main.product_item.view.*
@@ -31,7 +30,7 @@ class ProductRecyclerViewAdapter(private val products: ArrayList<ProductModel>) 
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-       holder.bind(products!![position])
+       holder.bind(products[position])
 /*
         holder.name.text = product.name
 

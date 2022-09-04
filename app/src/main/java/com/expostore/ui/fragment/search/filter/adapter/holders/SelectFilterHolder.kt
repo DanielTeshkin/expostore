@@ -52,6 +52,7 @@ class CheckBoxAdapter(
              binding.selected.isChecked=list?.contains(valueModel.id) == true
               binding.selected.setOnCheckedChangeListener { _, checked ->
                   if (checked)binding.selected.setTextColor(Color.WHITE)
+                   else binding.selected.setTextColor(Color.BLACK)
                  state?.selectListener(valueModel.id?:"",name,checked)
               }
           }

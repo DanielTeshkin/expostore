@@ -2,14 +2,9 @@ package com.expostore.ui.fragment.search.main
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
-import com.expostore.api.request.ChatCreateRequest
-import com.expostore.api.request.ProductChat
-import com.expostore.api.response.ProductResponse
-import com.expostore.api.response.SelectionResponse
-import com.expostore.data.repositories.ChatRepository
-import com.expostore.data.repositories.ProductsRepository
+import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.data.remote.api.response.ProductResponse
+import com.expostore.data.remote.api.response.SelectionResponse
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
@@ -23,12 +18,8 @@ import com.expostore.ui.fragment.search.filter.models.FilterModel
 
 import com.expostore.ui.fragment.search.main.interactor.SearchInteractor
 import com.expostore.ui.state.ResponseState
-import com.expostore.ui.state.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,9 +48,10 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
 
     override fun onStart() {
 
+
     }
      fun getSelections() = interactor.getPersonalSelections().handleResult(_selectionList)
-     fun getBaseProducts()=interactor.getBaseListProducts().handleResult(_productsMarkerUI)
+     fun getBaseProducts()=interactor.getBaseListProducts()
 
 
     fun saveLocation(latitude: Double, longitude: Double) {
@@ -82,11 +74,13 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
 
     fun selectFavorite(id: String) = interactor.selectFavorite(id).handleResult(select)
 
+    fun addToComparison(id: String)=interactor.addToComparison(id).handleResult()
+
     fun navigateToProduct(productModel: ProductModel) {
         navigationTo(SearchFragmentDirections.actionSearchFragmentToProductFragment(productModel))
     }
     fun navigateToBlock(){
-        navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment())
+
     }
 
     fun navigateToFilter() {
@@ -95,11 +89,12 @@ class SearchViewModel @Inject constructor(private val interactor: SearchInteract
   private fun navigateToChat(info:InfoItemChat){
         navigationTo(SearchFragmentDirections.actionSearchFragmentToChatFragment(info))
     }
-    fun navigateToSelectionCreate(){
-        navigationTo(SearchFragmentDirections.actionSearchFragmentToSelectionCreate())
+    fun navigateToSelectionCreate(id: String){
+        navigationTo(SearchFragmentDirections.actionSearchFragmentToSelectionCreate(id))
     }
-    fun navigateToNote(){
-        navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment())
+    fun navigateToNote(model: ProductModel) {
+        navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment(id=model.id,
+            isLiked = model.isLiked, text = model.elected?.notes, flag = "product", flagNavigation = "product"))
     }
 
 

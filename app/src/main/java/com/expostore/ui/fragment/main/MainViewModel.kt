@@ -1,23 +1,13 @@
 package com.expostore.ui.fragment.main
 
-import android.content.Context
-import android.util.Log
-import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.expostore.R
-import com.expostore.data.AppPreferences
 import com.expostore.data.repositories.MainRepository
 import com.expostore.data.repositories.ProfileRepository
-import com.expostore.db.enities.AdvertisingDao
-import com.expostore.db.model.TokenModel
+import com.expostore.data.local.db.model.TokenModel
 import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.model.profile.ProfileModel
-import com.expostore.model.profile.name
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.main.interactor.MainInteractor
 import com.expostore.ui.state.MainState
@@ -26,9 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -85,22 +73,13 @@ class MainViewModel @Inject constructor(
 
     fun getSelections()=mainRepository.getSelections().handleResult(_selection)
     fun getProfile()=profileRepository.getProfile().handleResult(_profile)
-    fun  getAdvertisingCategory(){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                mainRepository.getAdvertising().handleResult(_advertisingModel)
-            }
-        }
 
-    }
 
 
 
    fun saveProfileInfo(model: ProfileModel) {
         _profileModel.value = model
-       viewModelScope.launch(Dispatchers.IO) {
-           interactor.saveProfile(model)
-       }
+
    }
 
     fun navigateToProfileOrOpen(){
@@ -117,7 +96,8 @@ class MainViewModel @Inject constructor(
           if (model != null) {
               token.value = model
           }
-      }}
+      }
+      }
   }
     fun navigateToCreateProductOrOpen(){
         when(token.value.access.isNullOrEmpty()){
@@ -140,8 +120,8 @@ class MainViewModel @Inject constructor(
   private  fun navigateToProfile() {
         navigationTo(MainFragmentDirections.actionMainFragmentToProfileFragment())
   }
-    fun navigateToSelectionFragment(){
-        navigationTo(MainFragmentDirections.actionMainFragmentToDetailCategoryFragment())
+    fun navigateToSelectionFragment(model: SelectionModel){
+        navigationTo(MainFragmentDirections.actionMainFragmentToDetailCategoryFragment(model))
     }
 
     fun navigateToProduct(model:ProductModel){

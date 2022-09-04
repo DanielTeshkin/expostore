@@ -1,10 +1,10 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.gettenderlist.TenderPage
-import com.expostore.api.pojo.gettenderlist.TenderRequest
-import com.expostore.api.pojo.gettenderlist.TenderResponse
-import com.expostore.db.LocalWorker
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderPage
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderRequest
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
+import com.expostore.data.local.db.LocalWorker
 import com.expostore.model.tender.toModel
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.filter.models.toRequest

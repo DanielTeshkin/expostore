@@ -1,148 +1,75 @@
 package com.expostore.ui.fragment.chats.dialog
 
-import android.app.Activity
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.expostore.api.pojo.getchats.*
+import com.expostore.data.remote.api.pojo.getchats.*
+import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.databinding.DialogFragmentBinding
-import com.expostore.model.chats.DataMapping.ItemChat
-import com.expostore.model.chats.DataMapping.Message
-import com.expostore.model.chats.DataMapping.createMessage
 import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
-import com.expostore.ui.fragment.chats.*
-import com.expostore.ui.fragment.chats.dialog.adapter.DialogRecyclerViewAdapter
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
-import com.expostore.ui.fragment.chats.fragment.FileDialog
-import com.expostore.ui.fragment.chats.fragment.ImageDialog
-import com.expostore.ui.fragment.chats.general.ControllerUI
-import com.expostore.ui.fragment.chats.general.FileStorage
-import com.expostore.ui.fragment.chats.general.ImagePicker
-import com.expostore.ui.fragment.profile.profile_edit.click
-import com.expostore.utils.OnClickImage
+import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.ArrayList
+import kotlinx.coroutines.flow.collect
+
 /**
  * @author Teshkin Daniel
  */
-
-
 @AndroidEntryPoint
- class DialogFragment() : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),
-    BottomSheetImage.OnImagesSelectedListener {
+ class DialogFragment : BaseFragment<DialogFragmentBinding>(DialogFragmentBinding::inflate),BottomSheetImage.OnImagesSelectedListener{
     private val viewModel: DialogViewModel by viewModels()
-    private  val manager: LinearLayoutManager by lazy { LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true) }
-    private val messages:MutableList<Message> = mutableListOf()
-    private val author:String by lazy {arguments?.getString("author")!!  }
-    private val id:String by lazy { arguments?.getString("id")!! }
-    private  val adapterMessages: DialogRecyclerViewAdapter by lazy {
-        DialogRecyclerViewAdapter(messages, author, requireContext(), onClickImage)  }
-    private val onClickImage:OnClickImage by lazy {
-        object : OnClickImage {
-            override fun click(bitmap: Bitmap) {
-                ControllerUI(requireContext()).openImageFragment(bitmap)
-                    .show(requireActivity().supportFragmentManager, "DialogImage") }
-        }
+    private val controller by lazy { DialogControllerUI(requireContext(),binding, arguments?.getString("author")!!,
+            arguments?.getString("id")!!,
+            requireActivity().supportFragmentManager)
+
     }
+    override var isBottomNavViewVisible: Boolean=false
+    private val sendText:((String,MessageRequest)->Unit) by lazy {{id,body->viewModel.sentMessageOrUpdate(id,body)}  }
+    private val saveFiles:((List<SaveFileRequestData>) -> Unit) by lazy {{data-> viewModel.saveFile(data)} }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.updateMessages( arguments?.getString("id")!!)
         subscribeViewModel()
     }
-
     override fun onStart() {
         super.onStart()
-        init()
-        textListener()
-    }
+        controller.apply { initUI(sendText, {viewModel.saveImageNetwork(it)}, childFragmentManager,saveFiles)
+            setupVisibleControllerForTextInput { viewModel.saveMessageText(it) }
+        }
+        state { PagerChatRepository.getInstance().getUriFiles().collect {
+            if (it.isNotEmpty())controller.filesRv(it as MutableList<Uri>)
+            Log.i("size",it.size.toString())
+        }
+        }
 
+    }
     private fun subscribeViewModel() {
-        val load={ handleLoading()}
-        val show:Show<ItemChat> = { it.messages?.let { messages -> loadOrUpdate(messages) } }
         viewModel.apply {
-            updateMessages(id)
-            subscribe(item) { handleState(it,load,show) }
-            subscribe(message) { handleState(it) }
-        }
-    }
-    private fun init() {
-        binding.apply {
-            messageSend.click{sendMessage()}
-            messageSendBtn.click{openGallery()}
-            imageView4.click{openBottomMenu()} }
-    }
-
-    private fun textListener() {
-        binding.apply {
-            etInput.apply { addTextChangedListener { textChange(messageSend, imageView4) } }
-        }
-    }
-
-    private fun sendMessage() {
-        val message = MessageRequest(text = binding.etInput.text.toString())
-        viewModel.sentMessageOrUpdate(id, message)
-             adapterMessages.addMessage(
-                 createMessage(binding.etInput.text.toString(),author,ArrayList())
-             )
-        binding.rvMessages.downSmooth(0)
-        binding.etInput.text.clear()
-    }
-
-    private fun openGallery()=ImagePicker().bottomSheetImageSetting().show(childFragmentManager)
-
-    private fun handleLoading() {
-        viewModel.instanceProgressBar.observe(viewLifecycleOwner, Observer {
-            binding.progressBar2.visible(it)
-        })
-    }
-
-    private fun loadOrUpdate(messageResponses: List<Message>) = viewModel
-        .instanceAdapter
-        .observe(viewLifecycleOwner, Observer {
-            when (it) {
-                false -> load(messageResponses as MutableList<Message>)
-                true -> update(messageResponses as MutableList<Message>)}})
-
-    private fun load(messagesList: MutableList<Message>) {
-        messages.addAll(messagesList)
-        binding.rvMessages.apply {
-            install(manager,adapterMessages)
-            down(adapterMessages.itemCount)
-        }
-        viewModel.apply {
-            changeProgressBarInstance()
-            changeAdapterInstance()
-        }
-    }
-    private fun update(messages: MutableList<Message>) = adapterMessages.addData(messages)
-    private fun openBottomMenu() = resultLauncher.launch(FileStorage(requireContext()).openStorage())
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-
-                val a = result.data?.clipData
-                if (a != null) {
-                    val fragment = FileDialog(a.listPath(), id)
-                    fragment.show(requireActivity().supportFragmentManager, "file")
-                } else {
-                    val list = ArrayList<Uri>()
-                    result.data?.data?.let { list.add(it) }
-                    val fragment = FileDialog(list, id)
-                    fragment.show(requireActivity().supportFragmentManager, "file")
-                }
+            subscribe(item) { handleState(it,loaderFactory { controller.progressBarState() },
+                showFactory {  chat-> chat.messages?.let { messages -> controller.loadOrUpdate(messages) } })
             }
-        }
+            subscribe(message) { handleState(it) }
+            subscribe(save){ handleState(it,loadFactory { controller.loadingImage()},
+                showFactory
+            { controller.sendImages { id-> viewModel.sendImages(id,it.id)}
+            })
+            }
 
-    override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) = ImageDialog(uris , id)
-        .show(requireActivity().supportFragmentManager, "image")
+            subscribe(saveFile) {handleState(it, loaderFactory { controller.visiblePanelFiles(false) },
+                showFactory { controller.clearMultimedia()
+                    viewModel.sendFiles(arguments?.getString("id")!!,it.files) })} }
+        //subscribe(PagerChatRepository.getInstance().getUriFiles()){controller.filesRv(it as MutableList<Uri>)}
     }
+
+    override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
+        controller.imagesRv(uris)
+    }
+}
 
 
 

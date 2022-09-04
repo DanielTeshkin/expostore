@@ -1,19 +1,18 @@
 package com.expostore.model.product
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getcategory.*
-import com.expostore.api.pojo.getproduct.ProductPromotion
-import com.expostore.api.response.ProductResponse
+import com.expostore.data.remote.api.pojo.getcategory.*
+import com.expostore.data.remote.api.pojo.getproduct.ProductPromotion
+import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.model.ImageModel
 import com.expostore.model.category.ProductCategoryModel
 import com.expostore.model.category.toModel
+import com.expostore.model.chats.DataMapping.FileChat
+import com.expostore.model.chats.DataMapping.toModel
 import com.expostore.model.review.ReviewModel
 import com.expostore.model.review.toModel
 import com.expostore.model.toModel
-import com.expostore.ui.fragment.product.qrcode.ProductQrCodeViewModel
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @Parcelize
 data class ProductModel(
@@ -41,15 +40,23 @@ data class ProductModel(
     val communicationType: String ="",
     val reviews:List<ReviewModel> = listOf(),
     val articul:String="",
-    val qrcode:ProductQrCodeModel=ProductQrCodeModel()
-):Parcelable
+    val qrcode:ProductQrCodeModel=ProductQrCodeModel(),
+    val elected:ElectedModel = ElectedModel(),
+    val instruction:FileChat = FileChat(),
+    val presentation:FileChat= FileChat()
 
+):Parcelable
+@Parcelize
+data class ElectedModel(
+    val id: String="",
+    val notes:String=""
+):Parcelable
 val ProductResponse.toModel: ProductModel
     get() = ProductModel(
         owner ?: "",
         shortDescription ?: "",
         descriptionBlocked ?: "",
-        images.orEmpty().map { it.toModel },
+        images.map { ImageModel(it.id,it.file) },
         characteristics.orEmpty().map { it.toModel },
         shop?.toModel ?: ShopModel(),
         author?.toModel ?: AuthorModel(),
@@ -70,7 +77,10 @@ val ProductResponse.toModel: ProductModel
         communicationType ?: "",
         reviews = reviews.map { it.toModel },
         articul = articul?:"",
-        qrcode = ProductQrCodeModel(qrcode.product,qrcode.qr_code_image)
+        qrcode = ProductQrCodeModel(qrcode.product,qrcode.qr_code_image),
+        elected = ElectedModel(elected?.id?:"",elected?.notes?:""),
+        instruction = instructionFile?.toModel?:FileChat(),
+        presentation = presentationFile?.toModel?: FileChat()
     )
 
 
@@ -87,6 +97,7 @@ val Characteristic.toModel:Character
 get()= Character(id = id?:"",  characteristic = characteristic?.toModel, char_value = char_value, bool_value = bool_value,
     selected_item = selected_item?.toModel, selected_items = selected_items?.map { it.toModel }
 )
+
 
 @Parcelize
 data class SelectedItemModel(

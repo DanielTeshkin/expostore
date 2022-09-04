@@ -11,8 +11,6 @@
    >
 
 
-
-
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyle"
@@ -28,76 +26,107 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ll_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:id="@+id/ll_chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/messageSendBtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/images"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/files"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_files"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minHeight="30dp"
-            android:src="@drawable/ic_baseline_image_24" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            <ImageView
+                android:id="@+id/messageSendBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:minHeight="30dp"
+                android:src="@drawable/ic_baseline_image_24" />
 
-            android:layout_marginBottom="10dp"
-            android:layout_weight="9"
-            android:background="@drawable/edit_text"
-            android:backgroundTint="#FFFFFF"
-            android:hint="Отправить сообщение"
-            android:inputType="textMultiLine"
-            android:maxHeight="100dp"
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+
+                android:layout_marginBottom="10dp"
+                android:layout_weight="9"
+                android:animateLayoutChanges="true"
+                android:background="@drawable/edit_text"
+                android:backgroundTint="#FFFFFF"
+                android:hint="Отправить сообщение"
+                android:inputType="textMultiLine"
 
 
-            android:paddingLeft="5dp"
-            android:animateLayoutChanges="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            tools:ignore="RtlSymmetry,TouchTargetSizeCheck" />
+                android:maxHeight="100dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:ignore="RtlSymmetry,TouchTargetSizeCheck" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:animateLayoutChanges="true"
-            android:minHeight="26dp"
-            app:srcCompat="@drawable/file_12" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:minHeight="26dp"
+                app:srcCompat="@drawable/file_12" />
 
-        <ImageView
-            android:id="@+id/messageSend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:visibility="gone"
-            app:srcCompat="@android:drawable/ic_menu_send"
-            />
+            <ImageView
+                android:id="@+id/messageSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:visibility="gone"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+        </LinearLayout>
 
     </LinearLayout>
 

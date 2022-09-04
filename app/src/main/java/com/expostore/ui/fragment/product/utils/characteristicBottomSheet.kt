@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.product.utils
 
 import android.content.Context
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.expostore.databinding.FilterBottomSheetBinding
 import com.expostore.model.product.Character
 import com.expostore.utils.CategoryRecyclerViewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.parcel.Parcelize
 
 fun openBottomSheet(list:List<Character>,context:Context){
     val binding= CharacteristicBottomSheetBinding.inflate(LayoutInflater.from(context))
@@ -30,8 +32,10 @@ class CharacteristicsAdapter(private val list: List<Character>):
                          when(model.characteristic?.type){
                            "input" -> binding.mean.text=model.char_value
                              "radio" -> binding.mean.text=model.selected_item?.value
-                             "select" -> binding.mean.text=model.selected_item?.value
-                             "checkbox" ->binding.mean.text=model.bool_value.toString()
+                             "select" -> binding.mean.text=model.selected_items?.joinToString()
+                             "checkbox" ->{
+                                 binding.mean.text=if(model.bool_value == true)"да" else "нет"
+                             }
                          }
                      }
         }
@@ -46,3 +50,7 @@ class CharacteristicsAdapter(private val list: List<Character>):
 
     override fun getItemCount(): Int =list.size
 }
+@Parcelize
+data class CharacteristicsData(
+    val characteristics:List<Character>
+):Parcelable

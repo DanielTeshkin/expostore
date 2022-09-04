@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.expostore"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -138,6 +138,10 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.2"
 
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
+
+    implementation 'com.github.XayahSuSuSu:Android-MaterialYouFileExplorer:1.2.4'
+
+
 
 
 

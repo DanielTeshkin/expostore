@@ -18,14 +18,14 @@ class FavoritesViewModel @Inject constructor(private val interactor: FavoritesIn
     private val _state= MutableSharedFlow<ResponseState<List<SelectionModel>>>()
     val state=_state.asSharedFlow()
     override fun onStart() {
-        loadList()
+
     }
 
-    private fun loadList()= interactor.userSelectionList().handleResult(_state)
+   fun loadList()= interactor.userSelectionList().handleResult(_state)
 
 
-    fun navigateToSelection(){
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToDetailCategoryFragment2())
+    fun navigateToSelection(selectionModel: SelectionModel) {
+        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToPersonalSelection(selectionModel))
     }
     fun navigateToCreateSelection()=navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToSelectionCreate())
     fun navigateToSearch(typeSearch: String?) {

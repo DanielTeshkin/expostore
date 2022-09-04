@@ -13,6 +13,7 @@ import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.priceSeparator
 import com.expostore.ui.base.ImageAdapter
+import com.expostore.ui.fragment.category.OnClickListener
 import com.expostore.ui.fragment.favorites.FavoritesClickListener
 import com.expostore.ui.fragment.product.addproduct.stroke
 import com.expostore.ui.fragment.profile.profile_edit.click
@@ -21,14 +22,10 @@ import kotlinx.android.synthetic.main.detail_product_item.view.*
 
 class FavoritesProductRecyclerViewAdapter(
     private val products: MutableList<FavoriteProduct>,
-    private val  installClickListener: FavoritesClickListener,
-    val context: Context
+
 ) : RecyclerView.Adapter<FavoritesProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
 
-    var onCallItemClickListener: ((String) -> Unit)? = null
-    var onMessageItemClickListener: ((ProductModel) -> Unit)? = null
-    var onAnotherClickListener: ((ProductModel)->Unit)?=null
-    var onClickLike: ((String) -> Unit)? = null
+   var onClickListener:OnClickListener?=null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
@@ -54,13 +51,14 @@ class FavoritesProductRecyclerViewAdapter(
             binding.viewPager.apply {
                val tabProductPagerAdapter=ImageAdapter()
                 tabProductPagerAdapter.items=list
-                tabProductPagerAdapter.onItemClickListener= { installClickListener.onClickProduct(item) }
+                tabProductPagerAdapter.onItemClickListener={onClickListener?.onClickProduct(product)}
                 adapter=tabProductPagerAdapter
             }
-            binding.call.click {onCallItemClickListener?.invoke(product.author.username) }
-            binding.write.click { onMessageItemClickListener?.invoke(product) }
-            binding.another.click { onAnotherClickListener?.invoke(product) }
-            binding.like.click { onClickLike?.invoke(product.id) }
+            binding.call.click {onClickListener?.onClickCall(product.author.username ) }
+            binding.write.click { onClickListener?.onClickMessage(product) }
+            binding.another.click {onClickListener?.onClickAnother(product)}
+            binding.like.click { onClickListener?.onClickLike(product.id) }
+            binding.root.click { onClickListener?.onClickProduct(product) }
             if(item.notes!=null){
                 binding.note.text=item.notes
             }

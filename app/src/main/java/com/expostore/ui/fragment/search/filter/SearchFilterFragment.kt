@@ -2,15 +2,12 @@ package com.expostore.ui.fragment.search.filter
 
 import android.R
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.expostore.api.pojo.getcities.City
+import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.databinding.SearchFilterFragmentBinding
 import com.expostore.model.category.*
 import com.expostore.ui.base.BaseFragment
@@ -57,24 +54,19 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
                         state {
 
                             filterCharacteristic.collect {
-
                                 val result = FilterModel(
                                     name = searchEt.text.toString(),
                                     price_min = priceMin.text.toString().toIntOrNull(),
                                     price_max = priceMax.text.toString().toIntOrNull(),
                                     city = etCity.text.toString(),
                                      characteristics = it as MutableList<CharacteristicFilterModel>)
-
-                                setFragmentResult("requestKey", bundleOf("filters" to result))
-
-                                navigateToSearch()
-
-
+                                navigateToSearch(result)
                             }
                         }
                     }
 
                 }
+                select.click { viewModel.navigateToMapChoice() }
             }
         }
 

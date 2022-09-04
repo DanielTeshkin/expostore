@@ -11,9 +11,9 @@ import android.widget.TextView
 import androidx.lifecycle.viewModelScope
 
 import androidx.navigation.Navigation
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
-import com.expostore.api.pojo.signin.SignInRequestData
+import com.expostore.data.remote.api.ServerApi
+import com.expostore.data.remote.api.pojo.confirmnumber.ConfirmNumberRequestData
+import com.expostore.data.remote.api.pojo.signin.SignInRequestData
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.model.auth.SignInResponseDataModel
 import com.expostore.ui.base.BaseViewModel
@@ -21,7 +21,9 @@ import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,70 +35,46 @@ class LoginViewModel @Inject constructor(
 
     private val _uiState = MutableSharedFlow<ResponseState<SignInResponseDataModel>>()
     val uiState = _uiState.asSharedFlow()
+    private val phone= MutableStateFlow("")
+    private val password=MutableStateFlow("")
+    private val _enabled= MutableStateFlow(false)
+    val enabled=_enabled.asStateFlow()
 
-    private val _error = MutableSharedFlow<String>()
-    val error = _error.asSharedFlow()
-
-    //private lateinit var navController: NavController
-    lateinit var serverApi: ServerApi
-    lateinit var request: SignInRequestData
-    lateinit var context: Context
-    var btnSignIn: Button? = null
-    var btnForgotPassword: TextView? = null
-    var password: String = ""
-    var phone: String = ""
-    val bundle = Bundle()
-    var phoneLength: Int? = null
 
     override fun onStart() {
         /* no-op */
     }
 
-    val phonePasswordTextWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        override fun afterTextChanged(s: Editable) {
-            btnSignIn?.isEnabled =
-                phone.isNotEmpty() && password.isNotEmpty() && phone.length == phoneLength
-            btnForgotPassword?.isEnabled = phone.length == phoneLength
-        }
+   fun updatePhone(input:String){
+            phone.value=input
+       checkFields()
+    }
+   fun updatePassword(input: String){
+       password.value=input
+       checkFields()
+   }
+    private fun checkFields(){
+        _enabled.value = password.value.isNotEmpty() and phone.value.isNotEmpty() and (phone.value.length==11)
     }
 
-    fun signIn(phone: String, password: String) {
-       authorization.login(phone, password)
+
+    fun signIn() {
+       authorization.login(phone.value, password.value)
             .handleResult(_uiState, {
+                saveToken(it.refresh,it.access)
                 navigationTo(LoginFragmentDirections.actionLoginFragmentToMainFragment())
             })
     }
 
-   fun saveToken(refresh:String,access:String) =
+   private fun saveToken(refresh:String, access:String) =
        viewModelScope.launch {
            authorization.saveToken(refresh, access)
        }
-
-
-
-    fun confirmNumber(view: View, phone: String) {
-        val request = ConfirmNumberRequestData(phone)
-        /* serverApi = getClient(Retrofit.BASE_URL).create(ServerApi::class.java)
-         serverApi.confirmNumber(request).enqueue(object : Callback<ConfirmNumberResponseData> {
-             override fun onFailure(call: Call<ConfirmNumberResponseData>, t: Throwable) {
-                 Toast.makeText(context, context.getString(R.string.on_failure_text), Toast.LENGTH_SHORT).show()
-             }
-             override fun onResponse(call: Call<ConfirmNumberResponseData>, response: Response<ConfirmNumberResponseData>) {
-                 if (response.isSuccessful) {
-                     if (response.body() != null) {
-                         if (response.body()!!.phone != null) {
-                             bundle.putString("phone", phone)
-                             navController = Navigation.findNavController(view)
-                             navController.navigate(R.id.action_loginFragment_to_passwordRecoveryFragment, bundle)
-                             view.hideKeyboard()
-                         }
-                     }
-                 }
-             }
-         })*/
+    fun navigateToReset(){
+        navigationTo(LoginFragmentDirections.actionLoginFragmentToConfirmNumberPass())
     }
+
+
 
     fun navigateBack(view: View) {
         navController = Navigation.findNavController(view)

@@ -1,6 +1,6 @@
 package com.expostore.utils
 
-import com.expostore.api.pojo.getcategory.Category
+import com.expostore.data.remote.api.pojo.getcategory.Category
 
 interface OnClickRecyclerViewListener {
     fun onLikeClick(like: Boolean, id: String?)

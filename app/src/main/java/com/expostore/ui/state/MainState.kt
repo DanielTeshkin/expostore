@@ -6,9 +6,7 @@ import com.expostore.model.category.SelectionModel
 
 import com.expostore.model.profile.ProfileModel
 
-/**
- * @author Fedotov Yakov
- */
+
 sealed class MainState {
     data class Loading(val isLoading: Boolean) : MainState()
     data class Error(val throwable: Throwable) : MainState()

@@ -1,6 +1,6 @@
 package com.expostore.model.auth
 
-import com.expostore.api.pojo.signin.SignInResponseData
+import com.expostore.data.remote.api.pojo.signin.SignInResponseData
 
 /**
  * @author Fedotov Yakov

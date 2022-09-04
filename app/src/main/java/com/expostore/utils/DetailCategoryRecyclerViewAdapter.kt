@@ -4,13 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.CategoryProduct
-import kotlinx.android.synthetic.main.detail_product_item.view.*
+import com.expostore.data.remote.api.pojo.getcategory.CategoryProduct
 import kotlin.collections.ArrayList
 
 class DetailCategoryRecyclerViewAdapter(private val products: ArrayList<CategoryProduct>?, var context: Context) : RecyclerView.Adapter<DetailCategoryRecyclerViewAdapter.DetailCategoryViewHolder>() {

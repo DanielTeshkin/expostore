@@ -1,29 +1,17 @@
 package com.expostore.ui.fragment.profile.profile_edit
 
 import android.R
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenStarted
-import com.expostore.api.pojo.editprofile.EditProfileRequestData
-import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getcities.City
-import com.expostore.api.pojo.getprofile.EditProfileRequest
-import com.expostore.api.response.EditResponseProfile
+import com.expostore.data.remote.api.pojo.getcities.City
+import com.expostore.data.remote.api.response.EditResponseProfile
 
 import com.expostore.databinding.EditProfileFragmentBinding
-import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.fragment.profile.InfoProfileModel
 import com.expostore.ui.general.ProfileDataViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,17 +48,14 @@ class EditProfileFragment : BaseFragment<EditProfileFragmentBinding>(EditProfile
     }
 
     private fun completion(){
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val result = bundle.getParcelable<InfoProfileModel>("info")!!
-            viewModel.saveData(result)
+        val result=EditProfileFragmentArgs.fromBundle(requireArguments()).info
+        viewModel.saveData(result)
                 binding.apply {
                     etName.setText(result.name)
                     etSurname.setText(result.surname)
                     etCity.setText(result.city)
                     etEmail.setText(result.email)
                 }
-
-        }
     }
     private fun subscribeViewModel(){
         viewModel.apply {

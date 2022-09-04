@@ -14,6 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.expostore.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -43,10 +46,7 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
             LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        fetchLocation()
-    }
+
 
 
 
@@ -55,11 +55,10 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
 
     abstract fun onLocationFind(location: Location): Boolean
 
-    abstract fun noPermission()
+
 
     @SuppressLint("MissingPermission")
     private fun fetchLocation() {
-
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -89,24 +88,26 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
             }
         }
     }
-    protected fun bitmapDescriptorFromVector(context: Context, imageProduct:String): BitmapDescriptor {
-        val image= ImageView(context)
-         Glide.with(context).load(imageProduct).into(image)
-        image.drawable.toBitmap()
-        val vectorDrawable =  image.drawable
-        vectorDrawable!!.setBounds(
-            0,
-            0,
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight
-        )
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
+    protected fun getMarkerIcon(context: Context, url: String, listener: (BitmapDescriptor) -> Unit) {
+        val markerView = View(requireContext())
+        Glide.with(context)
+            .asBitmap()
+            .load(url)
+            .into(object : SimpleTarget<Bitmap>() {
+
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+
+                    listener.invoke(BitmapDescriptorFactory.fromBitmap(getBitmapFromView(markerView)))
+                }
+            })
+    }
+
+    protected fun getBitmapFromView(view: View): Bitmap {
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.draw(canvas)
+        return bitmap
     }
 }

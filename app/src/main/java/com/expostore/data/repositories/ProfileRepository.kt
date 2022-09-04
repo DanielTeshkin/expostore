@@ -1,15 +1,14 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.getcities.toModel
-import com.expostore.api.pojo.getprofile.EditProfileRequest
-import com.expostore.api.pojo.getprofile.GetProfileResponseData
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
-import com.expostore.api.response.EditResponseProfile
-import com.expostore.db.LocalWorker
-import com.expostore.db.enities.toDao
-import com.expostore.model.profile.ProfileModel
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.pojo.getcities.toModel
+import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
+import com.expostore.data.remote.api.pojo.getprofile.GetProfileResponseData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.remote.api.response.EditResponseProfile
+import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.local.db.enities.toDao
 import com.expostore.model.profile.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -17,8 +16,9 @@ import javax.inject.Inject
 class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker) :BaseRepository() {
 
 
-    fun getProfile()= operator(
-        databaseQuery = {localWorker.getProfile().toModel},
+    fun getProfile()= singleOperator(
+        databaseQuery = {localWorker.getProfile() },
+        mapper = {it.toModel},
         networkCall = { handleOrDefault(GetProfileResponseData()){apiWorker.getProfile()}.toModel},
         saveCallResult = { localWorker.saveProfile(it.toDao) }
     )

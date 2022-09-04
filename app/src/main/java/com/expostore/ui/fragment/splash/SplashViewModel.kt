@@ -8,13 +8,9 @@ import com.expostore.ui.fragment.splash.interactor.SplashInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-/**
- * @author Fedotov Yakov
- */
-@HiltViewModel
-class SplashViewModel @Inject constructor(
-    private val interactor: SplashInteractor,
-    private val context: Context
+
+class SplashViewModel (
+
 ) : BaseViewModel() {
 
 

@@ -1,9 +1,8 @@
 package com.expostore.ui.fragment.note
 
-import androidx.lifecycle.ViewModel
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
-import com.expostore.api.request.NoteRequest
+import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseData
+import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
+import com.expostore.data.remote.api.request.NoteRequest
 import com.expostore.data.repositories.FavoriteRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.state.ResponseState
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor( private val favoriteRepository: FavoriteRepository) : BaseViewModel() {
-    private val data=MutableStateFlow<NoteData>(NoteData())
+    private val data=MutableStateFlow(NoteData())
     private val select = MutableSharedFlow<ResponseState<SelectFavoriteResponseData>>()
     private val selectTender = MutableSharedFlow<ResponseState<SelectFavoriteTenderResponseData>>()
     override fun onStart() {
@@ -22,12 +21,12 @@ class NoteViewModel @Inject constructor( private val favoriteRepository: Favorit
     }
 
     fun createOrUpdateNoteProduct(note:String) {
-        if (data.value.flag=="product"&&data.value.isLiked==false) favoriteRepository.updateSelected(data.value.id?:"",
+        if (data.value.flag=="product"&&data.value.isLiked==false) favoriteRepository.addToFavorite(data.value.id?:"",
             NoteRequest(text = note)
         ).handleResult(select,{
             navigate()
         })
-        else if (data.value.flag=="tender"&&data.value.isLiked==false) favoriteRepository.updateSelectedTender(data.value.id?:"",NoteRequest(text = note)).handleResult(selectTender,{
+        else if (data.value.flag=="tender"&&data.value.isLiked==false) favoriteRepository.addToFavoriteTender(data.value.id?:"",NoteRequest(text = note)).handleResult(selectTender,{
             navigate()
         })
         else if(data.value.flag=="product"&&data.value.isLiked==true) favoriteRepository.addNoteProduct(data.value.id?:"",NoteRequest(text = note)).handleResult(select,{
@@ -41,11 +40,8 @@ class NoteViewModel @Inject constructor( private val favoriteRepository: Favorit
 
     fun navigate(){
         when (data.value.flagNavigation) {
-           // "search" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToSearchFragment())
-           // "product" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToProductFragment())
-           // "tender" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderItem())
-           // "tenderSearch" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderListFragment())
-            //"favorite" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToFavoritesFragment())
+          //  "product" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToProductFragment())
+         //   "tender" -> navigationTo(NoteFragmentDirections.actionNoteFragmentToTenderItem())
         }
     }
 

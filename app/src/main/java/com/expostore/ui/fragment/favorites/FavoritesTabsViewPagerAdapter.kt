@@ -9,14 +9,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.expostore.R
 import com.expostore.ui.fragment.favorites.tabs.favorites.TabFavoritesFragment
 import com.expostore.ui.fragment.favorites.tabs.savedsearches.TabSavedSearchesFragment
-import com.expostore.ui.fragment.favorites.tabs.selections.TabSelectionsFragment
+import com.expostore.ui.fragment.favorites.tabs.personal.TabPersonalProductFragment
 import com.expostore.ui.fragment.favorites.tabs.tenders.FavoriteTendersFragment
 import kotlinx.android.synthetic.main.favorites_tab_item.view.*
 
 class FavoritesTabsViewPagerAdapter(
     val fragment: Fragment,
     val context: Context,
-   private val installClickListener: FavoritesClickListener
+
 ): FragmentStateAdapter(fragment) {
 
     private val tabs = listOf("Продукты","Тендеры", "Поиски", "Подборки")
@@ -35,12 +35,12 @@ class FavoritesTabsViewPagerAdapter(
 
         when(position){
             0 -> {
-                result = TabFavoritesFragment(installClickListener)
+                result = TabFavoritesFragment()
 
             }
-            1 -> {result=FavoriteTendersFragment(installClickListener)}
-            2 -> { result = TabSavedSearchesFragment(installClickListener) }
-            3 -> { result = TabSelectionsFragment(installClickListener) }
+            1 -> {result=FavoriteTendersFragment()}
+            2 -> { result = TabSavedSearchesFragment() }
+            3 -> { result = TabPersonalProductFragment() }
 
         }
         return result!!

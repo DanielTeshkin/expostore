@@ -1,8 +1,7 @@
 package com.expostore.model.review
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getreviews.Review
-import com.expostore.api.response.ImageResponse
+import com.expostore.data.remote.api.pojo.getreviews.Review
 import com.expostore.model.chats.DataMapping.ImageChat
 import com.expostore.model.chats.DataMapping.toModel
 import com.expostore.model.product.AuthorModel

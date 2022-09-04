@@ -1,10 +1,12 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.getchats.ResponseFile
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
-import com.expostore.db.LocalWorker
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.pojo.getchats.ResponseFile
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveFileResponseData
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -22,5 +24,9 @@ class MultimediaRepository @Inject constructor(private val apiWorker: ApiWorker,
             val result=handleOrDefault(SaveImageResponseData()) { apiWorker.saveImage(saveImageRequestData)}
             emit(result)
         }
+    fun saveFileBase64(requestData: List<SaveFileRequestData>) = flow {
+        val result=handleOrDefault(SaveFileResponseData()){apiWorker.saveFileBase64(requestData)}
+        emit(result)
+    }
 
 }

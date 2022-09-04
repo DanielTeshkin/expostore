@@ -1,8 +1,8 @@
 package com.expostore.ui.fragment.shop.shopcreate
 
-import com.expostore.api.pojo.addshop.AddShopRequestData
-import com.expostore.api.pojo.addshop.returnShopModel
-import com.expostore.api.response.ShopResponse
+import android.util.Log
+import com.expostore.data.remote.api.pojo.addshop.returnShopModel
+import com.expostore.data.remote.api.response.ShopResponse
 import com.expostore.data.repositories.ShopRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.profile.ShopInfoModel
@@ -37,7 +37,9 @@ class ShopCreateViewModel @Inject constructor(private val repository: ShopReposi
             office.value,
             phone.value
         )
+        Log.i("tag",exist.value.toString())
         when (exist.value) {
+
             true -> repository.editShop(request)
                 .handleResult(_shopEdit, { navigateToProfile() })
             false -> repository.shopCreate(request)
@@ -65,6 +67,7 @@ class ShopCreateViewModel @Inject constructor(private val repository: ShopReposi
     }
 
     fun saveInfo(shopInfoModel: ShopInfoModel){
+        Log.i("flaggg",shopInfoModel.info.toString())
         _exist.value=shopInfoModel.info
         _shopInfo.value=shopInfoModel
         name.value=shopInfoModel.name

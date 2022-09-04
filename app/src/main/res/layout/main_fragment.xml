@@ -72,7 +72,7 @@
                 android:layout_marginEnd="20dp"
 
                 android:backgroundTint="#2677F1"
-                android:onClick="@{mainVM::navigateToAddProduct}"
+
                 android:text="Добавить объявление"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

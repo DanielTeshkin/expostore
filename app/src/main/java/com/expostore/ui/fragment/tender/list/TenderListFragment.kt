@@ -19,6 +19,7 @@ import com.expostore.databinding.TenderListFragmentBinding
 import com.expostore.extension.toMarker
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
+import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseLocationFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.*
@@ -251,9 +252,7 @@ class TenderListFragment :
         }
     }
 
-    override fun noPermission() {
-        /// viewModel.fetchProduct()
-    }
+
 
     fun createChat(id:String){
         viewModel.createChat(id)
@@ -272,17 +271,15 @@ class TenderListFragment :
                 navigateToCall(username)
             }
 
-            override fun createNote(id: String) {
-                Log.i("ddd","dsdsd")
+            override fun createNote(model: TenderModel) {
+                viewModel.navigateToNote(model)
             }
 
             override fun chatCreate(id: String) {
                 createChat(id)
             }
 
-            override fun share() {
-                Log.i("ddd","dsdsd")
-            }
+
 
             override fun block() {
                 Log.i("ddd","dsdsd")

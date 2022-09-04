@@ -1,9 +1,9 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.response.SaveSearchRequest
-import com.expostore.api.response.SaveSearchResponse
-import com.expostore.db.LocalWorker
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.response.SaveSearchRequest
+import com.expostore.data.remote.api.response.SaveSearchResponse
+import com.expostore.data.local.db.LocalWorker
 import com.expostore.model.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

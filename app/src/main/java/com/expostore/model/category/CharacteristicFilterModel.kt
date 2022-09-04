@@ -1,9 +1,8 @@
 package com.expostore.model.category
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getcategory.Characteristic
-import com.expostore.api.pojo.getcategory.CharacteristicRequest
-import com.expostore.api.request.CharacteristicFilterRequest
+import com.expostore.data.remote.api.pojo.getcategory.CharacteristicRequest
+import com.expostore.data.remote.api.request.CharacteristicFilterRequest
 
 import kotlinx.android.parcel.Parcelize
 

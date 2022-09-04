@@ -3,10 +3,10 @@ package com.expostore.ui.general
 import com.expostore.model.product.Character
 
 data class CharacteristicsStateModel(
-    val inputStateModel: InputStateModel?= null,
-    val selectStateModel: SelectStateModel?=null,
-    val radioStateModel: RadioStateModel?=null,
-    val checkBoxStateModel: CheckBoxStateModel?=null
+    val inputStateModel: InputStateModel= InputStateModel(hashMapOf()),
+    val selectStateModel: SelectStateModel= SelectStateModel(hashMapOf()),
+    val radioStateModel: RadioStateModel= RadioStateModel(hashMapOf()),
+    val checkBoxStateModel: CheckBoxStateModel= CheckBoxStateModel(hashMapOf())
     )
 
 fun List<Character>.toCharacteristicState(): CharacteristicsStateModel {
@@ -18,10 +18,10 @@ fun List<Character>.toCharacteristicState(): CharacteristicsStateModel {
     map {
         val characteristic=it.characteristic
         when (characteristic?.type) {
-            "input" -> inputStateModel.state[characteristic.name?:""] = Pair(it.char_value?:"","")
-            "radio" -> radioStateModel.state[characteristic.name?:""]=it.selected_item?.value?:""
-            "select" -> selectStateModel.state[characteristic.name?:""]=it.selected_items?.map {mean-> mean.id }?: listOf()
-            else -> checkBoxStateModel.state[characteristic?.name?:""]=it.bool_value?:false
+            "input" -> inputStateModel.state[characteristic.id?:""] = Pair(it.char_value?:"","")
+            "radio" -> radioStateModel.state[characteristic.id?:""]=it.selected_item?.id?:""
+            "select" -> selectStateModel.state[characteristic.id?:""]=it.selected_items?.map {mean-> mean.id }?: listOf()
+            else -> checkBoxStateModel.state[characteristic?.id?:""]=it.bool_value?:false
         }
     }
     return CharacteristicsStateModel(inputStateModel, radioStateModel = radioStateModel, checkBoxStateModel = checkBoxStateModel,

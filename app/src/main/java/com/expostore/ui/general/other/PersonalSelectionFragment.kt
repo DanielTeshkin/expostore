@@ -1,10 +1,12 @@
 package com.expostore.ui.general.other
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,13 +20,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionModel>?,
-                    onClickBottomFragment: OnClickBottomSheetFragment, personalOrNot:Boolean=false){
+                    onClickBottomFragment: OnClickBottomSheetFragment,flag:Boolean){
 
 
 
     val bottomSheetDialog = BottomSheetDialog(context)
     bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
     val note = bottomSheetDialog.findViewById<LinearLayout>(R.id.note)
+    if (model.elected.notes.isNotEmpty()) bottomSheetDialog.findViewById<TextView>(R.id.note_text)?.text="Редактировать заметку"
     note?.click {
         onClickBottomFragment.createNote(model)
         bottomSheetDialog.hide()
@@ -38,7 +41,7 @@ fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionMo
     }
     val compare = bottomSheetDialog.findViewById<LinearLayout>(R.id.compare)
     compare?.click {
-
+        onClickBottomFragment.addToComparison(model.id)
         bottomSheetDialog.hide()
     }
     val chat=bottomSheetDialog.findViewById<LinearLayout>(R.id.chat_write)
@@ -60,6 +63,13 @@ val block=bottomSheetDialog.findViewById<LinearLayout>(R.id.block)
     block?.click {
         onClickBottomFragment.block()
         bottomSheetDialog.hide()
+    }
+    if(flag){
+        val delete= bottomSheetDialog.findViewById<LinearLayout>(R.id.delete)
+        delete?.visibility=View.VISIBLE
+        delete?.click { onClickBottomFragment.deleteFromSelection(model)
+            bottomSheetDialog.hide()
+        }
     }
 
     bottomSheetDialog.show()
@@ -115,23 +125,28 @@ class SelectionBottomAdapter(
     override fun getItemCount(): Int =list.size
 }
 
+
 interface OnClickBottomSheetFragment{
     fun createSelection(product:String)
-    fun addToSelection(id:String,product: String)
+    fun addToSelection(id:String,product: String):Unit?
     fun call(username:String)
     fun createNote(product:ProductModel)
-    fun chatCreate(id:String)
+    fun chatCreate(id:String):Unit?
     fun share(id: String)
     fun block()
+    fun addToComparison(id: String):Unit?
+    fun deleteFromSelection(model: ProductModel){
+         Log.i("dddd","fjjjgkj")
+    }
 
 }
 
 interface OnClickBottomSheetTenderFragment{
 
     fun call(username:String)
-    fun createNote(id:String)
+    fun createNote(tenderModel: TenderModel)
     fun chatCreate(id:String)
-    fun share()
+
     fun block()
 
 }
@@ -144,8 +159,10 @@ fun showBottomSheetTender(context: Context, model:TenderModel,
     val bottomSheetDialog = BottomSheetDialog(context)
     bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
     val note = bottomSheetDialog.findViewById<LinearLayout>(R.id.note)
+    if (model.elected.notes.isNotEmpty()) bottomSheetDialog.findViewById<TextView>(R.id.note_text)?.text="Редактировать заметку"
+
     note?.click {
-        onClickBottomFragment.createNote(model.id)
+        onClickBottomFragment.createNote(model)
         bottomSheetDialog.hide()
     }
     val calling= bottomSheetDialog.findViewById<LinearLayout>(R.id.calling)
@@ -161,10 +178,7 @@ fun showBottomSheetTender(context: Context, model:TenderModel,
         bottomSheetDialog.hide()
     }
     val share=bottomSheetDialog.findViewById<LinearLayout>(R.id.share)
-    share?.click {
-        onClickBottomFragment.share()
-        bottomSheetDialog.hide()
-    }
+    share?.visibility=View.GONE
     val personalSelection=bottomSheetDialog.findViewById<LinearLayout>(R.id.personal)
     if(model.communicationType=="chatting")calling?.visibility= View.GONE
     personalSelection?.visibility=View.GONE
@@ -178,3 +192,6 @@ fun showBottomSheetTender(context: Context, model:TenderModel,
 
     bottomSheetDialog.show()
 }
+
+
+

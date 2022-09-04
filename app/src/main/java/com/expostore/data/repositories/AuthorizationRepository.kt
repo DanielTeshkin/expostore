@@ -1,17 +1,17 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.confirmcode.ConfirmCodeRequestData
-import com.expostore.api.pojo.confirmcode.ConfirmCodeResponseData
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberRequestData
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
-import com.expostore.api.pojo.editprofile.EditProfileRequestData
-import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.signin.SignInResponseData
-import com.expostore.api.pojo.signup.SignUpRequestData
-import com.expostore.api.pojo.signup.SignUpResponseData
-import com.expostore.db.LocalWorker
-import com.expostore.db.model.TokenModel
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeRequestData
+import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeResponseData
+import com.expostore.data.remote.api.pojo.confirmnumber.ConfirmNumberRequestData
+import com.expostore.data.remote.api.pojo.confirmnumber.ConfirmNumberResponseData
+import com.expostore.data.remote.api.pojo.editprofile.EditProfileRequestData
+import com.expostore.data.remote.api.pojo.editprofile.EditProfileResponseData
+import com.expostore.data.remote.api.pojo.signin.SignInResponseData
+import com.expostore.data.remote.api.pojo.signup.SignUpRequestData
+import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
+import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.local.db.model.TokenModel
 import com.expostore.model.auth.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -45,7 +45,22 @@ class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWork
         emit(result.toModel)
     }
 
-        // fun recovery()=apiWorker.
+    fun confirmNumberReset(phone:String)= flow{
+        val result=handleOrDefault(ConfirmNumberResponseData()){apiWorker.confirmPassNumber(
+            ConfirmNumberRequestData(phone)
+        ) }
+        emit(result)
+    }
+    fun confirmCodeReset(phone: String,code:String) = flow {
+        val result=handleOrDefault(ConfirmCodeResponseData()){apiWorker.confirmPassCode(
+            ConfirmCodeRequestData(phone, code)
+        )}
+        emit(result)
+    }
+
+    fun newPassword(request: SignUpRequestData) = flow{
+        emit(handleOrDefault(ConfirmCodeResponseData()){apiWorker.resetPassword(request)})
+    }
 
     suspend fun saveToken( refresh:String,access:String) = localWorker.saveToken(TokenModel(refresh,access))
 }

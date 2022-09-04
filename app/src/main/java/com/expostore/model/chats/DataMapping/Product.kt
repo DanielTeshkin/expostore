@@ -1,9 +1,8 @@
 package com.expostore.model.chats.DataMapping
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getchats.ProductResponse
-import com.expostore.db.enities.product.ProductDao
-import com.expostore.model.ImageModel
+import com.expostore.data.remote.api.pojo.getchats.ProductResponse
+import com.expostore.data.local.db.enities.product.ProductDao
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

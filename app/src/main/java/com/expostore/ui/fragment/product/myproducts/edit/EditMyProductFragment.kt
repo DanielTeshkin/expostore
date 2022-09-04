@@ -1,21 +1,17 @@
 package com.expostore.ui.fragment.product.myproducts.edit
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import com.expostore.api.response.ProductResponse
+import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.databinding.EditMyProductFragmentBinding
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.base.Show
-import com.expostore.ui.fragment.profile.InfoProfileModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap

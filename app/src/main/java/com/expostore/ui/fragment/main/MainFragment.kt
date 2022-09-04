@@ -1,14 +1,12 @@
 package com.expostore.ui.fragment.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.expostore.data.AppPreferences
 import com.expostore.databinding.MainFragmentBinding
 import com.expostore.extension.load
 import com.expostore.model.category.CategoryAdvertisingModel
@@ -19,14 +17,9 @@ import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.chats.loadAvatar
 import com.expostore.ui.fragment.main.adapter.CategoriesAdapter
-import com.expostore.ui.fragment.profile.ShopInfoModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.state.MainState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::inflate) {
@@ -37,8 +30,10 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getToken()
-        viewModel.load()
+        viewModel.apply {
+            load()
+            getToken()
+        }
         subscribeOnChangeData()
     }
 
@@ -51,30 +46,23 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         }
         binding.categories.adapter = adapter
 
-        adapter.onCategoryClickListener = {
-            val result=it
-            setFragmentResult("requestKey", bundleOf("selection" to result))
-            viewModel.navigateToSelectionFragment()
-        }
+        adapter.onCategoryClickListener = { viewModel.navigateToSelectionFragment(it) }
 
         adapter.onProductClickListener = {
             viewModel.navigateToProduct(it)
         }
 
         binding.ivProfile.click { viewModel.navigateToProfileOrOpen() }
-       // viewModel.getAdvertisingCategory()
+
     }
 
 
     private fun subscribeOnChangeData(){
-        val loadSelections:Show<List<SelectionModel>> = {handleCategories(it)}
-        val loadProfile : Show<ProfileModel> = { handleProfile(it)}
+
         val loadAdvertisingModel : Show<List<CategoryAdvertisingModel>> = { handleAdvertising(it)}
         viewModel.apply {
             subscribe(uiState) { handleState(it) }
             subscribe(navigation){navigateSafety(it)}
-            //  subscribe(selection){handleState(it,loadSelections)}
-          //  subscribe(profile){handleState(it,loadProfile)}
             subscribe(advertisingModel) { handleState(it, loadAdvertisingModel) }
         }
     }
@@ -107,9 +95,9 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
 
     }
 
-    private fun handleAdvertising(items: List<CategoryAdvertisingModel>) {
+    private fun handleAdvertising(item: List<CategoryAdvertisingModel>) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            binding.ivAdvertising.load(items[0].image)
+            binding.ivAdvertising.load(item[0].image)
         }
     }
 

@@ -1,9 +1,8 @@
 package com.expostore.model.chats.DataMapping
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getchats.MessageResponse
-import com.expostore.databinding.MessageSentItemBinding
-import com.expostore.db.enities.chat.MessageDao
+import com.expostore.data.remote.api.pojo.getchats.MessageResponse
+import com.expostore.data.local.db.enities.chat.MessageDao
 import com.expostore.model.ImageModel
 import com.expostore.model.toModel
 import kotlinx.android.parcel.Parcelize

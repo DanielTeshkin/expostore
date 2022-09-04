@@ -1,8 +1,8 @@
 package com.expostore.model.profile
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getprofile.GetProfileResponseData
-import com.expostore.db.enities.ProfileDao
+import com.expostore.data.remote.api.pojo.getprofile.GetProfileResponseData
+import com.expostore.data.local.db.enities.ProfileDao
 import com.expostore.model.ImageModel
 import com.expostore.model.toModel
 import kotlinx.android.parcel.Parcelize
@@ -35,7 +35,8 @@ data class ProfileModel(
         val lat: Double = 0.0,
         val lng: Double = 0.0,
         val shoppingCenter: String = "",
-        val  floor_and_office_number :String= ""
+        val  floor_and_office_number :String= "",
+        val phone:String =""
     ) :Parcelable
 }
 
@@ -56,7 +57,8 @@ val GetProfileResponseData.toModel: ProfileModel
             shop?.lat ?: 0.0,
             shop?.lng ?: 0.0,
             shop?.shoppingCenter ?: "",
-            shop?.floor_and_office_number?:""
+            shop?.floor_and_office_number?:"",
+            shop?.phone?:""
         ),
         city ?: "",
         lastName ?: "",

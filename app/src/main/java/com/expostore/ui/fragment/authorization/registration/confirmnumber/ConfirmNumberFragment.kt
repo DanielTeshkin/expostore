@@ -1,17 +1,10 @@
 package com.expostore.ui.fragment.authorization.registration.confirmnumber
 
-import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.expostore.api.pojo.confirmnumber.ConfirmNumberResponseData
 import com.expostore.databinding.ConfirmNumberFragmentBinding
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
-import com.expostore.ui.state.ResponseState
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 

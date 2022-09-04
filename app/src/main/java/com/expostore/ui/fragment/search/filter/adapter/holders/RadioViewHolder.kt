@@ -18,7 +18,7 @@ class RadioViewHolder(
     override fun bind(categoryCharacteristicModel: CategoryCharacteristicModel) {
         val list=ArrayList<String>()
         binding.etCity.hint=categoryCharacteristicModel.name
-        if (characteristicsStateModel!=null) binding.etCity.setText(characteristicsStateModel.radioStateModel?.state?.get(categoryCharacteristicModel.name) ?: "")
+        if (characteristicsStateModel!=null) binding.etCity.setText(characteristicsStateModel.radioStateModel?.state?.get(categoryCharacteristicModel.id) ?: "")
         val hashMap=LinkedHashMap<String,String>()
         categoryCharacteristicModel.listValue.map {
             list.add(it.value?:"")

@@ -1,9 +1,9 @@
 package com.expostore.ui.fragment.search.filter.interactor
 
-import com.expostore.api.request.FilterRequest
-import com.expostore.api.request.toRequestModel
-import com.expostore.api.response.Params
-import com.expostore.api.response.SaveSearchRequest
+import com.expostore.data.remote.api.request.FilterRequest
+import com.expostore.data.remote.api.request.toRequestModel
+import com.expostore.data.remote.api.response.Params
+import com.expostore.data.remote.api.response.SaveSearchRequest
 import com.expostore.data.repositories.CategoryRepository
 import com.expostore.data.repositories.ProfileRepository
 import com.expostore.data.repositories.SearchRepository
@@ -37,7 +37,7 @@ class SearchFilterInteractor @Inject constructor(private val categoryRepository:
     fun saveFiltersState(inputStateModel: InputStateModel, radioStateModel: RadioStateModel,
                          selectStateModel: SelectStateModel,
                          checkBoxStateModel: CheckBoxStateModel
-    ): List<CharacteristicFilterModel> =
+    ): List<CharacteristicFilterModel?> =
          UiCharacteristicState().saveFilter(
             inputStateModel,
             radioStateModel,

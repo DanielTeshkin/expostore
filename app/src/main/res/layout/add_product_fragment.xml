@@ -83,11 +83,11 @@
 
             <ImageButton
                 style="@style/Widget.AppCompat.Button.Borderless"
-                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck"
                 android:layout_width="18dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_open" />
+                android:src="@drawable/ic_select"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
         </LinearLayout>
 
@@ -179,18 +179,18 @@
             <EditText
                 android:id="@+id/et_product_description"
                 style="@style/TextAppearance.MaterialComponents.Body1"
-                tools:ignore="LabelFor,TextFields"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
                 android:background="@drawable/style_edit_text"
-                android:hint="Описание"
+                android:hint="Краткое описание"
                 android:inputType="textMultiLine"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
-                android:textColorHint="#8C162344" />
+                android:textColorHint="#8C162344"
+                tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_long_description"
@@ -222,7 +222,6 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
-                android:text="@={tenderCreateVM.description}"
                 android:textColorHint="#8C162344"
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -260,7 +259,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/rv_product_images"
@@ -285,16 +283,80 @@
             app:layout_constraintTop_toBottomOf="@+id/rv_product_characteristic" />
 
         <LinearLayout
-            android:id="@+id/ll_add_product_connections"
+            android:id="@+id/ll_presentation"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
+            android:background="@drawable/style_list"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_product_images">
+
+            <TextView
+                android:id="@+id/add_presentation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="Добавить презентацию"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/presention_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:src="@drawable/ic_add_image"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/style_list"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_presentation">
+
+            <TextView
+                android:id="@+id/add_instruction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="Добавить инструкцию"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/instruction_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:src="@drawable/ic_add_image"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_add_product_connections"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:background="@drawable/style_list"
 
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_product_images">
+            app:layout_constraintTop_toBottomOf="@+id/ll_instruction">
 
             <TextView
                 android:id="@+id/tv_add_product_connections_name"
@@ -415,28 +477,7 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_save_draft"
             app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/btn_save_personal"
-            style="@style/BoldTextView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/favorites_tab_text_selector"
-            android:letterSpacing="0.01"
 
-            android:text="Персональный продукт"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_save" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

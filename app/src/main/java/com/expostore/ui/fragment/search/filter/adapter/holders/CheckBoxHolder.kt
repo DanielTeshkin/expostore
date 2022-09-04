@@ -14,7 +14,7 @@ class CheckBoxHolder(
 ):BaseFilterHolder(binding.root,context,state) {
     override fun bind(categoryCharacteristicModel: CategoryCharacteristicModel) {
      binding.checkbox.text=categoryCharacteristicModel.name
-        if (characteristicsStateModel!=null) binding.checkbox.isChecked= characteristicsStateModel.checkBoxStateModel?.state?.get(categoryCharacteristicModel.name)
+        if (characteristicsStateModel!=null) binding.checkbox.isChecked= characteristicsStateModel.checkBoxStateModel?.state?.get(categoryCharacteristicModel.id)
             ?:false
         binding.checkbox.setOnCheckedChangeListener { _, b ->
             state?.checkBoxListener(categoryCharacteristicModel.id,b)

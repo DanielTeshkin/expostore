@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
 
-import com.expostore.api.response.ProductResponse
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 

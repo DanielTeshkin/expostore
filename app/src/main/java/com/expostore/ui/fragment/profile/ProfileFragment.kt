@@ -97,30 +97,15 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
                btnShop.click {
                    state {
                        profileViewModel.exist.collect {
-                           val info = ShopInfoModel(shop!!.name, shop.shoppingCenter, shop.address,shop.floor_and_office_number, it)
+                           val info = ShopInfoModel(shop!!.name, shop.shoppingCenter, shop.address,shop.floor_and_office_number, info = it,shop.phone)
                            setFragmentResult("requestKey", bundleOf("name" to info))
                            profileViewModel.navigateShop()
                        }
                    }
                }
-               btnSettings.click {
-                   val result = InfoProfileModel(
-                       profileModel.firstName!!, profileModel.lastName!!, profileModel.city!!,
-                       profileModel.email!!
-                   )
-                   setFragmentResult("requestKey", bundleOf("info" to result))
-                   profileViewModel.navigateEditProfile()
-               }
-               btnMyReviews.click {
-                   val result = "shop"
-                   setFragmentResult("requestKey", bundleOf("name" to result))
-                   profileViewModel.navigateReviews()
-               }
-               btnWritedMyReviews.click {
-                   val result = "my"
-                   setFragmentResult("requestKey", bundleOf("name" to result))
-                   profileViewModel.navigateReviews()
-               }
+               btnSettings.click { profileViewModel.navigateEditProfile() }
+               btnMyReviews.click { profileViewModel.navigateReviews("shop") }
+               btnWritedMyReviews.click { profileViewModel.navigateReviews("my") }
                btnMyProducts.click {
                    val info =
                        shop?.name?.let { ShopInfoModel(it, shop.shoppingCenter, shop.address) }

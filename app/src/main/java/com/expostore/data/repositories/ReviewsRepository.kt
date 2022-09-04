@@ -1,10 +1,9 @@
 package com.expostore.data.repositories
 
-import android.media.Rating
-import com.expostore.api.ApiWorker
-import com.expostore.api.pojo.addreview.AddReviewRequestData
-import com.expostore.api.pojo.addreview.AddReviewResponseData
-import com.expostore.api.response.ReviewsResponse
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.pojo.addreview.AddReviewRequestData
+import com.expostore.data.remote.api.pojo.addreview.AddReviewResponseData
+import com.expostore.data.remote.api.response.ReviewsResponse
 import com.expostore.model.review.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

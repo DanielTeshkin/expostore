@@ -9,10 +9,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
-import com.expostore.api.pojo.gettenderlist.TenderRequest
-import com.expostore.api.pojo.gettenderlist.TenderResponse
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderRequest
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.category.ProductCategoryModel
@@ -21,11 +21,8 @@ import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseViewModel
 
 import com.expostore.ui.fragment.chats.general.ImageMessage
-import com.expostore.ui.general.CheckBoxStateModel
-import com.expostore.ui.general.InputStateModel
-import com.expostore.ui.general.RadioStateModel
-import com.expostore.ui.general.SelectStateModel
 import com.expostore.ui.fragment.tender.TenderInteractor
+import com.expostore.ui.general.*
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,6 +49,7 @@ class TenderCreateViewModel @Inject constructor(private val interactor: TenderIn
     private val filterCheckBox= MutableStateFlow(CheckBoxStateModel(hashMapOf()))
     private val _filterCharacteristic= MutableStateFlow<List<CharacteristicFilterModel>>(mutableListOf())
     private val filterCharacteristic=_filterCharacteristic.asStateFlow()
+    val characteristicState= MutableStateFlow(CharacteristicsStateModel())
     private val _tender=MutableStateFlow(TenderModel())
             val tender=_tender.asStateFlow()
     private val flag=MutableStateFlow(false)
@@ -64,6 +62,9 @@ class TenderCreateViewModel @Inject constructor(private val interactor: TenderIn
     fun saveInfo(model: TenderModel){
         _tender.value=model
         _imageList.value.addAll(model.images?.map { it.id }?: listOf())
+        category.value=model.category?.id
+        characteristicState.value=model.characteristicModel?.toCharacteristicState()?: CharacteristicsStateModel()
+        getCategoriesCharacteristic(model.category?.id?:"")
         flag.value=true
     }
 
@@ -187,8 +188,8 @@ class TenderCreateViewModel @Inject constructor(private val interactor: TenderIn
     fun addFilterCheckbox(name: String,check:Boolean){
         filterCheckBox.value.state[name]=check
     }
-    fun characteristicLoad(){
-        _filterCharacteristic.value=interactor.saveCharacteristicsState(filterInputList.value,filterRadioList.value,filterSelectList.value,filterCheckBox.value)
+    private fun characteristicLoad(){
+        _filterCharacteristic.value= interactor.saveCharacteristicsState(filterInputList.value,filterRadioList.value,filterSelectList.value,filterCheckBox.value) as List<CharacteristicFilterModel>
 
     }
 

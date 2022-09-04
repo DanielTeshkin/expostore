@@ -7,12 +7,9 @@ import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.response.ImageResponse
 import com.expostore.model.chats.DataMapping.ImageChat
-import com.expostore.ui.fragment.chats.loadAvatar
 import com.expostore.ui.fragment.chats.reviewImage
 import com.expostore.ui.fragment.profile.profile_edit.click
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.tender_create_image_item.view.*
 
 class SmallImageRecyclerViewAdapter(private var images: List<ImageChat>,private val onClickImage: OnClickImage) : RecyclerView.Adapter<SmallImageRecyclerViewAdapter.SmallImageImageViewHolder>() {
@@ -34,10 +31,9 @@ class SmallImageRecyclerViewAdapter(private var images: List<ImageChat>,private 
 
     override fun onBindViewHolder(holder: SmallImageImageViewHolder, position: Int) {
         val image = images[position]
-        if (image.file != null){ holder.imageView.reviewImage(image.file)
+        holder.imageView.reviewImage(image.file)
         holder.imageView.click {
             onClickImage.click(holder.imageView.drawable.toBitmap())
-        }
         }
 
     }

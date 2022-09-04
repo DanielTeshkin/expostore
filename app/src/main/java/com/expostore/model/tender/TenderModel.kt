@@ -1,26 +1,15 @@
 package com.expostore.model.tender
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getcategory.Image
-import com.expostore.api.pojo.getcategory.ImageResponseData
-import com.expostore.api.pojo.getproduct.Shop
-import com.expostore.api.pojo.gettenderlist.Tender
-import com.expostore.api.pojo.gettenderlist.TenderCategory
-import com.expostore.api.response.ImageResponse
+import com.expostore.data.remote.api.pojo.gettenderlist.Tender
 import com.expostore.model.ImageModel
-import com.expostore.model.product.AuthorModel
-import com.expostore.model.product.Character
-import com.expostore.model.product.CharacteristicModeL
-import com.expostore.model.product.ShopModel
-import com.expostore.model.product.toModel
+import com.expostore.model.product.*
 import com.expostore.model.toModel
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class TenderModel(val id: String="",
-                        val isLiked : Boolean? = null,
+                        val isLiked : Boolean = false,
                        val title: String?="",
                        val description: String?=null,
                        val price: String?=null,
@@ -36,14 +25,16 @@ data class TenderModel(val id: String="",
                        var communicationType : String?= null,
                        var status : String? = null,
                        val characteristicModel: List<Character>?=null,
+                       val elected: ElectedModel=ElectedModel()
 
 
 ):Parcelable
 
 val Tender.toModel : TenderModel
-get() = TenderModel(id=id?:"", isLiked = isLiked, title = title,description,price,location,author?.toModel?:AuthorModel(),
+get() = TenderModel(id=id?:"", isLiked = isLiked?:false, title = title,description,price,location,author?.toModel?:AuthorModel(),
     date_created=dateCreated?:"",images.map { it.toModel },category=category?.toModel,count=count?:0,shop?.toModel?: ShopModel(), lat = lat,
-    long = long, communicationType = communicationType, status = status, characteristicModel = characteristics?.map { it.toModel }
+    long = long, communicationType = communicationType, status = status, characteristicModel = characteristics?.map { it.toModel },
+    elected = ElectedModel(elected?.id?:"",elected?.notes?:"")
 )
 
 fun TenderModel.priceRange():String =price?:"неизвестно"

@@ -1,26 +1,17 @@
 package com.expostore.ui.fragment.shop.shopcreate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.expostore.api.pojo.addshop.AddShopRequestData
-import com.expostore.api.pojo.addshop.returnShopModel
-import com.expostore.api.response.ShopResponse
 import com.expostore.databinding.ShopCreateFragmentBinding
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Load
-import com.expostore.ui.fragment.profile.InfoProfileModel
 import com.expostore.ui.fragment.profile.ShopInfoModel
 import com.expostore.ui.fragment.profile.profile_edit.click
-import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.product_fragment.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -36,7 +27,9 @@ class ShopCreateFragment :
                 address = info!!.address,
                 name = info.name,
                 shopping_center = info.shopping_center,
-                floor_and_office_number = info.floor_and_office_number
+                floor_and_office_number = info.floor_and_office_number,
+                info = info.info,
+                phone = info.phone
             )
             shopCreateViewModel.apply { saveInfo(model) }
 

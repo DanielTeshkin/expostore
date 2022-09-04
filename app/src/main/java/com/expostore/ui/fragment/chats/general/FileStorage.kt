@@ -8,9 +8,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
+import com.expostore.ui.fragment.chats.dialog.adapter.getFileName
+import com.expostore.ui.general.other.showBottomSheetTender
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,18 +52,16 @@ class FileStorage(val context: Context) {
     fun saveImage(bitmap: Bitmap) {
         val imageOutStream: OutputStream
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val values = ContentValues()
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, "image_.jpg")
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            values.put(
-                MediaStore.Images.Media.RELATIVE_PATH,
-                Environment.DIRECTORY_PICTURES
-            )
-            val uri: Uri? = context.contentResolver.insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values
-            )
-            imageOutStream = context.contentResolver?.openOutputStream(uri!!)!!
+         val resolver=   context.contentResolver
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                val imageUri: Uri? =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                imageOutStream = imageUri?.let { resolver.openOutputStream(it) }!!
+
         } else {
             val imagesDir =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
@@ -90,15 +92,15 @@ class FileStorage(val context: Context) {
         return null
     }
 
-    private fun getMimeType(context: Context, uri: Uri): String? {
+     fun getMimeType(context: Context, uri: Uri): String? {
 
         val extension: String? = if (uri.scheme == ContentResolver.SCHEME_FILE) {
             val mime = MimeTypeMap.getSingleton()
             mime.getExtensionFromMimeType(context.contentResolver.getType(uri))
-        } else {
-            MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(File(uri.lastPathSegment)).toString())
-        }
-        return extension }
+        } else
+            MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(File(uri.lastPathSegment.toString())).toString())
+        return extension
+    }
 
     private fun createTmpFileFromUri(
         context: Context,
@@ -110,7 +112,7 @@ class FileStorage(val context: Context) {
             val stream = context.contentResolver.openInputStream(uri)
             val file = File.createTempFile(fileName,mimeType)
 
-            copyStreamToFile(stream!!, file)
+        copyStreamToFile(stream!!, file)
         return  file
 
     }
@@ -129,10 +131,18 @@ class FileStorage(val context: Context) {
             }
         }
     }
+    fun getSaveRequestData(uri: Uri): SaveFileRequestData {
+        val file=getImageFromUri(uri)
+        val fileDecode=Base64.encodeToString(file?.readBytes(), Base64.DEFAULT)
+        val extension=file?.extension
+        val fileName= getFileName(uri)
+        return SaveFileRequestData(fileDecode,extension?:"",fileName)
+    }
 
 
     fun request(uri: Uri): Pair<RequestBody, MultipartBody.Part> {
         val file=getImageFromUri(uri)
+
         val requestBody =
             file!!.name.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val multipartBody = MultipartBody.Part.createFormData(
@@ -149,6 +159,7 @@ class FileStorage(val context: Context) {
             type = "application/*"
         }
         storageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        Log.i("intent", storageIntent.clipData?.itemCount.toString())
         return storageIntent
     }
 

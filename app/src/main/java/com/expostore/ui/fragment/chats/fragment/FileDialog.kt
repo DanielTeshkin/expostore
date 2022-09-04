@@ -14,15 +14,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.expostore.api.pojo.getchats.FileOrImageMessage
-import com.expostore.api.pojo.getchats.MessageRequest
+import com.expostore.data.remote.api.pojo.getchats.FileOrImageMessage
+import com.expostore.data.remote.api.pojo.getchats.MessageRequest
 import com.expostore.databinding.FileDialogFragmentBinding
 import com.expostore.ui.fragment.chats.general.Dialog
 import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.fragment.chats.dialog.adapter.FileDialogRecyclerViewAdapter
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -79,7 +78,6 @@ class FileDialog(val list: ArrayList<Uri>, val id:String) : DialogFragment(), Di
                 lifecycleScope.launch {
                     delay(15000)
                     if(binding.send.text.isEmpty()){
-
                         sendFileOrImage(id, FileOrImageMessage(chatFiles = id_list))
                     }
                     else{ sendMessage(id, MessageRequest( text =binding.send.text.toString() , chatFiles = id_list))}

@@ -1,15 +1,9 @@
 package com.expostore.ui.fragment.tender.list.pagging
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.expostore.api.base.BaseApiResponse
-import com.expostore.api.base.BaseListResponse
-import com.expostore.api.pojo.gettenderlist.Tender
-import com.expostore.model.product.toModel
+import com.expostore.data.remote.api.base.BaseListResponse
 import com.expostore.model.tender.TenderModel
-import com.expostore.model.tender.toModel
 import retrofit2.HttpException
 import java.io.IOException
 

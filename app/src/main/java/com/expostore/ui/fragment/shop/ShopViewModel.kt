@@ -1,16 +1,15 @@
 package com.expostore.ui.fragment.shop
 
-import androidx.lifecycle.ViewModel
-import com.expostore.api.pojo.getchats.ChatResponse
-import com.expostore.api.pojo.getshop.GetShopResponseData
-import com.expostore.api.request.ProductsSelection
-import com.expostore.data.repositories.ChatRepository
-import com.expostore.data.repositories.FavoriteRepository
-import com.expostore.data.repositories.SelectionRepository
-import com.expostore.data.repositories.ShopRepository
+import com.expostore.data.remote.api.pojo.comparison.ComparisonProductData
+import com.expostore.data.remote.api.pojo.getshop.GetShopResponseData
+import com.expostore.data.remote.api.request.ProductsSelection
+import com.expostore.data.repositories.*
+import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
+import com.expostore.ui.base.BaseProductInteractor
+import com.expostore.ui.base.BaseProductViewModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
@@ -23,41 +22,31 @@ import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ShopViewModel @Inject constructor(private val shopRepository: ShopRepository,private val favoriteRepository: FavoriteRepository,
-                                       private val chatRepository: ChatRepository,
-private val selectionRepository: SelectionRepository) : BaseViewModel() {
+class ShopViewModel @Inject constructor(private val shopInteractor: BaseProductInteractor) : BaseProductViewModel() {
 
     private val _shop=MutableSharedFlow<ResponseState<GetShopResponseData>>()
     val shop=_shop.asSharedFlow()
-    private val _chatCreateUI= MutableSharedFlow<ResponseState<MainChat>>()
-    val chatCreateUI=_chatCreateUI.asSharedFlow()
     override fun onStart() {
-        TODO("Not yet implemented")
+        }
+    init {
+        interactor=shopInteractor
     }
-    fun getShop(id:String)=shopRepository.getShop(id).handleResult(_shop)
-
-    fun createChat(id: String)=chatRepository.createChat(id,"product").handleResult(_chatCreateUI, {
-        val result = InfoItemChat(
-            it.identify()[1],
-            it.identify()[0],
-            it.chatsId(),
-            it.imagesProduct(),
-            it.productsName(), it.identify()[3]
-        )
-        navigationTo(ShopFragmentDirections.actionShopFragmentToChatFragment(result))
-    })
-    fun updateSelected(id: String)=favoriteRepository.updateSelected(id).handleResult()
-    fun getSelections()=selectionRepository.userSelectionList()
-    fun addToSelection(id: String,product:String)=selectionRepository.addProductToSelection(id,
-        ProductsSelection(listOf(product))).handleResult()
-    fun navigateToProduct(model:ProductModel){
+    fun getShop(id:String)=interactor?.getShop(id)?.handleResult(_shop)
+   override fun navigateToProduct(model:ProductModel){
         navigationTo(ShopFragmentDirections.actionShopFragmentToProductFragment(model))
     }
-    fun navigateToCreateSelection(){
-       navigationTo(ShopFragmentDirections.actionShopFragmentToSelectionCreate())
+   override fun navigateToCreateSelection(product: String) {
+       navigationTo(ShopFragmentDirections.actionShopFragmentToSelectionCreate(product))
     }
-    fun navigateToNote(){
-        navigationTo(ShopFragmentDirections.actionShopFragmentToNoteFragment())
+   override fun navigateToNote(model: ProductModel) {
+        navigationTo(ShopFragmentDirections.actionShopFragmentToNoteFragment(id=model.id,
+            isLiked = model.isLiked, text = model.elected?.notes, flag = "product", flagNavigation = "product"))
     }
+
+    override fun navigateToChat(infoItemChat: InfoItemChat) {
+        navigationTo(ShopFragmentDirections.actionShopFragmentToChatFragment(infoItemChat))
+    }
+
+
 
 }

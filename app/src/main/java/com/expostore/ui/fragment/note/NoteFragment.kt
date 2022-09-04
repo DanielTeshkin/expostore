@@ -19,10 +19,13 @@ class NoteFragment : BaseFragment<NoteFragmentBinding>(NoteFragmentBinding::infl
     private val viewModel:NoteViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener("dataNote"){_,bundle ->
-            val result=bundle.getParcelable<NoteData>("note")
-            viewModel.saveData(result?: NoteData())
-        }
+        val id=NoteFragmentArgs.fromBundle(requireArguments()).id
+        val text=NoteFragmentArgs.fromBundle(requireArguments()).text
+        if(text!=null) binding.myNote.setText(text)
+        val flag=NoteFragmentArgs.fromBundle(requireArguments()).flag
+        val isLiked=NoteFragmentArgs.fromBundle(requireArguments()).isLiked
+        val flagNavigation=NoteFragmentArgs.fromBundle(requireArguments()).flagNavigation
+        viewModel.saveData(NoteData(id,flag,isLiked,flagNavigation))
         viewModel.apply {
             subscribe(navigation){navigateSafety(it)}
         }

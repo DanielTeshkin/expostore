@@ -1,17 +1,20 @@
 package com.expostore.ui.fragment.tender
 
+import android.net.Uri
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.expostore.api.base.BaseListResponse
-import com.expostore.api.pojo.gettenderlist.Tender
-import com.expostore.api.pojo.gettenderlist.TenderRequest
-import com.expostore.api.pojo.gettenderlist.TenderResponse
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.base.BaseListResponse
+import com.expostore.data.remote.api.pojo.gettenderlist.Tender
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderRequest
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.data.repositories.*
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.tender.TenderModel
 import com.expostore.model.tender.toModel
+import com.expostore.ui.base.Loader
+import com.expostore.ui.base.PagingSource
 import com.expostore.ui.fragment.search.filter.models.*
 import com.expostore.ui.fragment.tender.list.pagging.LoadTenders
 import com.expostore.ui.fragment.tender.list.pagging.TenderListPagingSource
@@ -30,14 +33,53 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
                                            ) {
 
 
+    private val _enabled=MutableStateFlow(false)
+    val enabled=_enabled.asStateFlow()
+    val characteristicState= MutableStateFlow(CharacteristicsStateModel())
+    private val name= MutableStateFlow("")
+    private val description = MutableStateFlow("")
+    private val count = MutableStateFlow("")
+    private val price = MutableStateFlow("")
+    private val _imageList=MutableStateFlow<MutableList<String>>(mutableListOf())
+    private val imageList=_imageList.asStateFlow()
+    private val uriSource=MutableStateFlow<MutableList<Uri>>(mutableListOf())
+
+
+    fun changeName(text:String){
+        name.value=text
+        checkEnabled()
+    }
+    fun changeLongDescription(text:String){
+        description.value=text
+        checkEnabled()
+    }
+
+    fun changeCount(text:String){
+        count.value=text
+        checkEnabled()
+    }
+    fun changePrice(text:String){
+        price.value=text
+        checkEnabled()
+    }
+
+    private fun checkEnabled(){
+        if(name.value.isNotEmpty() and description.value.isNotEmpty()
+            and description.value.isNotEmpty() and count.value.isNotEmpty() and price.value.isNotEmpty() and(
+                    (_imageList.value.size!=0) or (uriSource.value.size!=0))
+        ) updateEnabledState(true)
+        else updateEnabledState(false)
+    }
+    private fun updateEnabledState(state:Boolean){_enabled.value=state}
+
 
     fun letTenderFlow(pagingConfig: PagingConfig = getDefaultPageConfig(),
        filterModel: FilterModel=FilterModel()): Flow<PagingData<TenderModel>> {
-        val loaderProducts: LoadTenders = { it ->
-            tenderRepository.getTenders(page = it, filterModel = filterModel).result?.cast()
+        val loaderProducts: Loader<Tender> = { it ->
+            tenderRepository.getTenders(page = it, filterModel = filterModel)
         }
 
-        val pagingSource =TenderListPagingSource( loaderProducts)
+        val pagingSource:PagingSource<Tender,TenderModel> = PagingSource(loaderProducts) { it.toModel }
         return Pager(
             config = pagingConfig,
             pagingSourceFactory =
@@ -48,7 +90,7 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
 
     fun chatCreate(id:String)=chatRepository.createChat(id,"tender")
 
-    fun selectFavorite(id:String)=favoriteRepository.updateSelectedTender(id)
+    fun selectFavorite(id:String)=favoriteRepository.addToFavoriteTender(id)
 
     private fun getDefaultPageConfig(): PagingConfig {
         return PagingConfig(pageSize = 10, enablePlaceholders = false)
@@ -80,7 +122,7 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
                                  radioStateModel: RadioStateModel,
                                  selectStateModel: SelectStateModel,
                                  checkBoxStateModel: CheckBoxStateModel
-    ): List<CharacteristicFilterModel> =
+    ): List<CharacteristicFilterModel?> =
         UiCharacteristicState().saveFilter(
             inputStateModel,
             radioStateModel,

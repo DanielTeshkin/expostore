@@ -1,7 +1,7 @@
 package com.expostore.model.product
 
 import android.os.Parcelable
-import com.expostore.api.response.AuthorResponse
+import com.expostore.data.remote.api.response.AuthorResponse
 import com.expostore.model.ImageModel
 import com.expostore.model.toModel
 import kotlinx.android.parcel.Parcelize

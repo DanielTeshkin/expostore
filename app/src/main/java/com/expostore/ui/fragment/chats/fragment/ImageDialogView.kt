@@ -1,9 +1,9 @@
 package com.expostore.ui.fragment.chats.fragment
 
-import com.expostore.api.pojo.getchats.FileOrImageMessage
-import com.expostore.api.pojo.getchats.MessageRequest
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
+import com.expostore.data.remote.api.pojo.getchats.FileOrImageMessage
+import com.expostore.data.remote.api.pojo.getchats.MessageRequest
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.data.repositories.MultimediaRepository

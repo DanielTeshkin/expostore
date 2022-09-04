@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.product.addproduct
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -52,7 +53,6 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
         setup()
      }
 
-
     override fun onStart() {
         super.onStart()
         clickInstall()
@@ -99,8 +99,8 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
 
     private fun installObserverConnectionType(){
         binding.apply {
-            message.setOnCheckedChangeListener { _, state-> addProductViewModel.updateConnectionTypeState(state) }
-            call.setOnCheckedChangeListener { _, state -> addProductViewModel.updateConnectionTypeState(!state) }
+            message.setOnCheckedChangeListener { _, state-> addProductViewModel.updateConnectionTypeState(state,"message") }
+            call.setOnCheckedChangeListener { _, state -> addProductViewModel.updateConnectionTypeState(state,"call") }
         }
     }
 
@@ -145,6 +145,7 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
         binding.apply {
             llAddProductCharacteristic.apply {
                 visibility = View.VISIBLE
+                characteristicAdapter.removeAll()
                 characteristicAdapter.addElement(list)
                 rvProductCharacteristic.layoutManager=LinearLayoutManager(requireContext())
                 rvProductCharacteristic.adapter=characteristicAdapter
@@ -183,6 +184,7 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
                 Activity.RESULT_OK -> {
                     val fileUri = data?.data!!
                     addProductViewModel.saveUri(fileUri)
+                    Log.i("my","ddd")
                     mAdapter.update(fileUri.toString())
                 }
                 ImagePicker.RESULT_ERROR -> {
@@ -202,7 +204,7 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
              }
 
              btnCancel.click {
-                   addProductViewModel.navigateToMyProducts()
+                  // addProductViewModel.navigateToMyProducts()
              }
 
              rvProductImages.apply {
@@ -210,29 +212,9 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
                  adapter=mAdapter
              }
 
-             btnSave.click {
-              val connect= if(message.isChecked) "chatting"
-                 else "call_and_chatting"
-                 addProductViewModel.createOrUpdateProduct(
-                     requireContext(),
-                     etProductCount.stroke().toInt(),
-                     etProductName.stroke(),
-                     etProductPrice.stroke(),
-                     etLongDescription.stroke(),
-                     etProductDescription.stroke(), "my",connect) }
+             btnSave.click { addProductViewModel.createOrUpdateProduct(requireContext(), "my") }
 
-             binding.btnSaveDraft.click {
-                 val connect= if(message.isChecked) "chatting"
-                 else if(call.isChecked) "call_and_chatting"
-                 else{"calls"}
-                 addProductViewModel.createOrUpdateProduct(
-                     requireContext(),
-                     etProductCount.stroke().toInt(),
-                     etProductName.stroke(),
-                     etProductPrice.stroke(),
-                     etLongDescription.stroke(),
-                     etProductDescription.stroke(), "draft",connect)
-             }
+             binding.btnSaveDraft.click { addProductViewModel.createOrUpdateProduct(requireContext(), "draft") }
          }
      }
 
@@ -260,8 +242,7 @@ class AddProductFragment : BaseFragment<AddProductFragmentBinding>(AddProductFra
        addPhoto()
     }
 
-    override fun removePhoto(string: String) {
-       addProductViewModel.removeImage(string)
-    }
+    override fun removePhoto(string: String) = addProductViewModel.removeImage(string)
+
 }
     fun EditText.stroke():String = text.toString()

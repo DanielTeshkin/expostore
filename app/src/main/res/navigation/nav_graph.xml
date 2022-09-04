@@ -50,8 +50,8 @@
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_passwordRecoveryFragment"
-            app:destination="@id/passwordRecoveryFragment" />
+            android:id="@+id/action_loginFragment_to_confirmNumberPass"
+            app:destination="@id/confirmNumberPass" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -105,6 +105,9 @@
         <action
             android:id="@+id/action_detailCategoryFragment_to_support_fragment"
             app:destination="@id/support_fragment" />
+        <argument
+            android:name="selection"
+            app:argType="com.expostore.model.category.SelectionModel" />
     </fragment>
     <fragment
         android:id="@+id/numberFragment"
@@ -171,20 +174,30 @@
         <action
             android:id="@+id/action_passwordRecoveryFragment_to_newPasswordFragment"
             app:destination="@id/newPasswordFragment" />
+        <argument
+            android:name="phone"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/newPasswordFragment"
         android:name="com.expostore.ui.fragment.authorization.newpassword.NewPasswordFragment"
         android:label="new_password_fragment"
         tools:layout="@layout/new_password_fragment" >
+        <argument android:name="phone"
+            app:argType="string" />
         <action
-            android:id="@+id/action_newPasswordFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_newPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/webViewFragment"
         android:name="com.expostore.ui.fragment.WebViewFragment"
-        android:label="WebViewFragment" />
+        android:label="WebViewFragment" >
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.expostore.ui.fragment.profile.ProfileFragment"
@@ -245,6 +258,11 @@
         <action
             android:id="@+id/action_searchFragment_to_support_fragment"
             app:destination="@id/support_fragment" />
+        <argument
+            android:name="filter"
+            app:argType="com.expostore.ui.fragment.search.filter.models.FilterModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
 
     </fragment>
     <fragment
@@ -283,6 +301,15 @@
         <action
             android:id="@+id/action_favoritesFragment_to_selection_create"
             app:destination="@id/selection_create" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_personal_selection"
+            app:destination="@id/personal_selection" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_personal_productfragment"
+            app:destination="@id/personal_productfragment" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_create_personalProduct"
+            app:destination="@id/create_personalProduct" />
     </fragment>
     <fragment
         android:id="@+id/tenderListFragment"
@@ -307,6 +334,11 @@
         <action
             android:id="@+id/action_tenderListFragment_to_note_fragment"
             app:destination="@id/note_fragment" />
+        <argument
+            android:name="filter"
+            app:argType="com.expostore.ui.fragment.search.filter.models.FilterModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/tenderCreateFragment"
@@ -322,6 +354,11 @@
         <action
             android:id="@+id/action_tenderCreateFragment_to_tenderListFragment"
             app:destination="@id/tenderListFragment" />
+        <argument
+            android:name="tender"
+            app:argType="com.expostore.model.tender.TenderModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/specificationsFragment"
@@ -364,6 +401,15 @@
         <argument
             android:name="product"
             app:argType="com.expostore.model.product.ProductModel" />
+        <action
+            android:id="@+id/action_productFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_productFragment_to_price_history"
+            app:destination="@id/price_history" />
+        <action
+            android:id="@+id/action_productFragment_to_characteristic_fragment"
+            app:destination="@id/characteristic_fragment" />
 
     </fragment>
     <fragment
@@ -373,6 +419,17 @@
         <action
             android:id="@+id/action_reviewsFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_reviewsFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+        <argument
+            android:name="flag"
+            app:argType="string" />
+        <argument
+            android:name="reviews"
+            app:argType="com.expostore.ui.fragment.product.ReviewsModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/addReviewFragment"
@@ -469,6 +526,9 @@
         <action
             android:id="@+id/action_searchFilterFragment_to_specificationsFragment"
             app:destination="@id/specificationsFragment" />
+        <action
+            android:id="@+id/action_searchFilterFragment_to_map_choice"
+            app:destination="@id/map_choice" />
 
     </fragment>
     <fragment
@@ -479,6 +539,9 @@
         <action
             android:id="@+id/action_EditProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <argument
+            android:name="info"
+            app:argType="com.expostore.ui.fragment.profile.InfoProfileModel" />
     </fragment>
     <fragment
         android:id="@+id/shop_create"
@@ -491,7 +554,14 @@
             app:destination="@id/addProductFragment" />
         <action
             android:id="@+id/action_shop_create_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="model"
+            app:argType="com.expostore.ui.fragment.profile.ShopInfoModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/support_fragment"
@@ -557,6 +627,19 @@
     <action
         android:id="@+id/action_selection_create_to_searchFragment"
         app:destination="@id/searchFragment" />
+    <argument
+        android:name="id"
+        app:argType="string"
+        app:nullable="true"
+        android:defaultValue="@null" />
+    <argument
+        android:name="selection"
+        app:argType="com.expostore.model.category.SelectionModel"
+        app:nullable="true"
+        android:defaultValue="@null" />
+    <action
+        android:id="@+id/action_selection_create_to_personal_selection"
+        app:destination="@id/personal_selection" />
 </fragment>
     <fragment android:name="com.expostore.ui.fragment.note.NoteFragment"
         android:id="@+id/note_fragment"
@@ -581,6 +664,27 @@
         <action
             android:id="@+id/action_note_fragment_to_tender_item"
             app:destination="@id/tender_item" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="text"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="flag"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="isLiked"
+            app:argType="boolean" />
+        <argument
+            android:name="flagNavigation"
+            app:argType="string" />
     </fragment>
     <fragment
         android:name="com.expostore.ui.fragment.tender.my.edit.EditMyTenderFragment"
@@ -596,6 +700,121 @@
             android:name="tender"
             app:argType="com.expostore.model.tender.TenderModel" />
     </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.category.personal.DetailPersonalSelectionFragment"
+        android:id="@+id/personal_selection"
+        android:label="support"
+        tools:layout="@layout/detail_personal_selection_fragment"
 
+        >
+        <argument
+            android:name="selection"
+            app:argType="com.expostore.model.category.SelectionModel" />
+        <action
+            android:id="@+id/action_personal_selection_to_productFragment"
+            app:destination="@id/productFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_personal_selection_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_personal_selection_to_selection_create"
+            app:destination="@id/selection_create" />
+        <action
+            android:id="@+id/action_personal_selection_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_personal_selection_to_note_fragment"
+            app:destination="@id/note_fragment" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.comparison.ComparisonFragment"
+        android:id="@+id/comparison"
+        android:label="support"
+        tools:layout="@layout/comparison_fragment"
+        >
+
+        <action
+            android:id="@+id/action_comparison_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.authorization.confirmnumberpass.ConfirmNumberReset"
+        android:id="@+id/confirmNumberPass"
+        android:label="support"
+        tools:layout="@layout/confirm_number_reset_fragment"
+        >
+
+        <action
+            android:id="@+id/action_confirmNumberPass_to_passwordRecoveryFragment"
+            app:destination="@id/passwordRecoveryFragment" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.product.personal.ProductPersonalFragment"
+        android:id="@+id/personal_productfragment"
+        android:label="support"
+        tools:layout="@layout/product_personal_fragment"
+        >
+
+
+        <action
+            android:id="@+id/action_personal_productfragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.expostore.model.product.ProductModel" />
+        <action
+            android:id="@+id/action_personal_productfragment_to_note_fragment"
+            app:destination="@id/note_fragment" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.product.personal.create.CreatePersonalProductFragment"
+        android:id="@+id/create_personalProduct"
+        android:label="support"
+        tools:layout="@layout/create_personal_product_fragment"
+        >
+
+
+        <action
+            android:id="@+id/action_create_personalProduct_to_personal_productfragment"
+            app:destination="@id/personal_productfragment" />
+        <action
+            android:id="@+id/action_create_personalProduct_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.product.PriceHistoryFragment"
+        android:id="@+id/price_history"
+        android:label="support"
+        tools:layout="@layout/price_history_fragment"
+        >
+
+
+        <argument
+            android:name="price_history"
+            app:argType="com.expostore.model.product.PriceHistoryDataModel" />
+    </fragment>
+    <fragment
+        android:name="com.expostore.ui.fragment.product.CharacteristicProductFragment"
+        android:id="@+id/characteristic_fragment"
+        tools:layout="@layout/characteristic_product_fragment">
+
+        <argument
+            android:name="data"
+            app:argType="com.expostore.ui.fragment.product.utils.CharacteristicsData" />
+    </fragment>
+
+<fragment
+    android:name="com.expostore.ui.fragment.map.MapChoiceFragment"
+    android:id="@+id/map_choice"
+    android:label="map_choice">
+
+    <action
+        android:id="@+id/action_map_choice_to_searchFragment"
+        app:destination="@id/searchFragment" />
+</fragment>
 
 </navigation>

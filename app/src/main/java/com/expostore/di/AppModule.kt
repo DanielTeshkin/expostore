@@ -2,16 +2,14 @@ package com.expostore.di
 
 import android.content.Context
 import com.expostore.BuildConfig
-import com.expostore.api.ApiWorker
-import com.expostore.api.ApiWorkerImpl
-import com.expostore.api.Interceptor
-import com.expostore.api.ServerApi
-import com.expostore.db.LocalDataApi
-import com.expostore.db.LocalDatabase
-import com.expostore.db.LocalWorker
-import com.expostore.db.LocalWorkerImpl
-import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource
-import dagger.Binds
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.remote.api.ApiWorkerImpl
+import com.expostore.data.remote.api.Interceptor
+import com.expostore.data.remote.api.ServerApi
+import com.expostore.data.local.db.LocalDataApi
+import com.expostore.data.local.db.LocalDatabase
+import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.local.db.LocalWorkerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

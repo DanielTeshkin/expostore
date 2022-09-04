@@ -1,10 +1,10 @@
 package com.expostore.ui.general
 
-import com.expostore.api.pojo.editprofile.EditProfileRequestData
-import com.expostore.api.pojo.editprofile.EditProfileResponseData
-import com.expostore.api.pojo.getcities.City
-import com.expostore.api.pojo.getprofile.EditProfileRequest
-import com.expostore.api.response.EditResponseProfile
+import com.expostore.data.remote.api.pojo.editprofile.EditProfileRequestData
+import com.expostore.data.remote.api.pojo.editprofile.EditProfileResponseData
+import com.expostore.data.remote.api.pojo.getcities.City
+import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
+import com.expostore.data.remote.api.response.EditResponseProfile
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.data.repositories.ProfileRepository
 import com.expostore.ui.base.BaseViewModel

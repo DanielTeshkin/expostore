@@ -24,6 +24,7 @@ class ProductsAdapter(context:Context) :
     var onCallItemClickListener: ((String) -> Unit)? = null
     var onMessageItemClickListener: ((ProductModel) -> Unit)? = null
     var onAnotherItemClickListener:((ProductModel)->Unit)? =null
+    var productMarkerApi:ProductMarkerApi?=null
    private val queueLikes = mutableMapOf<String, (() -> Unit)>()
 
     fun processLike(id: String, isSuccess: Boolean) {
@@ -51,46 +52,43 @@ class ProductsAdapter(context:Context) :
 
 
         private val adapter = ImageAdapter()
-            fun bind(item: ProductModel) {
-                binding.apply {
-                    like.isChecked = item.isLiked
-                    name.text = item.name
-                    price.text = item.price.priceSeparator() + " " + "руб"
-                    description.text = item.shortDescription
-                    address.text = "Адрес:"+" "+item.shop.address
+        fun bind(item: ProductModel) {
+            binding.apply {
+                like.isChecked = item.isLiked
+                name.text = item.name
+                price.text = item.price.priceSeparator() + " " + "руб"
+                description.text = item.shortDescription
+                address.text = "Адрес:" + " " + item.shop.address
+                viewPager.adapter = adapter
+                viewPager.setPageTransformer(MarginPageTransformer(PAGE_PADDING.dp))
+                viewPager.children.find { it is RecyclerView }?.overScrollMode =
+                    RecyclerView.OVER_SCROLL_NEVER
+                adapter.onItemClickListener = {
+                    onItemClickListener?.invoke(item)
+
                 }
-
-
-                binding.apply {
-                    viewPager.adapter = adapter
-                    viewPager.setPageTransformer(MarginPageTransformer(PAGE_PADDING.dp))
-                    viewPager.children.find { it is RecyclerView }?.overScrollMode =
-                        RecyclerView.OVER_SCROLL_NEVER
-                    adapter.onItemClickListener = {
-                        onItemClickListener?.invoke(item)
-
-                    }
-                    root.click {
-                        onItemClickListener?.invoke(item)
-                    }
-                        like.click {
-                            onLikeItemClickListener?.invoke(item.id)
-                        }
-                        call.click {
-                            onCallItemClickListener?.invoke(item.author.username)
-                        }
-                        write.click {
-                            onMessageItemClickListener?.invoke(item)
-                         }
-                    another.click {
-                       onAnotherItemClickListener?.invoke(item)
-                    }
-                    }
-
-                adapter.items = item.images.map { it.file }
+                productMarkerApi?.addMarker(item)
+                root.click {
+                    onItemClickListener?.invoke(item)
+                }
+                like.click {
+                    onLikeItemClickListener?.invoke(item.id)
+                }
+                call.click {
+                    onCallItemClickListener?.invoke(item.author.username)
+                }
+                write.click {
+                    onMessageItemClickListener?.invoke(item)
+                }
+                another.click {
+                    onAnotherItemClickListener?.invoke(item)
+                }
             }
 
+            adapter.items = item.images.map { it.file }
         }
+
+    }
 
 
 

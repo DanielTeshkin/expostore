@@ -1,7 +1,6 @@
 package com.expostore.ui.fragment.profile
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getcities.City
 import kotlinx.android.parcel.Parcelize
 
 

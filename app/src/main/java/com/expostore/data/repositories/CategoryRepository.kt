@@ -1,7 +1,7 @@
 package com.expostore.data.repositories
 
-import com.expostore.api.ApiWorker
-import com.expostore.db.LocalWorker
+import com.expostore.data.remote.api.ApiWorker
+import com.expostore.data.local.db.LocalWorker
 import com.expostore.model.category.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

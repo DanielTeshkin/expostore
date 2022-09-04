@@ -1,9 +1,8 @@
 package com.expostore.model.category
 
 import android.os.Parcelable
-import com.expostore.api.response.CategoryCharacteristicResponse
-import com.expostore.api.response.Value
-import com.google.gson.annotations.SerializedName
+import com.expostore.data.remote.api.response.CategoryCharacteristicResponse
+import com.expostore.data.remote.api.response.Value
 import kotlinx.android.parcel.Parcelize
 
 data class CategoryCharacteristicModel(

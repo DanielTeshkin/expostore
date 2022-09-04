@@ -1,18 +1,13 @@
 package com.expostore.ui.fragment.search.main.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.expostore.api.ApiWorker
-import com.expostore.api.ServerApi
-import com.expostore.api.base.BaseApiResponse
-import com.expostore.api.base.BaseListResponse
-import com.expostore.api.response.ProductResponse
+import com.expostore.data.remote.api.base.BaseApiResponse
+import com.expostore.data.remote.api.base.BaseListResponse
+import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import retrofit2.HttpException
-import java.io.IOException
-import javax.inject.Inject
 
 typealias LoaderProducts = suspend (page:Int?) -> BaseApiResponse<BaseListResponse<ProductResponse>>
 class ProductListPagingSource (private val loader:LoaderProducts) :

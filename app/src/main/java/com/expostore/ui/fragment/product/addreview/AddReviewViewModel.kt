@@ -4,41 +4,20 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.expostore.MainActivity
-import com.expostore.R
 
-import com.expostore.api.ServerApi
-import com.expostore.api.pojo.addreview.AddReviewRequestData
-import com.expostore.api.pojo.addreview.AddReviewResponseData
-import com.expostore.api.pojo.getproduct.ProductResponseData
-import com.expostore.api.pojo.gettenderlist.TenderRequest
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
-import com.expostore.api.pojo.saveimage.SaveImageResponseData
-import com.expostore.api.pojo.signup.SignUpResponseData
-import com.expostore.data.AppPreferences
+import com.expostore.data.remote.api.pojo.addreview.AddReviewResponseData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.data.repositories.ReviewsRepository
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.chats.general.ImageMessage
 import com.expostore.ui.state.ResponseState
-import com.expostore.utils.hideKeyboard
-import com.willy.ratingbar.BaseRatingBar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -46,11 +25,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel

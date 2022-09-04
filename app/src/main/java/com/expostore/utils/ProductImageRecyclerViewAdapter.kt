@@ -4,12 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getcategory.ImageResponseData
+import com.expostore.data.remote.api.pojo.getcategory.ImageResponseData
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_product_image_item.view.*
 

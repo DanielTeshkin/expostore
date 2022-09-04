@@ -5,9 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class NoteData(
-    val note:String?=null,
     val id:String?="",
-    val flag:String="",
+    val flag:String?="",
     val isLiked:Boolean?=false,
     val flagNavigation:String?="product"
 ):Parcelable

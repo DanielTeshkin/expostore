@@ -64,7 +64,7 @@ class TenderAdapter :
 
         fun bind(item: TenderModel) {
             binding.apply {
-
+                like.isChecked = item.isLiked
                 name.text = item.title
                 price.text = item.price
                description.text = item.description

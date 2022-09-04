@@ -1,11 +1,10 @@
 package com.expostore.model
 
 import android.os.Parcelable
-import com.expostore.api.response.Params
-import com.expostore.api.response.SaveSearchResponse
+import com.expostore.data.remote.api.response.Params
+import com.expostore.data.remote.api.response.SaveSearchResponse
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.filter.models.toModel
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

@@ -1,8 +1,8 @@
 package com.expostore.model.favorite
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getfavoriteslist.GetFavoritesListResponseData
-import com.expostore.api.response.TenderFavoriteResponse
+import com.expostore.data.remote.api.pojo.getfavoriteslist.GetFavoritesListResponseData
+import com.expostore.data.remote.api.response.TenderFavoriteResponse
 
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel

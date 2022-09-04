@@ -4,9 +4,6 @@ import android.content.res.Resources
 import android.util.TypedValue
 import kotlin.math.ceil
 
-/**
- * @author Fedotov Yakov
- */
 
 val Number.dp: Int
     get() = ceil(

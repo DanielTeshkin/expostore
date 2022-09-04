@@ -9,17 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.R
-import com.expostore.api.pojo.getreviews.Review
 import com.expostore.model.product.name
 import com.expostore.model.review.ReviewModel
 import com.expostore.ui.fragment.chats.loadAvatar
-import com.expostore.ui.fragment.product.ReviewsModel
 import com.expostore.utils.OnClickImage
 import com.expostore.utils.SmallImageRecyclerViewAdapter
 import kotlinx.android.synthetic.main.product_review_item.view.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ReviewRecyclerViewAdapter(private val reviews: MutableList<ReviewModel>, private val onClickImage:OnClickImage
 ) : RecyclerView.Adapter<ReviewRecyclerViewAdapter.ReviewViewHolder>() {

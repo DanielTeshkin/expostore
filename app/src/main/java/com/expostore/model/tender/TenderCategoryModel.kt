@@ -1,9 +1,8 @@
 package com.expostore.model.tender
 
 import android.os.Parcelable
-import com.expostore.api.pojo.gettenderlist.ParentTender
-import com.expostore.api.pojo.gettenderlist.TenderCategory
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.expostore.data.remote.api.pojo.gettenderlist.ParentTender
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderCategory
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

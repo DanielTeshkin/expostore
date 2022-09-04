@@ -1,7 +1,6 @@
 package com.expostore.ui.fragment.tender.my.edit
 
-import androidx.lifecycle.ViewModel
-import com.expostore.api.pojo.gettenderlist.TenderResponse
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.ui.fragment.tender.TenderInteractor
@@ -35,7 +34,7 @@ class EditMyTenderViewModel @Inject constructor(val interactor:TenderInteractor)
     }
 
 
-    fun navigateToCreateTender()=navigationTo(EditMyTenderFragmentDirections.actionEditTenderFragmentToTenderCreateFragment())
+    fun navigateToCreateTender(model: TenderModel) =navigationTo(EditMyTenderFragmentDirections.actionEditTenderFragmentToTenderCreateFragment(model))
 
 
 

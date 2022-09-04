@@ -1,7 +1,6 @@
 package com.expostore.ui.fragment.favorites.tabs.savedsearches
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,12 +8,11 @@ import com.expostore.databinding.TabSavedSearchesFragmentBinding
 import com.expostore.model.SaveSearchModel
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
-import com.expostore.ui.fragment.favorites.FavoritesClickListener
-import com.expostore.utils.OnClickSaveSearch
+import com.expostore.ui.fragment.search.filter.models.FilterModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TabSavedSearchesFragment( val installClickListener: FavoritesClickListener) :
+class TabSavedSearchesFragment( ) :
     BaseFragment<TabSavedSearchesFragmentBinding>(TabSavedSearchesFragmentBinding::inflate) {
 
     private val tabSavedSearchesViewModel:TabSavedSearchesViewModel by viewModels()
@@ -30,13 +28,12 @@ class TabSavedSearchesFragment( val installClickListener: FavoritesClickListener
     }
     override fun onStart() {
         super.onStart()
-        onClickSaveSearch = object :OnClickSaveSearch{
-            override fun onClickSaveSearch(model:SaveSearchModel) {
-                Log.i("ddd","fff")
+        onClickSaveSearch = object : OnClickSaveSearch {
+            override fun onClickSaveSearch(model:FilterModel) {
+                tabSavedSearchesViewModel.navigate(model)
             }
             override fun onClickLike(id: String) {
-                tabSavedSearchesViewModel.deleteSaveSearch(id) }
-        }
+                tabSavedSearchesViewModel.deleteSaveSearch(id) } }
         tabSavedSearchesViewModel.loadList()
     }
 
@@ -44,7 +41,7 @@ class TabSavedSearchesFragment( val installClickListener: FavoritesClickListener
     private fun showList(item: List<SaveSearchModel>) {
         binding.rvSearches.apply {
             layoutManager=LinearLayoutManager(requireContext())
-            adapter=TabSavedSearchAdapter(item as MutableList<SaveSearchModel>,onClickSaveSearch,installClickListener)
+            adapter=TabSavedSearchAdapter(item as MutableList<SaveSearchModel>,onClickSaveSearch)
         }
 
     }

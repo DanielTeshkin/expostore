@@ -2,27 +2,17 @@ package com.expostore.ui.fragment.tender.list
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteResponseData
-import com.expostore.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
-import com.expostore.api.request.ChatCreateRequest
+import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseViewModel
-import com.expostore.data.repositories.TenderRepository
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
-import com.expostore.ui.fragment.chats.chatsId
-import com.expostore.ui.fragment.chats.identify
-import com.expostore.ui.fragment.chats.imagesProduct
-import com.expostore.ui.fragment.chats.productsName
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.tender.TenderInteractor
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,6 +64,9 @@ class TenderListViewModel @Inject constructor( private val interactor: TenderInt
         fun check(){
             if(token.value.isNullOrEmpty())navigateToOpen()
         }
+    fun navigateToNote(model:TenderModel){
+        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToNoteFragment(id=model.id,
+            isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender")) }
 
 
     override fun onStart() {

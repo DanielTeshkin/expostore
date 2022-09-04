@@ -1,9 +1,8 @@
 package com.expostore.model.chats.DataMapping
 
 import android.os.Parcelable
-import com.expostore.api.pojo.getchats.ItemChatResponse
-import com.expostore.api.pojo.getchats.ProductResponse
-import com.expostore.db.enities.chat.ItemChatDao
+import com.expostore.data.remote.api.pojo.getchats.ItemChatResponse
+import com.expostore.data.local.db.enities.chat.ItemChatDao
 import com.expostore.model.tender.TenderModel
 import com.expostore.model.tender.toModel
 
@@ -14,7 +13,7 @@ data class ItemChat(val id : String,
                     val messages : MutableList<Message>? = mutableListOf(),
                     val product : Product?=null,
                     val dateCreated : String?,
-                    val tender:TenderModel?=null
+                    val tender:TenderChat?=null
 ): Parcelable
 
 

@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +15,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.expostore.api.pojo.getchats.FileOrImageMessage
-import com.expostore.api.pojo.getchats.MessageRequest
-import com.expostore.api.pojo.saveimage.SaveImageRequestData
+import com.expostore.data.remote.api.pojo.getchats.FileOrImageMessage
+import com.expostore.data.remote.api.pojo.getchats.MessageRequest
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.databinding.FragmentImageDialogBinding
 
 import com.expostore.ui.state.ResponseState
 import com.expostore.ui.fragment.chats.dialog.adapter.ImageDialogRecyclerViewAdapter
 import com.expostore.ui.fragment.chats.general.ImageMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -62,8 +59,8 @@ class ImageDialog(val list: MutableList<Uri>, val id:String) : DialogFragment() 
         _binding.progressBar.visibility=View.INVISIBLE
         val bitmapList=ArrayList<Bitmap>()
         list.map{
-            Glide.with(requireContext()).asBitmap().load(it).into(object :
-                CustomTarget<Bitmap>(720,720){
+            Glide.with(requireContext()).asBitmap().load(it).centerCrop().into(object :
+                CustomTarget<Bitmap>(){
                 override fun onResourceReady(
                     resource: Bitmap,
                     transition: Transition<in Bitmap>?

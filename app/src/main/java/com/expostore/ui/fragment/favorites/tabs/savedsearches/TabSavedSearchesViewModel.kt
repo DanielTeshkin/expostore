@@ -1,11 +1,11 @@
 package com.expostore.ui.fragment.favorites.tabs.savedsearches
 
-import com.expostore.api.response.SaveSearchResponse
+import com.expostore.data.remote.api.response.SaveSearchResponse
 import com.expostore.model.SaveSearchModel
 import com.expostore.ui.base.BaseViewModel
-import com.expostore.data.repositories.FavoriteRepository
 import com.expostore.ui.fragment.favorites.FavoritesFragmentDirections
 import com.expostore.ui.fragment.favorites.FavoritesInteractor
+import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,8 +26,8 @@ class TabSavedSearchesViewModel @Inject constructor(private val interactor: Favo
     fun deleteSaveSearch(id:String){
         interactor.deleteSaveSearch(id).handleResult(_saveSearch)
     }
-    fun navigate(){
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToSearchFragment())
+    fun navigate(filterModel: FilterModel){
+        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToSearchFragment(filterModel))
     }
 
     override fun onStart() {
