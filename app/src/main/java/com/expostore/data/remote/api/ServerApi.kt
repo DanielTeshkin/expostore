@@ -77,10 +77,8 @@ interface ServerApi {
     @GET("/api/shop/")
     suspend fun getMyShop():Response<ShopResponse>
 
-
     @POST("/api/file/save_base64/")
     suspend fun saveFileBase64(@Body request: List<SaveFileRequestData>):Response<SaveFileResponseData>
-
 
     @Multipart
     @POST("/api/chat/file/create/")

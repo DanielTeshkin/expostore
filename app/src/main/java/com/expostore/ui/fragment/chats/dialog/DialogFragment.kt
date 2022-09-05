@@ -9,6 +9,7 @@ import com.expostore.data.remote.api.pojo.getchats.*
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.databinding.DialogFragmentBinding
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.controllers.DialogControllerUI
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,8 +29,6 @@ import kotlinx.coroutines.flow.collect
     override var isBottomNavViewVisible: Boolean=false
     private val sendText:((String,MessageRequest)->Unit) by lazy {{id,body->viewModel.sentMessageOrUpdate(id,body)}  }
     private val saveFiles:((List<SaveFileRequestData>) -> Unit) by lazy {{data-> viewModel.saveFile(data)} }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,7 +64,6 @@ import kotlinx.coroutines.flow.collect
                     viewModel.sendFiles(arguments?.getString("id")!!,it.files) })} }
         //subscribe(PagerChatRepository.getInstance().getUriFiles()){controller.filesRv(it as MutableList<Uri>)}
     }
-
     override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
         controller.imagesRv(uris)
     }

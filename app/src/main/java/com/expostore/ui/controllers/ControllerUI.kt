@@ -23,6 +23,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Multipart
 
+
 open class ControllerUI(val context: Context) {
     protected val mapImages= hashMapOf<Uri,Bitmap>()
     protected val multimedia:MutableList<Uri> = mutableListOf()
@@ -44,16 +45,20 @@ open class ControllerUI(val context: Context) {
                 override fun onLoadCleared(placeholder: Drawable?) {}
             }) } }
 
+
   protected fun saveFile(): MutableList<SaveFileRequestData> {
      val list= mutableListOf<SaveFileRequestData>()
      multimedia.map {
        list.add(fileStorage.getSaveRequestData(it))
      }
-    return list
+      return list
    }
-  fun clearMultimedia()=multimedia.clear()
 
+    fun clear()=multimedia.clear()
 
+    protected fun processingImagesData(uri: Uri,resource:Bitmap){
+        mapImages[uri]=resource
+    }
     fun toRequestDataList(){
         val list = mutableListOf<SaveImageRequestData>()
         ImageMessage().encodeBitmapList(mapImages.entries.map { it.value } as ArrayList<Bitmap>).map {

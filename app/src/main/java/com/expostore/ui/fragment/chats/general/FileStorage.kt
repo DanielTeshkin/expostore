@@ -32,12 +32,12 @@ class FileStorage(val context: Context) {
               .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
               .setAllowedOverMetered(true
               )
-       var d =context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+       var manager =context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
 
-       myDown=  d.enqueue(request)
+       myDown=  manager.enqueue(request)
        context.registerReceiver(broadcastReceiver,IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
    }
-    val broadcastReceiver = object :BroadcastReceiver(){
+    private val broadcastReceiver = object :BroadcastReceiver(){
         override fun onReceive(p0: Context?, p1: Intent?) {
             var id=p1?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1)
                 if(id==myDown){
@@ -46,8 +46,6 @@ class FileStorage(val context: Context) {
         }
 
     }
-
-
 
     fun saveImage(bitmap: Bitmap) {
         val imageOutStream: OutputStream

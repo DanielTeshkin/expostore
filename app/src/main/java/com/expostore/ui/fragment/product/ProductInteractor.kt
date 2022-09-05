@@ -90,7 +90,7 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
 
 
     private fun updateEnabledState(state:Boolean){_enabled.value=state}
-    fun  addPhoto(id:String)= _imageList.value.add(id)
+    fun addPhoto(id:String)= _imageList.value.add(id)
     fun saveUri(image:Uri){
         uriSource.value.add(image)
         checkEnabled()

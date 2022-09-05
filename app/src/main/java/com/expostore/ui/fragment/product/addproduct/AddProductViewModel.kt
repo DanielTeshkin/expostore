@@ -76,7 +76,8 @@ class AddProductViewModel @Inject constructor(private val addProductInteractor: 
         }
     }
 
-    private fun loadToServerPhoto(context: Context, status: String?=null, action:(String?)->Unit){
+    private inline fun loadToServerPhoto(context: Context, status: String?=null,
+                                         crossinline action:(String?)->Unit){
         saveImages(addProductInteractor.uriSource.value, context)
         viewModelScope.launch {
             save.collect { images ->
@@ -165,7 +166,6 @@ class AddProductViewModel @Inject constructor(private val addProductInteractor: 
     fun addFilterRadio(id:String,name: String)=addProductInteractor.addFilterRadio(id,name)
     fun addFilterCheckbox(name: String,check:Boolean)=addProductInteractor.addFilterCheckbox(name, check)
     fun saveShopId(id:String)=addProductInteractor.saveShop(id)
-
     override fun onStart() {
     }
 }
