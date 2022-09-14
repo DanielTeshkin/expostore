@@ -81,7 +81,7 @@ class TenderListFragment :
           val show:Show<MainChat> = { openChat(it)}
         viewModel.apply {
             subscribe(navigation){navigateSafety(it)}
-            subscribe(chat){handleState(it)}
+          //  subscribe(chat){handleState(it)}
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                    loadTenderList()
@@ -252,16 +252,10 @@ class TenderListFragment :
         }
     }
 
-
-
     fun createChat(id:String){
         viewModel.createChat(id)
 
-
-
-
-
-            }
+    }
 
 
     private fun initPersonalSelectionCLick(): OnClickBottomSheetTenderFragment {

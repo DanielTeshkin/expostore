@@ -83,11 +83,11 @@
 
             <ImageButton
                 style="@style/Widget.AppCompat.Button.Borderless"
-                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck"
                 android:layout_width="18dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_open" />
+                android:src="@drawable/ic_select"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
         </LinearLayout>
 
@@ -145,47 +145,12 @@
             <EditText
                 android:id="@+id/et_product_count"
                 style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:autofillHints=""
-                android:background="@drawable/style_edit_text"
-                android:hint="Адрес"
-                android:inputType="number"
-                android:maxLines="1"
-                android:paddingStart="16dp"
-                android:paddingTop="0dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="0dp"
-                android:textColorHint="#8C162344"
-
-                tools:ignore="LabelFor,TextFields" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_сontact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_product_count"
-            app:layout_flexGrow="1">
-
-            <EditText
-                android:id="@+id/et_contact"
-                style="@style/TextAppearance.MaterialComponents.Body1"
                 tools:ignore="LabelFor,TextFields"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
                 android:background="@drawable/style_edit_text"
-                android:hint="Контактное лицо"
+                android:hint="Количество"
                 android:inputType="number"
                 android:maxLines="1"
                 android:paddingStart="16dp"
@@ -195,42 +160,38 @@
 
                 android:textColorHint="#8C162344" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_number"
+            android:id="@+id/til_product_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
-            android:layout_weight="1"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="false"
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_сontact"
-            app:layout_flexGrow="1">
+            app:layout_constraintTop_toBottomOf="@+id/til_product_count">
 
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/et_product_description"
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:autofillHints=""
                 android:background="@drawable/style_edit_text"
-                android:hint="Телфон"
-                android:inputType="number"
-                android:maxLines="1"
+                android:hint="Краткое описание"
+                android:inputType="textMultiLine"
                 android:paddingStart="16dp"
-                android:paddingTop="0dp"
+                android:paddingTop="10dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="0dp"
+                android:paddingBottom="10dp"
                 android:textColorHint="#8C162344"
-
                 tools:ignore="LabelFor,TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_long_description"
             android:layout_width="match_parent"
@@ -244,7 +205,7 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_number">
+            app:layout_constraintTop_toBottomOf="@+id/til_product_description">
 
             <EditText
                 android:id="@+id/et_long_description"
@@ -273,7 +234,7 @@
             android:background="@drawable/style_list"
 
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_long_description">
@@ -299,7 +260,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_product_images"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -321,6 +282,71 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_product_characteristic" />
 
+        <LinearLayout
+            android:id="@+id/ll_add_product_connections"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/style_list"
+
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="929dp">
+
+            <TextView
+                android:id="@+id/tv_add_product_connections_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/selector_dropdown"
+                android:text="Способы связи"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableRight="@drawable/selector_checkbox"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Сообщения"
+            android:textColor="@color/big_stone"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/call"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ll_add_product_connections" />
+
+        <CheckBox
+            android:id="@+id/call"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/selector_checkbox"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Сообщения и звонки"
+            android:textColor="@color/big_stone"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/message" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
             style="@style/BoldTextView"
@@ -335,11 +361,11 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_product_images" />
+            app:layout_constraintTop_toBottomOf="@+id/message" />
 
         <Button
             android:id="@+id/btn_save_draft"
@@ -355,7 +381,7 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -373,7 +399,7 @@
             android:backgroundTint="@drawable/selector_blue_button"
             android:letterSpacing="0.01"
 
-            android:text="Создать"
+            android:text="Сохранить"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -385,6 +411,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_save_draft"
             app:layout_constraintVertical_bias="0.0" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

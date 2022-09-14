@@ -50,8 +50,9 @@ class EditMyTenderFragment : BaseFragment<EditMyTenderFragmentBinding>(EditMyTen
            tvProductPrice.text = model.price
            tvProductDescription.text=model.description
            rvProductImages.apply {
-               val adapter=ImageAdapter()
-               adapter.items= model.images!!.map { it.file }
+               val myAdapter=ImageAdapter()
+              myAdapter.items= model.images!!.map { it.file }
+               adapter=myAdapter
            }
            tvProductLocation.text=model.location
 

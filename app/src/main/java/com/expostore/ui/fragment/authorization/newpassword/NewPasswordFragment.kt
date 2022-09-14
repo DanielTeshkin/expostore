@@ -19,4 +19,5 @@ import dagger.hilt.android.AndroidEntryPoint
 class NewPasswordFragment : BaseFragment<NewPasswordFragmentBinding>(NewPasswordFragmentBinding::inflate) {
 
 
+
 }

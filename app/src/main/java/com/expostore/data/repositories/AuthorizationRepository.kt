@@ -62,5 +62,6 @@ class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWork
         emit(handleOrDefault(ConfirmCodeResponseData()){apiWorker.resetPassword(request)})
     }
 
-    suspend fun saveToken( refresh:String,access:String) = localWorker.saveToken(TokenModel(refresh,access))
+   fun saveToken( refresh:String,access:String) = localWorker.saveToken(TokenModel(refresh,access))
+    fun getToken()=localWorker.getToken()
 }

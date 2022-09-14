@@ -74,8 +74,6 @@ class LoginViewModel @Inject constructor(
         navigationTo(LoginFragmentDirections.actionLoginFragmentToConfirmNumberPass())
     }
 
-
-
     fun navigateBack(view: View) {
         navController = Navigation.findNavController(view)
         navController.popBackStack()

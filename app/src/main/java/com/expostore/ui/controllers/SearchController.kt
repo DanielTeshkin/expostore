@@ -12,7 +12,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
 
-class SearchController(private val binding:SearchFragmentBinding, private val context: Context) :BaseProductController(),OnMapReadyCallback {
+class SearchController(private val binding:SearchFragmentBinding, private val context: Context) :BaseProductController(context),OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
     private val myAdapter: ProductsAdapter by lazy { ProductsAdapter(context) }

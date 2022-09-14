@@ -3,6 +3,7 @@ package com.expostore.ui.controllers
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseProductViewModel
@@ -14,13 +15,14 @@ import com.expostore.ui.general.other.showBottomSheet
 import com.expostore.utils.OnClick
 import com.expostore.utils.TenderCreateImageRecyclerViewAdapter
 
-open class BaseProductController   {
+open class BaseProductController(context: Context)   {
     protected val products = mutableListOf<ProductModel>()
     protected val mAdapter: ProductSelectionAdapter by lazy {
         ProductSelectionAdapter(products)
     }
+    protected val manager=LinearLayoutManager(context)
 
-    fun setEvent(onClickListener: OnClickListener){
+    open fun setEvent(onClickListener: OnClickListener){
         mAdapter.onClick=onClickListener
     }
 

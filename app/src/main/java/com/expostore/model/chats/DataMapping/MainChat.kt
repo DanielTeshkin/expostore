@@ -15,7 +15,7 @@ data class MainChat(val id : String,
   val ChatResponse.toModel:MainChat
       get()=MainChat(
           id=id?:"",
-          itemsChatResponse.orEmpty().map{it.toModel},
+          itemsChatResponse?.map{it.toModel}?: mutableListOf(),
           seller.toModel ?:User(),
           buyer.toModel ?:User(),
           request_user.toModel ?:User()

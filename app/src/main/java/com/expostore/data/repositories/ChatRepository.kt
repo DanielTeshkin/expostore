@@ -12,7 +12,6 @@ import javax.inject.Inject
  */
 class ChatRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker) : BaseRepository() {
 
-
     fun createChat(id: String,flag:String)= flow {
         val result=handleOrDefault(ChatResponse()){apiWorker.createChat(id, flag)}
         emit(result.toModel )

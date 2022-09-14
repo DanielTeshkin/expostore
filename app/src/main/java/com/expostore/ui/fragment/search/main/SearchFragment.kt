@@ -63,10 +63,15 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
         initUI()
         makeStartRequest()
         installSubscribes()
-
         binding.apply {
             searchMapView.onCreate(savedInstanceState)
             searchMapView.getMapAsync(this@SearchFragment)
+
+            location.setOnClickListener {
+                this@SearchFragment.myLocation?.let {
+                    myLocation()
+                }
+            }
         }
     }
 
@@ -130,11 +135,7 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
                     navigateToFilter()
                 }
             }
-            location.setOnClickListener {
-                this@SearchFragment.myLocation?.let {
-                    myLocation()
-                }
-            }
+
         }
     }
 

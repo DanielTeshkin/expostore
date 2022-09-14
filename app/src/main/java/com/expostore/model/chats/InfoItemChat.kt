@@ -39,12 +39,12 @@ data class InfoItemChat(
     }
 
     override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + username.hashCode()
+        var result = name?.hashCode() ?: 0
+        result = 31 * result + (username?.hashCode() ?: 0)
         result = 31 * result + (id_list?.contentHashCode() ?: 0)
         result = 31 * result + (product_names?.contentHashCode() ?: 0)
         result = 31 * result + (id_image?.contentHashCode() ?: 0)
-        result = 31 * result + author.hashCode()
+        result = 31 * result + (author?.hashCode() ?: 0)
         return result
     }
 }

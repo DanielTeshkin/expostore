@@ -23,7 +23,7 @@ class Interceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         // TODO: переделать получение токена, когда будет бд!!!
       //  val token = AppPreferences.getSharedPreferences(context).getString("token", "")
-        val token1= localWorker.get().getToken()?.access
+        val token1= localWorker.get().getToken()
 
 
         Log.wtf("TOKEN", token1)
@@ -64,17 +64,8 @@ class Interceptor @Inject constructor(
     private fun tryReLogin(chain: Interceptor.Chain): Response? {
         val newToken = runBlocking {
             apiWorker.get().refresh(
-                AppPreferences.getSharedPreferences(context).getString(
-                    "refresh",
-                    ""
-                ) ?: ""
-            ).result
-        }
 
-        val newToken1 = runBlocking {
-            apiWorker.get().refresh(
-
-                localWorker.get().getToken()?.refresh?:""
+                localWorker.get().getRefreshToken()?:""
             ).result
         }
        // if (!newToken?.access.isNullOrEmpty()) {
@@ -82,14 +73,14 @@ class Interceptor @Inject constructor(
            //     .putString("token", newToken!!.access)
              //   .putString("refresh", newToken.refresh).apply()
 
-            if (!newToken1?.access.isNullOrEmpty()) {
+            if (!newToken?.access.isNullOrEmpty()) {
                 runBlocking {
                     localWorker.get()
-                        .saveToken(TokenModel(newToken1!!.refresh ?: "", newToken1.access))
+                        .saveToken(TokenModel(newToken!!.refresh ?: "", newToken.access))
                 }
                 val request = chain.request()
                 .newBuilder()
-                .header(AUTHORIZATION, "$BEARER ${newToken1?.access}")
+                .header(AUTHORIZATION, "$BEARER ${newToken?.access}")
                 .build()
             return chain.proceed(request)
         }

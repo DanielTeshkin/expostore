@@ -50,40 +50,30 @@ class DialogViewModel @Inject constructor(
     private val messageText= MutableStateFlow<String?>(null)
     private val _saveFile= MutableStateFlow<ResponseState<SaveFileResponseData>>(ResponseState.Loading(false))
     val saveFile= _saveFile.asStateFlow()
-    
-
     override fun onStart() {
     }
 
-    fun updateMessages(id:String){
-        update=viewModelScope.repeat(5000){
-                      chatRepository.chatItem(id).handleResult(_item)}
-    }
-
+    fun updateMessages(id:String){ update=viewModelScope.repeat(5000){
+                      chatRepository.chatItem(id).handleResult(_item)} }
     fun sentMessageOrUpdate(id: String, body: MessageRequest)= chatRepository.postMessage(id,body).handleResult(_message)
-
-      fun saveMessageText(text:String){
+    fun saveMessageText(text:String){
           messageText.value=text
       }
-
     fun sendImages(id: String,list: List<String>)= sentMessageOrUpdate(id, MessageRequest(text =messageText.value, images = list as ArrayList<String>) )
     fun sendFiles(id: String,list: List<String>)=sentMessageOrUpdate(id, MessageRequest(text =messageText.value, chatFiles = list as ArrayList<String>) )
     fun saveFile(uris: List<SaveFileRequestData>)=multimediaRepository.saveFileBase64(uris).handleResult(_saveFile)
-
     fun saveImageNetwork(images: List<Bitmap>?= listOf()){
         val list = mutableListOf<SaveImageRequestData>()
         ImageMessage().encodeBitmapList(images as ArrayList<Bitmap>).map {
             list.add(SaveImageRequestData(it,"png"))
         }
         multimediaRepository.saveImage(list).handleResult(_save)
-
     }
     fun stopUpdate() {
         viewModelScope.launch {
             update.cancel()
         }
     }
-
     }
 
 

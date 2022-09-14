@@ -32,9 +32,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-/**
- * @author Fedotov Yakov
- */
+
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 typealias Show<T> = (T) -> Unit
 typealias Load = (Boolean) -> Unit
@@ -123,6 +121,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         when(state){
             is ResponseState.Error->handleError(state.throwable.message!!)
             is ResponseState.Success -> show.invoke(state.item)
+            else -> {}
         }
     }
 
@@ -148,7 +147,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
 
 
 
-    protected fun handleError(message:String){
+    private fun handleError(message:String){
         Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
     }
 

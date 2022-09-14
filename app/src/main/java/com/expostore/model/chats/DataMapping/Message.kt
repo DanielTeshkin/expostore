@@ -34,7 +34,7 @@ get() = Message(id,images.orEmpty().map { it.toModel },
     dateCreated,
     status,
     author,
-    chatFiles?.map { it.toModel })
+    chatFiles.map { it.toModel })
 
 fun <T> List<T>.cast():ArrayList<T>{
   return  this as ArrayList<T>

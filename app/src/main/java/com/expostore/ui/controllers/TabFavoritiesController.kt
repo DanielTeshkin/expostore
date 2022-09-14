@@ -12,21 +12,22 @@ import com.expostore.model.product.ProductModel
 import com.expostore.ui.fragment.category.OnClickListener
 import com.expostore.utils.FavoritesProductRecyclerViewAdapter
 
-class TabFavoritesController(private val binding: TabFavoritesFragmentBinding, private val context:Context) {
-    val products= mutableListOf<FavoriteProduct>()
-     private val myAdapter :FavoritesProductRecyclerViewAdapter by lazy{ FavoritesProductRecyclerViewAdapter(products = products) }
-
+class TabFavoritesController(private val
+                             binding: TabFavoritesFragmentBinding,context: Context)
+    :BaseProductController(context) {
+    private val productList= mutableListOf<FavoriteProduct>()
+     private val myAdapter :FavoritesProductRecyclerViewAdapter by lazy{
+         FavoritesProductRecyclerViewAdapter(products = productList) }
     fun showFavorites(item: List<FavoriteProduct>) {
-        products.addAll(item)
+        productList.addAll(item)
         binding.apply {
             rvFavorites.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = manager
                 adapter=myAdapter
                 progressBar4.visibility = View.GONE
             }
         }
     }
 
-
-    fun setEvent(onClick:OnClickListener) {myAdapter.onClickListener=onClick }
+    override fun setEvent(onClick:OnClickListener) {myAdapter.onClickListener=onClick }
 }

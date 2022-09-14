@@ -3,9 +3,11 @@ package com.expostore.ui.controllers
 import android.content.Context
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.category.toRequestCreate
+import com.expostore.model.product.Character
 import com.expostore.ui.general.CharacteristicState
 import com.expostore.ui.general.CharacteristicsStateModel
 import com.expostore.ui.general.UiCharacteristicState
+import com.expostore.ui.general.toCharacteristicState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -14,6 +16,11 @@ open class BaseCharacteristicController(context:Context) : ControllerUI(context)
     private val _characteristicState= MutableStateFlow(CharacteristicsStateModel())
     protected val characteristicState=_characteristicState.asStateFlow()
     val list= mutableListOf("")
+
+
+    fun saveCharacteristic(characteristics:List<Character>){
+        _characteristicState.value=characteristics.toCharacteristicState()
+    }
 
     override fun inputListener(left: String, right: String?, name: String) =_characteristicState.value.inputStateModel.state.set(name, Pair(left,right))
     override fun radioListener(id: String, name: String) = _characteristicState.value.radioStateModel.state.set(name, id)
@@ -28,9 +35,7 @@ open class BaseCharacteristicController(context:Context) : ControllerUI(context)
     override fun checkBoxListener(name: String, checked: Boolean) =_characteristicState.value
     .checkBoxStateModel.state.set(name, checked)
 
-
-
-    protected fun characteristicLoad()=saveCharacteristicsState().map { it?.toRequestCreate }
+    fun characteristicLoad()=saveCharacteristicsState().map { it?.toRequestCreate }
     private fun saveCharacteristicsState(
 
     ): List<CharacteristicFilterModel?> =

@@ -18,12 +18,16 @@ class RadioViewHolder(
     override fun bind(categoryCharacteristicModel: CategoryCharacteristicModel) {
         val list=ArrayList<String>()
         binding.etCity.hint=categoryCharacteristicModel.name
-        if (characteristicsStateModel!=null) binding.etCity.setText(characteristicsStateModel.radioStateModel?.state?.get(categoryCharacteristicModel.id) ?: "")
         val hashMap=LinkedHashMap<String,String>()
         categoryCharacteristicModel.listValue.map {
+            if (characteristicsStateModel!=null)
+                if (it.id== characteristicsStateModel
+                        .radioStateModel.state[categoryCharacteristicModel.id] ?: "")
+                binding.etCity.setText(it.value)
             list.add(it.value?:"")
             hashMap.put(it.value?:"",it.id?:"")
         }
+
 
         val array =list.toTypedArray()
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(ourContext, R.layout.simple_dropdown_item_1line, array)

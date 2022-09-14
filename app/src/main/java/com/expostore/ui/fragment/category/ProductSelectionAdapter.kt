@@ -30,13 +30,13 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
     inner class SelectionProductViewHolder(val binding: SearchProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductModel) {
             val  adapter=ImageAdapter()
+            adapter.onItemClickListener={onClick?.onClickProduct(item)}
             adapter.items=item.images.map { it.file }
             binding.apply {
                 name.text=item.name
                 price.text=item.price
                 description.text=item.shortDescription
                 address.text= "Адрес"+" "+ item.shop.address
-                adapter.onItemClickListener={onClick?.onClickProduct(item)}
                 viewPager.adapter=adapter
                 like.isChecked=item.isLiked
                 like.click { onClick?.onClickLike(item.id) }

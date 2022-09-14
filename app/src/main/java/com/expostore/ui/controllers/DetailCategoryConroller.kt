@@ -12,14 +12,14 @@ import com.expostore.ui.fragment.category.ProductSelectionAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
-class DetailCategoryController(
-    private val binding:DetailCategoryFragmentBinding):BaseProductController() {
+class DetailCategoryController(context: Context,
+    private val binding:DetailCategoryFragmentBinding):BaseProductController(context) {
     fun showUI(model: SelectionModel) {
         binding.apply {
             tvCategoryName.text=model.name
-            rvDetailProduct.apply {
-                layoutManager= LinearLayoutManager(context)
-               products.addAll(model.products)
+                 rvDetailProduct.apply {
+                layoutManager= manager
+                products.addAll(model.products)
                 adapter=mAdapter
             }
         }

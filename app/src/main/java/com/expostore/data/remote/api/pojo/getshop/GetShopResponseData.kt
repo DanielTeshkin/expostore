@@ -1,6 +1,7 @@
 package com.expostore.data.remote.api.pojo.getshop
 
 import com.expostore.data.remote.api.pojo.getreviews.Review
+import com.expostore.data.remote.api.response.ImageResponse
 import com.expostore.data.remote.api.response.ProductResponse
 import com.google.gson.annotations.SerializedName
 
@@ -14,7 +15,7 @@ data class GetShopResponseData(
         @SerializedName("address")  val address: String="",
         @SerializedName("lat") val lat: String="",
         @SerializedName("long") val long: String="",
-        @SerializedName("image") val image: String="",
+        @SerializedName("image") val image: ImageResponse=ImageResponse(),
         @SerializedName("phone") val phone: String="",
 
         )

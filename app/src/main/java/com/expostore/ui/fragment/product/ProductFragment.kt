@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.ProductFragmentBinding
 import com.expostore.extension.lastElement
@@ -53,6 +54,7 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
         private val reviewAdapter:ReviewRecyclerViewAdapter by lazy {
             ReviewRecyclerViewAdapter(reviewsList,onClickImage)
         }
+        override var isBottomNavViewVisible: Boolean = false
 
 
         @SuppressLint("ClickableViewAccessibility")
@@ -119,6 +121,7 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
                   setFragmentResult("shop", bundleOf("model" to model.shop.id))
                   productViewModel.navigationToShop()
               }
+                btnBack.click { productViewModel.navigateToBack() }
                 editNote.click { productViewModel.navigationToNote() }
                 categoryOpen.apply {
                     character.visible(model.characteristics.isNotEmpty())
@@ -136,6 +139,7 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
 
         private fun observeNavigation(){
             productViewModel.apply {
+                start(findNavController())
                 subscribe(navigation){navigateSafety(it)}
                 subscribe(visible){initPriceHistoryButton(it)}
                 subscribe(visibleInstruction){instructionInit(it)}
@@ -159,9 +163,6 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
               presentationOpen.click { productViewModel.navigateToPresentation() }
             }
         }
-
-
-
 
         override fun onMapReady(map: GoogleMap) {
 

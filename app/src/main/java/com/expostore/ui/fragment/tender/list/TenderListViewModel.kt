@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.tender.list
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
@@ -7,6 +8,10 @@ import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.BaseViewModel
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
+import com.expostore.ui.fragment.chats.chatsId
+import com.expostore.ui.fragment.chats.identify
+import com.expostore.ui.fragment.chats.imagesProduct
+import com.expostore.ui.fragment.chats.productsName
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.tender.TenderInteractor
 
@@ -45,7 +50,23 @@ class TenderListViewModel @Inject constructor( private val interactor: TenderInt
    private fun navigateToOpen(){
         navigationTo(TenderListFragmentDirections.actionTenderListFragmentToOpenFragment())
     }
-    fun createChat(tender:String) = interactor.chatCreate(tender).handleResult(_chat)
+    fun createChat(tender:String) = interactor.chatCreate(tender).handleResult({
+             Log.i("app","ff")
+    },{ mainChat ->
+        Log.i("chat", mainChat.itemsChat.map { it.tender?.images?.size }.joinToString())
+        Log.i("chat1", mainChat.itemsChat.joinToString { it.messages?.size.toString() })
+        val result = InfoItemChat(
+            mainChat.identify()[1],
+            mainChat.identify()[0],
+            mainChat.chatsId(),
+            mainChat.imagesProduct(),
+            mainChat.productsName(), mainChat.identify()[3]
+
+        )
+        navigateToChat(result)
+    },{Log.i("error",it.message.toString())
+
+    })
     fun navigateToChat(result: InfoItemChat) {
         navigationTo(TenderListFragmentDirections.actionTenderListFragmentToChatFragment(result))
     }

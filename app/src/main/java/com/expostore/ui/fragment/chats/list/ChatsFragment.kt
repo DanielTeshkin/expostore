@@ -1,24 +1,17 @@
 package com.expostore.ui.fragment.chats.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.expostore.data.AppPreferences
 import com.expostore.databinding.ChatsFragmentBinding
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Load
 import com.expostore.ui.fragment.chats.*
-import com.expostore.ui.fragment.main.MainFragmentDirections
-import com.expostore.ui.state.ResponseState
 import com.expostore.utils.OnClick
 import dagger.hilt.android.AndroidEntryPoint
-
 
 /**
  * @author Teshkin Daniel
@@ -36,7 +29,6 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
         super.onViewCreated(view, savedInstanceState)
         subscribeViewModel()
     }
-
     override fun onStart() {
         super.onStart()
         manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -55,13 +47,13 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
         val load:Load={loading(it)}
         chatsViewModel.apply {
             chatsList()
-            singleSubscribe(chats) { handleState(it, load,show)}
+            subscribe(chats) { handleState(it,load,show)}
             subscribe(navigation) { navigateSafety(it) }
         }
     }
  fun loading(state:Boolean){
      when(state){
-       true->  binding.progressBar3.visibility=View.VISIBLE
+         true->  binding.progressBar3.visibility=View.VISIBLE
          false->  binding.progressBar3.visibility=View.GONE
      }
  }

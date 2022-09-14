@@ -11,9 +11,9 @@ import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 
 interface LocalWorker {
-    fun getToken(): TokenModel?
-    suspend fun saveToken(tokenModel: TokenModel)
-   suspend fun removeToken()
+   // fun getToken(): TokenModel?
+  //  suspend fun saveToken(tokenModel: TokenModel)
+//   suspend fun removeToken()
    suspend fun getChats():List<ChatDao>
     suspend fun saveChats(chats:List<MainChat>)
     suspend fun removeChats()
@@ -29,4 +29,9 @@ interface LocalWorker {
     suspend fun getFavoritesProduct():List<FavoriteProductDao>
     suspend fun saveFavorites(list: List<FavoriteProductDao>)
     suspend fun removeFavorites()
+    fun getToken():String?
+    fun getRefreshToken():String?
+    fun saveToken(tokenModel: TokenModel)
+    fun removeToken()
+
 }

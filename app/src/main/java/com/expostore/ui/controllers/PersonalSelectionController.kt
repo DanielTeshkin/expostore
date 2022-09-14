@@ -10,7 +10,7 @@ import com.expostore.ui.fragment.category.personal.DetailPersonalSelectionFragme
 import com.expostore.ui.fragment.profile.profile_edit.click
 
 class PersonalSelectionController(private val context:Context,private val
-                                  binding:DetailPersonalSelectionFragmentBinding,action:()->Unit,action2:()->Unit) :BaseProductController()
+                                  binding:DetailPersonalSelectionFragmentBinding,action:()->Unit,action2:()->Unit) :BaseProductController(context)
 {
     init {
         val popupMenu= PopupMenu(context,binding.menu)

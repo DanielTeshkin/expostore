@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.product
 
+import android.util.Log
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
@@ -34,12 +35,11 @@ class ProductViewModel @Inject constructor(private val interactor: ProductIntera
       val visibleInstruction=_visibleInstruction.asStateFlow()
     val visiblePresentation=_visiblePresentation.asStateFlow()
 
-
-
-
     override fun onStart() {
-        TODO("Not yet implemented")
+        Log.i("fff","ddd")
     }
+    fun navigateToBack()=navController.popBackStack()
+
 
     fun saveProduct(item:ProductModel){
         _product.value=item

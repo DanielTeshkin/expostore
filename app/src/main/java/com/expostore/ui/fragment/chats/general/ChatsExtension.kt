@@ -27,13 +27,20 @@ import java.io.ByteArrayOutputStream
  * @author Teshkin Daniel
  */
 fun MainChat.imagesProduct(): Array<String> {
-    val list= mutableListOf<String>()
-     for (i in itemsChat.indices){
-         if (itemsChat[i].product!=null)list.add(itemsChat[i].product?.images?.get(0)?.file?:"")
-         else if(itemsChat[i].tender!=null) itemsChat[i].tender?.images?.get(0)?.let { list.add(it.file) }
-     }
+    val list = mutableListOf<String>()
+    (itemsChat.indices).forEach { i ->
+        if (!itemsChat[i].product?.id.isNullOrEmpty()) list.add(
+            itemsChat[i].product?.images?.get(0)?.file ?: ""
+        )
+        else if (!itemsChat[i].tender?.id.isNullOrEmpty()) {
+            if(itemsChat[i].tender?.images?.isNotEmpty() == true) itemsChat[i].tender?.images?.get(0)?.let { list.add(it.file) }
+            else list.add("")
 
-   return list.toTypedArray()
+        }
+
+
+    }
+    return list.toTypedArray()
 }
 
 fun MainChat.chatsId():Array<String>{
@@ -60,8 +67,9 @@ fun checkName(user: User):String{
 fun MainChat.productsName():Array<String>{
     val list = mutableListOf<String>()
     for (i in itemsChat.indices){
-        if(itemsChat[i].product!=null) itemsChat[i].product?.name?.let { list.add(it) }
-        else itemsChat[i].tender?.name?.let { list.add(it) }
+        if(!itemsChat[i].product?.id.isNullOrEmpty()) itemsChat[i].product?.name?.let { list.add(it) }
+        else if(!itemsChat[i].tender?.id.isNullOrEmpty())itemsChat[i].tender?.name?.let { list.add(it) }
+        else list.add("")
     }
     return list.toTypedArray()
 }
@@ -86,7 +94,7 @@ fun MainChat.firstMessage():String{
 fun ImageView.loadTabImage(url:String){
     Glide.with(context)
         .load(url)
-        .override(100, 100)
+        .override(160, 160)
         .transform(RoundedCorners(15))
         .into(this)
 }
@@ -121,9 +129,6 @@ fun CoroutineScope.repeat(repeatMillis: Long, action: () -> Unit) = this.launch 
     }
 fun RecyclerView.down(position:Int){
     this.scrollToPosition(position)
-}
-fun RecyclerView.downSmooth(position:Int){
-    this.smoothScrollToPosition(position)
 }
 
 fun ClipData.listPath():ArrayList<Uri>{

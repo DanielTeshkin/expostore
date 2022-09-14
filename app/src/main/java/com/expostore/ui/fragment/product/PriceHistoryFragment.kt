@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.R
 import com.expostore.databinding.PriceHistoryFragmentBinding
 import com.expostore.model.product.PriceHistoryModel
 import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,7 +26,11 @@ class PriceHistoryFragment : BaseFragment<PriceHistoryFragmentBinding>(PriceHist
             layoutManager=LinearLayoutManager(requireContext())
             adapter=PriceHistoryRecyclerView(result.list)
         }
-        subscribe(viewModel.navigation){navigateSafety(it)}
+        binding.btnBack.click { viewModel.navigate() }
+        viewModel.apply {
+            start(findNavController())
+            subscribe(navigation) { navigateSafety(it) }
+        }
     }
 
 }

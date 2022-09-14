@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.comparison
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,9 @@ class ComparisonAdapter :RecyclerView.Adapter<ComparisonAdapter.ComparisonHolder
     override fun getItemCount(): Int =models.size
 
     fun addModels(list:List<ComparisonModel>){
+        models.clear()
         models.addAll(list)
+        Log.i("my",list.size.toString())
+        notifyDataSetChanged()
     }
 }

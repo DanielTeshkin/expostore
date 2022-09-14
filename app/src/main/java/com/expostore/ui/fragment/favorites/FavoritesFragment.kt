@@ -41,6 +41,7 @@ class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragme
     override fun onStart() {
         super.onStart()
         binding.newSelection.click{favoritesViewModel.navigateToCreateSelection()}
+        binding.comparisonBtn.click { favoritesViewModel.navigateToComparison() }
     }
 
     private fun loadSelections(list: List<SelectionModel>){

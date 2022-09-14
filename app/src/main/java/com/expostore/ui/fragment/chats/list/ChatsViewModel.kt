@@ -39,7 +39,7 @@ class ChatsViewModel @Inject constructor(private val chatRepository: ChatReposit
     fun getToken(){
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                token.value=chatRepository.getToken()?.access
+                token.value=chatRepository.getToken()
             }
             check()
         }

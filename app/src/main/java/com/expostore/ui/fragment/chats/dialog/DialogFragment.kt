@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.collect
         }
         state { PagerChatRepository.getInstance().getUriFiles().collect {
             if (it.isNotEmpty())controller.filesRv(it as MutableList<Uri>)
-            Log.i("size",it.size.toString())
         }
         }
 

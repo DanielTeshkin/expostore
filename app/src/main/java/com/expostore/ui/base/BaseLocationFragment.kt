@@ -46,6 +46,10 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
             LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fetchLocation()
+    }
 
 
 

@@ -17,13 +17,8 @@ class ChatViewModel @Inject constructor( private val repository: ChatRepository)
     private val _name= MutableStateFlow("")
      val name=_name.asStateFlow()
    private val _chatId= MutableStateFlow("")
-    val chatId =_chatId.asStateFlow()
-
     private val _info=MutableStateFlow<InfoItemChat?>(InfoItemChat())
     val info=_info.asStateFlow()
-    fun loadName(name:String){
-        _name.value= name
-    }
     fun saveInfo(infoItemChat: InfoItemChat?){
        _info.value=infoItemChat
     }

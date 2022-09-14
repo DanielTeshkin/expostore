@@ -310,6 +310,9 @@
         <action
             android:id="@+id/action_favoritesFragment_to_create_personalProduct"
             app:destination="@id/create_personalProduct" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_comparison"
+            app:destination="@id/comparison" />
     </fragment>
     <fragment
         android:id="@+id/tenderListFragment"

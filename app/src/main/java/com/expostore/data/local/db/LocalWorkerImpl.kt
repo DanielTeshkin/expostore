@@ -1,5 +1,6 @@
 package com.expostore.data.local.db
 import android.content.Context
+import com.expostore.data.AppPreferences
 import com.expostore.data.local.db.enities.AdvertisingDao
 import com.expostore.data.local.db.enities.ProfileDao
 import com.expostore.data.local.db.enities.chat.ChatDao
@@ -16,12 +17,22 @@ import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 
-class LocalWorkerImpl(private val localDataApi: LocalDataApi,context: Context):LocalWorker {
-    override  fun getToken(): TokenModel? = localDataApi.getToken()?.toModel
+class LocalWorkerImpl(private val localDataApi: LocalDataApi, private val context: Context):LocalWorker {
+    override  fun getToken(): String? = AppPreferences.getSharedPreferences(context).getString("token", "")
+    override fun getRefreshToken(): String? =AppPreferences.getSharedPreferences(context).getString(
+        "refresh",
+        ""
+    )
 
-    override suspend fun saveToken(tokenModel: TokenModel) =localDataApi.saveToken(tokenModel.toDao)
+    override fun saveToken(tokenModel: TokenModel) = AppPreferences
+        .getSharedPreferences(context).edit().putString("token", tokenModel.access)
+        .putString("refresh", tokenModel.refresh)
+        .apply()
 
-    override suspend fun removeToken() = localDataApi.removeToken()
+    override  fun removeToken() = AppPreferences
+        .getSharedPreferences(context).edit().putString("token", "")
+        .putString("refresh", "")
+        .apply()
 
     override suspend fun getChats(): List<ChatDao> =localDataApi.getChats()
 

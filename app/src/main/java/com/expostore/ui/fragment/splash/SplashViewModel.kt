@@ -13,7 +13,6 @@ class SplashViewModel (
 
 ) : BaseViewModel() {
 
-
     override fun onStart() {
         navController.navigate(R.id.action_splashFragment_to_mainFragment)
     }

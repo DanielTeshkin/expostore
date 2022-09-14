@@ -135,7 +135,8 @@ class DialogControllerUI(context: Context,
     fun filesRv(uris:MutableList<Uri>){
         visiblePanelFiles(true)
             fileAdapter.addData(uris)
-            flagType=true }
+            flagType=true
+    }
 
     fun imagesRv(uris:MutableList<Uri>){
         visiblePanelMultimedia(true)

@@ -190,8 +190,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/presentation"
+            android:visibility="gone"
 
+            app:layout_constraintBottom_toTopOf="@+id/presentation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_description">
@@ -232,7 +233,7 @@
 
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/instruction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -272,9 +273,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="40dp"
             android:orientation="horizontal"
 
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/divider_my"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -312,6 +313,7 @@
             android:id="@+id/divider_my"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="32dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toTopOf="@+id/tv_product_note_title"
             app:layout_constraintEnd_toEndOf="parent"

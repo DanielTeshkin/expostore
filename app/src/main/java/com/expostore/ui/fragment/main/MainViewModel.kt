@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
     val uiState = _uiState.asSharedFlow()
     private val _profileModel = MutableStateFlow<ProfileModel>(ProfileModel())
     val profileModel = _profileModel.asStateFlow()
-     val token=MutableStateFlow<TokenModel>(TokenModel())
+     val token=MutableStateFlow("")
     private val _selection=MutableSharedFlow<ResponseState<List<SelectionModel>>>()
             val selection=_selection.asSharedFlow()
     private val _profile=MutableSharedFlow<ResponseState<ProfileModel>>()
@@ -83,7 +83,7 @@ class MainViewModel @Inject constructor(
    }
 
     fun navigateToProfileOrOpen(){
-        when(token.value.access.isNullOrEmpty()){
+        when(token.value.isNullOrEmpty()){
             true->navigateToOpen()
             false->navigateToProfile()
         }
@@ -100,7 +100,7 @@ class MainViewModel @Inject constructor(
       }
   }
     fun navigateToCreateProductOrOpen(){
-        when(token.value.access.isNullOrEmpty()){
+        when(token.value.isNullOrEmpty()){
             true->navigateToOpen()
             false-> {
                 if (profileModel.value.shop!=null)

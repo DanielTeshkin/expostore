@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.authorization.registration.createpassword
 
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.ui.base.BaseViewModel
@@ -9,6 +10,7 @@ import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 /**
  * @author Teshkin Daniel
@@ -22,6 +24,7 @@ class CreatePasswordViewModel @Inject constructor(private val registration: Auth
 
     fun signUp(phone: String, password: String) {
         registration.createPassword(phone,password).handleResult(_ui,{
+            saveToken(it.refresh?:"",it.access?:"")
             navigationTo(CreatePasswordFragmentDirections.actionCreatePasswordFragmentToCompletionFragment())
         })
     }
@@ -32,6 +35,10 @@ class CreatePasswordViewModel @Inject constructor(private val registration: Auth
         }
 
     }
+    private fun saveToken(refresh:String, access:String) =
+        viewModelScope.launch {
+          registration.saveToken(refresh, access)
+        }
     fun backEnd(){
         navigationTo(CreatePasswordFragmentDirections.actionCreatePasswordFragmentToConfirmNumberFragment())
     }

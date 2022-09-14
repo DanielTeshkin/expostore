@@ -10,9 +10,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
-/**
- * @author Fedotov Yakov
- */
+
 fun ImageView.load(url: String) {
     Glide.with(context)
         .load(url)

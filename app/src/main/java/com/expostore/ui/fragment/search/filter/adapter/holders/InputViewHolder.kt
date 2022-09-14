@@ -22,12 +22,12 @@ class InputViewHolder(
             end.hint="До"
             if (characteristicsStateModel!=null) {
                 start.setText(
-                    characteristicsStateModel.inputStateModel?.state
+                    characteristicsStateModel.inputStateModel.state
                         ?.get(categoryCharacteristicModel.name)?.first
                 )
                 end.setText(
-                    characteristicsStateModel.inputStateModel?.state
-                        ?.get(categoryCharacteristicModel.name)?.second
+                    characteristicsStateModel.inputStateModel.state
+                        .get(categoryCharacteristicModel.name)?.second
                 )
 
             }

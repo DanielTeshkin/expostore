@@ -9,14 +9,14 @@ import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import com.expostore.ui.fragment.category.ProductSelectionAdapter
 
-class ShopPageController(private val binding:ShopFragmentBinding):BaseProductController() {
+class ShopPageController(private val binding:ShopFragmentBinding,private val context: Context):BaseProductController(context) {
      fun setupInfoShop(data: GetShopResponseData) {
         binding.apply {
             tvShopName.text = data.name
             tvShopAddress.text = data.address
             tvShopShoppingCenter.text = data.shoppingCenter
-            ivAvatar.load(data.image)
-            ivBackground.load(data.image)
+            ivAvatar.load(data.image.file)
+            ivBackground.load(data.image.file)
             products.addAll(data.products.map { it.toModel })
             rvShopProducts.apply {
                 layoutManager = LinearLayoutManager(context)

@@ -12,6 +12,8 @@ import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.base.Show
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.general.ProfileDataViewModel
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -36,6 +38,10 @@ class CompletionFragment : BaseFragment<CompletionFragmentBinding>(CompletionFra
 
     override fun onStart() {
         super.onStart()
+       FirebaseMessaging.getInstance().token.addOnCompleteListener {
+           val token=  it.result
+           completionViewModel.saveToken(token)
+       }
         initButtons()
         addChangeTextListeners()
     }

@@ -1,5 +1,7 @@
 package com.expostore.ui.fragment.comparison
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +9,7 @@ import com.expostore.databinding.ComparisonItemBinding
 import com.expostore.databinding.ItemImageBinding
 import com.expostore.extension.load
 import com.expostore.model.product.ProductModel
+import com.expostore.ui.fragment.chats.loadTabImage
 import com.expostore.ui.fragment.profile.profile_edit.click
 
 class PagerComparisonAdapter : RecyclerView.Adapter<PagerComparisonAdapter.PagerComparisonViewHolder>() {
@@ -15,9 +18,12 @@ class PagerComparisonAdapter : RecyclerView.Adapter<PagerComparisonAdapter.Pager
     var onDeleteClickListener: ((String) -> Unit)? = null
 
     var items: List<ProductModel> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
-            if (field.isNotEmpty()) notifyDataSetChanged()
+            if (field.isNotEmpty()) {
+                notifyDataSetChanged()
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -44,7 +50,8 @@ class PagerComparisonAdapter : RecyclerView.Adapter<PagerComparisonAdapter.Pager
 
         fun bind(model:ProductModel) {
               binding.apply {
-                  iconProduct.load(model.images[0].file)
+                  Log.i("im",model.images[0].file)
+                  iconProduct.loadTabImage(model.images[0].file)
                   nameProduct.text=model.name
                   priceProduct.text=model.price
                   delete.click { onDeleteClickListener?.invoke(model.id) }

@@ -45,8 +45,7 @@ class FavoritesProductRecyclerViewAdapter(
             val product= item.product
             binding.price.text=product.price.priceSeparator() +" " +"рублей"
             val list=ArrayList<String>()
-
-           product.images.map { list.add(it.file) }
+            product.images.map { list.add(it.file) }
             binding.name.text = product.name
             binding.viewPager.apply {
                val tabProductPagerAdapter=ImageAdapter()

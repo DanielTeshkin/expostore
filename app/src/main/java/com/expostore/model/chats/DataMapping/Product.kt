@@ -14,7 +14,7 @@ val ProductResponse.toModel:Product
          get() = Product(
              id =id,
              name =name,
-           images.orEmpty().map { it.toModel }
+           images.map { it.toModel }
          )
 
 val ProductDao.toModel : Product

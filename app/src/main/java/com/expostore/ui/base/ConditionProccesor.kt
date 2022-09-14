@@ -1,16 +1,18 @@
 package com.expostore.ui.base
 
+import android.util.Log
+
 class ConditionProcessor {
     private val list= mutableListOf<String>()
    fun  checkCondition(condition: () ->Boolean,
                                 actionFalse:(()->Unit)?=null,
                                 actionTrue:(() ->Unit)?=null){
         when(condition.invoke()){
-            true ->actionTrue?.invoke()
+            true ->{ actionTrue?.invoke()}
             false->actionFalse?.invoke()
         }
 
-    }
+   }
     fun  checkMultiCondition( vararg action: () ->Boolean,
                                 conditionFalse:()->Unit,
                                 conditionTrue:() ->Unit){
@@ -45,11 +47,10 @@ class ConditionProcessor {
         }
 
     }
-
+    fun <T,A> lop(list:List<T>,mapper: Mapper<T,A>) : List<A> = list.map{mapper.invoke(it)}
     fun Test(){
-         checkCondition( {list.isEmpty()}, { gett("") }, { print("")} )
+        val a=0
+         checkCondition( { a in 1 downTo 0 }, { ""}, { print("")} )
     }
-    fun gett(string: String){
 
-    }
 }

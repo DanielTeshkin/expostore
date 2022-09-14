@@ -18,7 +18,8 @@ class SingleInputViewHolder(
                             ) {
     override fun bind(categoryCharacteristicModel: CategoryCharacteristicModel) {
         binding.title.text=categoryCharacteristicModel.name
-        if (characteristicsStateModel!=null) binding.start.setText(characteristicsStateModel.inputStateModel?.state
+        if (characteristicsStateModel!=null) binding.start.setText(
+            characteristicsStateModel.inputStateModel.state
             ?.get(categoryCharacteristicModel.id)?.first)
         binding.start.addTextChangedListener {
             state?.inputListener(left = it.toString(), name = categoryCharacteristicModel.id)

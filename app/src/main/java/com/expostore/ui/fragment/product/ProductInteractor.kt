@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.product
 
 import android.graphics.Bitmap
 import android.net.Uri
+import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.remote.api.request.ProductUpdateRequest
@@ -124,7 +125,7 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
     }
     private fun characteristicLoad()=saveCharacteristicsState().map { it?.toRequestCreate }
 
-    fun createRequest()= createProductRequest(count.value.toInt(), name.value,price.value,
+    private fun createRequest()= createProductRequest(count.value.toInt(), name.value,price.value,
         longDescription.value, shortDescription.value, imageList.value, connectionType.value,
         characteristicLoad(),
         category = category.value)
@@ -134,11 +135,10 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
     fun updateProduct(id:String,request: ProductUpdateRequest)= productsRepository.updateProduct(id, request)
     fun getCategories()=categoryRepository.getCategories()
     fun getCategoryCharacteristic(id:String)=categoryRepository.getCategoryCharacteristic(id)
-    fun saveImage(resource:Bitmap): Flow<SaveImageResponseData> = multimediaRepository.saveImage(imageData(resource))
-    private fun imageData(resource: Bitmap):MutableList<SaveImageRequestData>{
-        val bitmapList=ArrayList<Bitmap>()
-        bitmapList.add(resource)
-        val path= ImageMessage().encodeBitmapList(bitmapList)
+    fun saveImage(resources:List<Bitmap>): Flow<SaveImageResponseData> = multimediaRepository.saveImage(imageData(resources))
+    private fun imageData(resources: List<Bitmap>):MutableList<SaveImageRequestData>{
+
+        val path= ImageMessage().encodeBitmapList(resources as ArrayList<Bitmap>)
         val images = mutableListOf<SaveImageRequestData>()
         path.map { images.add(SaveImageRequestData(it,"png")) }
         return images
@@ -160,5 +160,7 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
     fun load(status:String)=productsRepository.load(status)
     fun createChat(id: String)=chatRepository.createChat(id,"product")
     fun createPersonalProduct()=productsRepository.createPersonalProduct(PersonalProductRequest())
+    fun saveFile(requestData: List<SaveFileRequestData>)=
+        multimediaRepository.saveFileBase64(requestData)
 
 }

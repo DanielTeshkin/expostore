@@ -68,7 +68,9 @@ fun createProductRequest(count:Int?,name:String,
                          images:MutableList<String>,
                          communicationType: String?,
                          characteristics: List<CharacteristicRequest?> = listOf() ,
-                         category: String?
+                         category: String?,
+                         presentation: String?=null,
+                         instruction: String?=null
 ) =
     ProductUpdateRequest(count = count,
         name = name, price = price,
@@ -77,7 +79,9 @@ fun createProductRequest(count:Int?,name:String,
         images = images,
         communicationType = communicationType,
         characteristics = characteristics,
-        category = category
+        category = category,
+        presentation = presentation,
+        instruction = instruction
     )
 data class ProductUpdateRequest(
 
@@ -108,13 +112,17 @@ data class ProductUpdateRequest(
                           @field:SerializedName("category")
                           val category: String? = null,
 
-
-
-
-
-
-
-
                           @field:SerializedName("communication_type")
-                          val communicationType: String? = null)
+                          val communicationType: String? = null,
+                          @field:SerializedName("instruction")
+                          val instruction: String? = null,
+
+    @field:SerializedName("presentation")
+val presentation: String? = null
+
+
+
+
+
+)
 

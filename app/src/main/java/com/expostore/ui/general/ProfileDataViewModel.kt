@@ -36,13 +36,17 @@ class ProfileDataViewModel @Inject constructor(private val authorizationReposito
     private val email= MutableStateFlow("")
     private val _change= MutableSharedFlow<ResponseState<EditResponseProfile>>()
     val change=_change.asSharedFlow()
+    private val fcmToken= MutableStateFlow("")
 
+    fun saveToken(token:String){
+        fcmToken.value=token
+    }
     fun editProfile(){
         val requestData= EditProfileRequestData(last_name = surname.value, first_name = name.value,
             patronymic = patronymic.value, city = city.value, email = email.value)
-        authorizationRepository.editProfile(requestData).handleResult(_ui) {
+        authorizationRepository.editProfile(requestData).handleResult(_ui, {
             navigationTo(CompletionFragmentDirections.actionCompletionFragmentToMainFragment())
-        }
+        })
     }
     fun patchProfile() {
         val request = EditProfileRequest(
