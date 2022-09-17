@@ -30,8 +30,7 @@ class ComparisonFragment : BaseFragment<ComparisonFragmentBinding>(ComparisonFra
         viewModel.apply {
             startComparison()
             subscribe(productState){handleState(it){initAdapter(it)}}
-            subscribe(currentPositionFirst) { binding.current.text = "$it из ${products.value.size}" }
-            subscribe(currentPositionSecond){binding.currentN.text="$it из ${products.value.size}"}
+
             subscribe(characteristicsResponse){ handleState(it){ comparisonAdapter.addModels(it)
             }}
             subscribe(navigation){navigateSafety(it)}
@@ -41,7 +40,12 @@ class ComparisonFragment : BaseFragment<ComparisonFragmentBinding>(ComparisonFra
 
 
 
+    @SuppressLint("SetTextI18n")
     private fun initAdapter(list: List<ProductModel>){
+        viewModel.apply {
+            subscribe(currentPositionFirst) { binding.current.text = "$it из ${products.value.size}" }
+            subscribe(currentPositionSecond){binding.currentN.text="$it из ${products.value.size}"}
+        }
         binding.apply {
             Log.i("aaa",list.size.toString())
             val myAdapter=PagerComparisonAdapter()
@@ -51,43 +55,39 @@ class ComparisonFragment : BaseFragment<ComparisonFragmentBinding>(ComparisonFra
 
             pager1.adapter=myAdapter
             pager2.adapter=myAdapter
-            //viewModel.compar()
-            pager1.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                  //  viewModel
-                    //    .comparison(position,pager2.currentItem)
-                }
-            })
-            pager2.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    //viewModel
-                    //   .comparison(pager1.currentItem,position)
-                }
-            })
+            if (list.isNotEmpty()){
+                pager2.currentItem=+1
+
+            }
+            pager1.isUserInputEnabled=false
+            pager2.isUserInputEnabled=false
+
             next.click {
                 if(pager1.currentItem!=list.size-1) {
-                    pager1.currentItem = +1
+                    pager1.currentItem =pager1.currentItem +1
                     viewModel.changePosition1(pager1.currentItem)
+                    viewModel.comparison(pager1.currentItem,pager2.currentItem)
                 }
             }
             previous.click {
                 if(pager1.currentItem!=0) {
-                    pager1.currentItem = -1
+                    pager1.currentItem = pager1.currentItem-1
                     viewModel.changePosition1(pager1.currentItem)
+                    viewModel.comparison(pager1.currentItem,pager2.currentItem)
                 }
             }
             nexct.click {
                 if(pager2.currentItem!=list.size-1) {
                     pager2.currentItem = pager2.currentItem + 1
                     viewModel.changePosition2(pager2.currentItem)
+                    viewModel.comparison(pager1.currentItem,pager2.currentItem)
                 }
             }
             previousNext.click {
                 if( pager2.currentItem!=0) {
-                    pager2.currentItem = -1
+                    pager2.currentItem =pager2.currentItem -1
                     viewModel.changePosition2(pager2.currentItem)
+                    viewModel.comparison(pager1.currentItem,pager2.currentItem)
                 }
             }
 

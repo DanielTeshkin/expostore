@@ -64,7 +64,6 @@ class Interceptor @Inject constructor(
     private fun tryReLogin(chain: Interceptor.Chain): Response? {
         val newToken = runBlocking {
             apiWorker.get().refresh(
-
                 localWorker.get().getRefreshToken()?:""
             ).result
         }

@@ -39,8 +39,8 @@ class SearchFilterViewModel @Inject constructor(
     private val _characteristics=MutableSharedFlow<ResponseState<List<CategoryCharacteristicModel>>>()
     val characteristics=_characteristics.asSharedFlow()
     val category= MutableStateFlow<ProductCategoryModel?>(null)
-    private val filterInputList= MutableStateFlow<InputStateModel>(InputStateModel(hashMapOf()))
-    private val filterSelectList= MutableStateFlow<SelectStateModel>(SelectStateModel(hashMapOf()))
+    private val filterInputList= MutableStateFlow(InputStateModel(hashMapOf()))
+    private val filterSelectList= MutableStateFlow(SelectStateModel(hashMapOf()))
     private val filterRadioList= MutableStateFlow(RadioStateModel(hashMapOf()))
     private val filterCheckBox= MutableStateFlow(CheckBoxStateModel(hashMapOf()))
     private val _filterCharacteristic= MutableStateFlow<List<CharacteristicFilterModel>>(mutableListOf())
@@ -51,6 +51,9 @@ class SearchFilterViewModel @Inject constructor(
 
     override fun onStart() {
         /* no-op */
+    }
+    init {
+        getCities()
     }
     fun saveCities(cities:List<City>){
         val map= mutableMapOf<String,Int>()
@@ -67,7 +70,7 @@ class SearchFilterViewModel @Inject constructor(
                 priceMin,
                 priceMax,
                 city,
-                category = category.value?.name,
+                category = category.value?.id,
                 characteristics = filterCharacteristic.value
             )
             interactor.searchSave(filterModel, type = flag.value).handleResult(saveSearchResponse)
@@ -84,7 +87,6 @@ class SearchFilterViewModel @Inject constructor(
     }
 
     fun addFilterSelect(name: String,list:List<String>){
-        Log.i("select",name)
         filterSelectList.value.state[name] = list
     }
     fun addFilterRadio(id:String,name: String){
@@ -95,6 +97,7 @@ class SearchFilterViewModel @Inject constructor(
         Log.i("check",name)
         filterCheckBox.value.state[name]=check
     }
+    fun navigateToBack()=navController.popBackStack()
 
     fun searchFilter(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -116,9 +119,7 @@ class SearchFilterViewModel @Inject constructor(
             else if(flag.value=="tender") navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToTenderListFragment(filterModel))
 
     }
-    fun navigateToCategory(){
-        navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToSpecificationsFragment())
-    }
+
    fun navigateToMapChoice()=navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToMapChoice())
 
 

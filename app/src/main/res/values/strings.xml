@@ -89,6 +89,10 @@
     <string name="api_exception_timeout">Истекло время ожидания</string>
     <string name="api_exception_unknown">Неизвестная ошибка</string>
 
+    <string name="button_takePicture">Take Picture</string>
+    <string name="temp_images_dir">temp_images</string>
+    <string name="temp_image">temp_image.jpg</string>
+    <string name="authorities">com.expostore.fileprovider</string>
 
     <plurals name="pick_multi">
         <item quantity="one">Выбрана одна картинка</item>

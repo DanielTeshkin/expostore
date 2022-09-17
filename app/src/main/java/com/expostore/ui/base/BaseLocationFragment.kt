@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,14 +20,18 @@ import com.bumptech.glide.request.transition.Transition
 import com.expostore.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 
 /**
  * @author Fedotov Yakov
  */
 abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: Inflate<Binding>) :
-    BaseFragment<Binding>(inflate) {
+    BaseProductListFragment<Binding>(inflate),OnMapReadyCallback {
 
     var myLocation: Location? = null
         private set
@@ -34,6 +39,7 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
     private var isLocationFind = false
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var googleMap: GoogleMap
 
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -52,12 +58,17 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
     }
 
 
-
-
-
     abstract fun onLocationChange(location: Location)
+    abstract fun myLocation()
 
-    abstract fun onLocationFind(location: Location): Boolean
+   fun onLocationFind(location: Location): Boolean{
+        Log.i("loc", location.latitude.toString())
+        if (!::googleMap.isInitialized) {
+            return false
+        }
+        myLocation()
+        return true
+    }
 
 
 
@@ -113,5 +124,18 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
         return bitmap
+    }
+    protected fun moveToLocation(location: Location, isAnimate: Boolean = true) {
+        val latLng = LatLng(location.latitude, location.longitude)
+        if (isAnimate) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+        } else {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
+        }
+    }
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+        googleMap.uiSettings.isZoomGesturesEnabled = true
+        googleMap.uiSettings.isScrollGesturesEnabled = true
     }
 }

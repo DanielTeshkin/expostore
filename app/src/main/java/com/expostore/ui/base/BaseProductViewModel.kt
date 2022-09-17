@@ -2,6 +2,7 @@ package com.expostore.ui.base
 
 import androidx.navigation.NavDirections
 import com.expostore.data.remote.api.pojo.comparison.ComparisonProductData
+import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseData
 import com.expostore.data.remote.api.request.ProductsSelection
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.data.repositories.ComparisonRepository
@@ -10,6 +11,7 @@ import com.expostore.data.repositories.SelectionRepository
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
+import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.fragment.category.DetailCategoryFragmentDirections
 import com.expostore.ui.fragment.chats.chatsId
@@ -24,7 +26,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
  open class BaseProductViewModel : BaseViewModel() {
-   protected open var interactor:BaseProductInteractor?=null
+   protected open var interactor:BaseItemsInteractor<ProductModel, SelectFavoriteResponseData, FavoriteProduct>?=null
    private val _chat= MutableSharedFlow<ResponseState<MainChat>>()
     private val chatData= MutableStateFlow(InfoItemChat())
    open var flag:String="product"
@@ -33,7 +35,6 @@ import javax.inject.Inject
     override fun onStart() {
 
     }
-
 
      fun getSelections()= interactor?.getSelections()?.handleResult(_selections)
 

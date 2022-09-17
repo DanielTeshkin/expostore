@@ -33,6 +33,7 @@ class RadioViewHolder(
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(ourContext, R.layout.simple_dropdown_item_1line, array)
         binding.etCity.setAdapter(adapter)
         binding.etCity.addTextChangedListener {
+            if(hashMap.containsKey(it.toString()))
             state?.radioListener(hashMap.getValue(it.toString()),categoryCharacteristicModel.id)
         }
     }

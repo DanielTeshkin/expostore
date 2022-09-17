@@ -41,6 +41,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
     Fragment() {
     private var _binding: Binding? = null
     protected val binding get() = _binding!!
+    protected val processor=ConditionProcessor()
 
     /**
      * Поле, хранящее значение первый раз ли вызывается onResume

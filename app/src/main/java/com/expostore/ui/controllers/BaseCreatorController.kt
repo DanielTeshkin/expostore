@@ -37,6 +37,7 @@ abstract class BaseCreatorController(
 
 ):BaseCharacteristicController(context),
     ImagesEdit {
+    val list= mutableListOf (" ")
     protected  val mAdapter: ProductCreateImageAdapter by lazy {
         ProductCreateImageAdapter(list, this) }
     private val characteristicAdapter: CharacteristicInputRecyclerAdapter by lazy {

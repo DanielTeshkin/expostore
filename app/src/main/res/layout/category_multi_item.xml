@@ -31,7 +31,8 @@
             android:drawableEnd="@drawable/selector_dropdown"
             android:text="Способы связи"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

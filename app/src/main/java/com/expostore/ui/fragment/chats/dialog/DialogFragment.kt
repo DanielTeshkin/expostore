@@ -2,7 +2,6 @@ package com.expostore.ui.fragment.chats.dialog
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.pojo.getchats.*
@@ -23,21 +22,22 @@ import kotlinx.coroutines.flow.collect
     private val viewModel: DialogViewModel by viewModels()
     private val controller by lazy { DialogControllerUI(requireContext(),binding, arguments?.getString("author")!!,
             arguments?.getString("id")!!,
-            requireActivity().supportFragmentManager)
+           requireActivity().supportFragmentManager)
 
     }
     override var isBottomNavViewVisible: Boolean=false
     private val sendText:((String,MessageRequest)->Unit) by lazy {{id,body->viewModel.sentMessageOrUpdate(id,body)}  }
     private val saveFiles:((List<SaveFileRequestData>) -> Unit) by lazy {{data-> viewModel.saveFile(data)} }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.updateMessages( arguments?.getString("id")!!)
         subscribeViewModel()
     }
+
     override fun onStart() {
         super.onStart()
-        controller.apply { initUI(sendText, {viewModel.saveImageNetwork(it)}, childFragmentManager,saveFiles)
+        controller.apply {
+            initUI(sendText, {viewModel.saveImageNetwork(it)},childFragmentManager,saveFiles)
             setupVisibleControllerForTextInput { viewModel.saveMessageText(it) }
         }
         state { PagerChatRepository.getInstance().getUriFiles().collect {
@@ -46,12 +46,14 @@ import kotlinx.coroutines.flow.collect
         }
 
     }
+
+
     private fun subscribeViewModel() {
         viewModel.apply {
             subscribe(item) { handleState(it,loaderFactory { controller.progressBarState() },
                 showFactory {  chat-> chat.messages?.let { messages -> controller.loadOrUpdate(messages) } })
             }
-            subscribe(message) { handleState(it) }
+            subscribe(message) { handleState(it){controller.clearInput()} }
             subscribe(save){ handleState(it,loadFactory { controller.loadingImage()},
                 showFactory
             { controller.sendImages { id-> viewModel.sendImages(id,it.id)}
@@ -64,7 +66,8 @@ import kotlinx.coroutines.flow.collect
         //subscribe(PagerChatRepository.getInstance().getUriFiles()){controller.filesRv(it as MutableList<Uri>)}
     }
     override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
-        controller.imagesRv(uris)
+
+        controller.imagesRv(uris,tag)
     }
 }
 

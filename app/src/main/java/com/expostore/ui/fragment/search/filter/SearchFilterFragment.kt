@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.databinding.SearchFilterFragmentBinding
@@ -34,39 +35,40 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         installBundleResultListeners()
-        val load: Show<List<City>> = { loadCities(it) }
-            val loadCharacteristics:Show<List<CategoryCharacteristicModel>> = { loadCharacteristic(it)}
+        val loadCharacteristics:Show<List<CategoryCharacteristicModel>> = { loadCharacteristic(it)}
         val loadCategories:Show<List<ProductCategoryModel>> = { initBottomCategoriesSheet(it)}
             viewModel.apply {
-                getCities()
+                start(findNavController())
                 subscribe(navigation) { navigateSafety(it) }
-                subscribe(cities) { handleState(it, load) }
+                subscribe(cities) { state -> handleState(state){loadCities(it)} }
                 subscribe(categories){ handleState(it,loadCategories)}
-                    subscribe(characteristics){handleState(it,loadCharacteristics)}
+                subscribe(characteristics){handleState(it,loadCharacteristics)}
             }
-
-            binding.apply {
-                apply.click {
-
-                    viewModel.apply {
+         binding.apply {
+                 apply.click {
+                     viewModel.apply {
                         searchFilter()
-
-                        state {
-
-                            filterCharacteristic.collect {
-                                val result = FilterModel(
-                                    name = searchEt.text.toString(),
-                                    price_min = priceMin.text.toString().toIntOrNull(),
-                                    price_max = priceMax.text.toString().toIntOrNull(),
-                                    city = etCity.text.toString(),
-                                     characteristics = it as MutableList<CharacteristicFilterModel>)
-                                navigateToSearch(result)
-                            }
-                        }
-                    }
+                         val result = FilterModel(
+                             name = searchEt.text.toString(),
+                             price_min = priceMin.text.toString().toIntOrNull(),
+                             price_max = priceMax.text.toString().toIntOrNull(),
+                             city = etCity.text.toString(),
+                             characteristics = filterCharacteristic.value as MutableList<CharacteristicFilterModel>,
+                             category = category.value?.id)
+                              navigateToSearch(result) }
 
                 }
                 select.click { viewModel.navigateToMapChoice() }
+             reset.click {   searchEt.text.clear()
+                  priceMin.text.clear()
+                priceMax.text.clear()
+                 etCity.text.toString()
+                 viewModel.saveCategory(ProductCategoryModel())
+                 myAdapter.removeAll()
+             }
+             back.click { viewModel.navigateToBack() }
+
+
             }
         }
 
@@ -113,6 +115,7 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
         binding.rvFilters.visibility = View.VISIBLE
         myAdapter.addElement(list )
         binding.rvFilters.apply {
+            isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(requireContext())
             adapter = myAdapter
         }

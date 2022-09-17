@@ -4,9 +4,9 @@ import android.util.Log
 
 class ConditionProcessor {
     private val list= mutableListOf<String>()
-   fun  checkCondition(condition: () ->Boolean,
-                                actionFalse:(()->Unit)?=null,
-                                actionTrue:(() ->Unit)?=null){
+  inline fun  checkCondition( crossinline condition: () ->Boolean,
+                              noinline actionFalse:(()->Unit)?=null,
+                               noinline actionTrue:(() ->Unit)?=null){
         when(condition.invoke()){
             true ->{ actionTrue?.invoke()}
             false->actionFalse?.invoke()
@@ -29,6 +29,18 @@ class ConditionProcessor {
         }
 
     }
+    fun  checkMultiConditionFunction( vararg action: () ->Boolean,
+                                      actionsFalse:List<()->Unit>,
+                                      actionsTrue:List<() ->Unit>){
+
+       for(i in action.indices){
+               when(action[i].invoke()){
+               true->actionsTrue[i].invoke()
+               false -> actionsFalse[i].invoke()
+               }
+       }
+
+    }
     fun  checkConditionParameter( vararg condition: () ->Boolean,
                         actionFalse:(()->Unit)?=null,
                         actionTrue:((List<Boolean>) ->Unit)?=null){
@@ -45,8 +57,9 @@ class ConditionProcessor {
             true ->actionTrue?.invoke(states)
             false->actionFalse?.invoke()
         }
-
     }
+
+
     fun <T,A> lop(list:List<T>,mapper: Mapper<T,A>) : List<A> = list.map{mapper.invoke(it)}
     fun Test(){
         val a=0

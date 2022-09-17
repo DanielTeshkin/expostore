@@ -1,5 +1,6 @@
 package com.expostore
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -55,5 +56,7 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigationView.isVisible = isVisible
         }
     }
+
+
 
 }

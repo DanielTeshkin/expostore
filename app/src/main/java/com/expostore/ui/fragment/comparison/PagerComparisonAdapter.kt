@@ -51,7 +51,7 @@ class PagerComparisonAdapter : RecyclerView.Adapter<PagerComparisonAdapter.Pager
         fun bind(model:ProductModel) {
               binding.apply {
                   Log.i("im",model.images[0].file)
-                  iconProduct.loadTabImage(model.images[0].file)
+                  iconImage.load(model.images[0].file)
                   nameProduct.text=model.name
                   priceProduct.text=model.price
                   delete.click { onDeleteClickListener?.invoke(model.id) }

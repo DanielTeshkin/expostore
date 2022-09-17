@@ -1,7 +1,9 @@
 package com.expostore.ui.fragment.product
 
 import android.util.Log
+import androidx.core.os.bundleOf
 import com.expostore.data.repositories.ChatRepository
+import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.PriceHistoryDataModel
@@ -39,6 +41,7 @@ class ProductViewModel @Inject constructor(private val interactor: ProductIntera
         Log.i("fff","ddd")
     }
     fun navigateToBack()=navController.popBackStack()
+    fun navSave()=navController.previousBackStackEntry?.saveState(bundleOf( "iem" to SelectionModel()))
 
 
     fun saveProduct(item:ProductModel){

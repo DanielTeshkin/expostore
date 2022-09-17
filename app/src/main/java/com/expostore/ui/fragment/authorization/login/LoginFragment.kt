@@ -1,9 +1,11 @@
 package com.expostore.ui.fragment.authorization.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.R
 import com.expostore.databinding.LoginFragmentBinding
 import com.expostore.model.auth.SignInResponseDataModel
@@ -24,22 +26,27 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel.apply {
-            subscribe(navigation) { navigateSafety(it) }
-            subscribe(uiState) { handleState(it) }
-        }
-
         binding.btnSignInNext.click {
             loginViewModel.signIn()
         }
 
         binding.btnForgotPassword.click {
+            Log.i("dddd","aaaa")
           loginViewModel.navigateToReset()
+        }
+        binding.imageButton.click {
+
+            loginViewModel.navigateToBack()
         }
     }
 
     override fun onStart() {
         super.onStart()
+        loginViewModel.apply {
+            start(findNavController())
+            subscribe(navigation) { navigateSafety(it) }
+            subscribe(uiState) { handleState(it) }
+        }
         binding.apply {
             etNumber.addTextChangedListener { loginViewModel.updatePhone(it.toString()) }
             etPassword.addTextChangedListener { loginViewModel.updatePassword(it.toString()) }

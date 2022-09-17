@@ -1,6 +1,8 @@
 package com.expostore.ui.controllers
 
 import android.content.Context
+import android.util.Log
+import com.expostore.data.remote.api.pojo.getcategory.CharacteristicRequest
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.category.toRequestCreate
 import com.expostore.model.product.Character
@@ -15,7 +17,7 @@ open class BaseCharacteristicController(context:Context) : ControllerUI(context)
     private val selectList = mutableListOf<String>()
     private val _characteristicState= MutableStateFlow(CharacteristicsStateModel())
     protected val characteristicState=_characteristicState.asStateFlow()
-    val list= mutableListOf("")
+
 
 
     fun saveCharacteristic(characteristics:List<Character>){
@@ -35,7 +37,10 @@ open class BaseCharacteristicController(context:Context) : ControllerUI(context)
     override fun checkBoxListener(name: String, checked: Boolean) =_characteristicState.value
     .checkBoxStateModel.state.set(name, checked)
 
-    fun characteristicLoad()=saveCharacteristicsState().map { it?.toRequestCreate }
+    fun characteristicLoad(): List<CharacteristicRequest?> {
+        Log.i("crash2","ddd")
+        return saveCharacteristicsState().map { it?.toRequestCreate }
+    }
     private fun saveCharacteristicsState(
 
     ): List<CharacteristicFilterModel?> =

@@ -56,7 +56,7 @@ class DetailPersonalSelectionViewModel @Inject constructor(private val interacto
 
 
     override fun navigateToProduct(product: ProductModel){
-        navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToProductFragment(product))
+        navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToProductFragment(product))
     }
     override fun navigateToNote(model: ProductModel){
         navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToNoteFragment(id=model.id,

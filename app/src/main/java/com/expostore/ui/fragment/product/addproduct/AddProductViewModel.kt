@@ -1,39 +1,25 @@
 package com.expostore.ui.fragment.product.addproduct
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import android.util.Log
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileResponseData
 
-import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.remote.api.request.ProductUpdateRequest
 import com.expostore.data.remote.api.response.CreateResponseProduct
 import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseViewModel
-import com.expostore.model.category.CategoryCharacteristicModel
-import com.expostore.model.category.ProductCategoryModel
+import com.expostore.ui.base.BaseCreatorInteractor
 import com.expostore.ui.base.BaseCreatorViewModel
-import com.expostore.ui.fragment.category.personal.create.CreatePersonalSelectionFragmentDirections
 import com.expostore.ui.fragment.product.ProductInteractor
-import com.expostore.ui.fragment.product.personal.create.CreatePersonalProductFragment
-import com.expostore.ui.fragment.product.personal.create.CreatePersonalProductFragmentDirections
-import com.expostore.ui.general.*
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddProductViewModel
-@Inject constructor(private val addProductInteractor: ProductInteractor) : BaseCreatorViewModel() {
+@Inject constructor(private val addProductInteractor: ProductInteractor,private val inter:BaseCreatorInteractor) : BaseCreatorViewModel() {
     private val _addProduct = MutableSharedFlow<ResponseState<CreateResponseProduct>>()
     val addProduct = _addProduct.asSharedFlow()
     private val _product = MutableStateFlow(ProductModel())
@@ -45,6 +31,7 @@ class AddProductViewModel
     private val _saveFile= MutableStateFlow<ResponseState<SaveFileResponseData>>(ResponseState.Loading(false))
     val saveFile= _saveFile.asStateFlow()
      init {
+         interactor=inter
          loadCategories()
      }
 
@@ -64,8 +51,10 @@ class AddProductViewModel
         .handleResult(_productPublic)
 
     fun createOrUpdate(status: String,request: ProductUpdateRequest) {
+        Log.i("crash3","ddd")
         when (flag.value) {
             true -> {
+                Log.i("crash11","ddd")
                 if (status == "my") addProductInteractor.updateProduct(product.value.id, request)
                     .handleResult(_updateProduct, {
                         published(it.id ?: "")
@@ -73,16 +62,17 @@ class AddProductViewModel
                 else addProductInteractor.updateProduct(product.value.id, request)
                     .handleResult(_updateProduct)
             }
-            false -> createProduct(status)
+            false -> createProduct(status,request)
         }
     }
 
-    private fun createProduct(status: String) {
+    private fun createProduct(status: String, request: ProductUpdateRequest) {
+        Log.i("crash4","ddd")
         when (status) {
-            "my" -> addProductInteractor.createProduct().handleResult(_addProduct, {
+            "my" -> addProductInteractor.createProduct(request,shopId.value).handleResult(_addProduct, {
                 published(it.id ?: "")
             })
-            else -> addProductInteractor.createProduct().handleResult(_addProduct)
+            else -> addProductInteractor.createProduct(request, shopId.value).handleResult(_addProduct)
         }
     }
     fun createPersonalProduct(context: Context) {}

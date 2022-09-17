@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.expostore.R
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.DataMapping.User
@@ -94,8 +95,7 @@ fun MainChat.firstMessage():String{
 fun ImageView.loadTabImage(url:String){
     Glide.with(context)
         .load(url)
-        .override(160, 160)
-        .transform(RoundedCorners(15))
+        .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }
 fun ImageView.loadImage(url:String){

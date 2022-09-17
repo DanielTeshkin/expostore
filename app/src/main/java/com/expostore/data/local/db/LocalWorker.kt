@@ -21,6 +21,8 @@ interface LocalWorker {
     suspend fun saveProfile(model: ProfileDao)
     fun deleteProfile()
     suspend fun getSelection():List<SelectionDao>
+    suspend fun getSelectionById(id:String):SelectionDao
+    suspend fun getPersonalSelectionById(id: String):SelectionDao
     suspend fun saveSelections(selections: List<SelectionModel>)
     suspend fun removeSelections()
     suspend fun getAdvertising():List<AdvertisingDao>

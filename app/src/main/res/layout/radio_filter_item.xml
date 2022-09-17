@@ -9,8 +9,9 @@
         android:id="@+id/til_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_dropdown_menu"
         app:endIconMode="dropdown_menu"
         app:hintAnimationEnabled="false"
@@ -24,7 +25,7 @@
             android:id="@+id/et_city"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:autofillHints=""
             android:background="@drawable/style_edit_text"
             android:hint="@string/completion_et_city_hint"
@@ -32,6 +33,7 @@
             android:paddingStart="16dp"
             android:paddingTop="0dp"
             android:paddingEnd="16dp"
+            android:paddingBottom="0dp"
             android:textColorHint="#8C162344"
             tools:ignore="LabelFor" />
 

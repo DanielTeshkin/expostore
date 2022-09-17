@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
@@ -16,6 +17,8 @@ abstract class BaseProductListFragment <Binding : ViewBinding>(private val infla
     BaseFragment<Binding>(inflate), OnClickBottomSheetFragment {
         abstract val viewModel:BaseProductViewModel
         open val intoPersonalSelection:Boolean=false
+        protected val products= mutableListOf<ProductModel>()
+
 
 
 

@@ -2,11 +2,13 @@ package com.expostore.ui.fragment.product
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.remote.api.request.ProductUpdateRequest
 import com.expostore.data.remote.api.request.createProductRequest
+import com.expostore.data.remote.api.response.CreateResponseProduct
 import com.expostore.data.remote.api.response.PersonalProductRequest
 import com.expostore.data.repositories.*
 import com.expostore.model.category.CharacteristicFilterModel
@@ -131,7 +133,11 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
         category = category.value)
 
     fun checkUriSource():Boolean= uriSource.value.isNotEmpty()
-    fun createProduct() = productsRepository.createProduct(shop.value, createRequest())
+    fun createProduct(request: ProductUpdateRequest, value: String): Flow<CreateResponseProduct> {
+        Log.i("crash5",shop.value)
+
+      return productsRepository.createProduct(value, request)
+    }
     fun updateProduct(id:String,request: ProductUpdateRequest)= productsRepository.updateProduct(id, request)
     fun getCategories()=categoryRepository.getCategories()
     fun getCategoryCharacteristic(id:String)=categoryRepository.getCategoryCharacteristic(id)

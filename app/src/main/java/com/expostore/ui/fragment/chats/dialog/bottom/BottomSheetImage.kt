@@ -1,14 +1,12 @@
 package com.expostore.ui.fragment.chats.dialog.bottom
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -19,25 +17,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DimenRes
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.expostore.ui.fragment.chats.fragment.FileDialog
-import com.expostore.ui.fragment.chats.listPath
+import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kroegerama.imgpicker.*
-
+import com.kroegerama.imgpicker.BuildConfig
+import com.kroegerama.imgpicker.R
 import kotlinx.android.synthetic.main.imagepicker.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,9 +96,10 @@ class BottomSheetImage internal constructor() :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnImagesSelectedListener) {
+        if (context is OnImagesSelectedListener)
             onImagesSelectedListener = context
-        }
+
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,6 +151,7 @@ class BottomSheetImage internal constructor() :
             btnDone.isVisible = true
             btnDone.setOnClickListener {
                 onImagesSelectedListener?.onImagesSelected(adapter.getSelectedImages(), requestTag)
+
                 dismissAllowingStateLoss()
             }
             btnClearSelection.isVisible = false
@@ -173,6 +178,8 @@ class BottomSheetImage internal constructor() :
                 bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
             }
         }
+
+
 
     private val bottomSheetCallback by lazy {
         object : BottomSheetBehavior.BottomSheetCallback() {
@@ -220,44 +227,66 @@ class BottomSheetImage internal constructor() :
     }
 
     private fun launchCamera() {
-        if (!requireContext().hasWriteStoragePermission) {
-            requestWriteStoragePermission(REQUEST_PERMISSION_WRITE_STORAGE)
-            return
-        }
+       // if (!requireContext().hasWriteStoragePermission) {
+          //  requestWriteStoragePermission(REQUEST_PERMISSION_WRITE_STORAGE)
+          //  return
+        //}
 
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(requireContext().packageManager) == null) return
-        val photoUri = try {
-            getPhotoUri()
-        } catch (e: Exception) {
-            if (BuildConfig.DEBUG) Log.w(TAG, "could not prepare image file", e)
-            return
-        }
+        //val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        //if (intent.resolveActivity(requireContext().packageManager) == null) return
+      //  val photoUri = try {
+           // getPhotoUri()
+       // } catch (e: Exception) {
+          //  if (BuildConfig.DEBUG) Log.w(TAG, "could not prepare image file", e)
+          //  return
+        //}
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoUri = photoUri
+        currentPhotoUri = getPhotoUri()
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+       // intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-        requireContext().packageManager.queryIntentActivities(
-            intent,
-            PackageManager.MATCH_DEFAULT_ONLY
-        ).forEach { info ->
-            val packageName = info.activityInfo.packageName
-            requireContext().grantUriPermission(
-                packageName,
-                photoUri,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-        }
-        request=REQUEST_PHOTO
-        resultLauncher.launch(intent)
+       // requireContext().pa.ckageManager.queryIntentActivities(
+       //     intent,
+       //     PackageManager.MATCH_DEFAULT_ONLY
+     //   ).forEach { info ->
+          //  val packageName = info.activityInfo.packageName
+            //requireContext().grantUriPermission(
+             //   packageName,
+            //    photoUri,
+            //    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+          //  )
+       // }
+            // request=REQUEST_PHOTO
+       // bottomSheetBehavior.state=BottomSheetBehavior.STATE_COLLAPSED
+
+        resultLauncher.launch(currentPhotoUri)
+
     }
+
 
     private fun launchGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         request=REQUEST_GALLERY
-        resultLauncher.launch(intent)
+        startActivityForResult(intent,request)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode== RESULT_OK){
+            when (requestCode) {
+                REQUEST_PHOTO -> {
+                    notifyGallery()
+                    currentPhotoUri?.let { uri ->
+                        onImagesSelectedListener?.onImagesSelected(mutableListOf(uri), requestTag)
+                        currentPhotoUri=null
+                    }
+
+
+                }
+            }
+        }
     }
 
     private fun getPhotoUri(): Uri? =
@@ -291,27 +320,36 @@ class BottomSheetImage internal constructor() :
         return "IMG_$timeStamp"
     }
 
-    val resultLauncher=registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            when (request) {
-                REQUEST_PHOTO -> {
-                    notifyGallery()
-                    currentPhotoUri?.let { uri ->
-                        onImagesSelectedListener?.onImagesSelected(mutableListOf(uri), requestTag)
-                    }
-                    dismissAllowingStateLoss()
-                    return@registerForActivityResult
-                }
-                REQUEST_GALLERY -> {
-                    result.data?.data?.let { uri ->
-                        onImagesSelectedListener?.onImagesSelected(mutableListOf(uri), requestTag)
-                    }
-                    dismissAllowingStateLoss()
-                    return@registerForActivityResult
-                }
+fun hide(){
+    bottomSheetBehavior.state=BottomSheetBehavior.STATE_HIDDEN
+}
+
+    private val resultLauncher=registerForActivityResult(ActivityResultContracts.TakePicture()) { result ->
+
+
+
+                   // notifyGallery()
+        if(result) {
+            currentPhotoUri?.let { uri ->
+                onImagesSelectedListener?.onImagesSelected(mutableListOf(uri), "photo")
+
             }
+
+
+
+            return@registerForActivityResult
+
         }
-    }
+
+              //REQUEST_GALLERY
+    //  {
+                    //result.data?.data?.let { uri ->
+                       // onImagesSelectedListener?.onImagesSelected(mutableListOf(uri), requestTag)
+                    //}
+                    //dismissAllowingStateLoss()
+                   // return@registerForActivityResult
+                //}
+            }
 
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -384,6 +422,7 @@ class BottomSheetImage internal constructor() :
 
     interface OnImagesSelectedListener {
         fun onImagesSelected(uris: MutableList<Uri>, tag: String?)
+
     }
 
     companion object {

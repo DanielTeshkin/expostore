@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -42,7 +43,7 @@ class LoginViewModel @Inject constructor(
 
 
     override fun onStart() {
-        /* no-op */
+       Log.i("ddd","ddd")
     }
 
    fun updatePhone(input:String){
@@ -73,7 +74,9 @@ class LoginViewModel @Inject constructor(
     fun navigateToReset(){
         navigationTo(LoginFragmentDirections.actionLoginFragmentToConfirmNumberPass())
     }
-
+fun navigateToBack(){
+    navController.popBackStack()
+}
     fun navigateBack(view: View) {
         navController = Navigation.findNavController(view)
         navController.popBackStack()

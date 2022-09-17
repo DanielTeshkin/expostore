@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.product.addproduct
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.databinding.AddProductFragmentBinding
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.ProductCategoryModel
@@ -49,9 +51,14 @@ class AddProductFragment : BaseCreatorFragment<AddProductFragmentBinding>(AddPro
      }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        installNetworkObserverStateUi()
         installSetResultListeners()
+        installNetworkObserverStateUi()
      }
+
+    override fun onStart() {
+        super.onStart()
+        controller.initAdapter()
+    }
 
     private fun installNetworkObserverStateUi(){
       viewModel.apply {
@@ -72,6 +79,11 @@ class AddProductFragment : BaseCreatorFragment<AddProductFragmentBinding>(AddPro
               viewModel.saveShopId(result)
             }
         }
+    }
+
+    override fun handleImages(images: SaveImageResponseData) {
+        controller.addImages(images.id)
+        controller.update()
     }
 
 }

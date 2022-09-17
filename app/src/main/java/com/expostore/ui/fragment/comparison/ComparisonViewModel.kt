@@ -18,7 +18,7 @@ class ComparisonViewModel  @Inject constructor( private val comparisonRepository
     val productState=MutableSharedFlow<ResponseState<List<ProductModel>>>()
     val products= MutableStateFlow(listOf<ProductModel>())
      val currentPositionFirst= MutableStateFlow(1)
-    val currentPositionSecond= MutableStateFlow(2)
+    val currentPositionSecond= MutableStateFlow(1)
     val characteristicsResponse = MutableSharedFlow<ResponseState<List<ComparisonModel>>>()
     val comparisons = MutableStateFlow(listOf<ComparisonModel>())
     override fun onStart() {
@@ -31,7 +31,7 @@ class ComparisonViewModel  @Inject constructor( private val comparisonRepository
         comparisonRepository.getComparisonProducts().handleResult(
             productState,{
                 products.value = it
-
+                currentPositionSecond.value=+1
                 comparison(0,1)
 
             })
@@ -40,26 +40,35 @@ class ComparisonViewModel  @Inject constructor( private val comparisonRepository
     fun compar(){
 
         if (products.value.size > 1) {
-                comparison(0,1)
+                comparison(currentPositionFirst.value,currentPositionSecond.value)
 
             } else
                 comparison(0,0)
 
         }
      fun changePosition1(position:Int){
-         currentPositionFirst.value=position
+         currentPositionFirst.value=position+1
+
+
      }
     fun changePosition2(position:Int){
-        currentPositionSecond.value=position
+        currentPositionSecond.value=position+1
+
     }
 
 
     fun comparison(positionFirstProduct:Int,positionSecondProduct: Int){
-        comparisonRepository.makeComparisonRepository(products = listOf(ComparisonProductData(products.value[positionFirstProduct].id),
-            ComparisonProductData(products.value[positionSecondProduct].id))).handleResult(characteristicsResponse,{
-            Log.i("compar",it.size.toString())
-                comparisons.value=it
-        })
+        if (products.value.size > 1) {
+            comparisonRepository.makeComparisonRepository(
+                products = listOf(
+                    ComparisonProductData(products.value[positionFirstProduct].id),
+                    ComparisonProductData(products.value[positionSecondProduct].id)
+                )
+            ).handleResult(characteristicsResponse, {
+                Log.i("compar", it.size.toString())
+                comparisons.value = it
+            })
+        }
     }
 
     fun deleteFromComparison(id:String)=comparisonRepository.deleteFromComparison(listOf(ComparisonProductData(id))).handleResult()

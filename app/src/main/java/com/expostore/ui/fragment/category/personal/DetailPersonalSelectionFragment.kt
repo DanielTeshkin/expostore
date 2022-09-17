@@ -3,13 +3,18 @@ package com.expostore.ui.fragment.category.personal
 
 import android.os.Bundle
 import android.view.View
+import android.widget.PopupMenu
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.expostore.R
 import com.expostore.databinding.DetailPersonalSelectionFragmentBinding
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.BaseProductListFragment
 
 import com.expostore.ui.controllers.PersonalSelectionController
+import com.expostore.ui.fragment.category.ProductSelectionAdapter
+import com.expostore.ui.fragment.profile.profile_edit.click
 
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,33 +25,35 @@ class DetailPersonalSelectionFragment :
     override val viewModel:DetailPersonalSelectionViewModel by viewModels()
     override val intoPersonalSelection: Boolean
         get() = true
-
-    private val controller: PersonalSelectionController by lazy { PersonalSelectionController(requireContext(),binding,
-        {viewModel.navigateToEdit()},{
-        viewModel.deleteSelection()})
-    }
+    private val mAdapter: ProductSelectionAdapter by lazy { ProductSelectionAdapter(products) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val selection=DetailPersonalSelectionFragmentArgs.fromBundle(requireArguments()).selection
-        viewModel.save(selection)
-        observeChangeState()
-    }
-    private fun observeChangeState() {
-        viewModel.apply {
-            subscribe(selection) { controller.showUI(it) }
+        products.addAll(selection.products)
+        binding.apply {
+            tvCategoryName.text=selection.name
+            rvDetailProduct.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = mAdapter
+            }
         }
+         viewModel.save(selection)
+         popMenuLoad()
     }
-
-    override fun deleteFromSelection(model: ProductModel) {
-        viewModel.delete(model)
+    private fun popMenuLoad(){
+        val popupMenu= PopupMenu(context,binding.menu)
+        popupMenu.inflate(R.menu.menu_selection)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.edit -> viewModel.navigateToEdit()
+                R.id.delete -> viewModel.deleteSelection()
+            }
+            false
+        }
+        binding.menu.click { popupMenu.show() }
     }
+    override fun deleteFromSelection(model: ProductModel) = viewModel.delete(model)
+    override fun loadSelections(list: List<SelectionModel>) { mAdapter.onClick=getClickListener(list) }
 
-
-
-    override fun loadSelections(list: List<SelectionModel>) {
-        controller.setEvent(getClickListener(list))
     }
-
-
-}

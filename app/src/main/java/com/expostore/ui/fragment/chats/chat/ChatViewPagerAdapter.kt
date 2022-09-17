@@ -14,6 +14,7 @@ import com.expostore.ui.fragment.chats.dialog.DialogFragment
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.loadTabImage
 import kotlinx.android.synthetic.main.chat_tablayout_item.view.*
+import kotlinx.android.synthetic.main.product_item.view.*
 
 
 class ChatViewPagerAdapter(
@@ -32,8 +33,8 @@ class ChatViewPagerAdapter(
         @SuppressLint("InflateParams")
     fun getTabView(position: Int): View{
             val view: View = LayoutInflater.from(context).inflate(R.layout.chat_tablayout_item, null)
-            view.text.text = product_name[position]
-                 view.image.loadTabImage(images[position])
+            view.chat_product_name.text = product_name[position]
+                 view.chat_product_image.loadTabImage(images[position])
 
         return view
     }

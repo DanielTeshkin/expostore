@@ -17,7 +17,7 @@ class DetailCategoryController(context: Context,
     fun showUI(model: SelectionModel) {
         binding.apply {
             tvCategoryName.text=model.name
-                 rvDetailProduct.apply {
+                rvDetailProduct.apply {
                 layoutManager= manager
                 products.addAll(model.products)
                 adapter=mAdapter

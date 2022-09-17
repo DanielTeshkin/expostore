@@ -33,7 +33,6 @@ fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionMo
         bottomSheetDialog.hide()
     }
 
-
     val calling= bottomSheetDialog.findViewById<LinearLayout>(R.id.calling)
     calling?.click {
         onClickBottomFragment.call(model.author.username)

@@ -8,8 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class PagerChatRepository private constructor(){
     private var uris: MutableStateFlow<List<Uri>> = MutableStateFlow(listOf())
     private val openFileState = MutableStateFlow(false)
+    private val bottomImageHide = MutableStateFlow(false)
     fun getUriFiles() =uris
     fun getOpenFileState()=openFileState
+    fun getBottomHide()=bottomImageHide
 
     companion object {
         private val mInstance: PagerChatRepository =

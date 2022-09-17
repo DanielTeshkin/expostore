@@ -46,27 +46,22 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmentBinding::inflate),
-    OnMapReadyCallback,OnClickBottomSheetFragment,ProductMarkerApi,OnMarkerClickListener {
+class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmentBinding::inflate),ProductMarkerApi,OnMarkerClickListener {
 
-    private val viewModel: SearchViewModel by viewModels()
-    private lateinit var googleMap: GoogleMap
+    override val viewModel: SearchViewModel by viewModels()
     private val myAdapter: ProductsAdapter by lazy { ProductsAdapter(requireContext()) }
     private var markerPosition: Marker? = null
     private val markers = mutableMapOf<Marker, ProductModel>()
-    private val load: Show<List<SelectionModel>> by lazy { { selectionLoad(it) } }
     private val showMarkersProduct: Show<List<ProductModel>> by lazy { { installMarkerProducts(it) } }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        makeStartRequest()
+        startSearch()
         installSubscribes()
         binding.apply {
             searchMapView.onCreate(savedInstanceState)
             searchMapView.getMapAsync(this@SearchFragment)
-
             location.setOnClickListener {
                 this@SearchFragment.myLocation?.let {
                     myLocation()
@@ -78,11 +73,25 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
     override fun onStart() {
         super.onStart()
         binding.searchMapView.onStart()
-        state { viewModel.getBaseProducts().collect {
+        state { viewModel.getBaseProducts()?.collect {
             installMarkerProducts(it)
         } }
         val result = SearchFragmentArgs.fromBundle(requireArguments()).filter
         if (result != null) searchWithFilters(result)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.searchMapView.onResume()
+    }
+    override fun onPause() {
+        super.onPause()
+        binding.searchMapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.searchMapView.onStop()
     }
 
     private fun initUI() {
@@ -93,28 +102,14 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
 
     private fun installSubscribes() {
         viewModel.apply {
-            getSelections()
             getBaseProducts()
-            subscribe(navigation) { navigateSafety(it) }
-            subscribe(selectionList) { handleState(it, load) }
             subscribe(productsMarkerUI) {
                 handleState(it, showMarkersProduct)
             }
         }
     }
 
-
-    private fun makeStartRequest() {
-        startSearch()
-
-    }
-
-
     private fun initAdapter() {
-        myAdapter.onCallItemClickListener = { navigateToCall(it) }
-        myAdapter.onItemClickListener = { openProductScreen(it) }
-        myAdapter.onLikeItemClickListener = { viewModel.selectFavorite(it) }
-        myAdapter.onMessageItemClickListener = { model -> createChat(model.id) }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = myAdapter
@@ -127,9 +122,7 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
     }
 
     private fun buttonInstall() {
-        binding.apply {
-            filter.click {
-                viewModel.apply {
+        binding.apply { filter.click { viewModel.apply {
                     val result = DataModel(city = city.value, flag = "product")
                     setFragmentResult("new_key", bundleOf("info" to result))
                     navigateToFilter()
@@ -178,29 +171,19 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
         }
     }
 
-
-    fun createChat(id: String) = viewModel.createChat(id)
-
-
     private fun openProductScreen(model: ProductModel) {
         viewModel.navigateToProduct(model)
     }
 
     private fun startSearch() {
         lifecycleScope.launch {
-            viewModel.search
-                .collectLatest { model ->
-                    myAdapter.submitData(model)
-                }
-        }
-
-    }
+            viewModel.search?.collectLatest { model ->
+                    myAdapter.submitData(model) } } }
 
     private fun searchWithFilters(result: FilterModel) {
         viewModel.apply {
             lifecycleScope.launch {
-                searchWithFilters(result)
-                    .collectLatest {
+                searchWithFilters(result)?.collectLatest {
                         myAdapter.submitData(it)
                     }
             } } }
@@ -234,43 +217,18 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
                 }
 
             }
-
             override fun onLoadCleared(placeholder: Drawable?) {
                 TODO("Not yet implemented")
             }
         })
 
     }
-
-
-        private fun selectionLoad(list: List<SelectionModel>?) {
-            myAdapter.onAnotherItemClickListener = { model ->
-                showBottomSheet(requireContext(), model, list, this,false)
-            }
-        }
-
-
-        override fun onMapReady(map: GoogleMap) {
-            googleMap = map
-            googleMap.uiSettings.isZoomGesturesEnabled = true
-            googleMap.uiSettings.isScrollGesturesEnabled = true
-        }
-
-        override fun onLocationChange(location: Location) {
+    override fun onLocationChange(location: Location) {
             markerPosition?.position = LatLng(location.latitude, location.longitude)
             myLocation()
         }
 
-        override fun onLocationFind(location: Location): Boolean {
-            Log.i("loc", location.latitude.toString())
-            if (!::googleMap.isInitialized) {
-                return false
-            }
-            myLocation()
-            return true
-        }
-
-        private fun myLocation() {
+    override fun myLocation() {
             myLocation?.let { location ->
                 if (markerPosition != null) {
                     moveToLocation(location)
@@ -294,60 +252,20 @@ class SearchFragment : BaseLocationFragment<SearchFragmentBinding>(SearchFragmen
             }
         }
 
-        private fun moveToLocation(location: Location, isAnimate: Boolean = true) {
-            val latLng = LatLng(location.latitude, location.longitude)
-            if (isAnimate) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-            } else {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-            }
-        }
-
-
-    override fun createSelection(product: String) = viewModel.navigateToSelectionCreate(product)
-
-
-        override fun addToSelection(id: String, product: String) =
-            viewModel.addToSelection(id, product)
-
-
-        override fun call(username: String) = navigateToCall(username)
-
-
-        override fun createNote(model: ProductModel) {
-
-            viewModel.navigateToNote(model)
-        }
-
-        override fun chatCreate(id: String) {
-            chatCreate(id)
-        }
-
-
-        override fun share(id: String) {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, id)
-                type = "text/plain"
-            }
-
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
-        }
-
-        override fun block() = viewModel.navigateToBlock()
-
-
-        override fun addToComparison(id: String) = viewModel.addToComparison(id)
-
     override fun addMarker(it: ProductModel) {}
-
     override fun onMarkerClick(p0: Marker): Boolean {
         markers[p0]?.let { openProductScreen(it) }
         return true
     }
-
-
+    override fun loadSelections(list: List<SelectionModel>) {
+        val events= getClickListener(list)
+        myAdapter.apply {
+            onCallItemClickListener = { events.onClickCall(it) }
+            onItemClickListener = { events.onClickProduct(it) }
+            onLikeItemClickListener = { events.onClickLike(it) }
+            onMessageItemClickListener = { events.onClickMessage(it) }
+            onAnotherItemClickListener ={events.onClickAnother(it)} }
+    }
 }
 
 

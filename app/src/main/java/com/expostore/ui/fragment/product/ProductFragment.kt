@@ -65,6 +65,7 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
         initButton(result)
         subscribeUI()
         binding.mapView.onCreate(savedInstanceState)
+
         binding.mapView.getMapAsync(this)
     }
 
@@ -97,7 +98,12 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
                     rvProductReviews.apply {
                         visibility=View.VISIBLE
                         layoutManager = LinearLayoutManager(requireContext())
-                        model.reviews.lastElement().let { reviewsList.add(it) }
+                        if (reviewAdapter.itemCount<1) {
+                            model
+                                .reviews
+                                .lastElement()
+                                .let { reviewsList.add(it) }
+                        }
                         adapter = reviewAdapter
                     }
                 }
@@ -135,8 +141,6 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(ProductFragmentBind
             }
 
       }
-
-
         private fun observeNavigation(){
             productViewModel.apply {
                 start(findNavController())

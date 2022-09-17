@@ -37,8 +37,7 @@ import javax.inject.Inject
  * @author Teshkin Daniel
  */
 @HiltViewModel
-class DialogViewModel @Inject constructor(
-    private val chatRepository: ChatRepository,
+class DialogViewModel @Inject constructor(private val chatRepository: ChatRepository,
     private val multimediaRepository: MultimediaRepository) : BaseViewModel() {
     private lateinit var update:Job
     private val _item=MutableSharedFlow<ResponseState<ItemChat>>()
@@ -61,7 +60,12 @@ class DialogViewModel @Inject constructor(
       }
     fun sendImages(id: String,list: List<String>)= sentMessageOrUpdate(id, MessageRequest(text =messageText.value, images = list as ArrayList<String>) )
     fun sendFiles(id: String,list: List<String>)=sentMessageOrUpdate(id, MessageRequest(text =messageText.value, chatFiles = list as ArrayList<String>) )
-    fun saveFile(uris: List<SaveFileRequestData>)=multimediaRepository.saveFileBase64(uris).handleResult(_saveFile)
+    fun saveFile(uris: List<SaveFileRequestData>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            multimediaRepository.saveFileBase64(uris).handleResult(_saveFile)
+        }
+    }
+
     fun saveImageNetwork(images: List<Bitmap>?= listOf()){
         val list = mutableListOf<SaveImageRequestData>()
         ImageMessage().encodeBitmapList(images as ArrayList<Bitmap>).map {

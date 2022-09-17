@@ -17,6 +17,7 @@ import com.expostore.R
 
 import com.expostore.databinding.TenderListFragmentBinding
 import com.expostore.extension.toMarker
+import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.tender.TenderModel
@@ -47,7 +48,7 @@ class TenderListFragment :
     OnMapReadyCallback {
 
     private val viewModel: TenderListViewModel by viewModels()
-    private lateinit var googleMap: GoogleMap
+
     private lateinit var myAdapter: TenderAdapter
     private var markerPosition: Marker? = null
 
@@ -78,10 +79,8 @@ class TenderListFragment :
             else binding.progressBar9.visibility=View.GONE
         }
  binding.createTender.click { viewModel.createTender() }
-          val show:Show<MainChat> = { openChat(it)}
         viewModel.apply {
             subscribe(navigation){navigateSafety(it)}
-          //  subscribe(chat){handleState(it)}
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                    loadTenderList()
@@ -97,8 +96,6 @@ class TenderListFragment :
         binding.apply {
             searchMapView.onCreate(savedInstanceState)
             searchMapView.getMapAsync(this@TenderListFragment)
-
-
             location.setOnClickListener {
                 this@TenderListFragment.myLocation?.let {
                     myLocation()
@@ -181,12 +178,8 @@ class TenderListFragment :
     override fun onStart() {
         super.onStart()
         binding.searchMapView.onStart()
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val result = bundle.getParcelable<FilterModel>("filters")
-            if (result!=null) searchWithFilters(result)
-
-        }
-    }
+        val filters=TenderListFragmentArgs.fromBundle(requireArguments()).filter
+        if (filters!=null) searchWithFilters(filters) }
 
     override fun onResume() {
         super.onResume()
@@ -214,15 +207,7 @@ class TenderListFragment :
         myLocation()
     }
 
-    override fun onLocationFind(location: Location): Boolean {
-        if (!::googleMap.isInitialized) {
-            return false
-        }
-        myLocation()
-        return true
-    }
-
-    private fun myLocation() {
+    override fun myLocation() {
         myLocation?.let { location ->
             if (markerPosition != null) {
                 moveToLocation(location)
@@ -243,14 +228,7 @@ class TenderListFragment :
         }
     }
 
-    private fun moveToLocation(location: Location, isAnimate: Boolean = true) {
-        val latLng = LatLng(location.latitude, location.longitude)
-        if (isAnimate) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-        } else {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
-        }
-    }
+
 
     fun createChat(id:String){
         viewModel.createChat(id)
@@ -273,13 +251,15 @@ class TenderListFragment :
                 createChat(id)
             }
 
-
-
             override fun block() {
                 Log.i("ddd","dsdsd")
             }
 
         }
+    }
+
+    override fun loadSelections(list: List<SelectionModel>) {
+        TODO("Not yet implemented")
     }
 
 

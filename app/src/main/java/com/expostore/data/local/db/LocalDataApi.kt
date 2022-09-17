@@ -42,6 +42,9 @@ interface LocalDataApi {
     @Query("Select * from selection")
     suspend fun getSelection():List<SelectionDao>
 
+    @Query("SELECT * FROM selection WHERE id=:id ")
+    suspend fun getSelectionById(id:String):SelectionDao
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveSelections(selections:List<SelectionDao>)
 

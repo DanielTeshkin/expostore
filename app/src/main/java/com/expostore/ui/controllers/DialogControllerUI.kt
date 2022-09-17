@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,15 +25,15 @@ import com.expostore.utils.OnClickImage
 class DialogControllerUI(context: Context,
                          private val binding:DialogFragmentBinding,
                          private val author:String,
-                         private val id:String,
-                         private val fragmentManager: FragmentManager) : ControllerUI(context),OnClickImage  {
-
+                         private val id:String, private  val fragmentManager: FragmentManager) : ControllerUI(context),OnClickImage  {
+    private val imagePicker=ImagePicker().bottomSheetImageSetting().build()
     private val messagesView = binding.rvMessages
     private val multimediaView = binding.rvImages
     private val filesView=binding.rvFiles
     private val messages: MutableList<Message> = mutableListOf()
     private val adapterMessage by lazy {DialogRecyclerViewAdapter(messages,author,context,this)  }
     private val adapterMultimedia by lazy { ImageDialogRecyclerViewAdapter(multimedia,context) }
+
     private val fileAdapter:FileDialogPanelRecyclerView by lazy { FileDialogPanelRecyclerView(multimedia,context) }
     private var progressState=true
     var adapterState=false
@@ -40,6 +41,7 @@ class DialogControllerUI(context: Context,
     init {
        adapterMultimedia.removeUri= { mapImages.remove(it) }
         messagesView.install(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true), adapterMessage)
+
         multimediaView.apply {
             layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             adapter=adapterMultimedia
@@ -49,6 +51,7 @@ class DialogControllerUI(context: Context,
             layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             adapter=fileAdapter
         }
+
     }
 
     fun initUI(
@@ -72,11 +75,21 @@ class DialogControllerUI(context: Context,
     fun setupVisibleControllerForTextInput(action: (String) -> Unit) {
         binding.apply {
             etInput.addTextChangedListener {
-                messageSend.visible(it.toString().isNotEmpty())
-                imageView4.visible(it.toString().isEmpty())
-                action.invoke(it.toString())
+                if (multimedia.isNotEmpty()) {
+                    messageSend.visible(it.toString().isNotEmpty())
+                    imageView4.visible(it.toString().isEmpty())
+                    action.invoke(it.toString())
+                } else sendActivate()
             }
         }
+    }
+
+    private fun sendActivate(){
+    binding.apply {
+        messageSend.visibility = View.VISIBLE
+        imageView4.visibility = View.GONE
+    }
+
     }
     private fun initMessagesList(list:List<Message>) {
         messages.addAll(list)
@@ -84,7 +97,7 @@ class DialogControllerUI(context: Context,
         progressState=false
         adapterState=true
     }
-    private fun clearInput() = binding.etInput.text.clear()
+    fun clearInput() = binding.etInput.text.clear()
     private fun addMessage() =
         adapterMessage.addMessage(
             createMessage(
@@ -125,10 +138,13 @@ class DialogControllerUI(context: Context,
      private fun addMessages(messages:MutableList<Message>)=adapterMessage.addData(messages)
      fun loadingImage(){
         visiblePanelMultimedia(false)
-        clearInput()
-    }
+     }
+
+
+
+    fun dismissPicker()=imagePicker.hide()
     private fun clearMap()=mapImages.clear()
-    private fun openGallery(fragmentManager: FragmentManager)= ImagePicker().bottomSheetImageSetting().show(fragmentManager)
+    private fun openGallery(fragmentManager: FragmentManager)= imagePicker.show(fragmentManager,"load")
     override fun click(bitmap: Bitmap) = openImageFragment(bitmap)
             .show(fragmentManager, "DialogImage")
 
@@ -136,12 +152,14 @@ class DialogControllerUI(context: Context,
         visiblePanelFiles(true)
             fileAdapter.addData(uris)
             flagType=true
+        sendActivate()
     }
 
-    fun imagesRv(uris:MutableList<Uri>){
+    fun imagesRv(uris: MutableList<Uri>, tag: String?){
         visiblePanelMultimedia(true)
         adapterMultimedia.addData(uris)
-        saveImageLocal()
-    }
 
-                         }
+        saveImageLocal()
+        sendActivate()
+
+    } }

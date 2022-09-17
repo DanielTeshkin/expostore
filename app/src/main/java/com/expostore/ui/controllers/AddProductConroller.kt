@@ -62,6 +62,35 @@ class AddProductController(context: Context,
                 actionFalse = {checkPhotos()}
             )
     }
+    fun initAdapter(){
+        binding.apply {
+            message.setOnCheckedChangeListener { _, state-> changeConnectionType(state,"message") }
+            call.setOnCheckedChangeListener { _, state -> changeConnectionType(state,"call") }
+            etProductName.addTextChangedListener {changeName(it.toString()) }
+            etProductPrice.addTextChangedListener {changePrice(it.toString()) }
+            etProductDescription.addTextChangedListener {changeShortDescription(it.toString())}
+            etProductCount.addTextChangedListener {changeCount(it.toString())}
+            etLongDescription.addTextChangedListener {changeLongDescription(it.toString())}
+
+
+            tvAddProductConnectionsName.selectListener {
+                message.isVisible=it
+                call.isVisible=it
+            }
+            btnSave.click {
+                updateStatus("my")
+                createOrUpdate()
+            }
+
+            btnSaveDraft.click {
+                updateStatus("draft")
+                createOrUpdate() }
+        }
+        binding.rvProductImages.apply {
+            layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+            adapter=mAdapter
+        }
+    }
 
    fun checkPhotos(){
         processor.checkCondition(
@@ -93,6 +122,7 @@ class AddProductController(context: Context,
     }
 
     override fun update() {
+        Log.i("crash","ddd")
          action.invoke(createProductRequest(
              count.value.toInt(),
              name = name.value,
@@ -103,39 +133,10 @@ class AddProductController(context: Context,
              communicationType = connectionType.value,
              characteristicLoad(),
              category.value,
-             presentation = files[0],
-             instruction = files[1]
-         ),status)
+             ),status)
     }
 
-    init {
 
-        binding.apply {
-            message.setOnCheckedChangeListener { _, state-> changeConnectionType(state,"message") }
-            call.setOnCheckedChangeListener { _, state -> changeConnectionType(state,"call") }
-            etProductName.addTextChangedListener {changeName(it.toString()) }
-            etProductPrice.addTextChangedListener {changePrice(it.toString()) }
-            etProductDescription.addTextChangedListener {changeShortDescription(it.toString())}
-            etProductCount.addTextChangedListener {changeCount(it.toString())}
-            etLongDescription.addTextChangedListener {changeLongDescription(it.toString())}
-            rvProductImages.apply {
-                layoutManager= LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
-                adapter=mAdapter
-            }
-            tvAddProductConnectionsName.selectListener {
-                message.isVisible=it
-                call.isVisible=it
-            }
-           btnSave.click {
-               updateStatus("my")
-               createOrUpdate()
-           }
-
-            btnSaveDraft.click {
-                updateStatus("draft")
-                createOrUpdate() }
-        }
-    }
 
     fun init(productModel: ProductModel){
         binding.apply {

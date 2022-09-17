@@ -24,7 +24,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Multipart
 
-typealias ProcessingImagesData = (Uri?,Bitmap?) ->Unit
+
 open class ControllerUI(val context: Context) {
     protected val mapImages= hashMapOf<Uri,Bitmap>()
     protected val multimedia:MutableList<Uri> = mutableListOf()

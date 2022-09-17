@@ -21,4 +21,7 @@ class ImagePicker {
             .cameraButton(ButtonType.Button)
             .galleryButton(ButtonType.Button)
     }
+    fun test(){
+        bottomSheetSingleImageSetting().build().dismiss()
+    }
 }

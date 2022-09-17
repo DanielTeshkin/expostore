@@ -47,6 +47,13 @@ class LocalWorkerImpl(private val localDataApi: LocalDataApi, private val contex
     override fun deleteProfile() =localDataApi.deleteProfile()
 
     override suspend fun getSelection(): List<SelectionDao> =localDataApi.getSelection()
+    override suspend fun getSelectionById(id: String): SelectionDao {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPersonalSelectionById(id: String): SelectionDao {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun saveSelections(selections: List<SelectionModel>) =localDataApi.saveSelections(selections.map {it.toDao  })
 
