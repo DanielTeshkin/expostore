@@ -16,7 +16,8 @@ import com.expostore.databinding.ProfileFragmentBinding
 import com.expostore.extension.loadBanner
 import com.expostore.model.profile.ProfileModel
 import com.expostore.model.profile.name
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 

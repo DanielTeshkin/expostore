@@ -1,41 +1,30 @@
-package com.expostore.ui.base
+package com.expostore.ui.base.search.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.viewbinding.ViewBinding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.expostore.R
+import com.expostore.extension.toMarker
+import com.expostore.ui.base.fragments.BaseItemFragment
+import com.expostore.ui.base.fragments.Inflate
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.*
 
-/**
- * @author Fedotov Yakov
- */
-abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: Inflate<Binding>) :
-    BaseProductListFragment<Binding>(inflate),OnMapReadyCallback {
+
+abstract class BaseLocationFragment<Binding : ViewBinding,T:Any,E,A>(private val inflate: Inflate<Binding>) :
+    BaseItemFragment<Binding, T, E, A>(inflate),OnMapReadyCallback {
 
     var myLocation: Location? = null
-        private set
-
+    protected var markerPosition: Marker? = null
     private var isLocationFind = false
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -55,21 +44,41 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fetchLocation()
+
     }
 
+    open fun onLocationChange(location: Location){
+        markerPosition?.position = LatLng(location.latitude, location.longitude)
+        myLocation()
+    }
+    open fun myLocation(){
+        myLocation?.let { location ->
+            if (markerPosition != null) {
+                moveToLocation(location)
+                return@let
+            }
+            val latLng = LatLng(location.latitude, location.longitude)
+            saveCurrentLocation(location.latitude, location.longitude)
 
-    abstract fun onLocationChange(location: Location)
-    abstract fun myLocation()
-
-   fun onLocationFind(location: Location): Boolean{
-        Log.i("loc", location.latitude.toString())
+            val markerOptions = MarkerOptions().position(latLng)
+                .icon(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_marker
+                    )?.toMarker
+                )
+            moveToLocation(location)
+            googleMap.addMarker(markerOptions)?.let { markerPosition = it }
+        }
+    }
+    private fun onLocationFind(location: Location): Boolean{
         if (!::googleMap.isInitialized) {
             return false
         }
         myLocation()
         return true
     }
-
+   abstract fun saveCurrentLocation(lat:Double,long:Double)
 
 
     @SuppressLint("MissingPermission")
@@ -103,29 +112,8 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
             }
         }
     }
-    protected fun getMarkerIcon(context: Context, url: String, listener: (BitmapDescriptor) -> Unit) {
-        val markerView = View(requireContext())
-        Glide.with(context)
-            .asBitmap()
-            .load(url)
-            .into(object : SimpleTarget<Bitmap>() {
 
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-
-                    listener.invoke(BitmapDescriptorFactory.fromBitmap(getBitmapFromView(markerView)))
-                }
-            })
-    }
-
-    protected fun getBitmapFromView(view: View): Bitmap {
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        view.draw(canvas)
-        return bitmap
-    }
-    protected fun moveToLocation(location: Location, isAnimate: Boolean = true) {
+    private fun moveToLocation(location: Location, isAnimate: Boolean = true) {
         val latLng = LatLng(location.latitude, location.longitude)
         if (isAnimate) {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
@@ -133,6 +121,7 @@ abstract class BaseLocationFragment<Binding : ViewBinding>(private val inflate: 
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
     }
+
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         googleMap.uiSettings.isZoomGesturesEnabled = true

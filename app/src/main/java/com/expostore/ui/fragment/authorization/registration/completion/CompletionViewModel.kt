@@ -5,7 +5,7 @@ import com.expostore.data.remote.api.pojo.editprofile.EditProfileResponseData
 import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.data.repositories.ProfileRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

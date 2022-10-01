@@ -1,8 +1,7 @@
 package com.expostore.ui.fragment.favorites.tabs.personal
 
-import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.favorites.FavoritesFragmentDirections
 import com.expostore.ui.fragment.favorites.FavoritesInteractor
 import com.expostore.ui.state.ResponseState

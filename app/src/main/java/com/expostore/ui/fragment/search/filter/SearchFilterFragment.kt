@@ -4,15 +4,18 @@ import android.R
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.databinding.SearchFilterFragmentBinding
 import com.expostore.model.category.*
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.CharacteristicsFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.profile.profile_edit.click
 
 import com.expostore.ui.fragment.search.filter.models.FilterModel
@@ -26,36 +29,27 @@ import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
-class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFilterFragmentBinding::inflate),CharacteristicState {
-
-    private val viewModel: SearchFilterViewModel by viewModels()
-    private val myAdapter: CharacteristicInputRecyclerAdapter by lazy {
-        CharacteristicInputRecyclerAdapter(requireContext(),this,"filter")
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+class SearchFilterFragment: CharacteristicsFragment<SearchFilterFragmentBinding>(SearchFilterFragmentBinding::inflate){
+     override val viewModel: SearchFilterViewModel by viewModels()
+     override val filter: String="filter"
+     override val categoriesLayout: LinearLayout = binding.category
+     override val characteristicsLayout: LinearLayout?=null
+     override val rvCharacteristics: RecyclerView=binding.rvFilters
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         installBundleResultListeners()
-        val loadCharacteristics:Show<List<CategoryCharacteristicModel>> = { loadCharacteristic(it)}
-        val loadCategories:Show<List<ProductCategoryModel>> = { initBottomCategoriesSheet(it)}
-            viewModel.apply {
-                start(findNavController())
-                subscribe(navigation) { navigateSafety(it) }
-                subscribe(cities) { state -> handleState(state){loadCities(it)} }
-                subscribe(categories){ handleState(it,loadCategories)}
-                subscribe(characteristics){handleState(it,loadCharacteristics)}
-            }
-         binding.apply {
+        binding.apply {
                  apply.click {
                      viewModel.apply {
                         searchFilter()
-                         val result = FilterModel(
+                       getFiltersAndNavigateToSearch(
                              name = searchEt.text.toString(),
-                             price_min = priceMin.text.toString().toIntOrNull(),
-                             price_max = priceMax.text.toString().toIntOrNull(),
+                             priceMin = priceMin.text.toString().toIntOrNull(),
+                             priceMax = priceMax.text.toString().toIntOrNull(),
                              city = etCity.text.toString(),
-                             characteristics = filterCharacteristic.value as MutableList<CharacteristicFilterModel>,
-                             category = category.value?.id)
-                              navigateToSearch(result) }
+                             )
+
+                     }
 
                 }
                 select.click { viewModel.navigateToMapChoice() }
@@ -63,8 +57,8 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
                   priceMin.text.clear()
                 priceMax.text.clear()
                  etCity.text.toString()
-                 viewModel.saveCategory(ProductCategoryModel())
-                 myAdapter.removeAll()
+                 viewModel.saveCategory(ProductCategoryModel().id)
+
              }
              back.click { viewModel.navigateToBack() }
 
@@ -74,6 +68,7 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
 
     override fun onStart() {
         super.onStart()
+        subscribe(viewModel.cities) { state -> handleState(state){loadCities(it)} }
         binding.apply {
             saving.click {
                 viewModel.saveSearch(searchEt.text.toString(),
@@ -84,7 +79,7 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
                 )
             }
         }
-        viewModel.getListCategories()
+
     }
 
         private   fun installBundleResultListeners() {
@@ -110,41 +105,5 @@ class SearchFilterFragment : BaseFragment<SearchFilterFragmentBinding>(SearchFil
         viewModel.saveCities(item)
 
     }
-
-    private fun loadCharacteristic(list:List<CategoryCharacteristicModel>) {
-        binding.rvFilters.visibility = View.VISIBLE
-        myAdapter.addElement(list )
-        binding.rvFilters.apply {
-            isNestedScrollingEnabled = false
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = myAdapter
-        }
-    }
-
-    private  fun initBottomCategoriesSheet(list:List<ProductCategoryModel>){
-        binding.category.click {
-            val categoryChose: CategoryChose = { viewModel.saveCategory(it) }
-            showBottomSpecifications(
-                context = requireContext(),
-                categoryChose = categoryChose,
-                list = list
-            )
-        }
-    }
-
-
-    override fun inputListener(left: String, right: String?, name: String) = viewModel.addFilterInput(left,right?:"",name)
-
-    override fun radioListener(id: String, name: String) =viewModel.addFilterRadio(id,name)
-
-    override fun selectListener(id: String, name: String, checked: Boolean) {
-        when(checked){
-            true-> myAdapter.addSelect(id)
-            false->myAdapter.removeSelect(id)
-        }
-        viewModel.addFilterSelect(name,myAdapter.selectList)
-    }
-
-    override fun checkBoxListener(name: String, checked: Boolean) = viewModel.addFilterCheckbox(name,checked)
 }
 

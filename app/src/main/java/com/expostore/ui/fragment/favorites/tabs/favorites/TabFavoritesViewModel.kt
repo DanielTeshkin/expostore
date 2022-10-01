@@ -5,8 +5,8 @@ import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseD
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseProductInteractor
-import com.expostore.ui.base.BaseProductViewModel
+import com.expostore.ui.base.interactors.BaseProductInteractor
+import com.expostore.ui.base.vms.BaseProductViewModel
 import com.expostore.ui.fragment.category.DetailCategoryFragmentDirections
 import com.expostore.ui.fragment.favorites.FavoritesFragmentDirections
 import com.expostore.ui.state.ResponseState
@@ -18,35 +18,38 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class TabFavoritesViewModel @Inject constructor(private val favoriteInteractor: BaseProductInteractor) : BaseProductViewModel() {
-    private val _favoriteList= MutableSharedFlow<ResponseState<List<FavoriteProduct>>>()
-   val favoriteList=_favoriteList.asSharedFlow()
+class TabFavoritesViewModel @Inject constructor(override val interactor: BaseProductInteractor) : BaseProductViewModel() {
+
     private val _delete=MutableSharedFlow<ResponseState<SelectFavoriteResponseData>>()
     val  delete=_delete.asSharedFlow()
     private val _state= MutableStateFlow(true)
     val state=_state.asStateFlow()
 
     init {
-  interactor=favoriteInteractor
-        loadFavoriteList()
+        getFavorites()
         getSelections()
     }
     override fun onStart() {
 
     }
-    private fun loadFavoriteList()= interactor?.getProductFavoriteList()?.handleResult(_favoriteList)
+
 
     fun delete()= onCleared()
-    override fun navigateToChat(infoItemChat: InfoItemChat) =
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToChatFragment(infoItemChat))
+    override fun navigateToChat(value: InfoItemChat) =
+        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToChatFragment(value))
 
   override  fun navigateToNote(model: ProductModel) =navigationTo(FavoritesFragmentDirections
         .actionFavoritesFragmentToNoteFragment(id=model.id,
             isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = "product"))
     override fun navigateToBlock()=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSupportFragment())
+    override fun navigateToItem(model: ProductModel) = navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2(model))
+
     override  fun navigateToCreateSelection(product: String)=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSelectionCreate())
-    override fun navigateToProduct(product: ProductModel)=
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2(product))
+    override fun navigateToComparison() {
+        TODO("Not yet implemented")
+    }
+
+
 
 
 

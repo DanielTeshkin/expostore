@@ -161,6 +161,15 @@ class FileStorage(val context: Context) {
         return storageIntent
     }
 
+    fun openStorageSingle(): Intent {
+        val storageIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/*"
+        }
+
+        return storageIntent
+    }
+
 
 
 

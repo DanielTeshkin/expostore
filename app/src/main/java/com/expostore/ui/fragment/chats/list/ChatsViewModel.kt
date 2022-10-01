@@ -3,7 +3,7 @@ package com.expostore.ui.fragment.chats.list
 
 import androidx.lifecycle.viewModelScope
 import com.expostore.model.chats.DataMapping.MainChat
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.state.ResponseState

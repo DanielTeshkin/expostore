@@ -27,12 +27,12 @@ class PersonalSelectionController(private val context:Context,private val
         }
     }
     fun showUI(model: SelectionModel) {
-        products.addAll(model.products)
+       // products.addAll(model.products)
         binding.apply {
             tvCategoryName.text=model.name
             rvDetailProduct.apply {
                 layoutManager= LinearLayoutManager(context)
-                adapter=mAdapter
+               // adapter=mAdapter
             }
         }
 

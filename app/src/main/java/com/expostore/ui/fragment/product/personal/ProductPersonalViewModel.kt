@@ -2,7 +2,8 @@ package com.expostore.ui.fragment.product.personal
 
 import androidx.lifecycle.ViewModel
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseViewModel
+
+import com.expostore.ui.base.vms.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 

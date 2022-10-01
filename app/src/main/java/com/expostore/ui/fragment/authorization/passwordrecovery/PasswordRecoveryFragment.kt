@@ -1,18 +1,15 @@
 package com.expostore.ui.fragment.authorization.passwordrecovery
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import com.expostore.ui.base.fragments.BaseFragment
+
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.expostore.MainActivity
+
 import com.expostore.R
 import com.expostore.databinding.PasswordRecoveryFragmentBinding
-import com.expostore.ui.base.BaseFragment
 import com.expostore.ui.fragment.authorization.registration.confirmcode.ConfirmCodeFragmentArgs
-import com.expostore.ui.fragment.authorization.registration.confirmcode.ConfirmCodeViewModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

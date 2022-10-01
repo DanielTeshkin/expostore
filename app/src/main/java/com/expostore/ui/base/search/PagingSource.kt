@@ -1,4 +1,4 @@
-package com.expostore.ui.base
+package com.expostore.ui.base.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

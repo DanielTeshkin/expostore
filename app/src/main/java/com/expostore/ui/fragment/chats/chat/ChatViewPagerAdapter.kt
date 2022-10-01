@@ -33,8 +33,10 @@ class ChatViewPagerAdapter(
         @SuppressLint("InflateParams")
     fun getTabView(position: Int): View{
             val view: View = LayoutInflater.from(context).inflate(R.layout.chat_tablayout_item, null)
-            view.chat_product_name.text = product_name[position]
-                 view.chat_product_image.loadTabImage(images[position])
+            view.chat_product_name.text=  if(position>product_name.size-1) ""
+            else product_name[position]
+            if(position>product_name.size-1)view.chat_product_image.loadTabImage("")
+           else view.chat_product_image.loadTabImage(images[position])
 
         return view
     }

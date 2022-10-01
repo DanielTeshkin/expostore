@@ -1,23 +1,15 @@
 package com.expostore.ui.fragment.authorization.login
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import androidx.lifecycle.viewModelScope
 
 import androidx.navigation.Navigation
-import com.expostore.data.remote.api.ServerApi
-import com.expostore.data.remote.api.pojo.confirmnumber.ConfirmNumberRequestData
-import com.expostore.data.remote.api.pojo.signin.SignInRequestData
+import com.expostore.R
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.model.auth.SignInResponseDataModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +35,7 @@ class LoginViewModel @Inject constructor(
 
 
     override fun onStart() {
-       Log.i("ddd","ddd")
+
     }
 
    fun updatePhone(input:String){
@@ -71,12 +63,9 @@ class LoginViewModel @Inject constructor(
        viewModelScope.launch {
            authorization.saveToken(refresh, access)
        }
-    fun navigateToReset(){
-        navigationTo(LoginFragmentDirections.actionLoginFragmentToConfirmNumberPass())
-    }
-fun navigateToBack(){
-    navController.popBackStack()
-}
+    fun navigateToReset()=navController.navigate(R.id.action_loginFragment_to_confirmNumberPass)
+fun navigateToBack()= navController.popBackStack()
+
     fun navigateBack(view: View) {
         navController = Navigation.findNavController(view)
         navController.popBackStack()

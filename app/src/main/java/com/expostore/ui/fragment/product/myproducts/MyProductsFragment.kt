@@ -7,8 +7,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.expostore.databinding.MyProductsFragmentBinding
-import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.product.myproducts.adapter.MyProductClickRepository
 import com.expostore.ui.fragment.product.myproducts.adapter.MyProductsTabsViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator

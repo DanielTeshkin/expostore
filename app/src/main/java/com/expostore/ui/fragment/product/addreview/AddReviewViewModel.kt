@@ -15,7 +15,7 @@ import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.data.repositories.ReviewsRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.general.ImageMessage
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

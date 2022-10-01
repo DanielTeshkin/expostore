@@ -1,8 +1,7 @@
 package com.expostore.ui.fragment.product.myproducts.tabs
 
-import androidx.lifecycle.ViewModel
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.product.ProductInteractor
 import com.expostore.ui.fragment.product.myproducts.MyProductsFragmentDirections
 import com.expostore.ui.state.ResponseState

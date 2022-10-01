@@ -11,7 +11,8 @@ import androidx.lifecycle.Observer
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.CreatePasswordFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
 /**

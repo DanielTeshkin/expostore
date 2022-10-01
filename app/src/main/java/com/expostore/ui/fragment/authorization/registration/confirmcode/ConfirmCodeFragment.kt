@@ -9,11 +9,11 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.R
-import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeResponseData
+
 import com.expostore.databinding.ConfirmCodeFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.profile.profile_edit.click
-import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 

@@ -7,7 +7,7 @@ import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
 import com.expostore.data.remote.api.response.EditResponseProfile
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.data.repositories.ProfileRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.authorization.registration.completion.CompletionFragmentDirections
 import com.expostore.ui.fragment.profile.InfoProfileModel
 import com.expostore.ui.fragment.profile.profile_edit.EditProfileFragmentDirections
@@ -20,7 +20,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 @HiltViewModel
 class ProfileDataViewModel @Inject constructor(private val authorizationRepository: AuthorizationRepository,
-                                               private val profileRepository: ProfileRepository) :BaseViewModel() {
+                                               private val profileRepository: ProfileRepository) :
+    BaseViewModel() {
     private val _ui= MutableSharedFlow<ResponseState<EditProfileResponseData>>()
     val ui=_ui.asSharedFlow()
     private val _cities= MutableSharedFlow<ResponseState<List<City>>>()

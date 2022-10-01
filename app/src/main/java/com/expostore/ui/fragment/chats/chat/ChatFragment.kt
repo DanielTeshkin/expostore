@@ -13,8 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.expostore.databinding.ChatFragmentBinding
 import com.expostore.model.chats.InfoItemChat
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
+
 import com.expostore.ui.fragment.chats.general.FileStorage
+import com.expostore.ui.fragment.chats.general.ImagePicker
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.listPath
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,22 +28,18 @@ import kotlinx.coroutines.flow.collect
  * @author Teshkin Daniel
  */
 @AndroidEntryPoint
-class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::inflate) {
+class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::inflate){
 
-    private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var tabLayoutMediator: TabLayoutMediator
     override var isBottomNavViewVisible: Boolean=false
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val result=ChatFragmentArgs.fromBundle(requireArguments()).info
-        chatViewModel.saveInfo(result)
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribe(chatViewModel.info) { init(it!!) }
+        init(ChatFragmentArgs.fromBundle(requireArguments()).info)
         subscribe(PagerChatRepository.getInstance().getOpenFileState()){
-            if(it)
-            resultLauncher.launch(FileStorage(requireContext()).openStorage())}
+            if(it) resultLauncher.launch(FileStorage(requireContext()).openStorage())}
+        //subscribe(PagerChatRepository.getInstance().getImagesOpen()){
+        ///    if(it) openGallery()
+      //  }
 
     }
 
@@ -66,23 +65,10 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
                     tab.customView = chatViewPagerAdapter.getTabView(position)
                 }
             tabLayoutMediator.attach()
-            chatVp2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                }
-
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    //  PagerChatRepository.getInstance().getIdChat().value=info.id_list[position]
-                }
-            })
 
         }
     }
+
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             Log.i("dggg","ddd")
@@ -99,6 +85,13 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
             }
             PagerChatRepository.getInstance().getOpenFileState().value=false
         }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PagerChatRepository.getInstance().getUriFiles().value= listOf()
+    }
+
+
 }
 
 

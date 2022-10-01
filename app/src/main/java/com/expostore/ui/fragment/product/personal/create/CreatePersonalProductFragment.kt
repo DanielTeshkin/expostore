@@ -17,8 +17,10 @@ import com.expostore.R
 import com.expostore.databinding.CreatePersonalProductFragmentBinding
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.ProductCategoryModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
+import com.expostore.ui.base.fragments.create.CreateProductFragment
+import com.expostore.ui.base.vms.CreatorProductViewModel
 import com.expostore.ui.fragment.product.addproduct.AddProductViewModel
 import com.expostore.ui.fragment.product.addproduct.adapter.ProductCreateImageAdapter
 import com.expostore.ui.fragment.product.addproduct.adapter.utils.ImagesEdit
@@ -33,9 +35,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class CreatePersonalProductFragment :
-    BaseFragment<CreatePersonalProductFragmentBinding>(CreatePersonalProductFragmentBinding::inflate)
+    CreateProductFragment()
     {
+        override val viewModel: CreatorProductViewModel by  viewModels()
 
+        override fun onStart() {
+            super.onStart()
+            btnDraft.visibility=View.GONE
+            binding.llPresentation.visibility=View.GONE
+            binding.llInstruction.visibility=View.GONE
+        }
 
 
 

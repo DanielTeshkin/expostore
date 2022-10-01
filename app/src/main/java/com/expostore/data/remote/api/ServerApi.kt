@@ -30,6 +30,7 @@ import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseD
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.data.remote.api.pojo.signin.SignInRequestData
 import com.expostore.data.remote.api.pojo.signin.SignInResponseData
+import com.expostore.data.remote.api.pojo.signup.ResetPasswordRequest
 import com.expostore.data.remote.api.pojo.signup.SignUpRequestData
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.remote.api.request.*
@@ -64,7 +65,7 @@ interface ServerApi {
     suspend fun confirmPassCode(@Body request: ConfirmCodeRequestData): Response<ConfirmCodeResponseData>
 
     @POST("api/reset_password/")
-    suspend fun resetPassword(@Body request: SignUpRequestData): Response<ConfirmCodeResponseData>
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ConfirmCodeResponseData>
 
 
 
@@ -161,7 +162,7 @@ interface ServerApi {
 
 
     @GET("/api/product/{id}/")
-    suspend fun getProduct(@Path("id") id: String): Response<ProductResponseData>
+    suspend fun getProduct(@Path("id") id: String): Response<ProductResponse>
 
     @PATCH("/api/product/{id}/status/draft/")
     suspend fun takeOffProduct(@Path("id") id: String): Response<ProductResponse>
@@ -300,7 +301,7 @@ interface ServerApi {
 
     //personal product
     @POST("/api/product/personal/create/")
-    suspend fun createPersonalProduct(@Body request:PersonalProductRequest):Response<CreateResponseProduct>
+    suspend fun createPersonalProduct(@Body request:ProductUpdateRequest):Response<CreateResponseProduct>
 
     @GET("/api/product/personal/")
     suspend fun getPersonalProducts():Response<BaseListResponse<ProductResponse>>

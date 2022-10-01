@@ -14,6 +14,7 @@ import com.expostore.model.product.ProductModel
 import com.expostore.model.product.priceSeparator
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.fragment.category.OnClickListener
+import com.expostore.ui.fragment.category.OnClickListeners
 import com.expostore.ui.fragment.favorites.FavoritesClickListener
 import com.expostore.ui.fragment.product.addproduct.stroke
 import com.expostore.ui.fragment.profile.profile_edit.click
@@ -25,7 +26,7 @@ class FavoritesProductRecyclerViewAdapter(
 
 ) : RecyclerView.Adapter<FavoritesProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
 
-   var onClickListener:OnClickListener?=null
+   var onClickListener: OnClickListeners<ProductModel>?=null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
@@ -50,14 +51,14 @@ class FavoritesProductRecyclerViewAdapter(
             binding.viewPager.apply {
                val tabProductPagerAdapter=ImageAdapter()
                 tabProductPagerAdapter.items=list
-                tabProductPagerAdapter.onItemClickListener={onClickListener?.onClickProduct(product)}
+                tabProductPagerAdapter.onItemClickListener={onClickListener?.onClickItem(product)}
                 adapter=tabProductPagerAdapter
             }
             binding.call.click {onClickListener?.onClickCall(product.author.username ) }
-            binding.write.click { onClickListener?.onClickMessage(product) }
+            binding.write.click { onClickListener?.onClickMessage(product.id) }
             binding.another.click {onClickListener?.onClickAnother(product)}
             binding.like.click { onClickListener?.onClickLike(product.id) }
-            binding.root.click { onClickListener?.onClickProduct(product) }
+            binding.root.click { onClickListener?.onClickItem(product) }
             if(item.notes!=null){
                 binding.note.text=item.notes
             }

@@ -6,13 +6,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.DetailCategoryFragmentBinding
 import com.expostore.model.category.SelectionModel
-import com.expostore.ui.base.BaseProductListFragment
-import com.expostore.ui.controllers.DetailCategoryController
+import com.expostore.ui.base.fragments.BaseProductFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
  class DetailCategoryFragment :
-    BaseProductListFragment<DetailCategoryFragmentBinding>(DetailCategoryFragmentBinding::inflate) {
+    BaseProductFragment<DetailCategoryFragmentBinding>(DetailCategoryFragmentBinding::inflate) {
     override val viewModel:DetailCategoryViewModel by viewModels()
     private val mAdapter:ProductSelectionAdapter by lazy {
         ProductSelectionAdapter(products)
@@ -26,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
             tvCategoryName.text = model.name
             rvDetailProduct.apply {
                layoutManager = LinearLayoutManager(requireContext())
-                products.addAll(model.products)
+                if (products.isEmpty()) products.addAll(model.products)
                adapter = mAdapter
             }
         }

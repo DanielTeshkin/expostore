@@ -1,7 +1,6 @@
 package com.expostore.ui.fragment.product
 
-import androidx.lifecycle.ViewModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 
 class CharacteristicProductViewModel : BaseViewModel() {
     // TODO: Implement the ViewModel

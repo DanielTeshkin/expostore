@@ -35,6 +35,7 @@ import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseData
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.data.remote.api.pojo.signin.SignInResponseData
+import com.expostore.data.remote.api.pojo.signup.ResetPasswordRequest
 import com.expostore.data.remote.api.pojo.signup.SignUpRequestData
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.remote.api.request.*
@@ -67,7 +68,7 @@ interface ApiWorker {
 
     suspend fun confirmPassCode( request: ConfirmCodeRequestData): BaseApiResponse<ConfirmCodeResponseData>
 
-    suspend fun resetPassword( request: SignUpRequestData): BaseApiResponse<ConfirmCodeResponseData>
+    suspend fun resetPassword( request: ResetPasswordRequest): BaseApiResponse<ConfirmCodeResponseData>
 
     suspend fun shopCreate(request: AddShopRequestData):BaseApiResponse<ShopResponse>
 
@@ -148,7 +149,7 @@ interface ApiWorker {
 
     suspend fun getMyTenders(status: String): BaseApiResponse<TenderPage>
 
-    suspend fun getProduct(id: String): BaseApiResponse<ProductResponseData>
+    suspend fun getProduct(id: String): BaseApiResponse<ProductResponse>
 
     suspend fun publishedProduct( id:String): BaseApiResponse<ProductResponse>
 
@@ -223,7 +224,7 @@ interface ApiWorker {
 
     //personal product
 
-    suspend fun createPersonalProduct(request:PersonalProductRequest):BaseApiResponse<CreateResponseProduct>
+    suspend fun createPersonalProduct(request:ProductUpdateRequest):BaseApiResponse<CreateResponseProduct>
 
     suspend fun getPersonalProducts():BaseApiResponse<BaseListResponse<ProductResponse>>
 

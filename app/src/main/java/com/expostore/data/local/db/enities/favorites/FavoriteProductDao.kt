@@ -3,6 +3,7 @@ package com.expostore.data.local.db.enities.favorites
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
 
 @Entity(tableName = "favorite")
@@ -13,3 +14,8 @@ import com.expostore.model.product.ProductModel
     @ColumnInfo(name = "notes")  val notes: String?,
     @ColumnInfo(name = "user") val user: String?
  )
+
+val FavoriteProduct.toDao :FavoriteProductDao
+get() = FavoriteProductDao(
+    id?:"",product, notes, user
+)

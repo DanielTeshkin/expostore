@@ -5,7 +5,7 @@ import com.expostore.data.remote.api.pojo.getchats.MessageRequest
 import com.expostore.data.remote.api.pojo.getchats.ResponseFile
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.data.repositories.MultimediaRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -7,7 +7,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.expostore.databinding.ProductQrCodeFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint

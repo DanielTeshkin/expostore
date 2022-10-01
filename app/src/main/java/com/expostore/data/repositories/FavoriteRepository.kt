@@ -8,6 +8,7 @@ import com.expostore.data.remote.api.request.NoteRequest
 import com.expostore.data.remote.api.response.NoteResponse
 import com.expostore.data.local.db.LocalWorker
 import com.expostore.data.remote.api.base.BaseListResponse
+import com.expostore.model.favorite.FavoriteProduct
 
 import com.expostore.model.favorite.toModel
 import com.expostore.model.product.toModel
@@ -19,6 +20,12 @@ class FavoriteRepository @Inject constructor(private val apiWorker: ApiWorker, p
         val result=handleOrEmptyList { apiWorker.getFavoritesList() }.map { it.toModel }
         emit(result)
     }
+    fun getFavorites()=operator(
+        databaseQuery = {localWorker.getFavoritesProduct()
+            .map { FavoriteProduct(it.id,it.product,it.notes,it.notes) }},
+        networkCall = {handleOrEmptyList { apiWorker.getFavoritesList() }.map { it.toModel }},
+        saveCallResult = {localWorker.saveFavorites(it)}
+    )
     fun addToFavorite(id:String, noteRequest: NoteRequest=NoteRequest())=flow{
         val result=handleOrDefault(SelectFavoriteResponseData()){apiWorker.selectFavorite(id,noteRequest)}
         emit(result)

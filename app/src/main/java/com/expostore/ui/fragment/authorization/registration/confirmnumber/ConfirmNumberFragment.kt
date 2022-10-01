@@ -3,7 +3,8 @@ package com.expostore.ui.fragment.authorization.registration.confirmnumber
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.databinding.ConfirmNumberFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

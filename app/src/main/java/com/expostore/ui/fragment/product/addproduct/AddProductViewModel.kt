@@ -1,85 +1,95 @@
 package com.expostore.ui.fragment.product.addproduct
 
+
+import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
+import android.net.Uri
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileResponseData
-
-import com.expostore.data.remote.api.request.ProductUpdateRequest
-import com.expostore.data.remote.api.response.CreateResponseProduct
-import com.expostore.data.remote.api.response.ProductResponse
-import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseCreatorInteractor
-import com.expostore.ui.base.BaseCreatorViewModel
-import com.expostore.ui.fragment.product.ProductInteractor
+import com.expostore.ui.base.ConditionProcessor
+import com.expostore.ui.base.interactors.CreateProductInteractor
+import com.expostore.ui.base.vms.CreatorProductViewModel
+import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class AddProductViewModel
-@Inject constructor(private val addProductInteractor: ProductInteractor,private val inter:BaseCreatorInteractor) : BaseCreatorViewModel() {
-    private val _addProduct = MutableSharedFlow<ResponseState<CreateResponseProduct>>()
-    val addProduct = _addProduct.asSharedFlow()
-    private val _product = MutableStateFlow(ProductModel())
-    val product = _product.asStateFlow()
-    private val _updateProduct = MutableSharedFlow<ResponseState<CreateResponseProduct>>()
-    private val _productPublic = MutableSharedFlow<ResponseState<ProductResponse>>()
-    val productPublic = _productPublic.asSharedFlow()
-    private val shopId = MutableStateFlow("")
-    private val _saveFile= MutableStateFlow<ResponseState<SaveFileResponseData>>(ResponseState.Loading(false))
-    val saveFile= _saveFile.asStateFlow()
-     init {
-         interactor=inter
-         loadCategories()
-     }
+@Inject constructor(override val interactor: CreateProductInteractor
+) : CreatorProductViewModel() {
+    private val instruction = MutableStateFlow<Uri>(Uri.parse(""))
+    private val presentation = MutableStateFlow<Uri>(Uri.parse(""))
+    private val fileRequestData= mutableListOf<SaveFileRequestData>()
+    val flag= MutableStateFlow("")
+    @SuppressLint("StaticFieldLeak")
+    private val context:Context? = null
+    private val _files=MutableSharedFlow<ResponseState<SaveFileResponseData>>()
+    val files=_files.asSharedFlow()
+    val fileList= mutableListOf<String?>(null,null)
 
-    fun saveFile(uris: List<SaveFileRequestData>)=
-        addProductInteractor
-            .saveFile(uris)
-            .handleResult(_saveFile)
-
-    fun saveProductInformation(product: ProductModel) {
-        shopId.value = product.shop.id
-        addProductInteractor.saveCharacteristic(product.characteristics)
-        flag.value = true
+    fun updateFlag(mean:String){
+        flag.value=mean
+    }
+    fun saveShopId(id:String){
+        interactor.saveShopId(id)
+    }
+    fun saveInstruction(uri: Uri){
+        instruction.value=uri
+    }
+    fun savePresentation(uri: Uri){
+        presentation.value=uri
     }
 
-    private fun published(id: String) = addProductInteractor
-        .publishedProduct(id)
-        .handleResult(_productPublic)
+    override fun navigateToMyProducts() {
+        TODO("Not yet implemented")
+    }
 
-    fun createOrUpdate(status: String,request: ProductUpdateRequest) {
-        Log.i("crash3","ddd")
-        when (flag.value) {
-            true -> {
-                Log.i("crash11","ddd")
-                if (status == "my") addProductInteractor.updateProduct(product.value.id, request)
-                    .handleResult(_updateProduct, {
-                        published(it.id ?: "")
-                    })
-                else addProductInteractor.updateProduct(product.value.id, request)
-                    .handleResult(_updateProduct)
-            }
-            false -> createProduct(status,request)
+    override fun checkEnabled() {
+        updateEnabledState(name.value.isNotEmpty() and longDescription.value.isNotEmpty()
+                and shortDescription.value.isNotEmpty() and count.value.isNotEmpty() and price.value.isNotEmpty() and(
+                (imageList.value.size!=0) or (getBitmapList().isNotEmpty())))
+    }
+
+    override fun checkStackMultimedia(): Boolean {
+       return (getBitmapList().isNotEmpty() ||
+               instruction.value!= Uri.parse("")
+               || presentation.value!= Uri.parse(""))
+    }
+
+    override fun saveMultimedia() {
+        processor.checkConditionParameter(
+            condition= arrayOf(
+                {presentation.value!= Uri.parse("")},
+                {instruction.value!= Uri.parse("")}
+            ),
+            actionTrue = {states->loadFiles(states)},
+            actionFalse = {checkPhoto()}
+        )
+    }
+    fun addFiles(list: List<String>){
+        fileList.addAll(list)
+        checkPhoto()
+    }
+    private fun loadFiles(list: List<Boolean>) {
+        val processor= ConditionProcessor()
+        processor.apply {
+            checkCondition(condition={list[0]},
+                actionTrue = { fileRequestData.add(presentation.value.castFileToRequestData())})
+            checkCondition(
+                { list[1] },
+                actionTrue = { fileRequestData.add(instruction.value.castFileToRequestData())}
+            )
         }
+
+        interactor.saveFiles(fileRequestData).handleResult(_files)
     }
 
-    private fun createProduct(status: String, request: ProductUpdateRequest) {
-        Log.i("crash4","ddd")
-        when (status) {
-            "my" -> addProductInteractor.createProduct(request,shopId.value).handleResult(_addProduct, {
-                published(it.id ?: "")
-            })
-            else -> addProductInteractor.createProduct(request, shopId.value).handleResult(_addProduct)
-        }
-    }
-    fun createPersonalProduct(context: Context) {}
 
-    fun saveShopId(id: String){
-        shopId.value=id
-    }
-    override fun onStart() {
+    private fun Uri.castFileToRequestData():SaveFileRequestData{
+        return context?.let { FileStorage(it).getSaveRequestData(this) }?: SaveFileRequestData()
     }
 }

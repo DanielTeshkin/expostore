@@ -9,9 +9,10 @@ import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.databinding.EditMyProductFragmentBinding
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.base.ImageAdapter
-import com.expostore.ui.base.Show
+
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap

@@ -20,7 +20,6 @@ data class SelectionDao(
     @ColumnInfo(name="id") val id : String,
     @ColumnInfo(name="products")
     val products: List<ProductModel>? = null,
-
     @ColumnInfo(name="date_create")
     val date_create: String? = null
 )
@@ -33,3 +32,16 @@ val SelectionDao.toModel:SelectionModel
 get() =SelectionModel(name?:"",count?:0,id,products?: listOf())
 
 
+@Entity(tableName = "personal")
+data class SelectionPersonal(
+    @ColumnInfo(name="name")
+    val name: String? = null,
+    @ColumnInfo(name="count")
+    val count: Int? = null,
+    @PrimaryKey
+    @ColumnInfo(name="id") val id : String,
+    @ColumnInfo(name="products")
+    val products: List<ProductModel>? = null,
+    @ColumnInfo(name="date_create")
+    val date_create: String? = null
+)

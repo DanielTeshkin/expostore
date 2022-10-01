@@ -7,17 +7,15 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.expostore.databinding.MapChoiceFragmentBinding
-import com.expostore.ui.base.BaseLocationFragment
+import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
-import kotlinx.android.synthetic.main.comparison_item.*
 
 
-class MapChoiceFragment :
-    BaseLocationFragment<MapChoiceFragmentBinding>(MapChoiceFragmentBinding::inflate)
+class MapChoiceFragment :BaseFragment<MapChoiceFragmentBinding>(MapChoiceFragmentBinding::inflate)
     ,OnMapReadyCallback{
     private lateinit var googleMap: GoogleMap
     private var markerPosition: Marker? = null
@@ -70,23 +68,7 @@ class MapChoiceFragment :
 
 
     private fun myLocation() {
-        myLocation?.let { location ->
-            if (markerPosition != null) {
-                moveToLocation(location)
-                return@let
-            }
-            val latLng = LatLng(location.latitude, location.longitude)
-            viewModel.saveLocation(latLng)
-            val markerOptions =
-                MarkerOptions()
-                    .position(LatLng(location.latitude,location.longitude))
-                    .draggable(true)
 
-
-            moveToLocation(location)
-            googleMap.addMarker(markerOptions)?.let { markerPosition = it }
-            drawCircle(LatLng(location.latitude,location.longitude))
-        }
     }
     private fun moveToLocation(location: Location, isAnimate: Boolean = true) {
         val latLng = LatLng(location.latitude, location.longitude)
@@ -98,12 +80,12 @@ class MapChoiceFragment :
     }
 
 
-    override fun onLocationChange(location: Location) {
+   fun onLocationChange(location: Location) {
         markerPosition?.position = LatLng(location.latitude, location.longitude)
         myLocation()
     }
 
-    override fun onLocationFind(location: Location): Boolean {
+    fun onLocationFind(location: Location): Boolean {
         Log.i("loc", location.latitude.toString())
         if (!::googleMap.isInitialized) {
             return false

@@ -1,12 +1,14 @@
 package com.expostore.ui.fragment.favorites.tabs.tenders
 
-import androidx.lifecycle.ViewModel
-import com.expostore.data.repositories.FavoriteRepository
+import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.favorite.FavoriteTender
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.interactors.BaseItemsInteractor
+import com.expostore.ui.base.interactors.BaseTenderInteractor
+import com.expostore.ui.base.vms.BaseTenderViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.imagesProduct
@@ -20,7 +22,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteTendersViewModel @Inject constructor(private val interactor: FavoritesInteractor) : BaseViewModel() {
+class FavoriteTendersViewModel @Inject constructor(private val interactors: FavoritesInteractor,
+                                                   override val interactor: BaseTenderInteractor
+) : BaseTenderViewModel() {
     private val _tenders= MutableSharedFlow<ResponseState<List<FavoriteTender>>>()
     val tenders=_tenders.asSharedFlow()
     private val chatState= MutableSharedFlow<ResponseState<MainChat>>()
@@ -32,23 +36,27 @@ class FavoriteTendersViewModel @Inject constructor(private val interactor: Favor
         getTenderFavoriteList()
     }
 
-   fun getTenderFavoriteList()=interactor.getTenderFavoriteList().handleResult(_tenders)
-    fun  updateSelectedTender(id:String)=interactor.updateSelectedTender(id).handleResult()
-    fun createChat(id: String)=interactor.chatCreate(id,"tender").handleResult(chatState,{
-        val result = InfoItemChat(
-            it.identify()[1],
-            it.identify()[0],
-            it.chatsId(),
-            it.imagesProduct(),
-            it.productsName(), it.identify()[3]
-        )
-        navigateToChat(result)
-    })
+   fun getTenderFavoriteList()=interactors.getTenderFavoriteList().handleResult(_tenders)
+    fun  updateSelectedTender(id:String)=interactors.updateSelectedTender(id).handleResult()
+    override fun navigateToCreateSelection(product: String) {
+        TODO("Not yet implemented")
+    }
 
-    private fun navigateToChat(infoItemChat: InfoItemChat)=navigationTo(FavoritesFragmentDirections
+    override fun navigateToComparison() {
+        TODO("Not yet implemented")
+    }
+
+
+    override fun navigateToChat(infoItemChat: InfoItemChat)=navigationTo(FavoritesFragmentDirections
         .actionFavoritesFragmentToChatFragment(infoItemChat))
 
-   fun navigateToNote(model: TenderModel) {
+    override fun navigateToBlock() {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToItem(model: TenderModel) =navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToTenderItem(model))
+
+    override fun navigateToNote(model: TenderModel) {
        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToNoteFragment(id=model.id,
            isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender"))
    }

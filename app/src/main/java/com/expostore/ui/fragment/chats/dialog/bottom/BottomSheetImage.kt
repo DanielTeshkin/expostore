@@ -94,16 +94,12 @@ class BottomSheetImage internal constructor() :
         )
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnImagesSelectedListener)
-            onImagesSelectedListener = context
 
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val context =context
+        if (context is OnImagesSelectedListener) onImagesSelectedListener =context
         loadArguments()
         if (requireContext().hasReadStoragePermission) {
             LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
@@ -325,18 +321,12 @@ fun hide(){
 }
 
     private val resultLauncher=registerForActivityResult(ActivityResultContracts.TakePicture()) { result ->
-
-
-
-                   // notifyGallery()
         if(result) {
             currentPhotoUri?.let { uri ->
                 onImagesSelectedListener?.onImagesSelected(mutableListOf(uri), "photo")
 
             }
-
-
-
+            dismissAllowingStateLoss()
             return@registerForActivityResult
 
         }

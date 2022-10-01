@@ -3,12 +3,11 @@ package com.expostore.ui.fragment.main
 import androidx.lifecycle.viewModelScope
 import com.expostore.data.repositories.MainRepository
 import com.expostore.data.repositories.ProfileRepository
-import com.expostore.data.local.db.model.TokenModel
 import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.model.profile.ProfileModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.main.interactor.MainInteractor
 import com.expostore.ui.state.MainState
 import com.expostore.ui.state.ResponseState
@@ -103,7 +102,7 @@ class MainViewModel @Inject constructor(
         when(token.value.isNullOrEmpty()){
             true->navigateToOpen()
             false-> {
-                if (profileModel.value.shop!=null)
+                if (profileModel.value.shop?.id!="")
                 navigateToCreateProduct()
                 else navigationTo(MainFragmentDirections.actionMainFragmentToShopCreate())
             }

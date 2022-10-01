@@ -1,14 +1,12 @@
-package com.expostore.ui.base
+package com.expostore.ui.base.vms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import com.expostore.ui.state.ResponseState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 abstract class BaseViewModel : ViewModel() {

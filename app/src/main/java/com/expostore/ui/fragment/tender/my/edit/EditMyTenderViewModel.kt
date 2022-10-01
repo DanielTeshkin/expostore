@@ -2,7 +2,7 @@ package com.expostore.ui.fragment.tender.my.edit
 
 import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.tender.TenderInteractor
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -6,7 +6,8 @@ import android.util.Log
 import android.view.View
 import android.webkit.WebViewClient
 import com.expostore.databinding.WebViewFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 
 class WebViewFragment : BaseFragment<WebViewFragmentBinding>(WebViewFragmentBinding::inflate) {
 

@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ProfileModel(
     val id: String? = "",
-    val shop: ShopModel? = null,
+    val shop: ShopModel? = ShopModel(),
     val city: String? ="",
     val lastName: String? = "",
     val avatar: ImageModel? =ImageModel() ,

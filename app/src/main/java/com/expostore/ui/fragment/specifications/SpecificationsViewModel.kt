@@ -1,12 +1,8 @@
 package com.expostore.ui.fragment.specifications
 
-import android.view.View
-import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.expostore.data.repositories.CategoryRepository
 import com.expostore.model.category.ProductCategoryModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

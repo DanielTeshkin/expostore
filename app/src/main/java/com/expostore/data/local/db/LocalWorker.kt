@@ -9,6 +9,7 @@ import com.expostore.data.remote.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.favorite.FavoriteProduct
 
 interface LocalWorker {
    // fun getToken(): TokenModel?
@@ -29,7 +30,7 @@ interface LocalWorker {
     suspend fun saveAdvertising(advertising: List<CategoryAdvertisingModel>)
     suspend fun removeAdvertising()
     suspend fun getFavoritesProduct():List<FavoriteProductDao>
-    suspend fun saveFavorites(list: List<FavoriteProductDao>)
+    suspend fun saveFavorites(list: List<FavoriteProduct>)
     suspend fun removeFavorites()
     fun getToken():String?
     fun getRefreshToken():String?

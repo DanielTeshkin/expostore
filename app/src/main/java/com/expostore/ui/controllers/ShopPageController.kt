@@ -17,10 +17,10 @@ class ShopPageController(private val binding:ShopFragmentBinding,private val con
             tvShopShoppingCenter.text = data.shoppingCenter
             ivAvatar.load(data.image.file)
             ivBackground.load(data.image.file)
-            products.addAll(data.products.map { it.toModel })
+            //products.addAll(data.products.map { it.toModel })
             rvShopProducts.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = mAdapter
+            //    adapter = mAdapter
             }
         }
     }

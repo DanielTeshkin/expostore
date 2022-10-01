@@ -11,9 +11,10 @@ import com.expostore.databinding.TenderItemBinding
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseFragment
+
 import com.expostore.ui.base.ImageAdapter
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.imagesProduct

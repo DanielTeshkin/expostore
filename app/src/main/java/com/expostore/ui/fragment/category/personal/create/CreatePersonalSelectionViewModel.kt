@@ -5,7 +5,7 @@ import com.expostore.data.remote.api.request.SelectionRequest
 import com.expostore.data.remote.api.response.SelectionResponse
 import com.expostore.data.repositories.SelectionRepository
 import com.expostore.model.category.toModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

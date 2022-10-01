@@ -7,8 +7,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.expostore.databinding.ShopCreateFragmentBinding
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Load
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Load
+
 import com.expostore.ui.fragment.profile.ShopInfoModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,6 @@ class ShopCreateFragment :
     fun loading(state:Boolean){
         binding.progressBar7.isVisible=state
     }
-
 
     fun init(){
         state { fillFields()}

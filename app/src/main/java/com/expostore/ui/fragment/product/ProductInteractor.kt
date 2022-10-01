@@ -14,6 +14,7 @@ import com.expostore.data.repositories.*
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.category.toRequestCreate
 import com.expostore.model.product.Character
+import com.expostore.ui.base.interactors.BaseProductInteractor
 import com.expostore.ui.fragment.chats.general.ImageMessage
 import com.expostore.ui.general.*
 import kotlinx.coroutines.flow.Flow
@@ -93,38 +94,7 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
 
 
     private fun updateEnabledState(state:Boolean){_enabled.value=state}
-    fun addPhoto(id:String)= _imageList.value.add(id)
-    fun saveUri(image:Uri){
-        uriSource.value.add(image)
-        checkEnabled()
-    }
 
-    fun removeImage(image:String){
-        if(_imageList.value.contains(image))_imageList.value.remove(image)
-        else uriSource.value.remove(Uri.parse(image))
-        checkEnabled()
-    }
-
-
-    fun addFilterInput(left:String,right:String,name:String)=
-        _characteristicState.value.inputStateModel.state.set(name, Pair(left,right))
-
-
-
-    fun addFilterSelect(name: String,list:List<String>)=
-        _characteristicState.value.selectStateModel.state.set(name, list)
-
-
-    fun addFilterRadio(id:String,name: String)=
-        _characteristicState.value.radioStateModel.state.set(name, id)
-
-
-    fun addFilterCheckbox(name: String,check:Boolean)= _characteristicState.value
-        .checkBoxStateModel.state.set(name, check)
-
-    fun saveCategory(id: String){
-        category.value=id
-    }
     private fun characteristicLoad()=saveCharacteristicsState().map { it?.toRequestCreate }
 
     private fun createRequest()= createProductRequest(count.value.toInt(), name.value,price.value,
@@ -161,11 +131,9 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
             _characteristicState.value.checkBoxStateModel
         )
 
-    suspend fun getProfile()=profileRepository.getProfileRemote()
+
     fun publishedProduct(id: String)=productsRepository.publishedProduct(id)
     fun load(status:String)=productsRepository.load(status)
-    fun createChat(id: String)=chatRepository.createChat(id,"product")
-    fun createPersonalProduct()=productsRepository.createPersonalProduct(PersonalProductRequest())
     fun saveFile(requestData: List<SaveFileRequestData>)=
         multimediaRepository.saveFileBase64(requestData)
 

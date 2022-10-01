@@ -2,14 +2,15 @@ package com.expostore.ui.fragment.authorization.registration.completion
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.databinding.CompletionFragmentBinding
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.general.ProfileDataViewModel
 import com.google.firebase.ktx.Firebase
@@ -39,7 +40,9 @@ class CompletionFragment : BaseFragment<CompletionFragmentBinding>(CompletionFra
     override fun onStart() {
         super.onStart()
        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+
            val token=  it.result
+           Log.i("fcm",it.result)
            completionViewModel.saveToken(token)
        }
         initButtons()

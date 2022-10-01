@@ -4,7 +4,7 @@ package com.expostore.ui.fragment.profile.profile_edit
 import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
 import com.expostore.data.remote.api.response.EditResponseProfile
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.data.repositories.ProfileRepository
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

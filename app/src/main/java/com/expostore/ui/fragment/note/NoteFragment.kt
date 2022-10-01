@@ -10,7 +10,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.expostore.R
 import com.expostore.databinding.NoteFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
 

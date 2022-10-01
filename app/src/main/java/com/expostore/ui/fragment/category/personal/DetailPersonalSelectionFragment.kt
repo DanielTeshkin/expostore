@@ -10,18 +10,16 @@ import com.expostore.R
 import com.expostore.databinding.DetailPersonalSelectionFragmentBinding
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseProductListFragment
+import com.expostore.ui.base.fragments.BaseProductFragment
 
-import com.expostore.ui.controllers.PersonalSelectionController
 import com.expostore.ui.fragment.category.ProductSelectionAdapter
-import com.expostore.ui.fragment.profile.profile_edit.click
 
 
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailPersonalSelectionFragment :
-    BaseProductListFragment<DetailPersonalSelectionFragmentBinding>(DetailPersonalSelectionFragmentBinding::inflate){
+    BaseProductFragment<DetailPersonalSelectionFragmentBinding>(DetailPersonalSelectionFragmentBinding::inflate){
     override val viewModel:DetailPersonalSelectionViewModel by viewModels()
     override val intoPersonalSelection: Boolean
         get() = true

@@ -22,12 +22,12 @@ class TabFavoritesController(private val
         productList.addAll(item)
         binding.apply {
             rvFavorites.apply {
-                layoutManager = manager
+              //  layoutManager = manager
                 adapter=myAdapter
                 progressBar4.visibility = View.GONE
             }
         }
     }
 
-    override fun setEvent(onClick:OnClickListener) {myAdapter.onClickListener=onClick }
+    //override fun setEvent(onClick:OnClickListener) {myAdapter.onClickListener=onClick }
 }

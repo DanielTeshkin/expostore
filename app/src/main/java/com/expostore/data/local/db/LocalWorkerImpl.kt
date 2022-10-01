@@ -6,6 +6,7 @@ import com.expostore.data.local.db.enities.ProfileDao
 import com.expostore.data.local.db.enities.chat.ChatDao
 import com.expostore.data.local.db.enities.chat.toDao
 import com.expostore.data.local.db.enities.favorites.FavoriteProductDao
+import com.expostore.data.local.db.enities.favorites.toDao
 import com.expostore.data.local.db.enities.selection.SelectionDao
 import com.expostore.data.local.db.enities.selection.toDao
 import com.expostore.data.local.db.enities.toDao
@@ -16,6 +17,7 @@ import com.expostore.data.remote.api.pojo.getprofile.GetProfileResponseData
 import com.expostore.model.category.CategoryAdvertisingModel
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.favorite.FavoriteProduct
 
 class LocalWorkerImpl(private val localDataApi: LocalDataApi, private val context: Context):LocalWorker {
     override  fun getToken(): String? = AppPreferences.getSharedPreferences(context).getString("token", "")
@@ -66,7 +68,7 @@ class LocalWorkerImpl(private val localDataApi: LocalDataApi, private val contex
 
     override suspend fun getFavoritesProduct(): List<FavoriteProductDao> = localDataApi.getFavoritesProduct()
 
-    override suspend fun saveFavorites(list: List<FavoriteProductDao>) = localDataApi.saveFavorites(list)
+    override suspend fun saveFavorites(list: List<FavoriteProduct>) = localDataApi.saveFavorites(list.map { it.toDao })
 
     override suspend fun removeFavorites() =localDataApi.removeFavorites()
 

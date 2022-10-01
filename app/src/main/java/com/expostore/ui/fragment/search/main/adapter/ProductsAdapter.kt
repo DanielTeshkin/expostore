@@ -14,27 +14,17 @@ import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.priceSeparator
 import com.expostore.ui.base.ImageAdapter
+import com.expostore.ui.base.search.BasePagingAdapter
+import com.expostore.ui.base.search.DrawMarkerApi
 import com.expostore.ui.fragment.profile.profile_edit.click
+import com.expostore.utils.ProductRecyclerViewAdapter
 
-class ProductsAdapter(context:Context) :
-    PagingDataAdapter<ProductModel, ProductsAdapter.ProductsViewHolder>(PRODUCTS_DIFF_UTIL) {
+class ProductsAdapter(context:Context,
+                      override val drawMarkerApi: DrawMarkerApi<ProductModel>
+) :
+    BasePagingAdapter<SearchProductItemBinding, ProductModel>(context) {
 
-    var onItemClickListener: ((ProductModel) -> Unit)? = null
-    var onLikeItemClickListener: ((String) -> Unit)? = null
-    var onCallItemClickListener: ((String) -> Unit)? = null
-    var onMessageItemClickListener: ((ProductModel) -> Unit)? = null
-    var onAnotherItemClickListener:((ProductModel)->Unit)? =null
-    var productMarkerApi:ProductMarkerApi?=null
-   private val queueLikes = mutableMapOf<String, (() -> Unit)>()
-
-    fun processLike(id: String, isSuccess: Boolean) {
-        if(!isSuccess) {
-           queueLikes[id]?.invoke()
-        }
-        queueLikes.remove(id)
-    }
-    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagingViewHolder {
         return ProductsViewHolder(
             SearchProductItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent,
@@ -43,16 +33,10 @@ class ProductsAdapter(context:Context) :
         )
     }
 
-    override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
-    }
-
-    inner class ProductsViewHolder(private val binding: SearchProductItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-
+    inner class ProductsViewHolder( binding: SearchProductItemBinding) :
+        PagingViewHolder(binding) {
         private val adapter = ImageAdapter()
-        fun bind(item: ProductModel) {
+       override fun bind(item: ProductModel) {
             binding.apply {
                 like.isChecked = item.isLiked
                 name.text = item.name
@@ -67,7 +51,7 @@ class ProductsAdapter(context:Context) :
                     onItemClickListener?.invoke(item)
 
                 }
-                productMarkerApi?.addMarker(item)
+
                 root.click {
                     onItemClickListener?.invoke(item)
                 }
@@ -78,7 +62,7 @@ class ProductsAdapter(context:Context) :
                     onCallItemClickListener?.invoke(item.author.username)
                 }
                 write.click {
-                    onMessageItemClickListener?.invoke(item)
+                    onMessageItemClickListener?.invoke(item.id)
                 }
                 another.click {
                     onAnotherItemClickListener?.invoke(item)
@@ -92,17 +76,5 @@ class ProductsAdapter(context:Context) :
 
 
 
-
-    companion object {
-        private const val PAGE_PADDING = 20
-
-        private val PRODUCTS_DIFF_UTIL = object : DiffUtil.ItemCallback<ProductModel>() {
-            override fun areItemsTheSame(oldItem: ProductModel, newItem: ProductModel): Boolean =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: ProductModel, newItem: ProductModel): Boolean =
-                oldItem == newItem
-        }
-    }
 
 }

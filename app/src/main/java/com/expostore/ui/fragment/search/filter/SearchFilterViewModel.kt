@@ -7,7 +7,8 @@ import com.expostore.data.remote.api.response.SaveSearchResponse
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.category.ProductCategoryModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
+import com.expostore.ui.base.vms.CharacteristicViewModel
 import com.expostore.ui.fragment.search.filter.interactor.SearchFilterInteractor
 import com.expostore.ui.fragment.search.filter.models.*
 import com.expostore.ui.general.CheckBoxStateModel
@@ -29,31 +30,24 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchFilterViewModel @Inject constructor(
-    private val interactor: SearchFilterInteractor
-) : BaseViewModel() {
+    override val interactor: SearchFilterInteractor
+) : CharacteristicViewModel() {
     private val _cities= MutableSharedFlow<ResponseState<List<City>>>()
     val cities=_cities.asSharedFlow()
     private val _citiesList= MutableStateFlow<MutableMap<String,Int>>(mutableMapOf())
     val citiesList=_citiesList.asStateFlow()
     val flag= MutableStateFlow("")
-    private val _characteristics=MutableSharedFlow<ResponseState<List<CategoryCharacteristicModel>>>()
-    val characteristics=_characteristics.asSharedFlow()
-    val category= MutableStateFlow<ProductCategoryModel?>(null)
-    private val filterInputList= MutableStateFlow(InputStateModel(hashMapOf()))
-    private val filterSelectList= MutableStateFlow(SelectStateModel(hashMapOf()))
-    private val filterRadioList= MutableStateFlow(RadioStateModel(hashMapOf()))
-    private val filterCheckBox= MutableStateFlow(CheckBoxStateModel(hashMapOf()))
     private val _filterCharacteristic= MutableStateFlow<List<CharacteristicFilterModel>>(mutableListOf())
     val filterCharacteristic=_filterCharacteristic.asStateFlow()
     private val saveSearchResponse= MutableSharedFlow<ResponseState<SaveSearchResponse>>()
-    private val _categories= MutableSharedFlow<ResponseState<List<ProductCategoryModel>>>()
-    val categories=_categories.asSharedFlow()
+
 
     override fun onStart() {
         /* no-op */
     }
     init {
         getCities()
+        getCategories()
     }
     fun saveCities(cities:List<City>){
         val map= mutableMapOf<String,Int>()
@@ -70,7 +64,7 @@ class SearchFilterViewModel @Inject constructor(
                 priceMin,
                 priceMax,
                 city,
-                category = category.value?.id,
+                category = category.value,
                 characteristics = filterCharacteristic.value
             )
             interactor.searchSave(filterModel, type = flag.value).handleResult(saveSearchResponse)
@@ -79,41 +73,24 @@ class SearchFilterViewModel @Inject constructor(
     }
     fun getCities() = interactor.getCities().handleResult(_cities)
 
-    fun getCategoryCharacteristic(id: String?)=
-        interactor.getCategoryCategory(id).handleResult(_characteristics)
 
-    fun addFilterInput(left:String,right:String,name:String){
-        filterInputList.value.state[name] = Pair(left,right)
-    }
 
-    fun addFilterSelect(name: String,list:List<String>){
-        filterSelectList.value.state[name] = list
-    }
-    fun addFilterRadio(id:String,name: String){
-        Log.i("radio",id)
-            filterRadioList.value.state[name]=id
-    }
-    fun addFilterCheckbox(name: String,check:Boolean){
-        Log.i("check",name)
-        filterCheckBox.value.state[name]=check
-    }
-    fun navigateToBack()=navController.popBackStack()
+
+
 
     fun searchFilter(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _filterCharacteristic.value = interactor.saveFiltersState(
-                filterInputList.value,
-                filterRadioList.value, filterSelectList.value, filterCheckBox.value) as List<CharacteristicFilterModel>
-        }
+        _filterCharacteristic.value = saveCharacteristicsState()
     }
 
-    fun saveCategory(model:ProductCategoryModel){
-        category.value=model
-        getCategoryCharacteristic(model.id)
+    fun getFiltersAndNavigateToSearch(name: String,priceMin: Int?,priceMax: Int?,city: String){
+        val characteristics=saveCharacteristicsState()
+        navigateToSearch(FilterModel(name,priceMin,priceMax,city,  characteristics = characteristics))
     }
-    fun getListCategories()=interactor.getCategories().handleResult(_categories)
 
-    fun navigateToSearch(filterModel: FilterModel){
+
+
+
+    private fun navigateToSearch(filterModel: FilterModel){
         if (flag.value == "product")
                 navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToSearchFragment(filterModel))
             else if(flag.value=="tender") navigationTo(SearchFilterFragmentDirections.actionSearchFilterFragmentToTenderListFragment(filterModel))

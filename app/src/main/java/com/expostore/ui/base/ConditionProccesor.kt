@@ -1,6 +1,7 @@
 package com.expostore.ui.base
 
 import android.util.Log
+import com.expostore.ui.base.search.Mapper
 
 class ConditionProcessor {
     private val list= mutableListOf<String>()

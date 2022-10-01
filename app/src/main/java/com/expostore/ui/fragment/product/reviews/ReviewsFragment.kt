@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.ReviewsFragmentBinding
 import com.expostore.model.review.ReviewModel
 import com.expostore.model.review.Reviews
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 import com.expostore.ui.controllers.ControllerUI
 import com.expostore.ui.state.ResponseState
 import com.expostore.utils.OnClickImage
@@ -42,7 +43,7 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter =reviewsAdapter
             }
-            progressBar6.visibility = View.GONE
+
         }
         when(val flag=ReviewsFragmentArgs.fromBundle(requireArguments()).flag){
             "list"-> list.addAll(ReviewsFragmentArgs.fromBundle(requireArguments()).reviews!!.reviews)
@@ -73,6 +74,7 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
     }
 
     private fun loadReviews(reviews: Reviews) {
+        binding.progressBar6.visibility = View.GONE
          check(reviews)
     }
 
@@ -87,6 +89,7 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
                     "shop"->list.addAll(reviews.reviews_for_user!!)
                 }
                 reviewsAdapter.notifyDataSetChanged()
+                binding.progressBar6.visibility = View.GONE
             }
         }
    }

@@ -18,9 +18,9 @@ class DetailCategoryController(context: Context,
         binding.apply {
             tvCategoryName.text=model.name
                 rvDetailProduct.apply {
-                layoutManager= manager
-                products.addAll(model.products)
-                adapter=mAdapter
+               //layoutManager= manager
+              //  products.addAll(model.products)
+                //adapter=mAdapter
             }
         }
 

@@ -1,11 +1,12 @@
 package com.expostore.ui.fragment.product.myproducts.tabs
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.TabMyProductFragmentBinding
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.product.myproducts.OnClickMyProduct
 import com.expostore.ui.fragment.product.myproducts.adapter.MyProductAdapter
 import com.expostore.ui.fragment.product.myproducts.adapter.MyProductClickRepository
@@ -34,6 +35,7 @@ class TabMyProductFragment() : BaseFragment<TabMyProductFragmentBinding>(TabMyPr
 
     private fun showMyTenders(products: List<ProductModel>) {
         myProductAdapter.onClickMyProduct = initOnClick()
+        binding.progressBar11.visibility=View.GONE
         binding.rvProduct.apply {
             list.addAll(products)
             layoutManager = LinearLayoutManager(requireContext())

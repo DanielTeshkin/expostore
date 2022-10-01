@@ -6,10 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.PersonalProductsFragmentBinding
 import com.expostore.model.product.ProductModel
-
-
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.profile.profile_edit.click
 
 
@@ -51,6 +49,7 @@ class TabPersonalProductFragment() :
             layoutManager=LinearLayoutManager(requireContext())
             adapter=myAdapter
         }
+        binding.progressBar13.visibility=View.GONE
     }
 
 }

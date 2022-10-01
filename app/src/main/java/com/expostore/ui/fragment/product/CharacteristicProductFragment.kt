@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.R
 import com.expostore.databinding.CharacteristicProductFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.product.utils.CharacteristicsAdapter
 import com.expostore.ui.fragment.profile.profile_edit.click
 

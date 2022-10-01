@@ -19,8 +19,13 @@ import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
+
+
+
+
+
 fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionModel>?,
-                    onClickBottomFragment: OnClickBottomSheetFragment,flag:Boolean){
+                    onClickBottomFragment: OnClickBottomSheetFragment<ProductModel>,flag:Boolean){
 
 
 
@@ -78,7 +83,7 @@ fun showSelection(
     context: Context,
     list: List<SelectionModel>,
     product: String,
-    onClickBottomSheetFragment: OnClickBottomSheetFragment
+    onClickBottomSheetFragment: OnClickBottomSheetFragment<ProductModel>
 ){
      val bottomSheetDialog=BottomSheetDialog(context)
     bottomSheetDialog.setContentView(R.layout.list_selections)
@@ -97,7 +102,7 @@ fun showSelection(
 
 class SelectionBottomAdapter(
     private val list: List<SelectionModel>,
-    private val onClickPersonalSelectionFragment: OnClickBottomSheetFragment,
+    private val onClickPersonalSelectionFragment: OnClickBottomSheetFragment<ProductModel>,
     private val product: String,
     private val bottomSheetDialog: BottomSheetDialog
 ):
@@ -125,16 +130,16 @@ class SelectionBottomAdapter(
 }
 
 
-interface OnClickBottomSheetFragment{
+interface OnClickBottomSheetFragment< T>{
     fun createSelection(product:String)
-    fun addToSelection(id:String,product: String):Unit?
+    fun addToSelection(id:String,product: String)
     fun call(username:String)
-    fun createNote(product:ProductModel)
-    fun chatCreate(id:String):Unit?
+    fun createNote(product:T)
+    fun chatCreate(id:String)
     fun share(id: String)
     fun block()
-    fun addToComparison(id: String):Unit?
-    fun deleteFromSelection(model: ProductModel){
+    fun addToComparison(id: String)
+    fun deleteFromSelection(model: T){
          Log.i("dddd","fjjjgkj")
     }
 
@@ -149,8 +154,9 @@ interface OnClickBottomSheetTenderFragment{
     fun block()
 
 }
-fun showBottomSheetTender(context: Context, model:TenderModel,
-                    onClickBottomFragment: OnClickBottomSheetTenderFragment
+fun showBottomSheetTender(
+    context: Context, model:TenderModel,
+    onClickBottomFragment: OnClickBottomSheetFragment< TenderModel>
 ){
 
 
@@ -159,11 +165,9 @@ fun showBottomSheetTender(context: Context, model:TenderModel,
     bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
     val note = bottomSheetDialog.findViewById<LinearLayout>(R.id.note)
     if (model.elected.notes.isNotEmpty()) bottomSheetDialog.findViewById<TextView>(R.id.note_text)?.text="Редактировать заметку"
-
     note?.click {
         onClickBottomFragment.createNote(model)
-        bottomSheetDialog.hide()
-    }
+        bottomSheetDialog.hide() }
     val calling= bottomSheetDialog.findViewById<LinearLayout>(R.id.calling)
     calling?.click {
         onClickBottomFragment.call(model.author.username)

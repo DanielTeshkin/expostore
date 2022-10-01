@@ -11,7 +11,8 @@ import com.expostore.data.remote.api.pojo.getcities.City
 import com.expostore.data.remote.api.response.EditResponseProfile
 
 import com.expostore.databinding.EditProfileFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 import com.expostore.ui.general.ProfileDataViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint

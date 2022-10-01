@@ -1,18 +1,20 @@
 package com.expostore.ui.fragment.tender.my.tabs
 
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.PublishedTenderFragmentBinding
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
-import com.expostore.ui.fragment.tender.my.MyTenderClickRepository
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
+
 import com.expostore.ui.fragment.tender.my.MyTenderListAdapter
 import com.expostore.ui.fragment.tender.my.OnClickMyTender
 import com.expostore.ui.fragment.tender.my.SharedTenderModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.confirm_number_fragment.view.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -33,6 +35,7 @@ class MyTendersFragment : BaseFragment<PublishedTenderFragmentBinding>(Published
 
 
     private fun showMyTenders(list: List<TenderModel>) {
+        binding.barTender.visibility=View.GONE
         val myAdapter=MyTenderListAdapter(list)
         myAdapter.onClickMyTender=initOnClick()
         binding.rvTenders.apply {

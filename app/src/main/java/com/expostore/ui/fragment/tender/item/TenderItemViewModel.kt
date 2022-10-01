@@ -2,11 +2,9 @@ package com.expostore.ui.fragment.tender.item
 
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
-import com.expostore.model.product.ProductModel
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.chatsId
-import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.imagesProduct
 import com.expostore.ui.fragment.chats.productsName
@@ -20,7 +18,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 @HiltViewModel
-class TenderItemViewModel @Inject constructor(private val interactor: TenderInteractor):BaseViewModel() {
+class TenderItemViewModel @Inject constructor(private val interactor: TenderInteractor):
+    BaseViewModel() {
     private val _chatUI= MutableSharedFlow<ResponseState<MainChat>>()
     val chatUI=_chatUI.asSharedFlow()
     private val _tender= MutableStateFlow(TenderModel())

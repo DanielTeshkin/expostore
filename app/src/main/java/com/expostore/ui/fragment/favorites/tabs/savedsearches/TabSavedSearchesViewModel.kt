@@ -2,7 +2,7 @@ package com.expostore.ui.fragment.favorites.tabs.savedsearches
 
 import com.expostore.data.remote.api.response.SaveSearchResponse
 import com.expostore.model.SaveSearchModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.favorites.FavoritesFragmentDirections
 import com.expostore.ui.fragment.favorites.FavoritesInteractor
 import com.expostore.ui.fragment.search.filter.models.FilterModel

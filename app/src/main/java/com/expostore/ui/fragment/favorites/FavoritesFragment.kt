@@ -1,16 +1,22 @@
 package com.expostore.ui.fragment.favorites
 
+import android.R
 import android.os.Bundle
+import android.transition.Fade
+import android.transition.Transition
+import android.transition.TransitionManager
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.expostore.databinding.FavoritesFragmentBinding
 import com.expostore.model.category.SelectionModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+
+
 
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragmentBinding::inflate) {
@@ -36,12 +42,37 @@ class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragme
                 tab, position -> tab.customView = favoritesTabsViewPagerAdapter.getTabView(position)
         }
         tabLayoutMediator.attach()
+
+        binding.favoritesVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when(position){
+                    1->{
+                        animate()
+                        binding.mySelections.visibility=View.GONE
+                    }
+                    else->{
+                        animate()
+                        binding.mySelections.visibility=View.VISIBLE
+                    }
+                }
+            }
+
+        })
+
     }
 
     override fun onStart() {
         super.onStart()
         binding.newSelection.click{favoritesViewModel.navigateToCreateSelection()}
         binding.comparisonBtn.click { favoritesViewModel.navigateToComparison() }
+    }
+
+    fun animate(){
+        val transition: Transition = Fade()
+        transition.duration=600
+        transition.addTarget(binding.mySelections)
+        TransitionManager.beginDelayedTransition(binding.mySelections, transition)
     }
 
     private fun loadSelections(list: List<SelectionModel>){

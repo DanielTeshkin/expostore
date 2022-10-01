@@ -3,18 +3,28 @@ package com.expostore.ui.fragment.tender.create
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderRequest
+import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
+import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 
 import com.expostore.databinding.TenderCreateFragmentBinding
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.ProductCategoryModel
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
+import com.expostore.ui.base.fragments.create.BaseCreatorFragment
+import com.expostore.ui.base.vms.BaseCreatorViewModel
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.specifications.CategoryChose
 import com.expostore.ui.fragment.specifications.showBottomSpecifications
@@ -26,184 +36,64 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TenderCreateFragment :
-    BaseFragment<TenderCreateFragmentBinding>(TenderCreateFragmentBinding::inflate),CharacteristicState {
-    private  val tenderCreateViewModel :TenderCreateViewModel by viewModels()
-    private  val mAdapter: TenderCreateImageRecyclerViewAdapter by lazy { TenderCreateImageRecyclerViewAdapter(list) }
-    private val list= mutableListOf("")
-    private val selectList = mutableListOf<String>()
-    private val characteristicAdapter: CharacteristicInputRecyclerAdapter by lazy {
-        CharacteristicInputRecyclerAdapter(requireContext(),this,"other",
-        tenderCreateViewModel.characteristicState.value)
-    }
+    BaseCreatorFragment<TenderCreateFragmentBinding,TenderResponse,
+            TenderResponse,TenderRequest,TenderModel>(TenderCreateFragmentBinding::inflate) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-         makeStartRequest()
-         observerUIStates()
-         setFragmentListeners()
-        val tender=TenderCreateFragmentArgs.fromBundle(requireArguments()).tender
-        if(tender!=null){
-            tenderCreateViewModel.saveInfo(tender)
-                    showEditInformation(tender)
-        }
-    }
+    override val item: TenderModel?=TenderCreateFragmentArgs.fromBundle(requireArguments()).tender
+    override val rvImages: RecyclerView = binding.rvTenderImages
+    override val filter: String = "other"
+    override val categoriesLayout: LinearLayout = binding.llTenderCreateCategory
+    override val characteristicsLayout: LinearLayout = binding.llAddTenderCharacteristic
+    override val rvCharacteristics: RecyclerView = binding.rvTenderCharacteristic
+    override val call: CheckBox = binding.call
+    override val message: CheckBox = binding.message
+    override val viewModel: TenderCreateViewModel by viewModels()
+    override val connectionLayout = binding.llAddProductConnections
+    override val btnSave= binding.btnSave
+    override val btnDraft=binding.btnSaveDraft
+    override val btnCancel=binding.btnCancel
 
-    override fun onStart() {
-        super.onStart()
-        initUI()
-    }
-    private  fun setFragmentListeners(){
-        setFragmentResultListener("requestKey") { _, bundle ->
-            val result = bundle.getParcelable<TenderModel>("tender")
-            if (result != null) {
-                tenderCreateViewModel.saveInfo(result)
-                showEditInformation(result)
-            }
-        }
-    }
 
-    private fun initUI(){
-        mAdapter.onClick = addPhoto()
+       override fun loadSaveInformation(item: TenderModel) {
         binding.apply {
-            rvTenderImages.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = mAdapter
-            }
-            btnSave.click {
-                val connect= if(message.isChecked) "chatting"
-                else "call_and_chatting"
-                tenderCreateViewModel.createTender(
-                    name = etTenderName.text.toString(),
-                    description = etTenderDescription.text.toString(),
-                    count = etTenderCount.text.toString(),
-                    location = etTenderLocation.text.toString(),
-                    price = etTenderPrice.text.toString(),
-                    contact = connect,
-                    context = requireContext(),
-                    status = null
-
-                )
-            }
-            btnSaveDraft.click {
-                val connect= if(message.isChecked) "chatting"
-                else "call_and_chatting"
-                tenderCreateViewModel.createTender(
-                    name = etTenderName.text.toString(),
-                    description = etTenderDescription.text.toString(),
-                    count = etTenderCount.text.toString(),
-                    location = etTenderLocation.text.toString(),
-                    price = etTenderPrice.text.toString(),
-                    contact = connect,
-                    context = requireContext(),
-                    status = "draft"
-                )
-            }
-            btnCancel.click { tenderCreateViewModel.navigateToTendersList() }
-        }
-    }
-
-    private fun makeStartRequest(){
-        tenderCreateViewModel.apply {
-            getMyShop()
-            getCategories()
-        }
-    }
-    private fun showEditInformation(tenderModel: TenderModel){
-        binding.apply {
-            list.addAll(tenderModel.images?.map { it.file }?: listOf())
-            etTenderName.setText(tenderModel.title)
-            etTenderCount.setText(tenderModel.count.toString())
-            etTenderPrice.setText(tenderModel.price)
-            etTenderDescription.setText(tenderModel.description)
-
-        }
-    }
-
-    private fun observerUIStates(){
-        val showCategories:Show<List<ProductCategoryModel>> = { showBottomSheetCategories(it)}
-        val showCharacteristics: Show<List<CategoryCharacteristicModel>> = { showBottomSheetCharacteristics(it) }
-        tenderCreateViewModel.apply {
-            subscribe(navigation){navigateSafety(it)}
-            subscribe(categories){handleState(it,showCategories)}
-            subscribe(characteristics){handleState(it,showCharacteristics)}
-        }
-    }
-
-    private fun addPhoto(): TenderCreateImageRecyclerViewAdapter.OnClickListener {
-        return object : TenderCreateImageRecyclerViewAdapter.OnClickListener {
-            override fun addPhoto() {
-                ImagePicker.with(this@TenderCreateFragment)
-                    .crop()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .createIntent { intent -> launchSomeActivity.launch(intent) }
-            }
-
-            override fun removePhoto(index: Int) = tenderCreateViewModel.deleteUri(index)
-        }
-    }
-
-    var launchSomeActivity =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result  ->
-            val resultCode = result.resultCode
-            val data = result.data
-
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    val fileUri = data?.data!!
-                    tenderCreateViewModel.saveUri(fileUri)
-                    mAdapter.update(fileUri.toString())
-
+            item.apply {
+                images?.let { images -> list.addAll(images.map { it.file }) }
+                title.let {
+                    etTenderName.setText(it)
+                    viewModel.changeName(it ?: "")
                 }
-                ImagePicker.RESULT_ERROR -> {
-                    Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                description.let {
+                    etTenderDescription.setText(it)
+                    viewModel.changeDescription(it.toString())
                 }
-                else -> {
-                    Toast.makeText(requireContext(), "Вы вышли", Toast.LENGTH_SHORT).show()
+                location.let {
+                    etTenderLocation.setText(it)
+                    viewModel.changeLocation(it.toString())
                 }
-            }
-        }
+                count.let {
+                    etTenderCount.setText(it)
+                    viewModel.changeCount(it.toString())
+                }
+                price.let {
+                    etTenderPrice.setText(it)
+                    viewModel.changePrice(it.toString())
+                }
+                if (characteristicModel != null) {
+                    viewModel.saveCharacteristic(characteristicModel)
+                }
 
-
-     private fun showBottomSheetCategories(list:List<ProductCategoryModel>){
-         binding.llTenderCreateCategory.click {
-             val categoryChose: CategoryChose = { tenderCreateViewModel.saveCategory(it.id) }
-             showBottomSpecifications(
-                 context = requireContext(),
-                 categoryChose = categoryChose,
-                 list = list
-             )
-         }
-     }
-
-    private fun showBottomSheetCharacteristics(list:List<CategoryCharacteristicModel>){
-        binding.apply {
-            llAddTenderCharacteristic.apply {
-                visibility = View.VISIBLE
-                characteristicAdapter.addElement(list)
-                rvTenderCharacteristic.layoutManager=LinearLayoutManager(context)
-                rvTenderCharacteristic.adapter=characteristicAdapter
 
             }
         }
     }
 
-
-
-    override fun inputListener(left: String, right: String?, name: String) = tenderCreateViewModel.addFilterInput(left,right?:"",name)
-
-    override fun radioListener(id: String, name: String)= tenderCreateViewModel.addFilterRadio(id,name)
-
-    override fun selectListener(id: String, name: String, checked: Boolean){
-
-            when(checked){
-                true-> selectList.add(id)
-                false->selectList.remove(id)
-            }
-            tenderCreateViewModel.addFilterSelect(name,selectList)
-
-
+    override fun setTextChangeListeners() {
+      binding.apply {
+          etTenderDescription.addTextChangedListener {viewModel.changeDescription(it.toString()) }
+          etTenderCount.addTextChangedListener { viewModel.changeCount(it.toString()) }
+          etTenderPrice.addTextChangedListener { viewModel.changePrice(it.toString()) }
+          etTenderName.addTextChangedListener { viewModel.changeName(it.toString()) }
+          etTenderLocation.addTextChangedListener { viewModel.changeLocation(it.toString()) }
+      }
     }
-
-    override fun checkBoxListener(name: String, checked: Boolean)=tenderCreateViewModel.addFilterCheckbox(name,checked)
-    }
+}

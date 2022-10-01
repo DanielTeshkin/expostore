@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.expostore.databinding.SplashFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
 
 
 class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding::inflate) {

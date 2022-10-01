@@ -5,7 +5,7 @@ import com.expostore.data.remote.api.pojo.getchats.MessageRequest
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.repositories.ChatRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 @HiltViewModel
-class ImageDialogView @Inject constructor(private val chatRepository: ChatRepository, private val multimediaRepository: MultimediaRepository):BaseViewModel() {
+class ImageDialogView @Inject constructor(private val chatRepository: ChatRepository, private val multimediaRepository: MultimediaRepository):
+    BaseViewModel() {
     private val _message= MutableSharedFlow<ResponseState<MessageRequest>>()
     val  response=_message.asSharedFlow()
     private val _save=MutableSharedFlow<ResponseState<SaveImageResponseData>>()

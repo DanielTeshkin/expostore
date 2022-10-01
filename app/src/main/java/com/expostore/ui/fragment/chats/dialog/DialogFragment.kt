@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.pojo.getchats.*
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.databinding.DialogFragmentBinding
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.controllers.DialogControllerUI
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 import com.expostore.ui.fragment.chats.general.PagerChatRepository

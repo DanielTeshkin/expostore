@@ -1,4 +1,4 @@
-package com.expostore.ui.base
+package com.expostore.ui.base.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -20,6 +20,7 @@ import androidx.viewbinding.ViewBinding
 import com.expostore.MainActivity
 import com.expostore.model.chats.DataMapping.ItemChat
 import com.expostore.model.product.ProductModel
+import com.expostore.ui.base.ConditionProcessor
 import com.expostore.ui.fragment.chats.repeat
 import com.expostore.ui.fragment.note.NoteData
 import com.expostore.ui.fragment.note.NoteFragmentDirections
@@ -41,7 +42,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
     Fragment() {
     private var _binding: Binding? = null
     protected val binding get() = _binding!!
-    protected val processor=ConditionProcessor()
+    protected val processor= ConditionProcessor()
 
     /**
      * Поле, хранящее значение первый раз ли вызывается onResume

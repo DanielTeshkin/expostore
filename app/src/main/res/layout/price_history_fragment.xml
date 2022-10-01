@@ -23,6 +23,20 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/title"
+        style="@style/BoldTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="История цены"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/btn_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_price"
         android:layout_width="match_parent"

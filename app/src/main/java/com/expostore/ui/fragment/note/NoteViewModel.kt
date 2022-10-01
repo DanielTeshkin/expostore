@@ -4,7 +4,7 @@ import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseD
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.data.remote.api.request.NoteRequest
 import com.expostore.data.repositories.FavoriteRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

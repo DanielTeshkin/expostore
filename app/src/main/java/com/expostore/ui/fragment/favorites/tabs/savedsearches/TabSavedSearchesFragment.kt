@@ -6,8 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.TabSavedSearchesFragmentBinding
 import com.expostore.model.SaveSearchModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +39,7 @@ class TabSavedSearchesFragment( ) :
 
 
     private fun showList(item: List<SaveSearchModel>) {
+        binding.progressBar12.visibility=View.GONE
         binding.rvSearches.apply {
             layoutManager=LinearLayoutManager(requireContext())
             adapter=TabSavedSearchAdapter(item as MutableList<SaveSearchModel>,onClickSaveSearch)

@@ -1,11 +1,9 @@
 package com.expostore.ui.fragment.favorites
 
-import androidx.lifecycle.ViewModel
-import com.expostore.data.repositories.SelectionRepository
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.ProductModel
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -1,20 +1,10 @@
 package com.expostore.ui.fragment.authorization.passwordrecovery
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
 import android.os.CountDownTimer
-import android.widget.TextView
-import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import com.expostore.R
-import com.expostore.data.remote.api.ApiWorker
 
-import com.expostore.data.remote.api.ServerApi
 import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.data.repositories.AuthorizationRepository
-import com.expostore.ui.base.BaseViewModel
-import com.expostore.ui.fragment.authorization.confirmnumberpass.ConfirmNumberResetDirections
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.authorization.registration.confirmcode.ConfirmCodeFragmentDirections
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

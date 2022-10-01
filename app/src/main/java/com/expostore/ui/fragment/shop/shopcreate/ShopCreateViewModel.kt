@@ -4,7 +4,7 @@ import android.util.Log
 import com.expostore.data.remote.api.pojo.addshop.returnShopModel
 import com.expostore.data.remote.api.response.ShopResponse
 import com.expostore.data.repositories.ShopRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.profile.ShopInfoModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

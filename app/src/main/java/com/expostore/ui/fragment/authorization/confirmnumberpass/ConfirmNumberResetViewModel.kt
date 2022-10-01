@@ -1,8 +1,7 @@
 package com.expostore.ui.fragment.authorization.confirmnumberpass
 
-import androidx.lifecycle.ViewModel
 import com.expostore.data.repositories.AuthorizationRepository
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.authorization.registration.confirmnumber.ConfirmNumberFragmentDirections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

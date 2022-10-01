@@ -1,13 +1,11 @@
 package com.expostore.ui.fragment.comparison
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import com.expostore.data.remote.api.pojo.comparison.ComparisonProductData
 import com.expostore.data.repositories.ComparisonRepository
 import com.expostore.model.ComparisonModel
-import com.expostore.model.chats.DataMapping.Product
 import com.expostore.model.product.ProductModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

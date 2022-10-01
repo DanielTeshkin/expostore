@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.ChatsFragmentBinding
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Load
+
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Load
 import com.expostore.ui.fragment.chats.*
 import com.expostore.utils.OnClick
 import dagger.hilt.android.AndroidEntryPoint

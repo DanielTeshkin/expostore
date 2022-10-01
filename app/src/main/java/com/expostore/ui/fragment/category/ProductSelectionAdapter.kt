@@ -14,23 +14,18 @@ import com.expostore.ui.fragment.profile.profile_edit.click
 
 
 class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :RecyclerView.Adapter<ProductSelectionAdapter.SelectionProductViewHolder>() {
-   var onClick: OnClickListener? =null
+   var onClick: OnClickListeners<ProductModel>? =null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectionProductViewHolder {
         val v = SearchProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SelectionProductViewHolder(v)
     }
-
-
-
     override fun getItemViewType(position: Int): Int = position
-
     override fun getItemCount(): Int = products.size
-
     inner class SelectionProductViewHolder(val binding: SearchProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductModel) {
             val  adapter=ImageAdapter()
-            adapter.onItemClickListener={onClick?.onClickProduct(item)}
+            adapter.onItemClickListener={onClick?.onClickItem(item)}
             adapter.items=item.images.map { it.file }
             binding.apply {
                 name.text=item.name
@@ -42,8 +37,8 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
                 like.click { onClick?.onClickLike(item.id) }
                 if(item.communicationType == "chatting") call.isVisible=false
                 call.click { onClick?.onClickCall(item.author.username) }
-                root.click { onClick?.onClickProduct(item) }
-                write.click { onClick?.onClickMessage(item) }
+                root.click { onClick?.onClickItem(item) }
+                write.click { onClick?.onClickMessage(item.id) }
                 another.click { onClick?.onClickAnother(model = item) }
 
             }

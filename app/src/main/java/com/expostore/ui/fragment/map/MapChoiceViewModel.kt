@@ -1,7 +1,6 @@
 package com.expostore.ui.fragment.map
 
-import androidx.lifecycle.ViewModel
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.google.android.gms.maps.model.LatLng
 

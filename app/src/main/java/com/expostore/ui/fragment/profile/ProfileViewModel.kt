@@ -21,7 +21,7 @@ import com.expostore.data.repositories.ProfileRepository
 import com.expostore.data.repositories.ShopRepository
 import com.expostore.model.profile.ProfileModel
 
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.toBase64
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel

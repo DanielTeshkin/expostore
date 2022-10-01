@@ -1,17 +1,8 @@
 package com.expostore.ui.fragment.chats.dialog
 
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
-import com.expostore.data.remote.api.pojo.getchats.FileOrImageMessage
 import com.expostore.data.remote.api.pojo.getchats.MessageRequest
-import com.expostore.data.remote.api.pojo.getchats.ResponseFile
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileResponseData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
@@ -19,10 +10,9 @@ import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.repositories.ChatRepository
 import com.expostore.data.repositories.MultimediaRepository
 import com.expostore.model.chats.DataMapping.ItemChat
-import com.expostore.ui.base.BaseViewModel
+import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.general.ImageMessage
 import com.expostore.ui.fragment.chats.repeat
-import com.expostore.ui.fragment.chats.toBase64
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -30,8 +20,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import javax.inject.Inject
 /**
  * @author Teshkin Daniel

@@ -40,6 +40,7 @@ import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteResponseD
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.data.remote.api.pojo.signin.SignInRequestData
 import com.expostore.data.remote.api.pojo.signin.SignInResponseData
+import com.expostore.data.remote.api.pojo.signup.ResetPasswordRequest
 import com.expostore.data.remote.api.pojo.signup.SignUpRequestData
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.remote.api.request.*
@@ -105,16 +106,13 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun confirmPassNumber(request: ConfirmNumberRequestData):
             BaseApiResponse<ConfirmNumberResponseData> =processResponse { serverApi.confirmPassNumber(request) }
 
-
-
     override suspend fun confirmPassCode(request: ConfirmCodeRequestData):
             BaseApiResponse<ConfirmCodeResponseData> = processResponse {
-                serverApi.confirmCode(request)
+                serverApi.confirmPassCode(request)
     }
 
-    override suspend fun resetPassword(request: SignUpRequestData):
-            BaseApiResponse<ConfirmCodeResponseData> = processResponse {
-                serverApi.resetPassword(request)
+    override suspend fun resetPassword(request: ResetPasswordRequest)= processResponse {
+        serverApi.resetPassword(request)
     }
 
     override suspend fun shopCreate(request: AddShopRequestData): BaseApiResponse<ShopResponse> =processResponse {
@@ -262,7 +260,7 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
 
     override suspend fun getProduct(
         id: String
-    ): BaseApiResponse<ProductResponseData> =
+    ): BaseApiResponse<ProductResponse> =
         processResponse { serverApi.getProduct(id) }
 
     override suspend fun publishedProduct(id: String): BaseApiResponse<ProductResponse> =processResponse {
@@ -363,7 +361,7 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     }
 
 
-    override suspend fun createPersonalProduct(request: PersonalProductRequest): BaseApiResponse<CreateResponseProduct> =
+    override suspend fun createPersonalProduct(request: ProductUpdateRequest): BaseApiResponse<CreateResponseProduct> =
         processResponse { serverApi.createPersonalProduct(request) }
 
     override suspend fun getPersonalProducts(): BaseApiResponse<BaseListResponse<ProductResponse>> =

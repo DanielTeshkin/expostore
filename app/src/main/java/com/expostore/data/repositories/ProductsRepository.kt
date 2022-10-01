@@ -10,6 +10,7 @@ import com.expostore.data.remote.api.response.ProductResponse
 
 import com.expostore.data.local.db.LocalWorker
 import com.expostore.data.remote.api.response.PersonalProductRequest
+import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.filter.models.toRequest
@@ -17,13 +18,15 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ProductsRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker): BaseRepository() {
-    suspend fun getProducts(
-        page: Int? = null,
-     filterModel: FilterModel
-    ): BaseApiResponse<BaseListResponse<ProductResponse>> = apiWorker.getListProduct(page, filterModel.toRequest)
+    suspend fun getProducts(page: Int? = null, filterModel: FilterModel)= apiWorker
+        .getListProduct(page, filterModel.toRequest)
 
     fun getBaseListProducts()=flow{
         val result= handleOrDefault(BaseListResponse()){apiWorker.getProducts()}.results.map { it.toModel }
+        emit(result)
+    }
+    fun getProduct(id:String)=flow {
+        val result = handleOrDefault(ProductResponse()) { apiWorker.getProduct(id) }.toModel
         emit(result)
     }
 
@@ -56,7 +59,7 @@ class ProductsRepository @Inject constructor(private val apiWorker: ApiWorker, p
         val result= handleOrDefault(BaseListResponse()){apiWorker.getPersonalProducts()}.results.map { it.toModel }
         emit(result)
     }
-    fun createPersonalProduct( request: PersonalProductRequest)=flow{
+    fun createPersonalProduct( request: ProductUpdateRequest)=flow{
         val result=handleOrDefault(CreateResponseProduct()){apiWorker.createPersonalProduct(request)}
         emit(result)
     }

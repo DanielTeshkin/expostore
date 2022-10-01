@@ -6,7 +6,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.expostore.databinding.EditMyTenderFragmentBinding
 import com.expostore.model.tender.TenderModel
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
+
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.gms.maps.CameraUpdateFactory

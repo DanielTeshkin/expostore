@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.request.SelectionRequest
 import com.expostore.databinding.CreatePersonalSelectionFragmentBinding
 import com.expostore.model.category.SelectionModel
-import com.expostore.ui.base.BaseFragment
+import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
 

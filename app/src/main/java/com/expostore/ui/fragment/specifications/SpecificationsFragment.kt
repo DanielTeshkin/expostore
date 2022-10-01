@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.SpecificationsFragmentBinding
 import com.expostore.model.category.ProductCategoryModel
-import com.expostore.ui.base.BaseFragment
-import com.expostore.ui.base.Show
+import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.fragment.specifications.adapter.SpecificationsRecyclerViewAdapter
 import com.expostore.ui.fragment.specifications.adapter.utils.OnClickSelectionCategory
 import dagger.hilt.android.AndroidEntryPoint

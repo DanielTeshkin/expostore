@@ -59,8 +59,35 @@
             android:paddingEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_back" >
 
+
+        </androidx.viewpager2.widget.ViewPager2>
+
+
+        <CheckBox
+            android:id="@+id/like"
+            android:layout_width="25dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/selector_like"
+            android:button="@null"
+            android:checked="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rv_product_images"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <ImageView
+            android:id="@+id/another"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="68dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_product_images"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_more_vert_27" />
 
 
         <LinearLayout
@@ -625,19 +652,20 @@
 
             <Button
                 android:id="@+id/btn_call_down"
+                style="@style/BoldTextView"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_weight="1"
                 android:layout_marginStart="2dp"
 
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:text="Позвонить"
-
+                android:layout_weight="1"
                 android:backgroundTint="#2677F1"
-                style="@style/BoldTextView"
-                app:cornerRadius="10dp"/>
+                android:text="Позвонить"
+                android:textAllCaps="false"
+
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:cornerRadius="10dp" />
 
 
         </LinearLayout>

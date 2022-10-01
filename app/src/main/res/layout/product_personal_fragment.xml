@@ -68,43 +68,98 @@
             android:textAlignment="textStart"
             android:textColor=" #515050"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/articul"
+            app:layout_constraintBottom_toTopOf="@+id/edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_price" />
 
-        <TextView
-            android:id="@+id/articul"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit"
+            style="@style/BoldTextView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="Артикул"
-            app:layout_constraintBottom_toTopOf="@+id/tv_product_available"
+            android:layout_weight="1"
+            android:backgroundTint="@drawable/selector_blue_button"
+            android:letterSpacing="0.01"
+            android:text="Редактировать"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_product_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+            app:layout_constraintTop_toBottomOf="@+id/delete"
+            tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/tv_product_available"
-            style="@style/BoldTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/delete"
+            android:layout_width="0dp"
+
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="9dp"
-            android:text="Нет в наличии"
-            android:textColor="#F53939"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/other_btn_background"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+
+
+            android:text="Добавить в сравнения"
+            android:textColor="#2677F1"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/character"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:id="@+id/character"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+
             app:layout_constraintBottom_toTopOf="@+id/tv_product_description_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/articul" />
+            app:layout_constraintTop_toBottomOf="@+id/delete">
+
+            <TextView
+                android:id="@+id/category_name"
+                style="@style/BoldTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Характеристики "
+                android:textColor="#111B33"
+                android:textColorHint="#111B33"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/category_open"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Посмотреть"
+                android:textColor="#2677F1" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_product_description_title"
@@ -121,7 +176,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tv_product_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_available" />
+            app:layout_constraintTop_toBottomOf="@+id/character" />
 
         <TextView
             android:id="@+id/tv_product_description"
@@ -197,63 +252,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_note"
             tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/tv_product_location_title"
-            style="@style/BoldTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:text="Адрес"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_note" />
-
-        <TextView
-            android:id="@+id/tv_product_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="20dp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_location_title"
-            tools:text="Здесь отображается адрес" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/iv_product_map"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_margin="20dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_product_location">
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/map_view"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
-        </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

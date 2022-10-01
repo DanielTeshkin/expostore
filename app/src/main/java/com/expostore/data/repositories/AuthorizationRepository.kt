@@ -12,6 +12,7 @@ import com.expostore.data.remote.api.pojo.signup.SignUpRequestData
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.local.db.LocalWorker
 import com.expostore.data.local.db.model.TokenModel
+import com.expostore.data.remote.api.pojo.signup.ResetPasswordRequest
 import com.expostore.model.auth.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -58,7 +59,7 @@ class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWork
         emit(result)
     }
 
-    fun newPassword(request: SignUpRequestData) = flow{
+    fun newPassword(request: ResetPasswordRequest) = flow{
         emit(handleOrDefault(ConfirmCodeResponseData()){apiWorker.resetPassword(request)})
     }
 

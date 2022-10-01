@@ -59,7 +59,7 @@ class AddProductController(context: Context,
                 {instruction.value!= Uri.parse("")}
             ),
                 actionTrue = {states->loadPhoto(states)},
-                actionFalse = {checkPhotos()}
+                actionFalse = {checkPhoto()}
             )
     }
     fun initAdapter(){
@@ -92,7 +92,7 @@ class AddProductController(context: Context,
         }
     }
 
-   fun checkPhotos(){
+   fun checkPhoto(){
         processor.checkCondition(
             { multimedia.isNotEmpty() },
             actionTrue = {saveAction.invoke(mapImages.entries.map { it.value })},
@@ -102,7 +102,7 @@ class AddProductController(context: Context,
 
     fun addFiles(list: List<String>) {
         files.addAll(list)
-        checkPhotos()
+        checkPhoto()
     }
     private fun Uri.castFileToRequestData():SaveFileRequestData{
       return FileStorage(context).getSaveRequestData(this)

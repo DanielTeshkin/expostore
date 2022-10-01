@@ -7,7 +7,7 @@ class UiCharacteristicState() {
                    radioStateModel: RadioStateModel,
                    selectStateModel: SelectStateModel,
                    checkBoxStateModel: CheckBoxStateModel
-    ):List<CharacteristicFilterModel?>{
+    ):List<CharacteristicFilterModel>{
         val list= mutableListOf<CharacteristicFilterModel>()
         inputStateModel.state.entries.map {
             list.add(
