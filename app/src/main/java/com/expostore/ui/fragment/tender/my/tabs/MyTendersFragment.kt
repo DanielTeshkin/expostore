@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.PublishedTenderFragmentBinding
 import com.expostore.model.tender.TenderModel
@@ -24,7 +25,6 @@ class MyTendersFragment : BaseFragment<PublishedTenderFragmentBinding>(Published
     private val sharedModel:SharedTenderModel by lazy {arguments?.getParcelable("shared")!!  }
     override fun onStart() {
         super.onStart()
-
         val show : Show<List<TenderModel>> = { showMyTenders(it)}
         viewModel.apply {
             loadMyTenders(sharedModel.status)

@@ -87,9 +87,7 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
 
     override suspend fun authorization(
         username: String,
-        password: String
-    ): BaseApiResponse<SignInResponseData> =
-        processResponse { serverApi.authorization(SignInRequestData(username, password)) }
+        password: String) = processResponse { serverApi.authorization(SignInRequestData(username, password)) }
 
     override suspend fun refresh(refreshToken: String): BaseApiResponse<SignInResponseData> =
         processResponse { serverApi.refresh(RefreshTokenRequest(refreshToken)) }
@@ -295,80 +293,53 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     override suspend fun getProducts(
         page: Int?,
         filterRequest: FilterRequest?
-    ): BaseApiResponse<BaseListResponse<ProductResponse>> = processResponse { serverApi.getProducts(page,filterRequest?: FilterRequest()) }
+    ) = processResponse { serverApi.getProducts(page,filterRequest?: FilterRequest()) }
 
-    override suspend fun getMyListProduct(status:String?): BaseApiResponse<BaseListResponse<ProductResponse>> =
-        processResponse{serverApi.getMyListProduct(status)}
-
-
-    override suspend fun getChats(): BaseApiResponse<List<ChatResponse>> =
-        processListResponse { serverApi.getChats() }
-
-    override suspend fun createChat(id:String,flag:String): BaseApiResponse<ChatResponse> {
-       return if(flag=="tender") processResponse { serverApi.chatCreateTender(TenderChat(id)) }
+    override suspend fun getMyListProduct(status:String?) = processResponse{serverApi.getMyListProduct(status)}
+    override suspend fun getChats() = processListResponse { serverApi.getChats() }
+    override suspend fun createChat(id:String,flag:String) =
+         if(flag=="tender") processResponse { serverApi.chatCreateTender(TenderChat(id)) }
          else processResponse {serverApi.chatCreateProduct(ProductChat(id))}
+    override suspend fun getChat(id: String) = processResponse { serverApi.getChat(id) }
+    override suspend fun getShop(id: String) = processResponse { serverApi.getShop(id) }
+    override suspend fun deleteMainChat(id: String) = processResponse { serverApi.deleteMainChat(id) }
+    override suspend fun deleteChat(id: String) = processResponse { serverApi.deleteChat(id) }
+    override suspend fun deleteUserSelection(id: String)=processResponse {serverApi.deleteUserSelection(id) }
 
-    }
-
-    override suspend fun getChat(id: String): BaseApiResponse<ItemChatResponse> = processResponse { serverApi.getChat(id) }
-
-    override suspend fun getShop(
-        id: String
-    ): BaseApiResponse<GetShopResponseData> =
-        processResponse { serverApi.getShop(id) }
-
-    override suspend fun deleteMainChat(id: String): BaseApiResponse<ChatResponse> = processResponse { serverApi.deleteMainChat(id) }
-
-    override suspend fun deleteChat(id: String): BaseApiResponse<ItemChatResponse> = processResponse { serverApi.deleteChat(id) }
-
-    override suspend fun deleteUserSelection(id: String): BaseApiResponse<SelectionResponse> =processResponse {serverApi.deleteUserSelection(id) }
-
-    override suspend fun deleteSaveSearch(id: String): BaseApiResponse<SaveSearchResponse> =processResponse { serverApi.deleteSaveSearch(id) }
-
-
-    override suspend fun publishedTender(id: String): BaseApiResponse<TenderResponse> = processResponse {
-        serverApi.publishedTender(id)
-    }
+    override suspend fun deleteSaveSearch(id: String) =processResponse { serverApi.deleteSaveSearch(id) }
+    override suspend fun publishedTender(id: String) = processResponse { serverApi.publishedTender(id) }
 
     override suspend fun updateUserSelection(
         id: String,
-        selectionRequest: SelectionRequest
-    ): BaseApiResponse<SelectionResponse> = processResponse { serverApi.updateUserSelection(id,selectionRequest) }
+        selectionRequest: SelectionRequest)=
+        processResponse { serverApi.updateUserSelection(id,selectionRequest) }
 
-    override suspend fun takeOffTender(id: String): BaseApiResponse<TenderResponse> = processResponse {
-        serverApi.takeOffTender(id)
-    }
+    override suspend fun takeOffTender(id: String) = processResponse { serverApi.takeOffTender(id) }
+    override suspend fun getTender(id: String)= processResponse { serverApi.getTender(id) }
 
     override suspend fun updateTender(
         id: String,
-        request: TenderRequest
-    ): BaseApiResponse<TenderResponse> = processResponse {
-        serverApi.updateTender(id,request)
-    }
+        request: TenderRequest) = processResponse { serverApi.updateTender(id,request) }
 
-    override suspend fun addProductToComparison(products: List<ComparisonProductData>):
-            BaseApiResponse<List<ComparisonProductData>> = processListResponse { serverApi.addProductToComparison(products) }
+    override suspend fun addProductToComparison(products: List<ComparisonProductData>) =
+        processListResponse { serverApi.addProductToComparison(products) }
 
-
-
-    override suspend fun comparison(products: List<ComparisonProductData>): BaseApiResponse<ComparisonResult> = processResponse {
+    override suspend fun comparison(products: List<ComparisonProductData>)= processResponse {
         serverApi.comparison(products)
     }
+    override suspend fun getComparisonProducts() =processListResponse { serverApi.getComparisonProducts() }
 
-    override suspend fun getComparisonProducts(): BaseApiResponse<List<ProductResponse>> =processListResponse { serverApi.getComparisonProducts() }
-    override suspend fun deleteFromComparisonProducts(products: List<ComparisonProductData>): BaseApiResponse<List<ComparisonProductData>> {
-        return processListResponse { serverApi.deleteFromComparisonProducts(products) }
-    }
+    override suspend fun deleteFromComparisonProducts(products: List<ComparisonProductData>)=
+       processListResponse { serverApi.deleteFromComparisonProducts(products) }
 
-
-    override suspend fun createPersonalProduct(request: ProductUpdateRequest): BaseApiResponse<CreateResponseProduct> =
+    override suspend fun createPersonalProduct(request: ProductUpdateRequest) =
         processResponse { serverApi.createPersonalProduct(request) }
 
-    override suspend fun getPersonalProducts(): BaseApiResponse<BaseListResponse<ProductResponse>> =
-        processResponse { serverApi.getPersonalProducts() }
+    override suspend fun getPersonalProducts() = processResponse { serverApi.getPersonalProducts() }
 
-    override suspend fun deletePersonalProduct(id: String): BaseApiResponse<ProductResponse> =
-        processResponse { serverApi.deletePersonalProduct(id) }
+    override suspend fun deletePersonalProduct(id: String)=
+        processResponse{ serverApi.deletePersonalProduct(id) }
 
+    override suspend fun getPersonalProduct(id: String) = processResponse { serverApi.getPersonalProduct(id) }
 
 }

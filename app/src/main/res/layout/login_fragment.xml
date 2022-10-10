@@ -143,5 +143,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progressBar14"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="111dp"
+        android:layout_marginEnd="164dp"
+        android:layout_marginBottom="308dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_in_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_password" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

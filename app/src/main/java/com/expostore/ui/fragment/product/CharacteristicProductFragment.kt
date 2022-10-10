@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.R
 import com.expostore.databinding.CharacteristicProductFragmentBinding
@@ -18,7 +19,10 @@ class CharacteristicProductFragment : BaseFragment<CharacteristicProductFragment
     private val viewModel:CharacteristicProductViewModel by viewModels()
     override fun onStart() {
         super.onStart()
-        subscribe(viewModel.navigation){navigateSafety(it)}
+        viewModel.apply {
+            start(findNavController())
+            subscribe(navigation) { navigateSafety(it) }
+        }
         val result=CharacteristicProductFragmentArgs.fromBundle(requireArguments()).data.characteristics
         binding.rvCharacteristics.apply {
             layoutManager=LinearLayoutManager(requireContext())

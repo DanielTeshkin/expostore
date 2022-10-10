@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.R
@@ -32,12 +33,15 @@ class ConfirmCodeFragment : BaseFragment<ConfirmCodeFragmentBinding>(ConfirmCode
         binding.imageButton.setOnClickListener {
             confirmCodeViewModel.back()
         }
+        confirmCodeViewModel.apply {
+            subscribe(navigation) { navigateSafety(it) }
+            subscribe(loading){ binding.loadStatus.isVisible=it }
+            subscribe(enabled){binding.btnSignInNext.isEnabled=it}
+
+        }
         binding.btnSignInNext.setOnClickListener {
             confirmCodeViewModel.confirmCode()
-            confirmCodeViewModel.apply {
-                subscribe(navigation) { navigateSafety(it) }
-                subscribe(state) { handleState(it) }
-            }
+
         }
     }
 
@@ -46,7 +50,7 @@ class ConfirmCodeFragment : BaseFragment<ConfirmCodeFragmentBinding>(ConfirmCode
         confirmCodeViewModel.timerStart()
         binding.etNumber.addTextChangedListener {
             confirmCodeViewModel.saveInput(it.toString())
-            binding.btnSignInNext.isEnabled = it?.length == 6
+
         }
         state { confirmCodeViewModel.resetText.collect { binding.btnResendCode.text = it } }
         state { confirmCodeViewModel.clickable.collect { binding.btnResendCode.isClickable = it } }

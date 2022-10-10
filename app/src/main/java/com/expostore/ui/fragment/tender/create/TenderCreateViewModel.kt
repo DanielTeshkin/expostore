@@ -39,6 +39,9 @@ class TenderCreateViewModel @Inject constructor(override val interactor: CreateT
     override val itemId: ItemId<TenderResponse>
         get() = {it.id?:""}
     private val location= MutableStateFlow("")
+    init {
+        getCategories()
+    }
 
     override fun createRequest()= TenderRequest(
         category.value,
@@ -54,6 +57,11 @@ class TenderCreateViewModel @Inject constructor(override val interactor: CreateT
     fun changeLocation(text:String){
         location.value=text
     }
+    fun getTender(id:String)=interactor.getTender(id).handleResult({
+           updateEnabledState(it)
+    },{
+        navigationTo(TenderCreateFragmentDirections.actionTenderCreateFragmentToEditTenderFragment(it))
+    })
 
     override fun checkEnabled() {
         updateEnabledState(
@@ -70,9 +78,7 @@ class TenderCreateViewModel @Inject constructor(override val interactor: CreateT
        checkPhoto()
     }
 
-    override fun navigateToMyProducts() {
-        TODO("Not yet implemented")
-    }
+
 
 
 }

@@ -24,30 +24,21 @@ class TabFavoritesViewModel @Inject constructor(override val interactor: BasePro
     val  delete=_delete.asSharedFlow()
     private val _state= MutableStateFlow(true)
     val state=_state.asStateFlow()
-
-    init {
-        getFavorites()
-        getSelections()
-    }
     override fun onStart() {
 
     }
-
-
     fun delete()= onCleared()
     override fun navigateToChat(value: InfoItemChat) =
         navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToChatFragment(value))
 
   override  fun navigateToNote(model: ProductModel) =navigationTo(FavoritesFragmentDirections
         .actionFavoritesFragmentToNoteFragment(id=model.id,
-            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = "product"))
+            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     override fun navigateToBlock()=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSupportFragment())
     override fun navigateToItem(model: ProductModel) = navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2(model))
 
     override  fun navigateToCreateSelection(product: String)=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSelectionCreate())
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
+    override fun navigateToComparison() =navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToComparison())
 
 
 

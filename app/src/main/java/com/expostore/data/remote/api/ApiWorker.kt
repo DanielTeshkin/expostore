@@ -177,24 +177,13 @@ interface ApiWorker {
         status:String?=null
     ): BaseApiResponse<BaseListResponse<ProductResponse>>
 
-
-
     suspend fun getChats(): BaseApiResponse<List<ChatResponse>>
-
     suspend fun createChat(id:String,flag:String) :BaseApiResponse<ChatResponse>
-
-
-
     suspend fun getChat(id:String): BaseApiResponse<ItemChatResponse>
-
     suspend fun getShop(id: String): BaseApiResponse<GetShopResponseData>
-
     suspend fun deleteMainChat(id: String):BaseApiResponse<ChatResponse>
-
     suspend fun deleteChat( id: String):BaseApiResponse<ItemChatResponse>
-
     suspend fun deleteUserSelection( id:String):BaseApiResponse<SelectionResponse>
-
     suspend fun deleteSaveSearch( id:String) : BaseApiResponse<SaveSearchResponse>
 
 
@@ -203,33 +192,24 @@ interface ApiWorker {
     ): BaseApiResponse<TenderResponse>
 
     suspend fun updateUserSelection( id:String,  selectionRequest: SelectionRequest): BaseApiResponse<SelectionResponse>
-
-
     suspend fun takeOffTender( id: String): BaseApiResponse<TenderResponse>
-
-
+    suspend fun getTender(id:String): BaseApiResponse<Tender>
     suspend fun updateTender( id: String, request:TenderRequest):BaseApiResponse<TenderResponse>
 
     //comparison
 
     suspend fun addProductToComparison( products:List<ComparisonProductData>):BaseApiResponse<List<ComparisonProductData>>
-
-
     suspend fun comparison( products:List<ComparisonProductData>):BaseApiResponse<ComparisonResult>
-
     suspend fun getComparisonProducts(): BaseApiResponse<List<ProductResponse>>
-
     suspend fun deleteFromComparisonProducts( products:List<ComparisonProductData>)
     :BaseApiResponse<List<ComparisonProductData>>
 
     //personal product
 
     suspend fun createPersonalProduct(request:ProductUpdateRequest):BaseApiResponse<CreateResponseProduct>
-
     suspend fun getPersonalProducts():BaseApiResponse<BaseListResponse<ProductResponse>>
-
-
     suspend fun deletePersonalProduct(id: String):BaseApiResponse<ProductResponse>
+    suspend fun getPersonalProduct(id:String):BaseApiResponse<ProductResponse>
 
 
 }

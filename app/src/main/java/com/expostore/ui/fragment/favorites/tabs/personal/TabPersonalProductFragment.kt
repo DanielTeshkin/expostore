@@ -20,9 +20,9 @@ class TabPersonalProductFragment() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-                val init:Show<List<ProductModel>> ={init(it)}
+        val init:Show<List<ProductModel>> ={init(it)}
         viewModel.apply {
+
             subscribe(navigation){navigateSafety(it)}
             subscribe(ui){handleState(it,init)}
         }

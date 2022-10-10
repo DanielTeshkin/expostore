@@ -11,8 +11,7 @@ import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import com.expostore.model.profile.ProfileModel
 
-import com.expostore.ui.base.Loader
-import com.expostore.ui.base.PagingSource
+
 import com.expostore.ui.fragment.search.filter.models.FilterModel
 import com.expostore.ui.fragment.search.main.paging.LoaderProducts
 import com.expostore.ui.fragment.search.main.paging.ProductListPagingSource

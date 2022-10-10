@@ -40,6 +40,9 @@ class MainViewModel @Inject constructor(
     override fun onStart() {
 
     }
+    fun navigateToWeb(url:String)=navigationTo(MainFragmentDirections.actionMainFragmentToWebViewFragment(
+        url = url, format = "ordinary"
+    ))
 
 
 

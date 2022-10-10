@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.tender.my.edit
 
+import android.util.Log
 import com.expostore.data.remote.api.pojo.gettenderlist.TenderResponse
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.vms.BaseViewModel
@@ -20,12 +21,13 @@ class EditMyTenderViewModel @Inject constructor(val interactor:TenderInteractor)
     val buttonVisible=MutableStateFlow(true)
 
     override fun onStart() {
-        TODO("Not yet implemented")
+       Log.i("g","f")
     }
 
     fun changeStatusPublished(){
         interactor.updateStatusTender(tender.value.id,tender.value.status?:"").handleResult(tenderResponse)
     }
+    fun navigateToBack()=navController.popBackStack()
 
     fun saveInfoTender(model:TenderModel){
         _tender.value=model

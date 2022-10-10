@@ -31,11 +31,9 @@ class FavoritesViewModel @Inject constructor(private val interactor: FavoritesIn
         navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToSearchFragment())
         else navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToTenderListFragment())
     }
-    fun navigateToProduct(model:ProductModel){
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2(model))
-    }
+
 
     fun navigateToComparison()=navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToComparison())
-    fun navigateToTender(tenderModel: TenderModel)=navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToTenderItem(tenderModel))
+
 
 }

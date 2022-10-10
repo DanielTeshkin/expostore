@@ -1,16 +1,14 @@
 package com.expostore.data.local.db
 
 import androidx.room.*
-import com.expostore.data.local.db.enities.AdvertisingDao
-import com.expostore.data.local.db.enities.CategoryDao
-import com.expostore.data.local.db.enities.ProfileDao
+import com.expostore.data.local.db.enities.*
 
-import com.expostore.data.local.db.enities.TokenDao
 import com.expostore.data.local.db.enities.chat.ChatDao
 import com.expostore.data.local.db.enities.favorites.FavoriteProductDao
+import com.expostore.data.local.db.enities.favorites.FavoriteTenderDao
 
 import com.expostore.data.local.db.enities.selection.SelectionDao
-import com.expostore.data.local.db.enities.selection.SelectionPersonal
+
 
 @Dao
 interface LocalDataApi {
@@ -71,6 +69,15 @@ interface LocalDataApi {
     @Query("DELETE FROM favorite")
     suspend fun removeFavorites()
 
+    @Query("Select * from favorite_tenders")
+    suspend fun getFavoritesTender():List<FavoriteTenderDao>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveFavoritesTender(list: List<FavoriteTenderDao>)
+
+    @Query("DELETE FROM favorite_tenders")
+    suspend fun removeFavoritesTender()
+
     @Query("Select * from category")
     suspend fun getCategories():List<CategoryDao>
 
@@ -88,6 +95,25 @@ interface LocalDataApi {
 
     @Query("DELETE FROM personal")
     suspend fun removePersonalSelections()
+
+    @Query("Select * from my_products WHERE status LIKE :status ORDER BY status ASC")
+   suspend fun getMyProducts(status: String):MyProductsDao
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveMyProducts(productsDao: MyProductsDao)
+
+    @Query("DELETE FROM my_products")
+    suspend fun removeMyProducts()
+
+    @Query("Select * from my_tenders WHERE status LIKE :status ORDER BY status ASC")
+    suspend fun getMyTenders(status:String):MyTendersDao
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveMyTenders(tendersDao: MyTendersDao)
+
+    @Query("DELETE FROM my_tenders")
+    suspend fun removeMyTenders()
+
 
 
 

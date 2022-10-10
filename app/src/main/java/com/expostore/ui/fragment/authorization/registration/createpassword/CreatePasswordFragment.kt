@@ -6,12 +6,15 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.expostore.data.remote.api.pojo.signup.SignUpResponseData
 import com.expostore.data.AppPreferences
 import com.expostore.databinding.CreatePasswordFragmentBinding
 import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.fragment.profile.profile_edit.click
 
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +32,9 @@ class CreatePasswordFragment : BaseFragment<CreatePasswordFragmentBinding>(Creat
         super.onViewCreated(view, savedInstanceState)
        val phone=CreatePasswordFragmentArgs.fromBundle(requireArguments()).phone
         createPasswordViewModel.apply {
+            start(findNavController())
+            subscribe(enabled){ binding.btnSignInNext.isEnabled =it}
+            subscribe(loading){binding.loadBar.isVisible=it}
             subscribe(navigation) { navigateSafety(it) }
             subscribe(ui) { handleInstance(it) }
         }
@@ -36,12 +42,10 @@ class CreatePasswordFragment : BaseFragment<CreatePasswordFragmentBinding>(Creat
             createPasswordViewModel.backEnd()
         }
 
-
-        binding.btnSignInNext.setOnClickListener{
+        binding.btnSignInNext.click{
             val password=binding.etPassword.toStroke()
             val second =binding.etSecondPassword.toStroke()
-
-                 createPasswordViewModel.checkPassword(first=password,
+            createPasswordViewModel.checkPassword(first=password,
                      second =second )
             createPasswordViewModel.instance.observe(viewLifecycleOwner, Observer {
                 when(it){

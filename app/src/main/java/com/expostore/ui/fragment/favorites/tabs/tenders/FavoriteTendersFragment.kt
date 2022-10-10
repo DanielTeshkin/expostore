@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.favorites.tabs.tenders
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,25 +22,35 @@ class FavoriteTendersFragment : BaseTenderFragment<FavoriteTendersFragmentBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.apply {
+            getFavorites()
             val show: Show<List<FavoriteTender>> = { showFavorites(it) }
             subscribe(favorites) { handleState(it, show) }
-            subscribe(navigation) { navigateSafety(it) }
+
         }
     }
 
     private fun showFavorites(item: List<FavoriteTender>) =
             binding.apply {
-                tenders.addAll(item)
-                mAdapter.onCallItemClickListener={navigateToCall(it)}
-                mAdapter.onClickLike={updateFavorites(it)}
-                mAdapter.onItemClickListener={viewModel.navigateToItem(it)}
-                mAdapter.onMessageItemClickListener={viewModel.createChat(it)}
-               mAdapter.onAnotherClickListener={ showBottomSheetTender(requireContext(),it,this@FavoriteTendersFragment)}
-                rvFavorites.apply {
-                    layoutManager = LinearLayoutManager(requireContext())
-                    adapter = mAdapter
+                if(item.isNotEmpty()) {
+                    Log.i("size", item.size.toString())
+                    tenders.addAll(item)
+                    mAdapter.onCallItemClickListener = { navigateToCall(it) }
+                    mAdapter.onClickLike = { updateFavorites(it) }
+                    mAdapter.onItemClickListener = { viewModel.navigateToItem(it) }
+                    mAdapter.onMessageItemClickListener = { viewModel.createChat(it) }
+                    mAdapter.onAnotherClickListener = {
+                        showBottomSheetTender(
+                            requireContext(),
+                            it,
+                            this@FavoriteTendersFragment
+                        )
+                    }
+                    rvFavorites.apply {
+                        layoutManager = LinearLayoutManager(requireContext())
+                        adapter = mAdapter
+                    }
+                    progressBar10.visibility = View.GONE
                 }
-                progressBar10.visibility = View.GONE
             }
 
 

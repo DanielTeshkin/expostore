@@ -12,9 +12,7 @@ import com.expostore.utils.OnClickImage
 class ImageMessageRecyclerViewAdapter( private val images:ArrayList<String>,  val onClickImage: OnClickImage):
     RecyclerView.Adapter<ImageMessageRecyclerViewAdapter.ImageViewHolder>() {
    inner class ImageViewHolder( val binding:ImageItemsBinding) : RecyclerView.ViewHolder(binding.root){
-       fun bind(url:String){
-           binding.messageImage.loadImage(url)
-       }
+       fun bind(url:String){ binding.messageImage.loadImage(url) }
 
     }
 
@@ -23,7 +21,7 @@ class ImageMessageRecyclerViewAdapter( private val images:ArrayList<String>,  va
         holder.apply {
             binding.messageImage.setOnClickListener {
                 val drawable = binding.messageImage.drawable
-                val bitmap: Bitmap = drawable.toBitmap()
+                val bitmap= drawable.toBitmap()
                 onClickImage.click(bitmap)
             }
         }

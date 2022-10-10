@@ -25,13 +25,14 @@ class MainInteractor @Inject constructor(private val mainRepository: MainReposit
         selectionRepository.getSelections().collect {
             emit(MainData.Categories(it))
         }
-
-        profileRepository.getProfile().collect {
-           emit(MainData.Profile(it))
-        }
         mainRepository.getAdvertising().collect {
             emit(MainData.Advertising(it))
         }
+         if(!profileRepository.getToken().isNullOrEmpty())
+        profileRepository.getProfile().collect {
+           emit(MainData.Profile(it))
+        }
+
 
     }
 

@@ -29,15 +29,13 @@ class TabSavedSearchesFragment( ) :
     override fun onStart() {
         super.onStart()
         onClickSaveSearch = object : OnClickSaveSearch {
-            override fun onClickSaveSearch(model:FilterModel) {
+            override fun onClickSaveSearch(model:SaveSearchModel) {
                 tabSavedSearchesViewModel.navigate(model)
             }
             override fun onClickLike(id: String) {
                 tabSavedSearchesViewModel.deleteSaveSearch(id) } }
         tabSavedSearchesViewModel.loadList()
     }
-
-
     private fun showList(item: List<SaveSearchModel>) {
         binding.progressBar12.visibility=View.GONE
         binding.rvSearches.apply {

@@ -6,11 +6,15 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.databinding.ShopFragmentBinding
+import com.expostore.extension.load
+import com.expostore.extension.loadBanner
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.product.toModel
 import com.expostore.ui.base.fragments.BaseProductFragment
 import com.expostore.ui.controllers.ShopPageController
 import com.expostore.ui.fragment.category.ProductSelectionAdapter
+import com.expostore.ui.fragment.chats.loadAvatar
+import com.expostore.ui.fragment.chats.loadTabImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,8 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
     val mAdapter: ProductSelectionAdapter by lazy {
         ProductSelectionAdapter(products)
     }
-     val manager=LinearLayoutManager(context)
-    private val controller :ShopPageController by lazy { ShopPageController(binding,requireContext()) }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("shop") { _, bundle -> val info = bundle.getString("model")
@@ -35,8 +37,8 @@ import dagger.hilt.android.AndroidEntryPoint
                     tvShopName.text = data.name
                     tvShopAddress.text = data.address
                     tvShopShoppingCenter.text = data.shoppingCenter
-                    ivAvatar.load(data.image.file)
-                    ivBackground.load(data.image.file)
+                    ivAvatar.loadAvatar(data.image.file)
+                    ivBackground.loadBanner(data.image.file)
                     products.addAll(data.products.map { it.toModel })
                     rvShopProducts.apply {
                         layoutManager = LinearLayoutManager(context)
@@ -47,7 +49,6 @@ import dagger.hilt.android.AndroidEntryPoint
             }
 
         } }
-
 
     override fun loadSelections(list: List<SelectionModel>) {
         mAdapter.onClick=getClickListener(list)

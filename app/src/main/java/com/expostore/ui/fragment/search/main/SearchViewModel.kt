@@ -19,8 +19,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(override var interactor: BaseProductInteractor)
- :BaseProductViewModel() {
+class SearchViewModel @Inject constructor(override var interactor: BaseProductInteractor) :BaseProductViewModel() {
     private val myLat = MutableStateFlow(0.0)
     private val myLong = MutableStateFlow(0.0)
     private val _city = MutableStateFlow("Москва")
@@ -30,8 +29,6 @@ class SearchViewModel @Inject constructor(override var interactor: BaseProductIn
     private val _author = MutableStateFlow("")
     val author = _author.asStateFlow()
     private val _productsMarkerUI= MutableSharedFlow<ResponseState<List<ProductModel>>>()
-    val productsMarkerUI=_productsMarkerUI.asSharedFlow()
-
     override fun onStart() {
     }
     init {
@@ -51,12 +48,9 @@ class SearchViewModel @Inject constructor(override var interactor: BaseProductIn
     override fun navigateToCreateSelection(id: String){
         navigationTo(SearchFragmentDirections.actionSearchFragmentToSelectionCreate(id))
     }
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
-
+    override fun navigateToComparison()=navigationTo(SearchFragmentDirections.actionSearchFragmentToComparison())
     override fun navigateToNote(model: ProductModel) {
         navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment(id=model.id,
-            isLiked = model.isLiked, text = model.elected?.notes, flag = "product", flagNavigation = "product"))
+            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     }
     }

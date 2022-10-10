@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.MainActivity
 import com.expostore.R
@@ -25,12 +27,15 @@ class NewPasswordFragment : BaseFragment<NewPasswordFragmentBinding>(NewPassword
     override fun onStart() {
         super.onStart()
         val phone=NewPasswordFragmentArgs.fromBundle(requireArguments()).phone
-        subscribe(viewModel.navigation){ navigateSafety(it) }
+        viewModel.apply {
+            subscribe(navigation) { navigateSafety(it) }
+            subscribe(loading){binding.progressBar16.isVisible=it}
+            subscribe(enabled){binding.btnNext.isEnabled=it}
+        }
+        binding.etPassword.addTextChangedListener { viewModel.changePassword1(it.toString()) }
+        binding.etSecondPassword.addTextChangedListener { viewModel.changePassword2(it.toString()) }
         binding.btnNext.click {
-            viewModel.reset(phone,
-            binding.etPassword.text.toString(),
-                binding.etSecondPassword.text.toString()
-                )
+            viewModel.reset(phone)
         }
     }
 

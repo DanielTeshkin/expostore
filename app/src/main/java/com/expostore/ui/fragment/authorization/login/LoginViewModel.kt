@@ -32,6 +32,8 @@ class LoginViewModel @Inject constructor(
     private val password=MutableStateFlow("")
     private val _enabled= MutableStateFlow(false)
     val enabled=_enabled.asStateFlow()
+    private val _loading= MutableStateFlow(false)
+    val loading=_loading.asStateFlow()
 
 
     override fun onStart() {
@@ -52,10 +54,14 @@ class LoginViewModel @Inject constructor(
 
 
     fun signIn() {
+        _enabled.value=false
        authorization.login(phone.value, password.value)
-            .handleResult(_uiState, {
+            .handleResult({ _loading.value=it
+                          }, {
                 saveToken(it.refresh,it.access)
                 navigationTo(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+            },{
+                _enabled.value=true
             })
     }
 

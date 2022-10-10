@@ -27,13 +27,11 @@ class ShopViewModel @Inject constructor(override val interactor: BaseProductInte
        navigationTo(ShopFragmentDirections.actionShopFragmentToSelectionCreate(product))
     }
 
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
+    override fun navigateToComparison()=navigationTo(ShopFragmentDirections.actionShopFragmentToComparison())
 
     override fun navigateToNote(model: ProductModel) {
         navigationTo(ShopFragmentDirections.actionShopFragmentToNoteFragment(id=model.id,
-            isLiked = model.isLiked, text = model.elected?.notes, flag = "product", flagNavigation = "product"))
+            isLiked = model.isLiked, text = model.elected?.notes, flag = "product", flagNavigation = ""))
     }
 
     override fun navigateToChat(value: InfoItemChat) {

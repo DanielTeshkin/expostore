@@ -46,16 +46,14 @@ class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragme
         binding.favoritesVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                when(position){
-                    1->{
-                        animate()
-                        binding.mySelections.visibility=View.GONE
-                    }
-                    else->{
-                        animate()
-                        binding.mySelections.visibility=View.VISIBLE
-                    }
+                if (position==1){
+                    animate()
+                    binding.panel.visibility=View.GONE
+                } else {
+                    animate()
+                    binding.panel.visibility=View.VISIBLE
                 }
+
             }
 
         })

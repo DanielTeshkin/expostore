@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.databinding.EditMyProductFragmentBinding
 import com.expostore.model.product.ProductModel
@@ -40,17 +41,6 @@ class EditMyProductFragment : BaseFragment<EditMyProductFragmentBinding>(EditMyP
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        state {
-            viewModel.product.collect {
-                init(it)
-                clickInstall(it)
-            }
-        }
-
-    }
-
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
@@ -65,6 +55,11 @@ class EditMyProductFragment : BaseFragment<EditMyProductFragmentBinding>(EditMyP
     private fun subscribeOnChange() {
         val navigate: Show<ProductResponse> = { navigate(it) }
         viewModel.apply {
+            start(findNavController())
+            subscribe(product){
+                init(it)
+                clickInstall(it)
+            }
             subscribe(taleOff) { handleState(it, navigate) }
             subscribe(navigation) { navigateSafety(it) }
         }
@@ -82,6 +77,7 @@ class EditMyProductFragment : BaseFragment<EditMyProductFragmentBinding>(EditMyP
             tvProductLocation.text = model.shop.address
             tvProductRating.text = "Оценка: " + model.rating
             rbProductRating.rating = model.rating.toFloat()
+            btnBack.click { viewModel.navigateToBack() }
         }
     }
 

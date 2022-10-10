@@ -21,6 +21,7 @@ import com.expostore.ui.fragment.main.adapter.CategoriesAdapter
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.state.MainState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.item_image_full.*
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::inflate) {
@@ -98,7 +99,11 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
 
     private fun handleAdvertising(item: List<CategoryAdvertisingModel>) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            binding.ivAdvertising.load(item[0].image)
+            if (item[0].image.isNotEmpty()) {
+                binding.ivAdvertising.load(item[0].image)
+                binding.ivAdvertising.click { viewModel.navigateToWeb(item[0].url) }
+            }
+            else binding.ivAdvertising.visibility=View.GONE
         }
     }
 

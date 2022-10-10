@@ -15,29 +15,21 @@ import javax.inject.Inject
 class DetailCategoryViewModel @Inject constructor(override val interactor: BaseProductInteractor) : BaseProductViewModel() {
     private val _selectionModel=MutableStateFlow(SelectionModel())
     val selectionModel=_selectionModel.asStateFlow()
-    init {
-        getSelections()
-    }
-    fun saveSelection(selectionModel: SelectionModel){
-        _selectionModel.value=selectionModel
-    }
+    init { getSelections() }
     override fun navigateToBlock()=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSupportFragment())
     override  fun navigateToCreateSelection(product: String) =navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSelectionCreate(id=product))
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
-
+    override fun navigateToComparison()=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToComparison())
     override fun navigateToItem(model:ProductModel){
-        navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToProductFragment(model))
+        navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToProductFragment(product =model))
     }
-
     override fun navigateToNote(model: ProductModel){
         navigationTo(
             DetailCategoryFragmentDirections.actionDetailCategoryFragmentToNoteFragment(id=model.id,
-            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = "product"))
+            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     }
 
-    override  fun navigateToChat(infoItemChat: InfoItemChat)= navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToChatFragment(infoItemChat))
+    override  fun navigateToChat(infoItemChat: InfoItemChat)=
+        navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToChatFragment(infoItemChat))
 
 
 

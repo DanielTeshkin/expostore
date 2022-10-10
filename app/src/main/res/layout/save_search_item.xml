@@ -11,8 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         app:cardCornerRadius="10dp"
-
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <TextView
@@ -56,6 +61,12 @@
             android:button="@null"
             android:checked="true"
             android:elevation="3dp" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

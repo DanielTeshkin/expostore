@@ -32,19 +32,10 @@ class FavoriteTendersViewModel @Inject constructor(private val interactors: Favo
 
     }
 
-    init {
-        getTenderFavoriteList()
-    }
 
-   fun getTenderFavoriteList()=interactors.getTenderFavoriteList().handleResult(_tenders)
+   private fun getTenderFavoriteList()=interactors.getTenderFavoriteList().handleResult(_tenders)
     fun  updateSelectedTender(id:String)=interactors.updateSelectedTender(id).handleResult()
-    override fun navigateToCreateSelection(product: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
 
 
     override fun navigateToChat(infoItemChat: InfoItemChat)=navigationTo(FavoritesFragmentDirections
@@ -58,10 +49,10 @@ class FavoriteTendersViewModel @Inject constructor(private val interactors: Favo
 
     override fun navigateToNote(model: TenderModel) {
        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToNoteFragment(id=model.id,
-           isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender"))
+           isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = ""))
    }
 
 
-    fun navigateToTenderItem(tenderModel: TenderModel)=navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToTenderItem(tenderModel))
+
 
 }

@@ -3,6 +3,7 @@ package com.expostore.ui.fragment.authorization.login
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,13 +26,14 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
         super.onViewCreated(view, savedInstanceState)
         loginViewModel.apply {
             start(findNavController())
+            subscribe(loading){binding.progressBar14.isVisible=it}
             subscribe(navigation) { navigateSafety(it) }
             subscribe(uiState) { handleState(it) }
+            subscribe(enabled){  binding.btnSignInNext.isEnabled=it}
         }
         binding.btnForgotPassword.click { loginViewModel.navigateToReset()}
 
         binding.btnSignInNext.click {
-            Log.i("all","goll")
             loginViewModel.signIn()
         }
 
@@ -49,11 +51,6 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>(LoginFragmentBinding::i
         binding.apply {
             etNumber.addTextChangedListener { loginViewModel.updatePhone(it.toString()) }
             etPassword.addTextChangedListener { loginViewModel.updatePassword(it.toString()) }
-            state {
-                loginViewModel.enabled.collect {
-                    btnSignInNext.isEnabled=it
-                }
-            }
         }
     }
 

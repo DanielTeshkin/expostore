@@ -4,8 +4,10 @@ import com.expostore.data.remote.api.pojo.getcategory.Characteristic
 import com.expostore.data.remote.api.pojo.getcategory.CharacteristicRequest
 import com.expostore.data.remote.api.pojo.getchats.ChatFile
 import com.expostore.data.remote.api.pojo.getproduct.ProductPromotion
+import com.expostore.data.remote.api.pojo.getproduct.ProductResponseData
 import com.expostore.data.remote.api.pojo.getreviews.Review
 import com.expostore.data.remote.api.pojo.productcategory.ProductCategory
+import com.expostore.model.product.ProductModel
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
@@ -160,6 +162,8 @@ data class CreateResponseProduct(
 
 	@field:SerializedName("qrcode" ) val qrcode:QrCodeResponse=QrCodeResponse()
 )
+
+
 data class QrCodeResponse(
 	@field:SerializedName("product")
 	val product: String = "",

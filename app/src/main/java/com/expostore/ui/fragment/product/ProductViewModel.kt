@@ -27,45 +27,33 @@ import javax.inject.Inject
 class ProductViewModel @Inject constructor(override val interactor: BaseProductInteractor) : BaseProductViewModel() {
     private val _product=MutableStateFlow(ProductModel())
     val product=_product.asStateFlow()
-
+    private val _loading= MutableStateFlow(false)
+    val loading =_loading.asStateFlow()
     private val _priceHistoryState= MutableSharedFlow<ResponseState<List<PriceHistoryModel>>>()
-           private val priceHistoryList= MutableStateFlow<List<PriceHistoryModel>>(listOf())
+    private val priceHistoryList= MutableStateFlow<List<PriceHistoryModel>>(listOf())
     private val _visible = MutableStateFlow(false)
     val visible=_visible.asStateFlow()
     private val  _visibleInstruction= MutableStateFlow(false)
     private val _visiblePresentation = MutableStateFlow(false)
       val visibleInstruction=_visibleInstruction.asStateFlow()
     val visiblePresentation=_visiblePresentation.asStateFlow()
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
+    override fun navigateToComparison() =navigationTo(ProductFragmentDirections.actionProductFragmentToComparison())
+    override fun navigateToCreateSelection(product: String) =navigationTo(ProductFragmentDirections.actionProductFragmentToSelectionCreate(product))
+    fun getProduct(id:String?){
+        if(!id.isNullOrEmpty()) interactor.getProduct(id).handleResult({ _loading.value =it },
+            { _product.value=it })
     }
 
-    override fun navigateToCreateSelection(product: String) {
-        TODO("Not yet implemented")
-    }
-    fun getProduct(id:String)=interactor.getProduct(id).handleResult({},{ _product.value=it })
-
-    override fun navigateToChat(value: InfoItemChat) {
-     navigationTo(ProductFragmentDirections.actionProductFragmentToChatFragment(value))
-    }
-
+    override fun navigateToChat(value: InfoItemChat) = navigationTo(ProductFragmentDirections.actionProductFragmentToChatFragment(value))
     override fun navigateToBlock() {
         TODO("Not yet implemented")
     }
-
-    override fun navigateToItem(model: ProductModel) {
-        TODO("Not yet implemented")
-    }
-
     override fun navigateToNote(model: ProductModel) {
         navigationTo(ProductFragmentDirections.actionProductFragmentToNoteFragment(id=product.value.id,
             text = product.value.elected.notes,flag = "product", isLiked = product.value.isLiked, flagNavigation = "product"))
     }
 
     fun navigateToBack()=navController.popBackStack()
-    fun navSave()=navController.previousBackStackEntry?.saveState(bundleOf( "iem" to SelectionModel()))
-
-
     fun saveProduct(item:ProductModel){
         _product.value=item
         interactor.getPriceHistory(item.id).handleResult(_priceHistoryState,{
@@ -88,21 +76,20 @@ class ProductViewModel @Inject constructor(override val interactor: BaseProductI
         navigationTo(ProductFragmentDirections.actionProductFragmentToAddReviewFragment())
     }
     fun navigateToInstruction()=
-        navigationTo(ProductFragmentDirections.actionProductFragmentToWebViewFragment(product.value.instruction.file))
+        navigationTo(ProductFragmentDirections.actionProductFragmentToWebViewFragment(product.value.instruction.file,
+            format ="file" ))
 
     fun navigateToPresentation()=
-        navigationTo(ProductFragmentDirections.actionProductFragmentToWebViewFragment(product.value.presentation.file))
+        navigationTo(ProductFragmentDirections.actionProductFragmentToWebViewFragment(product.value.presentation.file,
+            format ="file"))
 
-    fun navigationToNote(){
-        navigationTo(ProductFragmentDirections.actionProductFragmentToNoteFragment(id=product.value.id,
-            text = product.value.elected?.notes,flag = "product", isLiked = product.value.isLiked, flagNavigation = "product"))
-    }
+    fun navigationToNote() = navigationTo(ProductFragmentDirections.actionProductFragmentToNoteFragment(id= product.value.id,
+            text = product.value.elected.notes,flag = "product", isLiked = product.value.isLiked, flagNavigation = "product"))
+
     fun navigationToQrCodeFragment(){
         navigationTo(ProductFragmentDirections.actionProductFragmentToProductQrCodeFragment())
     }
     fun navigateToCharacteristics()=navigationTo(ProductFragmentDirections
         .actionProductFragmentToCharacteristicFragment(CharacteristicsData(product.value.characteristics)))
-
-
 
 }

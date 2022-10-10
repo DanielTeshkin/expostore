@@ -14,6 +14,7 @@ class MyTendersViewModel @Inject constructor(private val interactor: TenderInter
     private val _myTenders= MutableSharedFlow<ResponseState<List<TenderModel>>>()
     val myTender=_myTenders.asSharedFlow()
 
+    fun navigateToBack()=navController.popBackStack()
     fun loadMyTenders(status:String)=interactor.loadMyTenders(status).handleResult(_myTenders)
     fun navigateToEdit(model: TenderModel)=navigationTo(MyTenderListFragmentDirections.actionMyTendersToEditTenderFragment(model))
     override fun onStart() {

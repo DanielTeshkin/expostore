@@ -26,18 +26,26 @@ class ConfirmCodeViewModel @Inject constructor(private val registration: Authori
     private val _clickable= MutableStateFlow(false)
     val clickable=_clickable.asStateFlow()
     private val phone= MutableStateFlow("")
-
     private val _state=MutableSharedFlow<ResponseState<ConfirmCodeResponseData>>()
-       var state=_state.asSharedFlow()
+    val state=_state.asSharedFlow()
+    private val _loading= MutableStateFlow(false)
+    val loading=_loading.asStateFlow()
+    private val _enabled= MutableStateFlow(false)
+    val enabled=_enabled.asStateFlow()
 
 
     fun confirmCode(){
-        registration.confirmCode(phone.value,code.value).handleResult(_state,{
+        _enabled.value=false
+        registration.confirmCode(phone.value,code.value).handleResult({_loading.value=it},{
             navigationTo(ConfirmCodeFragmentDirections.actionConfirmNumberFragmentToCreatePasswordFragment(phone.value))
+        },{
+            _enabled.value=true
         })
     }
     fun saveInput(input:String){
         code.value=input
+        _enabled.value= input.length == 6
+
     }
 
     fun saveNumber(number:String){

@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.product.PriceHistoryFragment">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:background="@null"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +29,7 @@
         style="@style/BoldTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:text="История цены"
         android:textColor="@color/black"

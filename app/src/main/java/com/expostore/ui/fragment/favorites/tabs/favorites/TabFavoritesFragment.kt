@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.favorites.tabs.favorites
 
+import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,17 +20,22 @@ class TabFavoritesFragment :
     private val favoritesList = mutableListOf<FavoriteProduct>()
     private val myAdapter : FavoritesProductRecyclerViewAdapter by lazy{
         FavoritesProductRecyclerViewAdapter(products = favoritesList) }
-    override fun onStart() {
-        super.onStart()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.apply {
+            getFavorites()
+            getSelections()
             subscribe(favorites) { state ->
                 handleState(state) {
                     binding.apply {
                         rvFavorites.apply {
-                            favoritesList.addAll(it)
-                            layoutManager = LinearLayoutManager(requireContext())
-                            adapter=myAdapter
-                            progressBar4.visibility = View.GONE
+                            if(it.isNotEmpty()) {
+                                favoritesList.addAll(it)
+                                layoutManager = LinearLayoutManager(requireContext())
+                                adapter = myAdapter
+                                progressBar4.visibility = View.GONE
+                            }
                         }
                     }
                 }

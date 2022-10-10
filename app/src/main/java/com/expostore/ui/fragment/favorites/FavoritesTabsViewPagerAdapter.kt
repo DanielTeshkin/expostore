@@ -19,7 +19,7 @@ class FavoritesTabsViewPagerAdapter(
 
 ): FragmentStateAdapter(fragment) {
 
-    private val tabs = listOf("Продукты","Тендеры", "Поиски", "Подборки")
+    private val tabs = listOf("Продукты","Тендеры", "Поиски", "Персональные товары")
 
     override fun getItemCount(): Int = tabs.size
 

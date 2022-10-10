@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.tender.list
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.expostore.data.remote.api.pojo.selectfavorite.SelectFavoriteTenderResponseData
 import com.expostore.model.tender.TenderModel
@@ -24,35 +25,26 @@ class TenderListViewModel @Inject constructor(override val interactor: BaseTende
     val sort=_sort.asStateFlow()
     private val token=MutableStateFlow<String?>(null)
     private val _chat=MutableSharedFlow<ResponseState<MainChat>>()
-    override fun navigateToCreateSelection(product: String) {
-        TODO("Not yet implemented")
-    }
-init {
-    getSelections()
-}
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
-
     val chat=_chat.asSharedFlow()
 
 
 
     fun createTender(){
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToTenderCreateFragment())
+        Log.i("gooo","ff")
+        navigationTo(TenderFragmentDirections.actionTenderListFragmentToTenderCreateFragment())
     }
 
 
    override fun navigateToItem(model: TenderModel){
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToTenderItem(model))
+        navigationTo(TenderFragmentDirections.actionTenderListFragmentToTenderItem(model))
     }
 
    private fun navigateToOpen(){
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToOpenFragment())
+        navigationTo(TenderFragmentDirections.actionTenderListFragmentToOpenFragment())
     }
 
    override fun navigateToChat(value: InfoItemChat) {
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToChatFragment(value))
+        navigationTo(TenderFragmentDirections.actionTenderListFragmentToChatFragment(value))
     }
 
     override fun navigateToBlock() {
@@ -63,15 +55,15 @@ init {
         this._state.value=state
     }
     fun navigateToFilter(){
-         navigationTo(TenderListFragmentDirections.actionTenderListFragmentToSearchFilterFragment())
+         navigationTo(TenderFragmentDirections.actionTenderListFragmentToSearchFilterFragment())
      }
 
         fun check(){
             if(token.value.isNullOrEmpty())navigateToOpen()
         }
     override fun navigateToNote(model:TenderModel){
-        navigationTo(TenderListFragmentDirections.actionTenderListFragmentToNoteFragment(id=model.id,
-            isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender")) }
+        navigationTo(TenderFragmentDirections.actionTenderListFragmentToNoteFragment(id=model.id,
+            isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "")) }
 
 
     override fun onStart() {

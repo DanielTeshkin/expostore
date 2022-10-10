@@ -1,7 +1,9 @@
 package com.expostore.ui.fragment.authorization.registration.confirmnumber
 
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.databinding.ConfirmNumberFragmentBinding
 import com.expostore.ui.base.fragments.BaseFragment
 
@@ -22,12 +24,15 @@ class ConfirmNumberFragment :
         super.onStart()
         binding.etNumber.addTextChangedListener { confirmNumberViewModel.checkLengthNumber(it.toString()) }
         binding.btnBack.click { confirmNumberViewModel.toBack() }
+        binding.tvNumberRules.click { confirmNumberViewModel.navigateToWeb() }
         confirmNumberViewModel.apply {
+            start(findNavController())
             subscribe(navigation) { navigateSafety(it) }
-        }
-        binding.btnSignInNext.apply{
-            state { confirmNumberViewModel.enabledState.collect { isEnabled=it }}
-            click {  confirmNumberViewModel.confirmNumber() }
+            subscribe(loading){binding.loadBar3.isVisible=it}
+            binding.btnSignInNext.apply {
+                subscribe(enabledState) { isEnabled = it }
+                click { confirmNumber() }
+            }
         }
     }
 

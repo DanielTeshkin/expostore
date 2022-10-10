@@ -13,7 +13,7 @@ class ProfileDao (@PrimaryKey
                   @ColumnInfo(name = "id")
                   val id: String = "",
                   @ColumnInfo(name = "shop")
-                  val shop: ProfileModel.ShopModel? = null,
+                  val shop: ProfileModel.ShopModel? = ProfileModel.ShopModel(),
                   @ColumnInfo(name = "city")
                   val city: String? ="",
                   @ColumnInfo(name = "last_name")

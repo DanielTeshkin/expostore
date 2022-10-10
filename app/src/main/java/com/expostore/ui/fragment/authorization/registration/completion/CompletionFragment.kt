@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.pojo.getcities.City
@@ -30,6 +31,7 @@ class CompletionFragment : BaseFragment<CompletionFragmentBinding>(CompletionFra
         super.onViewCreated(view, savedInstanceState)
         makeStartRequest()
         completionViewModel.apply {
+            subscribe(loading){binding.loadInfo.isVisible=it}
             subscribe(navigation){navigateSafety(it)}
             subscribe(cities){handleState(it,load)}
             subscribe(ui){handleState(it)}
@@ -40,7 +42,6 @@ class CompletionFragment : BaseFragment<CompletionFragmentBinding>(CompletionFra
     override fun onStart() {
         super.onStart()
        FirebaseMessaging.getInstance().token.addOnCompleteListener {
-
            val token=  it.result
            Log.i("fcm",it.result)
            completionViewModel.saveToken(token)

@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 typealias Location<T> = (T)->LatLng
 typealias Image<T> =(T)->String
 abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val inflate: Inflate<Binding>) :
-    BaseLocationFragment<Binding, T, E, A>(inflate),DrawMarkerApi<T>,GoogleMap.OnInfoWindowClickListener,GoogleMap.OnMarkerClickListener {
+    BaseLocationFragment<Binding, T, E, A>(inflate),DrawMarkerApi<T>,GoogleMap.OnInfoWindowClickListener {
     private val markers = mutableMapOf<Marker, T>()
     abstract val sortText:TextView
     abstract val mapView:MapView
@@ -43,11 +43,7 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
-            lifecycleScope.launch{
-                viewModel.search().collect {
-                    loadItems(it)
-                }
-            }
+            lifecycleScope.launch{ viewModel.search().collect { loadItems(it) } }
         }
         popupMenuLoad()
     }
@@ -118,6 +114,9 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
         }
     }
 
+    override fun block(model: T) {
+
+    }
     override fun drawMarker(item: T) {
         val markerOptions = MarkerOptions().position(location.invoke(item))
             .icon(
@@ -133,11 +132,6 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
 
     override fun onInfoWindowClick(marker: Marker) {
         markers[marker]?.let { viewModel.navigateToItem(it) }
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        marker.showInfoWindow()
-        return false
     }
 
 

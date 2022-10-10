@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.Uri
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileResponseData
+import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.ConditionProcessor
 import com.expostore.ui.base.interactors.CreateProductInteractor
 import com.expostore.ui.base.vms.CreatorProductViewModel
@@ -30,6 +31,9 @@ class AddProductViewModel
     private val _files=MutableSharedFlow<ResponseState<SaveFileResponseData>>()
     val files=_files.asSharedFlow()
     val fileList= mutableListOf<String?>(null,null)
+    init {
+        getCategories()
+    }
 
     fun updateFlag(mean:String){
         flag.value=mean
@@ -44,10 +48,11 @@ class AddProductViewModel
         presentation.value=uri
     }
 
-    override fun navigateToMyProducts() {
-        TODO("Not yet implemented")
-    }
+    fun getProduct(id: String)=interactor.getProduct(id).handleResult({updateEnabledState(it)},{
+        navigateToMyItem(it)
+    })
 
+    private fun navigateToMyItem(model: ProductModel) = navigationTo(AddProductFragmentDirections.actionAddProductFragmentToEditMyProduct(model))
     override fun checkEnabled() {
         updateEnabledState(name.value.isNotEmpty() and longDescription.value.isNotEmpty()
                 and shortDescription.value.isNotEmpty() and count.value.isNotEmpty() and price.value.isNotEmpty() and(
@@ -87,7 +92,6 @@ class AddProductViewModel
 
         interactor.saveFiles(fileRequestData).handleResult(_files)
     }
-
 
     private fun Uri.castFileToRequestData():SaveFileRequestData{
         return context?.let { FileStorage(it).getSaveRequestData(this) }?: SaveFileRequestData()

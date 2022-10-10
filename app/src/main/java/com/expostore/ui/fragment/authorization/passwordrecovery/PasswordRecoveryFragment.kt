@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.expostore.ui.base.fragments.BaseFragment
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 
@@ -32,7 +33,8 @@ class PasswordRecoveryFragment :
             passwordRecoveryViewModel.confirmCode()
             passwordRecoveryViewModel.apply {
                 subscribe(navigation) { navigateSafety(it) }
-                subscribe(state){handleState(it)}
+               subscribe(enabled){binding.btnSignInNext.isEnabled=it}
+                subscribe(loading){binding.progressBar15.isVisible=it}
             }
         }
     }
@@ -40,10 +42,7 @@ class PasswordRecoveryFragment :
     override fun onStart() {
         super.onStart()
         passwordRecoveryViewModel.timerStart()
-        binding.etCode.addTextChangedListener {
-            passwordRecoveryViewModel.saveInput(it.toString())
-            binding.btnSignInNext.isEnabled=it?.length==6
-        }
+        binding.etCode.addTextChangedListener { passwordRecoveryViewModel.saveInput(it.toString()) }
         state { passwordRecoveryViewModel.resetText.collect {  binding.btnResendCode.text=it} }
         state { passwordRecoveryViewModel.clickable.collect { binding.btnResendCode.isClickable=it } }
         binding.btnResendCode.click {

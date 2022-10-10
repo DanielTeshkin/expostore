@@ -65,7 +65,7 @@ fun showBottomSheet(context: Context, model:ProductModel, list: List<SelectionMo
     }
 val block=bottomSheetDialog.findViewById<LinearLayout>(R.id.block)
     block?.click {
-        onClickBottomFragment.block()
+        onClickBottomFragment.block(model)
         bottomSheetDialog.hide()
     }
     if(flag){
@@ -131,35 +131,23 @@ class SelectionBottomAdapter(
 
 
 interface OnClickBottomSheetFragment< T>{
-    fun createSelection(product:String)
-    fun addToSelection(id:String,product: String)
+    fun createSelection(product:String){}
+    fun addToSelection(id:String,product: String){}
     fun call(username:String)
     fun createNote(product:T)
     fun chatCreate(id:String)
     fun share(id: String)
-    fun block()
-    fun addToComparison(id: String)
-    fun deleteFromSelection(model: T){
-         Log.i("dddd","fjjjgkj")
-    }
+    fun block(model :T)
+    fun addToComparison(id: String){}
+    fun deleteFromSelection(model: T){}
 
 }
 
-interface OnClickBottomSheetTenderFragment{
 
-    fun call(username:String)
-    fun createNote(tenderModel: TenderModel)
-    fun chatCreate(id:String)
-
-    fun block()
-
-}
 fun showBottomSheetTender(
     context: Context, model:TenderModel,
     onClickBottomFragment: OnClickBottomSheetFragment< TenderModel>
 ){
-
-
 
     val bottomSheetDialog = BottomSheetDialog(context)
     bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
@@ -188,7 +176,7 @@ fun showBottomSheetTender(
     compare?.visibility=View.GONE
     val block=bottomSheetDialog.findViewById<LinearLayout>(R.id.block)
     block?.click {
-        onClickBottomFragment.block()
+        onClickBottomFragment.block(model)
         bottomSheetDialog.hide()
     }
 

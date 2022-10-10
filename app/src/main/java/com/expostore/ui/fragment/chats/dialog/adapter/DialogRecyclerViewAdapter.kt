@@ -24,16 +24,11 @@ class DialogRecyclerViewAdapter(private var messages:MutableList<Message>,
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
-           is DialogViewHolder -> holder.bind(messages[position])
-       }
-
+        if (holder is DialogViewHolder) holder.bind(messages[position])
     }
 
-    override fun getItemCount(): Int {
-        return messages.size
-    }
 
+    override fun getItemCount(): Int = messages.size
 
     fun addData(listItems: MutableList<Message>) {
             diffUtil=DiffUtil.calculateDiff(DiffUtilDialog(messages,listItems))

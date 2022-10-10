@@ -15,7 +15,6 @@ import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
 import com.expostore.model.profile.ProfileModel
-import com.expostore.ui.base.interactors.BaseItemsInteractor
 import com.expostore.ui.base.search.Loader
 import com.expostore.ui.base.search.PagingSource
 import com.expostore.ui.fragment.search.filter.models.FilterModel
@@ -33,17 +32,17 @@ import javax.inject.Inject
                                                       private val profileRepository: ProfileRepository,
                                                       private val productsRepository: ProductsRepository
 ): BaseItemsInteractor<ProductModel, SelectFavoriteResponseData, FavoriteProduct> {
-     override fun getSelections()=selection.userSelectionList()
+   fun getSelections()=selection.userSelectionList()
      override  fun createChat(id:String)=chats.createChat(id,"product")
      override fun  updateSelected(id: String) = favorite.addToFavorite(id)
-     override fun comparison(id: String)=comparison.addToComparison(listOf(ComparisonProductData(id)))
-     override fun addToSelection(id:String, product:String)=selection.addProductToSelection(id,
+     fun comparison(id: String)=comparison.addToComparison(listOf(ComparisonProductData(id)))
+      fun addToSelection(id:String, product:String)=selection.addProductToSelection(id,
         ProductsSelection(listOf(product)))
-     override fun  getFavoriteList()=favorite.getFavoritesList()
+     override fun  getFavoriteList()=favorite.getFavorites()
      fun getPriceHistory(id:String)=productsRepository.getPriceHistory(id)
     fun getShop(id:String)=shop.getShop(id)
      fun getProduct(id: String)=productsRepository.getProduct(id)
-   override fun deleteProductFromSelection(product: ProductModel,list:List<ProductModel>,id: String,name:String): Flow<SelectionResponse> {
+  fun deleteProductFromSelection(product: ProductModel,list:List<ProductModel>,id: String,name:String): Flow<SelectionResponse> {
         val products= mutableListOf<ProductModel>()
         products.addAll(list)
         products.remove(product)
@@ -52,11 +51,10 @@ import javax.inject.Inject
             selectionRequest = SelectionRequest(name,list)
         )
     }
-   override fun deleteSelection(id:String)=selection.deleteUserSelection(id)
+     fun getPersonalProduct(id:String)=productsRepository.getPersonalProduct(id)
+     fun deleteSelection(id:String)=selection.deleteUserSelection(id)
     private val profileModel = MutableStateFlow(ProfileModel())
-
-
-    private suspend fun getProfileModel()= profileRepository.getProfile().collect { profileModel.value=it }
+     private suspend fun getProfileModel()= profileRepository.getProfile().collect { profileModel.value=it }
 
     suspend fun getProfile(): ProfileModel? {
         getProfileModel()

@@ -6,88 +6,80 @@
     android:id="@+id/support_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:fillViewport="false"
     tools:context=".ui.support.SupportFragment">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="-16dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/shop_title"
-            style="@style/BoldTextView"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-           android:layout_marginTop="20dp"
-            android:text="Обратная связь"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="-16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_surname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle">
-
-            <EditText
-                android:id="@+id/message"
+            <TextView
+                android:id="@+id/shop_title"
+                style="@style/BoldTextView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Обратная связь"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
-                android:background="@drawable/edit_support"
-                android:breakStrategy="balanced"
-                android:fitsSystemWindows="true"
-                android:gravity="top"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/send_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
 
-                android:hint="Ваше обращение"
-                android:inputType="textMultiLine"
-                android:padding="10dp"
-                android:singleLine="false" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/favorites_title">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_edit_profile"
-            style="@style/BoldTextView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@drawable/selector_blue_button"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/my_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top|start"
+                    android:hint="Ваше обращение" />
 
-            android:letterSpacing="0.01"
-            android:text="Отправить"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_email"
-            app:layout_constraintVertical_bias="1.0" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send"
+                style="@style/BoldTextView"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="120dp"
+                android:backgroundTint="@drawable/selector_blue_button"
+
+                android:letterSpacing="0.01"
+                android:text="Отправить"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_email"
+                app:layout_constraintVertical_bias="1.0" />
 
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </ScrollView>

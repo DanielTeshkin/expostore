@@ -13,11 +13,6 @@ import com.expostore.data.repositories.*
 import com.expostore.model.category.CharacteristicFilterModel
 import com.expostore.model.tender.TenderModel
 import com.expostore.model.tender.toModel
-import com.expostore.ui.base.Loader
-import com.expostore.ui.base.PagingSource
-import com.expostore.ui.fragment.search.filter.models.*
-import com.expostore.ui.fragment.tender.list.pagging.LoadTenders
-import com.expostore.ui.fragment.tender.list.pagging.TenderListPagingSource
 import com.expostore.ui.general.*
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -73,20 +68,7 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
     private fun updateEnabledState(state:Boolean){_enabled.value=state}
 
 
-    fun letTenderFlow(pagingConfig: PagingConfig = getDefaultPageConfig(),
-       filterModel: FilterModel=FilterModel()): Flow<PagingData<TenderModel>> {
-        val loaderProducts: Loader<Tender> = { it ->
-            tenderRepository.getTenders(page = it, filterModel = filterModel)
-        }
 
-        val pagingSource:PagingSource<Tender,TenderModel> = PagingSource(loaderProducts) { it.toModel }
-        return Pager(
-            config = pagingConfig,
-            pagingSourceFactory =
-            { pagingSource }
-        ).flow
-
-    }
 
     fun chatCreate(id:String)=chatRepository.createChat(id,"tender")
 
@@ -96,7 +78,7 @@ class TenderInteractor @Inject constructor(private val tenderRepository: TenderR
         return PagingConfig(pageSize = 10, enablePlaceholders = false)
     }
 
-    fun loadMyTenders(status:String)=tenderRepository.loadMyTenders(status)
+    fun loadMyTenders(status:String)=tenderRepository.load(status)
 
     fun getMyShop()=shopRepository.getMyShop()
 

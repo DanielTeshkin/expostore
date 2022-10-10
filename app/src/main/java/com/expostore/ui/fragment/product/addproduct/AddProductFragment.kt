@@ -27,29 +27,25 @@ import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddProductFragment :  CreateProductFragment() {
+class AddProductFragment() :  CreateProductFragment() {
     override val viewModel: AddProductViewModel by viewModels()
     override val item: ProductModel?
         get() = AddProductFragmentArgs.fromBundle(requireArguments()).product
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        Log.i("up","my")
         installResultListeners()
         installNetworkObserverStateUi()
-    }
-
-    override fun onStart() {
-        super.onStart()
-       binding.apply {
-           presentionBtn.click {
-               viewModel.updateFlag("presentation")
-               openFilesStorage()
-           }
-          instructionBtn.click {
-              viewModel.updateFlag("instruction")
-              openFilesStorage()
-          }
-       }
+        binding.apply {
+            presentionBtn.click {
+                viewModel.updateFlag("presentation")
+                openFilesStorage()
+            }
+            instructionBtn.click {
+                viewModel.updateFlag("instruction")
+                openFilesStorage()
+            }
+        }
     }
 
     private fun openFilesStorage()= resultLauncher.launch(FileStorage(requireContext()).openStorageSingle())
@@ -59,8 +55,7 @@ class AddProductFragment :  CreateProductFragment() {
             subscribe(files){ state -> handleState(state){viewModel.addFiles(it.files)} }
         }
     }
-
-     fun installResultListeners() {
+    private fun installResultListeners() {
          setFragmentResultListener("shop") { _, bundle ->
                     val result = bundle.getString("id")
                     if (result != null) {
@@ -71,7 +66,6 @@ class AddProductFragment :  CreateProductFragment() {
 
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            Log.i("dggg","ddd")
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri=result.data?.data
                      when(viewModel.flag.value){
@@ -88,7 +82,12 @@ class AddProductFragment :  CreateProductFragment() {
 
         }
 
+    override fun handleNewItem(model: CreateResponseProduct) {
+        viewModel.getProduct(model.id?:"")
+    }
 
-
+    override fun handlePublic(model: ProductResponse) {
+        viewModel.getProduct(model.id?:"")
+    }
 }
     fun EditText.stroke():String = text.toString()

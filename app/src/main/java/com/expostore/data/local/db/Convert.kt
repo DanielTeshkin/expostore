@@ -4,11 +4,14 @@ import androidx.room.TypeConverter
 import com.expostore.data.local.db.enities.ProfileDao
 
 import com.expostore.model.ImageModel
+import com.expostore.model.category.ParentModel
+import com.expostore.model.category.ProductCategoryModel
 import com.expostore.model.chats.DataMapping.Message
 import com.expostore.model.chats.DataMapping.Product
 import com.expostore.model.chats.DataMapping.User
 import com.expostore.model.product.*
 import com.expostore.model.profile.ProfileModel
+import com.expostore.model.tender.TenderModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -318,7 +321,37 @@ class ConvertProductModel{
         return gson.fromJson(value, type)
     }
 }
-class ConvertUserDaoModel{
+class ConvertTenderModel{
+    @TypeConverter
+    fun mapListToString(value: List<TenderModel>): String {
+        val gson = Gson()
+        val type = object : TypeToken<List<TenderModel>>() {}.type
+        return gson.toJson(value, type)
+    }
+
+    @TypeConverter
+    fun mapObjectToString(value: String): TenderModel {
+        val gson = Gson()
+        val type = object :TypeToken<TenderModel>(){}.type
+        return gson.fromJson(value,type)
+    }
+
+
+    @TypeConverter
+    fun mapObjectToString(value:TenderModel): String{
+        val gson = Gson()
+        val type = object :TypeToken<TenderModel>(){}.type
+        return gson.toJson(value,type)
+    }
+
+    @TypeConverter
+    fun mapStringToList(value: String): List<TenderModel> {
+        val gson = Gson()
+        val type = object : TypeToken<List<TenderModel>>() {}.type
+        return gson.fromJson(value, type)
+    }
+}
+class ConvertUserDaoModel {
     @TypeConverter
     fun mapListToString(value: List<UserDao>): String {
         val gson = Gson()
@@ -329,22 +362,83 @@ class ConvertUserDaoModel{
     @TypeConverter
     fun mapObjectToString(value: String): UserDao {
         val gson = Gson()
-        val type = object :TypeToken<UserDao>(){}.type
-        return gson.fromJson(value,type)
+        val type = object : TypeToken<UserDao>() {}.type
+        return gson.fromJson(value, type)
     }
 
 
     @TypeConverter
-    fun mapObjectToString(value:UserDao): String{
+    fun mapObjectToString(value: UserDao): String {
         val gson = Gson()
-        val type = object :TypeToken<UserDao>(){}.type
-        return gson.toJson(value,type)
+        val type = object : TypeToken<UserDao>() {}.type
+        return gson.toJson(value, type)
     }
 
     @TypeConverter
     fun mapStringToList(value: String): List<UserDao> {
         val gson = Gson()
         val type = object : TypeToken<List<UserDao>>() {}.type
+        return gson.fromJson(value, type)
+    }
+}
+
+    class ConvertCategoryProductModel{
+        @TypeConverter
+        fun mapListToString(value: List<ProductCategoryModel>): String {
+            val gson = Gson()
+            val type = object : TypeToken<List<ProductCategoryModel>>() {}.type
+            return gson.toJson(value, type)
+        }
+
+        @TypeConverter
+        fun mapObjectToString(value: String): ProductCategoryModel {
+            val gson = Gson()
+            val type = object :TypeToken<ProductCategoryModel>(){}.type
+            return gson.fromJson(value,type)
+        }
+
+
+        @TypeConverter
+        fun mapObjectToString(value:ProductCategoryModel): String{
+            val gson = Gson()
+            val type = object :TypeToken<ProductCategoryModel>(){}.type
+            return gson.toJson(value,type)
+        }
+
+        @TypeConverter
+        fun mapStringToList(value: String): List<ProductCategoryModel> {
+            val gson = Gson()
+            val type = object : TypeToken<List<ProductCategoryModel>>() {}.type
+            return gson.fromJson(value, type)
+        }
+}
+class ConvertParentModel{
+    @TypeConverter
+    fun mapListToString(value: List<ParentModel>): String {
+        val gson = Gson()
+        val type = object : TypeToken<List<ParentModel>>() {}.type
+        return gson.toJson(value, type)
+    }
+
+    @TypeConverter
+    fun mapObjectToString(value: String): ParentModel {
+        val gson = Gson()
+        val type = object :TypeToken<ParentModel>(){}.type
+        return gson.fromJson(value,type)
+    }
+
+
+    @TypeConverter
+    fun mapObjectToString(value:ParentModel): String{
+        val gson = Gson()
+        val type = object :TypeToken<ProductCategoryModel>(){}.type
+        return gson.toJson(value,type)
+    }
+
+    @TypeConverter
+    fun mapStringToList(value: String): List<ParentModel> {
+        val gson = Gson()
+        val type = object : TypeToken<List<ParentModel>>() {}.type
         return gson.fromJson(value, type)
     }
 }

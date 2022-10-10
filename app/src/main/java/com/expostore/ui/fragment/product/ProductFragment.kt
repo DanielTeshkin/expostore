@@ -18,12 +18,11 @@ import com.expostore.model.product.ProductModel
 import com.expostore.model.product.priceSeparator
 import com.expostore.model.review.ReviewModel
 import com.expostore.ui.base.ImageAdapter
-import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.base.ImageItemAdapter
 import com.expostore.ui.base.fragments.BaseProductFragment
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.controllers.ControllerUI
 import com.expostore.ui.fragment.product.reviews.ReviewRecyclerViewAdapter
-
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.utils.OnClickImage
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,14 +31,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.product_fragment.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragmentBinding::inflate),OnMapReadyCallback
     {
        override  val viewModel:ProductViewModel by viewModels()
-        private val imageAdapter:ImageAdapter by lazy { ImageAdapter() }
+        private val imageAdapter:ImageItemAdapter by lazy { ImageItemAdapter() }
         private val reviewsList= mutableListOf<ReviewModel>()
         private val onClickImage :OnClickImage by lazy {
             object : OnClickImage {
@@ -49,37 +47,41 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
                 }
             }
         }
-        private val reviewAdapter:ReviewRecyclerViewAdapter by lazy {
-            ReviewRecyclerViewAdapter(reviewsList,onClickImage)
-        }
+        private val reviewAdapter:ReviewRecyclerViewAdapter by lazy { ReviewRecyclerViewAdapter(reviewsList,onClickImage) }
         override var isBottomNavViewVisible: Boolean = false
 
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            val result=ProductFragmentArgs.fromBundle(requireArguments()).product
-        var id=""
-        if (id.isNotEmpty()) viewModel.getProduct(id)
-        result.let { viewModel.saveProduct(it) }
-        initButton(result)
-        subscribeUI()
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
+        ProductFragmentArgs.fromBundle(requireArguments()).apply {
+            product?.let { viewModel.saveProduct(it) }
+            viewModel.getProduct(id)
+            subscribeUI()
+        }
     }
 
        private fun subscribeUI(){
-           observeNavigation()
-           subscribe(viewModel.product){ observeUI(it)}
+           viewModel.apply {
+               start(findNavController())
+               subscribe(navigation) { navigateSafety(it) }
+               subscribe(visible) { initPriceHistoryButton(it) }
+               subscribe(visibleInstruction) { instructionInit(it) }
+               subscribe(visiblePresentation) { presentationInit(it) }
+               subscribe(product) { observeUI(it) }
+           }
        }
 
         @SuppressLint("SetTextI18n")
         private fun observeUI(model: ProductModel) {
+            initButton(model)
+            Log.i("id",model.id)
             binding.apply {
                 tvProductPrice.text = model.price.priceSeparator()
                 tvProductName.text = model.name
                 tvProductDescription.text = model.longDescription
                 imageAdapter.items = model.images.map { it.file }
+                imageAdapter.openImageOnFullScren={onClickImage.click(it)}
                 rvProductImages.adapter = imageAdapter
                 ivProductShopImage.loadAvatar(model.shop.image.file)
                 tvProductRating.text = "Оценка: " + model.rating
@@ -139,19 +141,8 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
             }
 
       }
-        private fun observeNavigation(){
-            viewModel.apply {
-                start(findNavController())
-                subscribe(navigation){navigateSafety(it)}
-                subscribe(visible){initPriceHistoryButton(it)}
-                subscribe(visibleInstruction){instructionInit(it)}
-                subscribe(visiblePresentation){presentationInit(it)}
-            }
-        }
-
         private fun initPriceHistoryButton(state:Boolean){
-            binding.history.apply {
-                visible(state)
+            binding.history.apply { visible(state)
                 click { viewModel.navigateToPriceHistory() }
             }
         }
@@ -167,9 +158,7 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
         }
 
         override fun onMapReady(map: GoogleMap) {
-
-            state {
-                viewModel.product.collect {
+            state { viewModel.product.collect {
                     val myLocation = LatLng(it.shop.lat, it.shop.lng)
                     map.addMarker(MarkerOptions().position(myLocation))
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,5f))
@@ -178,10 +167,6 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
                 }
             }
         }
-
-        override fun loadSelections(list: List<SelectionModel>) {
-           binding.another.click { getClickListener(list).onClickAnother(viewModel.product.value)}
-        }
-
-
+        override fun loadSelections(list: List<SelectionModel>) { binding.another
+            .click { getClickListener(list).onClickAnother(viewModel.product.value)} }
     }

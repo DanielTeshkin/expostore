@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.databinding.EditMyTenderFragmentBinding
 import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.fragments.BaseFragment
@@ -30,19 +31,19 @@ class EditMyTenderFragment : BaseFragment<EditMyTenderFragmentBinding>(EditMyTen
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
         editMyTenderViewModel.apply {
+             start(findNavController())
             subscribe(navigation){navigateSafety(it)}
+            subscribe(tender){
+                init(it)
+                clickInstall(it)
+            }
         }
 
     }
 
     override fun onStart() {
         super.onStart()
-        state {
-            editMyTenderViewModel.tender.collect {
-               init(it)
-                clickInstall(it)
-            }
-        }
+        binding.btnBack.click { editMyTenderViewModel.navigateToBack() }
     }
 
    private fun init(model: TenderModel){

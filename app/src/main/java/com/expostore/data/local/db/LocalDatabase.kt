@@ -2,22 +2,33 @@ package com.expostore.data.local.db
 
 import android.content.Context
 import androidx.room.*
-import com.expostore.data.local.db.enities.AdvertisingDao
-import com.expostore.data.local.db.enities.ProfileDao
-
-import com.expostore.data.local.db.enities.TokenDao
+import com.expostore.data.local.db.enities.*
 import com.expostore.data.local.db.enities.chat.*
 import com.expostore.data.local.db.enities.favorites.FavoriteProductDao
-
+import com.expostore.data.local.db.enities.favorites.FavoriteTenderDao
 import com.expostore.data.local.db.enities.selection.SelectionDao
+
 
 @Database(entities = [
     TokenDao::class,
-  ChatDao::class, ProfileDao::class,SelectionDao::class,AdvertisingDao::class,UserDao::class,FavoriteProductDao::class
-          ], version = 1, autoMigrations = [AutoMigration (from = 1, to = 2)],exportSchema =true)
+  ChatDao::class, ProfileDao::class,
+    SelectionDao::class,
+    AdvertisingDao::class,
+    UserDao::class,
+    FavoriteProductDao::class,
+   SelectionPersonal::class,
+CategoryDao::class,
+MyProductsDao::class,
+MyTendersDao::class,
+FavoriteTenderDao::class
+          ], version = 1,exportSchema =true)
 @TypeConverters(InfoTypeConverter::class,ConvertMessage::class, ConvertChat::class,ConvertItem::class,
   ConvertFile::class,ConvertUser::class,ConvertImage::class,ConvertProduct::class,ConverterProfile::class,
-    ConverterShop::class,ConvertProductModel::class,ConvertUserDaoModel::class)
+    ConverterShop::class,ConvertProductModel::class,
+    ConvertUserDaoModel::class,
+    ConvertCategoryProductModel::class,
+    ConvertParentModel::class,
+ConvertTenderModel::class)
 abstract class LocalDatabase:RoomDatabase() {
     abstract fun getDao(): LocalDataApi
     companion object {

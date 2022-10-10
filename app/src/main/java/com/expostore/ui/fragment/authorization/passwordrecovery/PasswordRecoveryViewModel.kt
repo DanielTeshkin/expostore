@@ -25,20 +25,27 @@ class PasswordRecoveryViewModel @Inject constructor( private val repository:Auth
     private val _clickable= MutableStateFlow(false)
           val clickable=_clickable.asStateFlow()
    private val phone=MutableStateFlow("")
-
     private val _state= MutableSharedFlow<ResponseState<ConfirmCodeResponseData>>()
     var state=_state.asSharedFlow()
+    private val _loading= MutableStateFlow(false)
+    val loading=_loading.asStateFlow()
+    private val _enabled= MutableStateFlow(false)
+    val enabled=_enabled.asStateFlow()
 
     fun saveNumber(number: String){
         phone.value=number
     }
     fun saveInput(input: String){
         code.value=input
+        _enabled.value= input.length == 6
     }
 
     fun confirmCode(){
-        repository.confirmCodeReset(phone.value,code.value).handleResult(_state,{
+        _enabled.value=false
+        repository.confirmCodeReset(phone.value,code.value).handleResult({_loading.value=it},{
             navigationTo(PasswordRecoveryFragmentDirections.actionPasswordRecoveryFragmentToNewPasswordFragment(phone.value))
+        },{
+            _enabled.value=true
         })
     }
 

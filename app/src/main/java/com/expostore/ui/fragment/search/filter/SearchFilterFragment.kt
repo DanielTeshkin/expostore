@@ -29,12 +29,15 @@ import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
-class SearchFilterFragment: CharacteristicsFragment<SearchFilterFragmentBinding>(SearchFilterFragmentBinding::inflate){
+class SearchFilterFragment(): CharacteristicsFragment<SearchFilterFragmentBinding>(SearchFilterFragmentBinding::inflate){
      override val viewModel: SearchFilterViewModel by viewModels()
      override val filter: String="filter"
-     override val categoriesLayout: LinearLayout = binding.category
-     override val characteristicsLayout: LinearLayout?=null
-     override val rvCharacteristics: RecyclerView=binding.rvFilters
+     override val categoriesLayout: LinearLayout
+     get()= binding.category
+     override val characteristicsLayout: LinearLayout?
+     get() =null
+     override val rvCharacteristics: RecyclerView
+         get()=binding.rvFilters
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         installBundleResultListeners()

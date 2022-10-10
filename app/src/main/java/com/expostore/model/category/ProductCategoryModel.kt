@@ -6,12 +6,12 @@ import com.expostore.data.remote.api.pojo.productcategory.ProductCategory
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ProductCategoryModel( val id: String="",
-                                 val name: String?="",
+data class ProductCategoryModel(val id: String="",
+                                val name: String?="",
                                 val sortingNumber: Int?=0,
-                                val parent: ParentModel?=null,
-                                 val child_category: List<ProductCategoryModel>? = null,
-                                  val have_child:Boolean = false) :Parcelable
+                                val parent: ParentModel?= ParentModel(),
+                                val child_category: List<ProductCategoryModel>? = listOf(),
+                                val have_child:Boolean = false) :Parcelable
 
 val ProductCategory.toModel:ProductCategoryModel
 get() = ProductCategoryModel(id?:"", name, sortingNumber, parent?.toModel, child_category?.map { it.toModel }, have_child)

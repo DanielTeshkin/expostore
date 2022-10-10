@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.R
 import com.expostore.databinding.NoteFragmentBinding
 import com.expostore.ui.base.fragments.BaseFragment
@@ -27,6 +28,7 @@ class NoteFragment : BaseFragment<NoteFragmentBinding>(NoteFragmentBinding::infl
         val flagNavigation=NoteFragmentArgs.fromBundle(requireArguments()).flagNavigation
         viewModel.saveData(NoteData(id,flag,isLiked,flagNavigation))
         viewModel.apply {
+            start(findNavController())
             subscribe(navigation){navigateSafety(it)}
         }
         binding.delete.click {

@@ -9,6 +9,7 @@ import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.vms.BaseItemViewModel
 import com.expostore.ui.fragment.category.OnClickListeners
 import com.expostore.ui.general.other.OnClickBottomSheetFragment
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseItemFragment <Binding : ViewBinding,T : Any,A,E>(private val inflate: Inflate<Binding>) :
     BaseFragment<Binding>(inflate), OnClickBottomSheetFragment<T> {
@@ -22,12 +23,6 @@ abstract class BaseItemFragment <Binding : ViewBinding,T : Any,A,E>(private val 
         super.onResume()
         viewModel.apply { subscribe(navigation){navigateSafety(it)} }
     }
-    protected fun handleSelections(list: List<SelectionModel>){
-        loadSelections(list)
-    }
-    open fun loadSelections(list: List<SelectionModel>){}
-    override fun createSelection(product: String) = viewModel.navigateToCreateSelection(product)
-    override fun addToSelection(id: String, product: String)= viewModel.addToSelection(id,product)
     override fun call(username: String) =navigateToCall(username)
     override fun createNote(item: T)=viewModel.navigateToNote(item)
     override fun chatCreate(id: String) =viewModel.createChat(id)
@@ -41,14 +36,11 @@ abstract class BaseItemFragment <Binding : ViewBinding,T : Any,A,E>(private val 
         val shareIntent = Intent.createChooser(sendIntent, null)
         ContextCompat.startActivity(requireContext(), shareIntent, null)
     }
-    override fun block() =viewModel.navigateToBlock()
-    override fun addToComparison(id: String) =viewModel.addToComparison(id)
     protected fun updateFavorites(id:String) = viewModel.updateSelected(id)
-    abstract fun showBottomScreen(context: Context, item:T, list: List<SelectionModel>,
-                                 onClickBottomFragment:OnClickBottomSheetFragment<T>, mean:Boolean)
+    abstract fun showBottomScreen(context: Context, item:T, list: List<SelectionModel>?, onClickBottomFragment:OnClickBottomSheetFragment<T>, mean:Boolean)
 
 
-    protected fun getClickListener(list:List<SelectionModel>) =
+    protected fun getClickListener(list:List<SelectionModel>?) =
         object : OnClickListeners<T> {
             override fun onClickLike(id: String) = updateFavorites(id)
             override fun onClickItem(model: T) = viewModel.navigateToItem(model)

@@ -8,5 +8,5 @@ data class NoteData(
     val id:String?="",
     val flag:String?="",
     val isLiked:Boolean?=false,
-    val flagNavigation:String?="product"
+    val flagNavigation:String?="back"
 ):Parcelable

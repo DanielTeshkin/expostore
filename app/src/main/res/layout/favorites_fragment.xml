@@ -60,19 +60,21 @@
         android:id="@+id/favorites_vp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="105dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/favorites_tl"
+        app:layout_constraintTop_toBottomOf="@id/panel"
         app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
+        android:id="@+id/panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/favorites_vp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
+
                 android:orientation="horizontal">
 
                 <LinearLayout

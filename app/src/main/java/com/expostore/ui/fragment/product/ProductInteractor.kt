@@ -133,7 +133,7 @@ class ProductInteractor @Inject constructor(private val productsRepository: Prod
 
 
     fun publishedProduct(id: String)=productsRepository.publishedProduct(id)
-    fun load(status:String)=productsRepository.load(status)
+    fun load(status:String)=productsRepository.loadMyProducts(status)
     fun saveFile(requestData: List<SaveFileRequestData>)=
         multimediaRepository.saveFileBase64(requestData)
 

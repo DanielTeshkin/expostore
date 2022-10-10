@@ -1,8 +1,11 @@
 package com.expostore.ui.fragment.tender.item
 
+import android.util.Log
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.tender.TenderModel
+import com.expostore.ui.base.interactors.BaseTenderInteractor
+import com.expostore.ui.base.vms.BaseTenderViewModel
 import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
@@ -18,36 +21,41 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 @HiltViewModel
-class TenderItemViewModel @Inject constructor(private val interactor: TenderInteractor):
-    BaseViewModel() {
+class TenderItemViewModel @Inject constructor(override val interactor: BaseTenderInteractor):
+    BaseTenderViewModel() {
     private val _chatUI= MutableSharedFlow<ResponseState<MainChat>>()
     val chatUI=_chatUI.asSharedFlow()
     private val _tender= MutableStateFlow(TenderModel())
     val tender=_tender.asStateFlow()
 
-    fun createChat(tender:String) = interactor.chatCreate(tender).handleResult(_chatUI,{chat->
-        val result = InfoItemChat(
-            chat.identify()[1],
-            chat.identify()[0],
-            chat.chatsId(),
-            chat.imagesProduct(),
-            chat.productsName(), chat.identify()[3]
-        )
-        navigationTo(TenderItemFragmentDirections.actionTenderItemToChatFragment(result))
-    })
-    fun navigateToShop(){
-        navigationTo(TenderItemFragmentDirections.actionTenderItemToShopFragment())
-    }
-    fun saveTender(item:TenderModel){
-        _tender.value=item
-    }
+    override fun navigateToChat(value: InfoItemChat)=
+        navigationTo(TenderItemFragmentDirections.actionTenderItemToChatFragment(value))
 
-    fun navigationToNote(){
+    override fun navigateToBlock() {
+        TODO("Not yet implemented")
+    }
+    fun getTender(id:String?) = run { if (!id.isNullOrEmpty())interactor.getTender(id).handleResult({},{
+        _tender.value=it
+    }) }
+    fun navigateToBack()=navController.popBackStack()
+
+
+    override fun navigateToNote(model: TenderModel) {
         val model=tender.value
         navigationTo(TenderItemFragmentDirections.actionTenderItemToNoteFragment(id=model.id,
             isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender"))
     }
+
+    fun navigateToShop(){
+        navigationTo(TenderItemFragmentDirections.actionTenderItemToShopFragment())
+    }
+
+    fun saveTender(item:TenderModel){
+        _tender.value=item
+    }
+
+
     override fun onStart() {
-        TODO("Not yet implemented")
+      Log.i("got","lod")
     }
 }

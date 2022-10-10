@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.databinding.TenderItemBinding
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
@@ -15,10 +16,7 @@ import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.ImageAdapter
 import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.base.fragments.Show
-import com.expostore.ui.fragment.chats.chatsId
-import com.expostore.ui.fragment.chats.identify
-import com.expostore.ui.fragment.chats.imagesProduct
-import com.expostore.ui.fragment.chats.productsName
+import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.product.utils.openBottomSheet
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,48 +34,37 @@ class TenderItemFragment:BaseFragment<TenderItemBinding>(TenderItemBinding::infl
     private val viewModel:TenderItemViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val goToChat:Show<MainChat> ={ openChat(it)}
         viewModel.apply {
+            start(findNavController())
             subscribe(navigation){navigateSafety(it)}
-            subscribe(chatUI){handleState(it,goToChat)}
+
         }
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
     }
     override fun onStart() {
         super.onStart()
-        val result=TenderItemFragmentArgs.fromBundle(requireArguments()).tender
-            binding.apply {
-                imageAdapter.items = result.images?.map { it.file } ?: listOf()
-                rvTenderImages.adapter=imageAdapter
-                tvTenderName.text = result.title
-                tvTenderPrice.text=result.price+ " " + "руб"
-                tvTenderDescription.text=result.description
-                tvTenderCount.text=result.count.toString()
-                tvTenderCharcter.click {
-                    result.characteristicModel?.let { openBottomSheet(it,requireContext()) }
-                }
-                tvTenderLocation.text=result.location
-                llProductShop.click {
-                 viewModel.navigateToShop()
-                }
-                btnCallDown.click {
-                    navigateToCall(result.author.username)
-                }
-                write.click {
-                    viewModel.createChat(result.id)
-                }
-                if(result.elected.notes.isEmpty()) editNote.text="Cоздать заметку"
-                else tvProductNote.text=result.elected.notes
-
-                viewModel.saveTender(result)
-                editNote.click {viewModel.navigationToNote()  }
-
-
-
-            }
-
-
+        TenderItemFragmentArgs.fromBundle(requireArguments()).apply { tender?.let { init(it) } }
+        binding.btnBack.click { viewModel.navigateToBack() }
+    }
+    fun init(result: TenderModel){
+        binding.apply {
+            imageAdapter.items = result.images?.map { it.file } ?: listOf()
+            rvTenderImages.adapter=imageAdapter
+            tvTenderName.text = result.title
+            tvTenderPrice.text=result.price+ " " + "руб"
+            tvTenderDescription.text=result.description
+            ivProductShopImage.loadAvatar(result.shopModel.image.file)
+            tvTenderCount.text=result.count.toString()
+            tvTenderCharcter.click { result.characteristicModel?.let { openBottomSheet(it,requireContext()) } }
+            tvTenderLocation.text=result.location
+            llProductShop.click { viewModel.navigateToShop() }
+            btnCallDown.click { navigateToCall(result.author.username) }
+            write.click { viewModel.createChat(result.id) }
+            if(result.elected.notes.isEmpty()) editNote.text="Cоздать заметку"
+            else tvProductNote.text=result.elected.notes
+            editNote.click {viewModel.navigateToNote(result)  }
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -90,9 +77,6 @@ class TenderItemFragment:BaseFragment<TenderItemBinding>(TenderItemBinding::infl
                 map.uiSettings.isScrollGesturesEnabled=true
             }
         }
-    }
-    private fun openChat(chat:MainChat){
-        Log.i("ddd","ddd")
     }
 
 

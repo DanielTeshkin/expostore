@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.tender.list
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +21,7 @@ import com.expostore.model.tender.TenderModel
 import com.expostore.ui.base.search.fragments.BaseSearchFragment
 import com.expostore.ui.base.search.fragments.Image
 import com.expostore.ui.base.search.fragments.Location
+import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.general.other.showBottomSheetTender
 import com.expostore.ui.fragment.specifications.DataModel
 import com.expostore.ui.fragment.tender.list.adapter.TenderAdapter
@@ -29,12 +31,12 @@ import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TenderFragment :
+class TenderFragment() :
     BaseSearchFragment<TenderListFragmentBinding, TenderModel, SelectFavoriteTenderResponseData, FavoriteTender>(TenderListFragmentBinding::inflate){
 
     override val viewModel: TenderListViewModel by  viewModels()
-    override val sortText: TextView = binding.newFilter
-    private lateinit var myAdapter: TenderAdapter
+    override val sortText: TextView get()  = binding.newFilter
+    private val myAdapter: TenderAdapter by lazy  { TenderAdapter()}
     override val mapView: MapView
         get() = binding.searchMapView
     override val image: Image<TenderModel>
@@ -45,10 +47,21 @@ class TenderFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        myAdapter= TenderAdapter()
+
         binding.apply {
             searchMapView.onCreate(savedInstanceState)
             searchMapView.getMapAsync(this@TenderFragment)
+            location.setOnClickListener{
+                this@TenderFragment.myLocation?.let {
+                    myLocation()
+                }
+            }
+            filter.setOnClickListener {
+                val result= DataModel(city = "Москва", flag  ="tender")
+                setFragmentResult("new_key", bundleOf("info" to result))
+                viewModel.navigateToFilter()
+            }
+            createTender.click { viewModel.createTender() }
         }
 
         binding.rvTenderList.apply {
@@ -60,49 +73,41 @@ class TenderFragment :
                 binding.progressBar9.visibility=View.VISIBLE
             else binding.progressBar9.visibility=View.GONE
         }
- binding.createTender.click { viewModel.createTender() }
-        binding.apply {
-            location.setOnClickListener{
-                this@TenderFragment.myLocation?.let {
-                    myLocation()
-                }
-            }
-            filter.setOnClickListener {
-                val result= DataModel(city = "Москва", flag  ="tender")
-                setFragmentResult("new_key", bundleOf("info" to result))
-                viewModel.navigateToFilter()
-            } } }
+         }
     override fun onStart() {
         super.onStart()
-
-        val filters=TenderListFragmentArgs.fromBundle(requireArguments()).filter
+        clickInstall()
+        val filters=TenderFragmentArgs.fromBundle(requireArguments()).filter
         if (filters!=null) searchWithFilters(filters) }
 
 
-    override fun loadSelections(list: List<SelectionModel>) {
-           val click = getClickListener(list)
-        myAdapter.onCallItemClickListener={navigateToCall(it)}
-        myAdapter.onMessageItemClickListener={ model->
-           click.onClickMessage(model)
+     private fun clickInstall() {
+           val click = getClickListener(listOf())
+        myAdapter.apply {
+            onCallItemClickListener = { navigateToCall(it) }
+            onMessageItemClickListener = { model -> click.onClickMessage(model) }
+            onItemClickListener = { viewModel.navigateToItem(it) }
+            onLikeItemClickListener = { viewModel.updateSelected(it) }
+            onAnotherItemClickListener = { click.onClickAnother(it) }
         }
-        myAdapter.onItemClickListener={
-            viewModel.navigateToItem(it)
-        }
-        myAdapter.onLikeItemClickListener={
-            viewModel.updateSelected(it)
-        }
-        myAdapter.onAnotherItemClickListener={click.onClickAnother(it)}
 
     }
 
     override fun showBottomScreen(
         context: Context,
         item: TenderModel,
-        list: List<SelectionModel>,
+        list: List<SelectionModel>?,
         onClickBottomFragment: OnClickBottomSheetFragment<TenderModel>,
         mean: Boolean
     ) {
         showBottomSheetTender(context,item,onClickBottomFragment)
+    }
+
+    override fun block(model: TenderModel) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "plain/text"
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("service.ibuyer@yandex.ru"))
+        startActivity(Intent.createChooser(intent, "Пожаловатьcя на тендер ${model.id}"))
     }
 
     override fun saveCurrentLocation(lat: Double, long: Double) {

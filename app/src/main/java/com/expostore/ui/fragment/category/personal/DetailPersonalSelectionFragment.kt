@@ -13,6 +13,7 @@ import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.fragments.BaseProductFragment
 
 import com.expostore.ui.fragment.category.ProductSelectionAdapter
+import com.expostore.ui.fragment.profile.profile_edit.click
 
 
 import dagger.hilt.android.AndroidEntryPoint

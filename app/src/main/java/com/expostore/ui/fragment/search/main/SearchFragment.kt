@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.search.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -27,16 +28,18 @@ import com.expostore.ui.general.other.showBottomSheet
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class SearchFragment : BaseSearchFragment<SearchFragmentBinding, ProductModel, SelectFavoriteResponseData, FavoriteProduct>(SearchFragmentBinding::inflate) {
-
+class SearchFragment() : BaseSearchFragment<SearchFragmentBinding, ProductModel, SelectFavoriteResponseData, FavoriteProduct>(SearchFragmentBinding::inflate) {
     override val viewModel: SearchViewModel by viewModels()
     private val myAdapter: ProductsAdapter by lazy { ProductsAdapter(requireContext(),this) }
-    override val sortText: TextView=binding.sort
-    override val mapView: MapView=binding.searchMapView
+    override val sortText: TextView
+        get()=binding.sort
+    override val mapView: MapView
+        get()=binding.searchMapView
     override val image: Image<ProductModel>
         get() = {it.images[0].file}
     override val location: Location<ProductModel>
@@ -47,17 +50,20 @@ class SearchFragment : BaseSearchFragment<SearchFragmentBinding, ProductModel, S
         binding.apply {
             searchMapView.onCreate(savedInstanceState)
             searchMapView.getMapAsync(this@SearchFragment)
-        }
-        initAdapter()
-        buttonInstall()
-        binding.apply {
-            location.setOnClickListener{
+            location.setOnClickListener {
                 this@SearchFragment.myLocation?.let {
                     myLocation()
                 }
             }
         }
+        viewModel.apply {
+            subscribe(selections) { state -> handleState(state) { loadSelections(it) } }
+            subscribe(comparison) { handleState(it) { snackbarOpen() } }
+        }
+        initAdapter()
+        buttonInstall()
     }
+
     override fun onStart() {
         super.onStart()
         val result = SearchFragmentArgs.fromBundle(requireArguments()).filter
@@ -77,14 +83,10 @@ class SearchFragment : BaseSearchFragment<SearchFragmentBinding, ProductModel, S
         binding.apply { filter.click { viewModel.apply {
                     val result = DataModel(city = city.value, flag = "product")
                     setFragmentResult("new_key", bundleOf("info" to result))
-                    navigateToFilter()
-                }
-            }
-
-        }
+                    navigateToFilter() } } }
     }
 
-    override fun loadSelections(list: List<SelectionModel>) {
+    private fun loadSelections(list: List<SelectionModel>) {
         val events= getClickListener(list)
         myAdapter.apply {
             onCallItemClickListener = { events.onClickCall(it) }
@@ -93,20 +95,29 @@ class SearchFragment : BaseSearchFragment<SearchFragmentBinding, ProductModel, S
             onMessageItemClickListener = { events.onClickMessage(it) }
             onAnotherItemClickListener ={events.onClickAnother(it)} }
     }
-
+    private fun snackbarOpen(){
+        val snackbar = Snackbar.make(binding.root, "Перейти к сравнениям", Snackbar.LENGTH_SHORT)
+        snackbar.setAction("Да") { viewModel.navigateToComparison() }
+        snackbar.show()
+    }
+    override fun addToComparison(id: String) =viewModel.addToComparison(id)
+    override fun createSelection(product: String) = viewModel.navigateToCreateSelection(product)
+    override fun addToSelection(id: String, product: String)= viewModel.addToSelection(id,product)
     override fun showBottomScreen(
         context: Context,
         item: ProductModel,
-        list: List<SelectionModel>,
+        list: List<SelectionModel>?,
         onClickBottomFragment: OnClickBottomSheetFragment<ProductModel>,
         mean: Boolean
-    ) {
-
-        showBottomSheet(context,item,list,onClickBottomFragment,mean)
-    }
+    ) { showBottomSheet(context,item,list,onClickBottomFragment,mean) }
     override suspend fun loadItems(items: PagingData<ProductModel>)= myAdapter.submitData(items)
-
     override fun saveCurrentLocation(lat: Double, long: Double) = viewModel.saveLocation(lat,long)
+    override fun block(model: ProductModel) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "plain/text"
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("service.ibuyer@yandex.ru"))
+        startActivity(Intent.createChooser(intent, "Пожаловатьcя на товар ${model.id}"))
+    }
 }
 
 

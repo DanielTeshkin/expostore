@@ -9,6 +9,7 @@ import com.expostore.data.remote.api.response.CreateResponseProduct
 import com.expostore.data.remote.api.response.ProductResponse
 
 import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.local.db.enities.MyProductsDao
 import com.expostore.data.remote.api.response.PersonalProductRequest
 import com.expostore.model.product.ProductModel
 import com.expostore.model.product.toModel
@@ -29,13 +30,23 @@ class ProductsRepository @Inject constructor(private val apiWorker: ApiWorker, p
         val result = handleOrDefault(ProductResponse()) { apiWorker.getProduct(id) }.toModel
         emit(result)
     }
+    fun getPersonalProduct(id:String)=flow {
+        val result = handleOrDefault(ProductResponse()) { apiWorker.getPersonalProduct(id) }.toModel
+        emit(result)
+    }
 
-
-  fun load(status: String) = flow {
+    fun load(status: String) = flow {
     val result =
       handleOrDefault(BaseListResponse()) { apiWorker.getMyListProduct(status) }.results
     emit(result.map { it.toModel })
   }
+    fun loadMyProducts(status: String) = singleOperator(
+        databaseQuery = {localWorker.getMyProducts(status)},
+        mapper = {it.items},
+        networkCall = { handleOrDefault(BaseListResponse()) { apiWorker.getMyListProduct(status) }.results.map { it.toModel }},
+        saveCallResult = {localWorker.saveMyProducts(MyProductsDao(status,it))}
+
+    )
 
   fun takeOff(id: String) = flow {
     val result = handleOrDefault(ProductResponse()) { apiWorker.takeOffProduct(id) }

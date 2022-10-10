@@ -34,16 +34,16 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
-class CreatePersonalProductFragment :
+class CreatePersonalProductFragment() :
     CreateProductFragment()
     {
-        override val viewModel: CreatorProductViewModel by  viewModels()
+        override val viewModel: CreatePersonalProductViewModel by  viewModels()
 
         override fun onStart() {
             super.onStart()
             btnDraft.visibility=View.GONE
-            binding.llPresentation.visibility=View.GONE
-            binding.llInstruction.visibility=View.GONE
+           binding.llPresentation.visibility=View.GONE
+           binding.llInstruction.visibility=View.GONE
         }
 
 

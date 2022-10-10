@@ -13,12 +13,11 @@ class SupportFragment : BaseFragment<SupportFragmentBinding>(SupportFragmentBind
 
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
-       binding.btnEditProfile.click {
+       binding.btnSend.click {
           val intent = Intent(Intent.ACTION_SEND)
           intent.type = "plain/text"
           intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("service.ibuyer@yandex.ru"))
-
-          intent.putExtra(Intent.EXTRA_TEXT, binding.message.text.toString())
+           intent.putExtra(Intent.EXTRA_TEXT, binding.myText.text.toString())
           startActivity(Intent.createChooser(intent, ""))
        }
 

@@ -35,23 +35,33 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TenderCreateFragment :
+class TenderCreateFragment() :
     BaseCreatorFragment<TenderCreateFragmentBinding,TenderResponse,
             TenderResponse,TenderRequest,TenderModel>(TenderCreateFragmentBinding::inflate) {
 
-    override val item: TenderModel?=TenderCreateFragmentArgs.fromBundle(requireArguments()).tender
-    override val rvImages: RecyclerView = binding.rvTenderImages
+    override val item: TenderModel? get() =TenderCreateFragmentArgs.fromBundle(requireArguments()).tender
+    override val rvImages: RecyclerView
+    get()= binding.rvTenderImages
     override val filter: String = "other"
-    override val categoriesLayout: LinearLayout = binding.llTenderCreateCategory
-    override val characteristicsLayout: LinearLayout = binding.llAddTenderCharacteristic
-    override val rvCharacteristics: RecyclerView = binding.rvTenderCharacteristic
-    override val call: CheckBox = binding.call
-    override val message: CheckBox = binding.message
+    override val categoriesLayout: LinearLayout
+        get()= binding.llTenderCreateCategory
+    override val characteristicsLayout: LinearLayout
+        get()= binding.llAddTenderCharacteristic
+    override val rvCharacteristics: RecyclerView
+        get()= binding.rvTenderCharacteristic
+    override val call: CheckBox
+        get()= binding.call
+    override val message: CheckBox
+        get()= binding.message
     override val viewModel: TenderCreateViewModel by viewModels()
-    override val connectionLayout = binding.llAddProductConnections
-    override val btnSave= binding.btnSave
-    override val btnDraft=binding.btnSaveDraft
-    override val btnCancel=binding.btnCancel
+    override val connectionLayout
+        get()= binding.llAddProductConnections
+    override val btnSave
+        get()= binding.btnSave
+    override val btnDraft
+        get()=binding.btnSaveDraft
+    override val btnCancel
+        get()=binding.btnCancel
 
 
        override fun loadSaveInformation(item: TenderModel) {
@@ -71,7 +81,7 @@ class TenderCreateFragment :
                     viewModel.changeLocation(it.toString())
                 }
                 count.let {
-                    etTenderCount.setText(it)
+                    etTenderCount.setText(it.toString())
                     viewModel.changeCount(it.toString())
                 }
                 price.let {
@@ -95,5 +105,13 @@ class TenderCreateFragment :
           etTenderName.addTextChangedListener { viewModel.changeName(it.toString()) }
           etTenderLocation.addTextChangedListener { viewModel.changeLocation(it.toString()) }
       }
+    }
+
+    override fun handleNewItem(model: TenderResponse) {
+        model.id?.let { viewModel.getTender(it) }
+    }
+
+    override fun handlePublic(model: TenderResponse) {
+        model.id?.let { viewModel.getTender(it) }
     }
 }

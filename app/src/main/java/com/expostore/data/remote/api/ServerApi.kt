@@ -223,6 +223,9 @@ interface ServerApi {
 
     ): Response<BaseListResponse<Tender>>
 
+    @POST("/api/tender/{id}")
+    suspend fun getTender(@Path("id")id:String): Response<Tender>
+
     @GET("/api/tender/my")
     suspend fun getMyTenders(@Query("status") status: String?): Response<TenderPage>
 
@@ -305,6 +308,9 @@ interface ServerApi {
 
     @GET("/api/product/personal/")
     suspend fun getPersonalProducts():Response<BaseListResponse<ProductResponse>>
+
+    @GET("/api/product/personal/{id}")
+    suspend fun getPersonalProduct(@Path("id")id:String):Response<ProductResponse>
 
     @DELETE("/api/product/personal/{id}")
     suspend fun deletePersonalProduct(@Path("id") id: String):Response<ProductResponse>

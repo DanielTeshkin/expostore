@@ -47,13 +47,12 @@ class DetailPersonalSelectionViewModel
     }
     override fun navigateToNote(model: ProductModel){
         navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToNoteFragment(id=model.id,
-            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = "product"))
+            isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     }
 
-    override fun navigateToCreateSelection(product: String) =navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSelectionCreate(id=product))
-    override fun navigateToComparison() {
-        TODO("Not yet implemented")
-    }
+    override fun navigateToCreateSelection(product: String) =
+        navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToSelectionCreate(id=product))
+    override fun navigateToComparison() =navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToComparison())
 
 
 }

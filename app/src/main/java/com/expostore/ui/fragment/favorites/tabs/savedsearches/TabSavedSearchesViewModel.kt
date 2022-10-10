@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.favorites.tabs.savedsearches
 
+import android.util.Log
 import com.expostore.data.remote.api.response.SaveSearchResponse
 import com.expostore.model.SaveSearchModel
 import com.expostore.ui.base.vms.BaseViewModel
@@ -17,7 +18,6 @@ class TabSavedSearchesViewModel @Inject constructor(private val interactor: Favo
     private val _searchList=MutableSharedFlow<ResponseState<List<SaveSearchModel>>>()
     val searchList=_searchList.asSharedFlow()
     private val _saveSearch=MutableSharedFlow<ResponseState<SaveSearchResponse>>()
-    val saveSearch=_saveSearch.asSharedFlow()
 
     fun loadList(){
               interactor.getSearchList().handleResult(_searchList)
@@ -26,11 +26,24 @@ class TabSavedSearchesViewModel @Inject constructor(private val interactor: Favo
     fun deleteSaveSearch(id:String){
         interactor.deleteSaveSearch(id).handleResult(_saveSearch)
     }
-    fun navigate(filterModel: FilterModel){
-        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToSearchFragment(filterModel))
+    fun navigate(model: SaveSearchModel){
+        val result = FilterModel(
+            name = model.params?.q,
+            city = model.params?.city,
+            price_min = model.body_params.price_min,
+            price_max = model.body_params.price_max,
+            lat = model.body_params.lat,
+            long = model.body_params.long,
+            characteristics = model.body_params.characteristics,
+            sort = model.params?.sort,
+            category = model.body_params.category
+        )
+        if (model.type_search=="product")
+        navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToSearchFragment(result))
+        else navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToTenderListFragment(result))
     }
 
     override fun onStart() {
-        TODO("Not yet implemented")
+        Log.i("","dd")
     }
 }

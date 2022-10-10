@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.product.myproducts.edit
 
+import android.util.Log
 import com.expostore.data.remote.api.response.ProductResponse
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.vms.BaseViewModel
@@ -23,7 +24,7 @@ class EditMyProductViewModel @Inject constructor(private val interactor: Product
     val buttonVisible=MutableStateFlow(true)
 
     override fun onStart() {
-        TODO("Not yet implemented")
+       Log.i("ddd","fff")
     }
 
     fun changeStatusPublished(){
@@ -35,6 +36,7 @@ class EditMyProductViewModel @Inject constructor(private val interactor: Product
         }
     }
    private fun takeOffProduct()=interactor.takeOff(product.value.id).handleResult(_takeOff,{navigateToProduct()})
+    fun navigateToBack()=navController.popBackStack()
 
     fun saveProductInformation(model: ProductModel){
         _product.value=model
@@ -46,6 +48,6 @@ class EditMyProductViewModel @Inject constructor(private val interactor: Product
         navigationTo(EditMyProductFragmentDirections.actionEditMyProductToMyProductsFragment())
     }
     fun navigateToAddProduct(){
-        navigationTo(EditMyProductFragmentDirections.actionEditMyProductToAddProductFragment())
+        navigationTo(EditMyProductFragmentDirections.actionEditMyProductToAddProductFragment(product.value))
     }
 }

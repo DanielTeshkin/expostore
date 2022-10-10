@@ -13,15 +13,17 @@ class ConfirmNumberResetViewModel @Inject constructor(private val repository: Au
     private val _enabledState= MutableStateFlow(false)
     val enabledState=_enabledState.asStateFlow()
     private val phone= MutableStateFlow("")
+    private val _loading= MutableStateFlow(false)
+    val loading=_loading.asStateFlow()
 
     fun confirmNumber() {
-       repository.confirmNumberReset("7"+phone.value).handleResult( {
-            navigationTo(
-                ConfirmNumberResetDirections.actionConfirmNumberPassToPasswordRecoveryFragment(
-                    phone.value
-                )
-            )
-        })
+       repository.confirmNumberReset("7"+phone.value).handleResult( { _loading.value=it },{
+           navigationTo(
+               ConfirmNumberResetDirections.actionConfirmNumberPassToPasswordRecoveryFragment(
+                   phone.value
+               )
+           )
+       })
 
     }
 
@@ -40,6 +42,9 @@ class ConfirmNumberResetViewModel @Inject constructor(private val repository: Au
     private fun updateEnabled(state:Boolean){
         _enabledState.value=state
     }
+    fun navigateToWeb()=navigationTo(ConfirmNumberResetDirections.actionConfirmNumberPassToWebViewFragment(
+        url = "https://expostore.ru/agreement.html", format = ""
+    ))
 
     fun toBack() {
         navigationTo(ConfirmNumberFragmentDirections.actionNumberFragmentToOpenFragment())

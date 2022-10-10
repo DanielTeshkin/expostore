@@ -24,16 +24,14 @@ abstract class BaseLocationFragment<Binding : ViewBinding,T:Any,E,A>(private val
     BaseItemFragment<Binding, T, E, A>(inflate),OnMapReadyCallback {
 
     var myLocation: Location? = null
-    protected var markerPosition: Marker? = null
+    private var markerPosition: Marker? = null
     private var isLocationFind = false
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var googleMap: GoogleMap
 
     private val requestMultiplePermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-            fetchLocation()
-        }
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { fetchLocation() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,6 @@ abstract class BaseLocationFragment<Binding : ViewBinding,T:Any,E,A>(private val
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fetchLocation()
-
     }
 
     open fun onLocationChange(location: Location){
@@ -58,7 +55,7 @@ abstract class BaseLocationFragment<Binding : ViewBinding,T:Any,E,A>(private val
                 return@let
             }
             val latLng = LatLng(location.latitude, location.longitude)
-            saveCurrentLocation(location.latitude, location.longitude)
+        //    saveCurrentLocation(location.latitude, location.longitude)
 
             val markerOptions = MarkerOptions().position(latLng)
                 .icon(
