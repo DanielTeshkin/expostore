@@ -22,7 +22,10 @@ class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, pr
         networkCall = { handleOrDefault(GetProfileResponseData()){apiWorker.getProfile()}.toModel},
         saveCallResult = { localWorker.saveProfile(it.toDao) }
     )
-    suspend fun getProfileRemote() = handleOrDefault(GetProfileResponseData()){apiWorker.getProfile()}.toModel
+   fun getProfileRemote() =flow {
+       val result= handleOrDefault(GetProfileResponseData()) { apiWorker.getProfile() }.toModel
+       emit(result)
+    }
 
     fun patchProfile( editProfileRequest: EditProfileRequest)= flow {
         val result=handleOrDefault(EditResponseProfile()){apiWorker.patchProfile(editProfileRequest)}

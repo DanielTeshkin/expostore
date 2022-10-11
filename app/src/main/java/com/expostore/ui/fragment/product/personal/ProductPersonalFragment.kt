@@ -1,7 +1,9 @@
 package com.expostore.ui.fragment.product.personal
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.expostore.databinding.ProductPersonalFragmentBinding
@@ -24,8 +26,18 @@ class ProductPersonalFragment  :
             start(findNavController())
             subscribe(navigation){navigateSafety(it)}
             subscribe(product){init(it)}
+                subscribe(comparison){
+                    handleState(it){
+                          snackbarOpen()
+                    }
+                }
         }
+        binding.comparison.click { personalViewModel.comparison() }
 
+    }
+
+    override fun navigateToComparison() {
+        personalViewModel.navigateToComparison()
     }
 
     fun init(model:ProductModel){

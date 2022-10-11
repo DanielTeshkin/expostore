@@ -3,6 +3,7 @@ package com.expostore.ui.base.search.fragments
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.expostore.extension.toMarker
 import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.fragments.Inflate
 import com.expostore.ui.base.search.BasePagingAdapter
+import com.expostore.ui.base.search.CustomInfoWindowClick
 import com.expostore.ui.base.search.DrawMarkerApi
 import com.expostore.ui.base.search.InfoWindowAdapter
 import com.expostore.ui.fragment.profile.profile_edit.click
@@ -34,12 +36,13 @@ import kotlinx.coroutines.launch
 typealias Location<T> = (T)->LatLng
 typealias Image<T> =(T)->String
 abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val inflate: Inflate<Binding>) :
-    BaseLocationFragment<Binding, T, E, A>(inflate),DrawMarkerApi<T>,GoogleMap.OnInfoWindowClickListener {
+    BaseLocationFragment<Binding, T, E, A>(inflate),DrawMarkerApi<T>,CustomInfoWindowClick{
     private val markers = mutableMapOf<Marker, T>()
     abstract val sortText:TextView
     abstract val mapView:MapView
     abstract val location:Location<T>
     abstract val image:Image<T>
+    lateinit var adapter: InfoWindowAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -125,14 +128,37 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
                     R.drawable.ic_item
                 )?.toMarker
             )
-        googleMap.addMarker(markerOptions)?.let { markers[it]=item }
-        googleMap.setInfoWindowAdapter(InfoWindowAdapter(image.invoke(item),requireContext()))
+
+        googleMap.apply {
+            addMarker(markerOptions)?.let { markers[it] = item }
+            setOnMarkerClickListener {
+                Log.i("open", "fy")
+                if (markers[it] != null) {
+                    val image = markers[it]?.let { it1 -> image.invoke(it1) }
+                    adapter = image?.let { it1 -> InfoWindowAdapter(it1, requireContext()) }!!
+
+                    googleMap.setInfoWindowAdapter(adapter)
+                    it.showInfoWindow()
+                }
+                false
+            }
+            setOnInfoWindowClickListener { marker ->
+                Log.i("op","ddd")
+                markers[marker]?.let { viewModel.navigateToItem(it) }
+            }
+        }
+
+
 
     }
 
-    override fun onInfoWindowClick(marker: Marker) {
+    override fun invoke(marker: Marker) {
+        Log.i("op","ddd")
         markers[marker]?.let { viewModel.navigateToItem(it) }
     }
+
+
+
 
 
 

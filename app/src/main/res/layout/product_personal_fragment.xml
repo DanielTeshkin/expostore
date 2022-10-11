@@ -96,7 +96,7 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/delete"
+            android:id="@+id/comparison"
             android:layout_width="0dp"
 
             android:layout_height="40dp"
@@ -131,7 +131,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tv_product_description_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delete">
+            app:layout_constraintTop_toBottomOf="@+id/comparison">
 
             <TextView
                 android:id="@+id/category_name"

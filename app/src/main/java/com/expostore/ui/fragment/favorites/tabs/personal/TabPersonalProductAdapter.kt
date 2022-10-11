@@ -46,6 +46,7 @@ class TabPersonalProductRecyclerViewAdapter(
 
             product.images.map { list.add(it.file) }
             binding.name.text = product.name
+            binding.note.text=product.elected.notes
             binding.viewPager.apply {
                 val tabProductPagerAdapter= ImageAdapter()
                 tabProductPagerAdapter.onItemClickListener={onItemClick?.invoke(product)}
@@ -54,7 +55,7 @@ class TabPersonalProductRecyclerViewAdapter(
             }
             binding.delete.click {
                 onDeleteClick?.invoke(product.id)
-                removeAt(product)
+               // removeAt(product)
             }
 
 

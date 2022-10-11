@@ -62,7 +62,7 @@ val GetProfileResponseData.toModel: ProfileModel
         ),
         city ?: "",
         lastName ?: "",
-        avatar?.toModel,
+        avatar?.toModel?:ImageModel(),
         isEnabledPushNotify ?: false,
         causeBlocked ?: "",
         isBlocked ?: false,

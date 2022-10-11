@@ -18,9 +18,6 @@ class MainInteractor @Inject constructor(private val mainRepository: MainReposit
                                          private val selectionRepository: SelectionRepository,
                                            private val profileRepository: ProfileRepository)  {
     
-
-
-
     fun loadAll()=flow{
         selectionRepository.getSelections().collect {
             emit(MainData.Categories(it))
@@ -32,30 +29,10 @@ class MainInteractor @Inject constructor(private val mainRepository: MainReposit
         profileRepository.getProfile().collect {
            emit(MainData.Profile(it))
         }
-
-
     }
 
 
-
-    //fun loadAdvertising()= flow {
-       // mainRepository.getAdvertising().collect {
-         //   emit(MainData.Advertising(it))
-       // }
-   // }
-
        fun getToken()= profileRepository.getToken()
-
-
-
-
-
-
-
-
-
-
-
     sealed class MainData {
         data class Categories(val items: List<SelectionModel>) : MainData()
         data class Advertising(val items: List<CategoryAdvertisingModel>) : MainData()

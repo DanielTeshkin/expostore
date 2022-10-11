@@ -75,7 +75,7 @@ class ProductsRepository @Inject constructor(private val apiWorker: ApiWorker, p
         emit(result)
     }
     fun deletePersonalProduct(id: String)= flow {
-        val result= handleOrDefault(ProductResponse()){apiWorker.deletePersonalProduct(id)}
+        val result=apiWorker.deletePersonalProduct(id)
         emit(result)
     }
 

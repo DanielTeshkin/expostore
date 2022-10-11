@@ -56,7 +56,6 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
         binding.mapView.getMapAsync(this)
         ProductFragmentArgs.fromBundle(requireArguments()).apply {
             product?.let { viewModel.saveProduct(it) }
-            viewModel.getProduct(id)
             subscribeUI()
         }
     }
@@ -79,6 +78,7 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
             binding.apply {
                 tvProductPrice.text = model.price.priceSeparator()
                 tvProductName.text = model.name
+                like.isChecked=model.isLiked
                 tvProductDescription.text = model.longDescription
                 imageAdapter.items = model.images.map { it.file }
                 imageAdapter.openImageOnFullScren={onClickImage.click(it)}

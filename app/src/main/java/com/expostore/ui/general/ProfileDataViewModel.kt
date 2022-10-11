@@ -48,7 +48,7 @@ class ProfileDataViewModel @Inject constructor(private val authorizationReposito
         _loading.value=true
         _enabledState.value=false
         val requestData= EditProfileRequestData(last_name = surname.value, first_name = name.value,
-            patronymic = patronymic.value, city = city.value, email = email.value)
+            patronymic = patronymic.value, city = city.value, email = email.value, push_token = fcmToken.value)
         authorizationRepository.editProfile(requestData).handleResult(_ui, {
             navigationTo(CompletionFragmentDirections.actionCompletionFragmentToMainFragment())
         },{

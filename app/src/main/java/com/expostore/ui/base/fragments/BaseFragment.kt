@@ -26,6 +26,7 @@ import com.expostore.ui.fragment.note.NoteData
 import com.expostore.ui.fragment.note.NoteFragmentDirections
 import com.expostore.ui.general.other.OnClickBottomSheetFragment
 import com.expostore.ui.state.ResponseState
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -191,9 +192,12 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         _binding = null
     }
 
-
-
-
+    protected fun snackbarOpen(){
+        val snackbar = Snackbar.make(binding.root, "Перейти к сравнениям", Snackbar.LENGTH_SHORT)
+        snackbar.setAction("Да") {}
+        snackbar.show()
+    }
+    open fun navigateToComparison(){}
 
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity

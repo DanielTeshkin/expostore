@@ -208,7 +208,7 @@ interface ApiWorker {
 
     suspend fun createPersonalProduct(request:ProductUpdateRequest):BaseApiResponse<CreateResponseProduct>
     suspend fun getPersonalProducts():BaseApiResponse<BaseListResponse<ProductResponse>>
-    suspend fun deletePersonalProduct(id: String):BaseApiResponse<ProductResponse>
+    suspend fun deletePersonalProduct(id: String):BaseApiResponse<*>
     suspend fun getPersonalProduct(id:String):BaseApiResponse<ProductResponse>
 
 

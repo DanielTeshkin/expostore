@@ -95,11 +95,8 @@ class SearchFragment() : BaseSearchFragment<SearchFragmentBinding, ProductModel,
             onMessageItemClickListener = { events.onClickMessage(it) }
             onAnotherItemClickListener ={events.onClickAnother(it)} }
     }
-    private fun snackbarOpen(){
-        val snackbar = Snackbar.make(binding.root, "Перейти к сравнениям", Snackbar.LENGTH_SHORT)
-        snackbar.setAction("Да") { viewModel.navigateToComparison() }
-        snackbar.show()
-    }
+
+    override fun navigateToComparison() { viewModel.navigateToComparison() }
     override fun addToComparison(id: String) =viewModel.addToComparison(id)
     override fun createSelection(product: String) = viewModel.navigateToCreateSelection(product)
     override fun addToSelection(id: String, product: String)= viewModel.addToSelection(id,product)

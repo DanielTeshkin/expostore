@@ -21,8 +21,7 @@ import com.expostore.utils.ProductRecyclerViewAdapter
 
 class ProductsAdapter(context:Context,
                       override val drawMarkerApi: DrawMarkerApi<ProductModel>
-) :
-    BasePagingAdapter<SearchProductItemBinding, ProductModel>(context) {
+) : BasePagingAdapter<SearchProductItemBinding, ProductModel>(context) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagingViewHolder {
         return ProductsViewHolder(
@@ -73,6 +72,7 @@ class ProductsAdapter(context:Context,
         }
 
     }
+
 
 
 

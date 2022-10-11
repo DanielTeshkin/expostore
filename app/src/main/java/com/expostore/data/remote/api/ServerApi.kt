@@ -312,8 +312,8 @@ interface ServerApi {
     @GET("/api/product/personal/{id}")
     suspend fun getPersonalProduct(@Path("id")id:String):Response<ProductResponse>
 
-    @DELETE("/api/product/personal/{id}")
-    suspend fun deletePersonalProduct(@Path("id") id: String):Response<ProductResponse>
+    @DELETE("/api/product/personal/{id}/")
+    suspend fun deletePersonalProduct(@Path("id") id: String):Response<*>
 
 
 

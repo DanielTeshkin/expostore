@@ -34,11 +34,8 @@ abstract class BaseProductFragment<Binding : ViewBinding>(private val inflate: I
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("service.ibuyer@yandex.ru"))
         startActivity(Intent.createChooser(intent, "Пожаловатьcя на товар ${model.id}"))
     }
-    private fun snackbarOpen(){
-       val snackbar = Snackbar.make(binding.root, "Перейти к сравнениям", Snackbar.LENGTH_SHORT)
-       snackbar.setAction("Да") { viewModel.navigateToComparison() }
-       snackbar.show()
-   }
+
+    override fun navigateToComparison() { viewModel.navigateToComparison() }
     override fun showBottomScreen(
         context: Context,
         item: ProductModel,
