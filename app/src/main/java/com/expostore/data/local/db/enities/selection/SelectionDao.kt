@@ -13,15 +13,15 @@ import com.expostore.model.product.toModel
 @Entity(tableName = "selection")
 data class SelectionDao(
     @ColumnInfo(name="name")
-    val name: String? = null,
+    val name: String? = "",
     @ColumnInfo(name="count")
-    val count: Int? = null,
+    val count: Int? = 0,
     @PrimaryKey
     @ColumnInfo(name="id") val id : String,
     @ColumnInfo(name="products")
-    val products: List<ProductModel>? = null,
+    val products: List<ProductModel>? = listOf(),
     @ColumnInfo(name="date_create")
-    val date_create: String? = null
+    val date_create: String? =""
 )
 val SelectionResponse.toDao:SelectionDao
 get() = SelectionDao(name, count, id?:"", products?.map { it.toModel }, date_create)

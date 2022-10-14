@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -43,13 +44,11 @@ class ProductsAdapter(context:Context,
                 description.text = item.shortDescription
                 address.text = "Адрес:" + " " + item.shop.address
                 viewPager.adapter = adapter
+                if(item.communicationType == "chatting") call.isVisible=false
                 viewPager.setPageTransformer(MarginPageTransformer(PAGE_PADDING.dp))
                 viewPager.children.find { it is RecyclerView }?.overScrollMode =
                     RecyclerView.OVER_SCROLL_NEVER
-                adapter.onItemClickListener = {
-                    onItemClickListener?.invoke(item)
-
-                }
+                adapter.onItemClickListener = { onItemClickListener?.invoke(item) }
 
                 root.click {
                     onItemClickListener?.invoke(item)

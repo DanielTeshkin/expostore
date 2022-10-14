@@ -14,7 +14,7 @@ class NewPasswordViewModel @Inject constructor(private val authorizationReposito
     private val _loading= MutableStateFlow(false)
     val loading=_loading.asStateFlow()
     private val _enabled= MutableStateFlow(false)
-    val enabled=_loading.asStateFlow()
+    val enabled=_enabled.asStateFlow()
    private val password1= MutableStateFlow("")
    private val password2=MutableStateFlow("")
     override fun onStart() {
@@ -33,7 +33,7 @@ class NewPasswordViewModel @Inject constructor(private val authorizationReposito
         _enabled.value= (password1.value.isNotEmpty() &&password2.value.isNotEmpty())
     }
      fun reset(phone:String)= authorizationRepository.newPassword(
-         ResetPasswordRequest(phone,password1.value, password2.value)
+         ResetPasswordRequest("7$phone",password1.value, password2.value)
      ).handleResult({
          _enabled.value!=it
            _loading.value=it

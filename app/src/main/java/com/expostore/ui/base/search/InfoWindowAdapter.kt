@@ -21,19 +21,12 @@ import com.google.android.gms.maps.model.Marker
 
 class InfoWindowAdapter(private val image:String, private val context:Context ):GoogleMap.InfoWindowAdapter {
    var infoWindowClick:CustomInfoWindowClick?=null
-    override fun getInfoContents(p0: Marker): View? {
-       return null
-    }
+    override fun getInfoContents(p0: Marker): View? { return null }
 
     override fun getInfoWindow(p0: Marker): View? {
-        val binding:InfoWindowBinding= InfoWindowBinding.inflate(
-            LayoutInflater.from(context),null,false
-        )
+        val binding:InfoWindowBinding= InfoWindowBinding.inflate(LayoutInflater.from(context),null,false)
         Glide.with(context)
-            .asBitmap()
-            .load(image)
-
-            .into(object : CustomTarget<Bitmap>(100,100){
+            .asBitmap().load(image).into(object : CustomTarget<Bitmap>(100,100){
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     binding.info.setImageBitmap(resource)
                 }

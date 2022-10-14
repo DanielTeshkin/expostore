@@ -20,18 +20,17 @@ import dagger.hilt.android.AndroidEntryPoint
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val model = DetailCategoryFragmentArgs.fromBundle(requireArguments()).selection
-
         binding.apply {
             tvCategoryName.text = model.name
             rvDetailProduct.apply {
                layoutManager = LinearLayoutManager(requireContext())
+                mAdapter.onClick=getClickListener(listOf())
                 if (products.isEmpty()) products.addAll(model.products)
-               adapter = mAdapter
+                adapter = mAdapter
             }
         }
     }
-    override fun loadSelections(list: List<SelectionModel>) {
-      mAdapter.onClick=getClickListener(list)
-    }
+
+    override fun loadSelections(list: List<SelectionModel>) { mAdapter.onClick=getClickListener(list) }
 
     }

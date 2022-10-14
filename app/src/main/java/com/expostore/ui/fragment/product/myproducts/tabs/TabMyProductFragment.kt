@@ -36,6 +36,7 @@ class TabMyProductFragment() : BaseFragment<TabMyProductFragmentBinding>(TabMyPr
     private fun showMyTenders(products: List<ProductModel>) {
         myProductAdapter.onClickMyProduct = initOnClick()
         binding.progressBar11.visibility=View.GONE
+        list.clear()
         binding.rvProduct.apply {
             list.addAll(products)
             layoutManager = LinearLayoutManager(requireContext())

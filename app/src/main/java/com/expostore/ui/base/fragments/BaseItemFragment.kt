@@ -18,13 +18,12 @@ abstract class BaseItemFragment <Binding : ViewBinding,T : Any,A,E>(private val 
         protected val products= mutableListOf<ProductModel>()
         open var isTenders: Boolean=false
 
-
     override fun onResume() {
         super.onResume()
         viewModel.apply { subscribe(navigation){navigateSafety(it)} }
     }
     override fun call(username: String) =navigateToCall(username)
-    override fun createNote(item: T)=viewModel.navigateToNote(item)
+    override fun createNote(item: T)=viewModel.createIntentNote(item)
     override fun chatCreate(id: String) =viewModel.createChat(id)
     override fun share(id: String){
         val sendIntent: Intent = Intent().apply {
@@ -38,8 +37,6 @@ abstract class BaseItemFragment <Binding : ViewBinding,T : Any,A,E>(private val 
     }
     protected fun updateFavorites(id:String) = viewModel.updateSelected(id)
     abstract fun showBottomScreen(context: Context, item:T, list: List<SelectionModel>?, onClickBottomFragment:OnClickBottomSheetFragment<T>, mean:Boolean)
-
-
     protected fun getClickListener(list:List<SelectionModel>?) =
         object : OnClickListeners<T> {
             override fun onClickLike(id: String) = updateFavorites(id)

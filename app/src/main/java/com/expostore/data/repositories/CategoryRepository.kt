@@ -12,8 +12,13 @@ class CategoryRepository  @Inject constructor(private val apiWorker: ApiWorker, 
        val result= handleOrEmptyList { apiWorker.getCategoryCharacteristic(id) }.map { it.toModel }
         emit(result)
     }
-    fun getCategories() =flow {
-        val result=  handleOrEmptyList { apiWorker.getProductCategory() }
-        emit(result.map { it.toModel })
-    }
+    fun getCategories() =operator(
+       databaseQuery = { localWorker.getCategories().map { it.toModel }},
+        networkCall = {handleOrEmptyList { apiWorker.getProductCategory() }.map { it.toModel }},
+        clearCall = {localWorker.removeCategories()},
+        saveCallResult = {localWorker.saveCategories(it)}
+
+    )
+
+
 }

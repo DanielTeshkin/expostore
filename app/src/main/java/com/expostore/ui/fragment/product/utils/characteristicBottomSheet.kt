@@ -28,11 +28,12 @@ class CharacteristicsAdapter(private val list: List<Character>):
     RecyclerView.Adapter<CharacteristicsAdapter.CharacterViewHolder>(){
         inner class CharacterViewHolder(val binding: CharacteristicItemBinding):RecyclerView.ViewHolder(binding.root){
                      fun bind(model:Character){
-                         binding.nameCharacter.text=model.characteristic?.name
+                         binding.nameCharacter.text=model.characteristic?.name+":"
                          when(model.characteristic?.type){
                            "input" -> binding.mean.text=model.char_value
                              "radio" -> binding.mean.text=model.selected_item?.value
-                             "select" -> binding.mean.text=model.selected_items?.joinToString()
+                             "select" -> binding.mean.text=
+                                 model.selected_items?.joinToString(",") { it.value }
                              "checkbox" ->{
                                  binding.mean.text=if(model.bool_value == true)"да" else "нет"
                              }

@@ -69,12 +69,16 @@ class ProductViewModel @Inject constructor(override val interactor: BaseProductI
     }
     fun navigateToPriceHistory()=navigationTo(ProductFragmentDirections
         .actionProductFragmentToPriceHistory(PriceHistoryDataModel(priceHistoryList.value)))
-  fun navigationToShop(){
-      navigationTo(ProductFragmentDirections.actionProductFragmentToShopFragment())
-  }
-    fun navigationToAddReview(){
-        navigationTo(ProductFragmentDirections.actionProductFragmentToAddReviewFragment())
+  fun navigationToShop()= navigationTo(ProductFragmentDirections.actionProductFragmentToShopFragment(product.value.shop.id))
+
+    fun navigationToAddReview()=when(checkAuthorizationState()){
+        true-> navigationTo(ProductFragmentDirections.actionProductFragmentToAddReviewFragment())
+        false->navigateToOpen()
     }
+
+
+
+
     fun navigateToInstruction()=
         navigationTo(ProductFragmentDirections.actionProductFragmentToWebViewFragment(product.value.instruction.file,
             format ="file" ))
@@ -86,10 +90,10 @@ class ProductViewModel @Inject constructor(override val interactor: BaseProductI
     fun navigationToNote() = navigationTo(ProductFragmentDirections.actionProductFragmentToNoteFragment(id= product.value.id,
             text = product.value.elected.notes,flag = "product", isLiked = product.value.isLiked, flagNavigation = "product"))
 
-    fun navigationToQrCodeFragment(){
-        navigationTo(ProductFragmentDirections.actionProductFragmentToProductQrCodeFragment())
-    }
+    fun navigationToQrCodeFragment()= navigationTo(ProductFragmentDirections.actionProductFragmentToProductQrCodeFragment())
+
     fun navigateToCharacteristics()=navigationTo(ProductFragmentDirections
         .actionProductFragmentToCharacteristicFragment(CharacteristicsData(product.value.characteristics)))
+   override fun navigateToOpen()=navigationTo(ProductFragmentDirections.actionProductFragmentToOpenFragment())
 
 }

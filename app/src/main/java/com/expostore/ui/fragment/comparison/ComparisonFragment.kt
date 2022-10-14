@@ -49,8 +49,11 @@ class ComparisonFragment : BaseFragment<ComparisonFragmentBinding>(ComparisonFra
         binding.apply {
             Log.i("aaa",list.size.toString())
             val myAdapter=PagerComparisonAdapter()
-            myAdapter.items=list
-            myAdapter.onDeleteClickListener={viewModel.deleteFromComparison(it)}
+            myAdapter.items= list as MutableList<ProductModel>
+            myAdapter.onDeleteClickListener={
+                Log.i("ff","fff")
+                viewModel.deleteFromComparison(it)
+            }
             myAdapter.onGoClickListener ={ viewModel.navigateToProduct(it)}
 
             pager1.adapter=myAdapter

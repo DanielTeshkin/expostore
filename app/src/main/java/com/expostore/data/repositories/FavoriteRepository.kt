@@ -22,8 +22,9 @@ class FavoriteRepository @Inject constructor(private val apiWorker: ApiWorker, p
         emit(result)
     }
     fun getFavorites()=operator(
-        databaseQuery = {localWorker.getFavoritesProduct().map { FavoriteProduct(it.id,it.product,it.notes,it.notes) }},
+        databaseQuery = {localWorker.getFavoritesProduct().map { FavoriteProduct(it.id,it.product,it.notes,it.user) }},
         networkCall = {handleOrEmptyList { apiWorker.getFavoritesList() }.map { it.toModel }},
+        clearCall = {localWorker.removeFavorites()},
         saveCallResult = {localWorker.saveFavorites(it)}
     )
     fun addToFavorite(id:String, noteRequest: NoteRequest=NoteRequest())=flow{
@@ -36,8 +37,9 @@ class FavoriteRepository @Inject constructor(private val apiWorker: ApiWorker, p
         emit(result)
     }
     fun getFavoriteTenders()=operator(
-        databaseQuery = {localWorker.getFavoritesTender().map { FavoriteTender(it.id,it.tender,it.notes,it.notes) }},
+        databaseQuery = {localWorker.getFavoritesTender().map { FavoriteTender(it.id,it.tender,it.notes,it.user) }},
         networkCall = {handleOrEmptyList { apiWorker.getFavoritesTenderList() }.map { it.toModel }},
+        clearCall = {localWorker.removeFavoritesTender()},
         saveCallResult = {localWorker.saveFavoritesTender(it)}
     )
 

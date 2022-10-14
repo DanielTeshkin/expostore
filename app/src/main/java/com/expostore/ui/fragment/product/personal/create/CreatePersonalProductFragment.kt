@@ -17,6 +17,7 @@ import com.expostore.R
 import com.expostore.databinding.CreatePersonalProductFragmentBinding
 import com.expostore.model.category.CategoryCharacteristicModel
 import com.expostore.model.category.ProductCategoryModel
+import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.base.fragments.Show
 import com.expostore.ui.base.fragments.create.CreateProductFragment
@@ -38,6 +39,7 @@ class CreatePersonalProductFragment() :
     CreateProductFragment()
     {
         override val viewModel: CreatePersonalProductViewModel by  viewModels()
+        override val item: ProductModel?=CreatePersonalProductFragmentArgs.fromBundle(requireArguments()).product
 
         override fun onStart() {
             super.onStart()

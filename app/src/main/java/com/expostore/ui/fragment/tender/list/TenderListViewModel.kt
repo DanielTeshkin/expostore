@@ -27,21 +27,17 @@ class TenderListViewModel @Inject constructor(override val interactor: BaseTende
     private val _chat=MutableSharedFlow<ResponseState<MainChat>>()
     val chat=_chat.asSharedFlow()
 
-
-
-    fun createTender(){
-        Log.i("gooo","ff")
-        navigationTo(TenderFragmentDirections.actionTenderListFragmentToTenderCreateFragment())
+    fun createTender()=when(checkAuthorizationState()) {
+        true->navigationTo(TenderFragmentDirections.actionTenderListFragmentToTenderCreateFragment())
+        false->navigateToOpen()
     }
 
-
-   override fun navigateToItem(model: TenderModel){
+    override fun navigateToItem(model: TenderModel){
         navigationTo(TenderFragmentDirections.actionTenderListFragmentToTenderItem(model))
     }
 
-   private fun navigateToOpen(){
-        navigationTo(TenderFragmentDirections.actionTenderListFragmentToOpenFragment())
-    }
+   override fun navigateToOpen()= navigationTo(TenderFragmentDirections.actionTenderListFragmentToOpenFragment())
+
 
    override fun navigateToChat(value: InfoItemChat) {
         navigationTo(TenderFragmentDirections.actionTenderListFragmentToChatFragment(value))

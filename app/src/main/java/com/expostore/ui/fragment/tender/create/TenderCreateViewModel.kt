@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -61,6 +62,8 @@ class TenderCreateViewModel @Inject constructor(override val interactor: CreateT
            updateEnabledState(it)
     },{
         navigationTo(TenderCreateFragmentDirections.actionTenderCreateFragmentToEditTenderFragment(it))
+    },{
+        it.message?.let { it1 -> Log.i("errorrr", it1) }
     })
 
     override fun checkEnabled() {

@@ -1,10 +1,7 @@
 package com.expostore.ui.fragment.favorites
 
-import android.R
 import android.os.Bundle
-import android.transition.Fade
-import android.transition.Transition
-import android.transition.TransitionManager
+import android.transition.*
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +12,6 @@ import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-
-
 
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragmentBinding::inflate) {
@@ -29,10 +24,9 @@ class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         favoritesViewModel.apply {
             subscribe(navigation){navigateSafety(it)}
-            subscribe(FavoriteSharedRepository.getInstance().getSelections()){loadSelections(it)}
+            subscribe(SelectionsSharedRepository.getInstance().getSelections()){loadSelections(it)}
         }
         favoritesTabsViewPagerAdapter = FavoritesTabsViewPagerAdapter(this,requireContext())
         binding.favoritesVp.adapter = favoritesTabsViewPagerAdapter
@@ -42,22 +36,17 @@ class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragme
                 tab, position -> tab.customView = favoritesTabsViewPagerAdapter.getTabView(position)
         }
         tabLayoutMediator.attach()
-
         binding.favoritesVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if (position==1){
-                    animate()
-                    binding.panel.visibility=View.GONE
-                } else {
+                if (position==0){
                     animate()
                     binding.panel.visibility=View.VISIBLE
-                }
-
+                } else {
+                    animate()
+                    binding.panel.visibility=View.GONE }
             }
-
         })
-
     }
 
     override fun onStart() {
@@ -66,11 +55,16 @@ class FavoritesFragment : BaseFragment<FavoritesFragmentBinding>(FavoritesFragme
         binding.comparisonBtn.click { favoritesViewModel.navigateToComparison() }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        SelectionsSharedRepository.getInstance().getSelections().value= mutableListOf()
+    }
+
     fun animate(){
-        val transition: Transition = Fade()
-        transition.duration=600
-        transition.addTarget(binding.mySelections)
-        TransitionManager.beginDelayedTransition(binding.mySelections, transition)
+        val transition: Transition =Fade()
+        transition.duration=300
+        transition.addTarget(  binding.panel)
+        TransitionManager.beginDelayedTransition( binding.panel, transition)
     }
 
     private fun loadSelections(list: List<SelectionModel>){

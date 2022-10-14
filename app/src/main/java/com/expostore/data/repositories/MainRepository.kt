@@ -15,6 +15,7 @@ class MainRepository @Inject constructor(private val apiWorker: ApiWorker, priva
     fun getSelections()= operator(
         databaseQuery = {localWorker.getSelection().map { it.toModel }},
         networkCall ={ handleOrEmptyList { apiWorker.getCategories() }.map { it.toModel }},
+        clearCall = {localWorker.removeSelections()},
         saveCallResult = {localWorker.saveSelections(it)}
     )
 

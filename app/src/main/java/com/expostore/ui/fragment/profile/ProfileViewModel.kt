@@ -120,12 +120,11 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
     }
 
 
-       fun removeToken(){
-           viewModelScope.launch {
-               withContext(Dispatchers.IO) {
-                   profileRepository.deleteAll() }
-           }
+       private fun removeToken()=viewModelScope.launch(Dispatchers.IO) {
+           profileRepository.clearDb()
        }
+
+
 
 
     private fun saveImage(context:Context,uri: Uri){
@@ -185,8 +184,11 @@ class ProfileViewModel @Inject constructor(private val profileRepository: Profil
             else -> navigateShop()
         }
     }
-    fun navigateToLogin(){
-        navigationTo(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
+    fun exit(){
+        removeToken()
+        navigateToOpen()
     }
+    fun navigateToOpen()= navigationTo(ProfileFragmentDirections.actionProfileFragmentToOpenFragment())
+
 
 }

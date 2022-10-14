@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.DetailProductItemBinding
 import com.expostore.databinding.SearchProductItemBinding
@@ -56,7 +57,7 @@ class FavoritesTenderRecyclerViewAdapter(
                 tabProductPagerAdapter.onItemClickListener= { onItemClickListener?.invoke(tender)}
                 adapter=tabProductPagerAdapter
             }
-
+            if(tender.communicationType == "chatting")binding.call.isVisible=false
 
             if(item.notes!=null){
                 binding.note.text=item.notes

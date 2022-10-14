@@ -31,9 +31,7 @@ class TabPersonalProductFragment() :
     override fun onStart() {
         super.onStart()
         viewModel.load()
-        binding.btnAddAdvertisement.click {
-            viewModel.navigateToAddPersonalProduct()
-        }
+        binding.newSelection.click { viewModel.navigateToAddPersonalProduct() }
     }
 
     fun init(products:List<ProductModel>){

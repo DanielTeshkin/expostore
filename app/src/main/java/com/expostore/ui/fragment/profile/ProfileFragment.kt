@@ -31,36 +31,17 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBinding::inflate)
    {
-
-    private val profileViewModel: ProfileViewModel by viewModels()
+       private val profileViewModel: ProfileViewModel by viewModels()
        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        profileViewModel.apply {
+           profileViewModel.apply {
             loadProfile()
-            subscribe(profile) { handleResult(it) }
+            subscribe(profile) { state -> handleState(state) {handleSuccess(it)} }
             subscribe(navigation) { navigateSafety(it) }
-
-        }
+           }
        subscribeUI()
        }
 
-
-
-
-
-    private fun handleResult(state: ResponseState<ProfileModel>) {
-        when (state) {
-            is ResponseState.Loading->Log.i("fff","ff")
-            is ResponseState.Success -> handleSuccess(state.item)
-            is ResponseState.Error -> Toast.makeText(
-                requireContext(),
-                state.throwable.message,
-                Toast.LENGTH_SHORT
-            ).show()
-
-        }
-    }
 
     private fun handleSuccess(profileModel: ProfileModel) {
         saveData(profileModel)
@@ -77,7 +58,6 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
                    tvName.text = it.name()
                    it.shop?.image?.let { it1 -> ivBackground.loadBanner(it1.file) }
                }
-
                profileViewModel.apply {
                    subscribe(title) { btnShop.text = it }
                }
@@ -113,27 +93,15 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
                    setFragmentResult("requestKey", bundleOf("name" to info))
                    profileViewModel.navigateMyProduct()
                }
-               btnMyTenders.click {
-                   profileViewModel.navigateToTender()
-               }
-               ivAvatar.click {
-                   openGallery("avatar")
-               }
-               if (profileModel.shop != null) {
-                   ivBackground.click {
-                       openGallery("banner")
-                   }
-               }
-               btnSupport.click {
-                   profileViewModel.navigationToSupport()
-               }
+               btnMyTenders.click { profileViewModel.navigateToTender() }
+               ivAvatar.click { openGallery("avatar") }
+               if (profileModel.shop != null) { ivBackground.click { openGallery("banner") } }
+               btnSupport.click { profileViewModel.navigationToSupport() }
                btnHelp.click {
                    profileViewModel.navigateToWeb()
                }
                logout.click {
-                   profileViewModel.apply {
-                       removeToken()
-                       navigateToLogin() }
+                   profileViewModel.apply { exit()}
                }
            }
     }
@@ -146,21 +114,15 @@ class ProfileFragment : BaseFragment<ProfileFragmentBinding>(ProfileFragmentBind
             .maxResultSize(1080, 1080)
             .createIntent { intent -> startForProfileImageResult.launch(intent) }
         }
-
-
-
-
-    private val startForProfileImageResult =
+       private val startForProfileImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result  ->
             val resultCode = result.resultCode
             val data = result.data
 
             when (resultCode) {
                 Activity.RESULT_OK -> {
-
                     val fileUri = data?.data!!
                     profileViewModel.updateAvatar(requireContext(), fileUri)
-
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()

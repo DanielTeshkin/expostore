@@ -21,8 +21,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class EditProfileFragment : BaseFragment<EditProfileFragmentBinding>(EditProfileFragmentBinding::inflate) {
     private val viewModel: ProfileDataViewModel by viewModels()
-
-
+    override var isBottomNavViewVisible: Boolean= false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCities()

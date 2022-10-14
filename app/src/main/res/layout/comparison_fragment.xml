@@ -75,7 +75,6 @@
                         android:fontFamily="@font/roboto_medium"
 
                         android:paddingTop="5dp"
-                        android:text="0 из 2"
                         android:textAlignment="center" />
 
                     <ImageView
@@ -121,7 +120,6 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_medium"
                         android:paddingTop="5dp"
-                        android:text="TextView"
                         android:textAlignment="center" />
 
                     <ImageView
@@ -145,11 +143,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+            android:layout_marginStart="20dp"
             android:text="Cравнение характеристик"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="24sp"
 
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

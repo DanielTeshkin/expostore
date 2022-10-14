@@ -60,7 +60,9 @@ class SearchFilterFragment(): CharacteristicsFragment<SearchFilterFragmentBindin
                   priceMin.text.clear()
                 priceMax.text.clear()
                  etCity.text.toString()
-                 viewModel.saveCategory(ProductCategoryModel().id)
+                // viewModel.saveCategory("")
+                 clear()
+
 
              }
              back.click { viewModel.navigateToBack() }

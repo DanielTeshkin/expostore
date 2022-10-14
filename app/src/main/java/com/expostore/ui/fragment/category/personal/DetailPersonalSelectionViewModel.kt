@@ -50,6 +50,8 @@ class DetailPersonalSelectionViewModel
             isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     }
 
+    override fun navigateToOpen(){}
+
     override fun navigateToCreateSelection(product: String) =
         navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToSelectionCreate(id=product))
     override fun navigateToComparison() =navigationTo(DetailPersonalSelectionFragmentDirections.actionPersonalSelectionToComparison())

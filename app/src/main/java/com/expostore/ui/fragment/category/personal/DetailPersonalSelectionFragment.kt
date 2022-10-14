@@ -29,7 +29,7 @@ class DetailPersonalSelectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val selection=DetailPersonalSelectionFragmentArgs.fromBundle(requireArguments()).selection
-        products.addAll(selection.products)
+        if (products.isEmpty())  products.addAll(selection.products)
         binding.apply {
             tvCategoryName.text=selection.name
             rvDetailProduct.apply {

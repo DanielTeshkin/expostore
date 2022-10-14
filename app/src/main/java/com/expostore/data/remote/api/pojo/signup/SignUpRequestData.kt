@@ -8,7 +8,7 @@ data class SignUpRequestData(
 )
 
 data class ResetPasswordRequest(
-    @SerializedName("username") val username: String?,
-    @SerializedName("password1") val password1: String?,
-    @SerializedName("password2") val password2: String?
+    @SerializedName("username") val username: String?="",
+    @SerializedName("password1") val password1: String?="",
+    @SerializedName("password2") val password2: String?=""
 )

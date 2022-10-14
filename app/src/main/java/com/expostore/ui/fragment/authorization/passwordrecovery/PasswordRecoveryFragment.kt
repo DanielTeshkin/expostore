@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 
 import com.expostore.R
 import com.expostore.databinding.PasswordRecoveryFragmentBinding
@@ -32,6 +33,7 @@ class PasswordRecoveryFragment :
         binding.btnSignInNext.setOnClickListener {
             passwordRecoveryViewModel.confirmCode()
             passwordRecoveryViewModel.apply {
+                start(findNavController())
                 subscribe(navigation) { navigateSafety(it) }
                subscribe(enabled){binding.btnSignInNext.isEnabled=it}
                 subscribe(loading){binding.progressBar15.isVisible=it}

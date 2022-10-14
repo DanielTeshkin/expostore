@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -43,10 +44,7 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
             object : OnClickImage {
                 override fun click(bitmap: Bitmap) {
                     ControllerUI(requireContext()).openImageFragment(bitmap)
-                        .show(requireActivity().supportFragmentManager, "DialogImage")
-                }
-            }
-        }
+                        .show(requireActivity().supportFragmentManager, "DialogImage") } } }
         private val reviewAdapter:ReviewRecyclerViewAdapter by lazy { ReviewRecyclerViewAdapter(reviewsList,onClickImage) }
         override var isBottomNavViewVisible: Boolean = false
 
@@ -59,6 +57,15 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
             subscribeUI()
         }
     }
+        override fun onResume() {
+            super.onResume()
+            binding.mapView.onResume()
+        }
+
+        override fun onPause() {
+            super.onPause()
+            binding.mapView.onPause()
+        }
 
        private fun subscribeUI(){
            viewModel.apply {
@@ -76,7 +83,7 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
             initButton(model)
             Log.i("id",model.id)
             binding.apply {
-                tvProductPrice.text = model.price.priceSeparator()
+                tvProductPrice.text = model.price.priceSeparator() +" " +"руб"
                 tvProductName.text = model.name
                 like.isChecked=model.isLiked
                 tvProductDescription.text = model.longDescription
@@ -87,7 +94,9 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
                 tvProductRating.text = "Оценка: " + model.rating
                 rbProductRating.rating = model.rating.toFloat()
                 tvProductLocation.text=model.shop.address
-                articul.text="Артикул:"+" "+model.articul
+               if (model.articul.isNotEmpty()) articul.text="Артикул:"+" "+model.articul
+                else articul.visibility=View.GONE
+                if(model.communicationType == "chatting")btnCallDown.isVisible=false
                 if(model.count>0){
                     tvProductAvailable.setTextColor(Color.BLUE)
                     tvProductAvailable.text="В наличии"
@@ -118,14 +127,13 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
             binding.apply {
                 btnCallDown.click { navigateToCall(model.author.username) }
                 write.click { viewModel.createChat(model.id) }
+                if(model.communicationType == "chatting")phone.isVisible=false
+                phone.click { navigateToCall(model.author.username) }
                 btnProductAddReview.click {
                     setFragmentResult("key_product", bundleOf("productId" to model.id))
                     viewModel.navigationToAddReview()
                 }
-              llProductShop.click {
-                  setFragmentResult("shop", bundleOf("model" to model.shop.id))
-                  viewModel.navigationToShop()
-              }
+              llProductShop.click { viewModel.navigationToShop()}
                 btnBack.click { viewModel.navigateToBack() }
                 editNote.click { viewModel.navigationToNote() }
                 categoryOpen.apply {

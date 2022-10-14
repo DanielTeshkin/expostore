@@ -62,6 +62,7 @@ abstract class CharacteristicsFragment<Binding : ViewBinding>(private val inflat
              adapter=characteristicAdapter
          }
      }
+    fun clear()=characteristicAdapter.removeAll()
      override fun inputListener(left: String, right: String?, name: String) =viewModel.inputListener(left, right, name)
      override fun radioListener(id: String, name: String)=viewModel.radioListener(id, name)
      override fun selectListener(id: String, name: String, checked: Boolean) = viewModel.selectListener(id, name, checked)

@@ -21,8 +21,7 @@ class ReviewsViewModel @Inject constructor(private val repository: ReviewsReposi
     private val _who= MutableStateFlow("")
     val who=_who.asStateFlow()
 
-    fun load(){
-        repository.getReviews().handleResult(_reviews)
+    fun load(){ repository.getReviews().handleResult(_reviews)
     }
 
     fun whoUpdate(param:String){

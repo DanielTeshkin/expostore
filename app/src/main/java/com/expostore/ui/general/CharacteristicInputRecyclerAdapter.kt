@@ -45,6 +45,7 @@ fun removeSelect(id:String){
     fun removeAll(){
         category.clear()
 
+        notifyDataSetChanged()
     }
 
 }

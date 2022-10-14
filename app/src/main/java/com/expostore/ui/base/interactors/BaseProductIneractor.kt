@@ -29,10 +29,10 @@ import javax.inject.Inject
                                                       private val selection: SelectionRepository,
                                                       private val comparison: ComparisonRepository,
                                                       private val shop:ShopRepository,
-                                                      private val profileRepository: ProfileRepository,
-                                                      private val productsRepository: ProductsRepository
-): BaseItemsInteractor<ProductModel, SelectFavoriteResponseData, FavoriteProduct> {
-   fun getSelections()=selection.userSelectionList()
+                                                      private val productsRepository: ProductsRepository,
+                                                      override val user: ProfileRepository
+ ): BaseItemsInteractor<ProductModel, SelectFavoriteResponseData, FavoriteProduct>() {
+   fun getSelections()=selection.getPersonalSelection()
      override  fun createChat(id:String)=chats.createChat(id,"product")
      override fun  updateSelected(id: String) = favorite.addToFavorite(id)
      fun comparison(id: String)=comparison.addToComparison(listOf(ComparisonProductData(id)))
@@ -54,7 +54,7 @@ import javax.inject.Inject
      fun getPersonalProduct(id:String)=productsRepository.getPersonalProduct(id)
      fun deleteSelection(id:String)=selection.deleteUserSelection(id)
     private val profileModel = MutableStateFlow(ProfileModel())
-     private suspend fun getProfileModel()= profileRepository.getProfile().collect { profileModel.value=it }
+     private suspend fun getProfileModel()= user.getProfile().collect { profileModel.value=it }
 
     suspend fun getProfile(): ProfileModel? {
         getProfileModel()

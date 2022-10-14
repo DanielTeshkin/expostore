@@ -32,12 +32,6 @@ class FavoriteTendersViewModel @Inject constructor(private val interactors: Favo
 
     }
 
-
-   private fun getTenderFavoriteList()=interactors.getTenderFavoriteList().handleResult(_tenders)
-    fun  updateSelectedTender(id:String)=interactors.updateSelectedTender(id).handleResult()
-
-
-
     override fun navigateToChat(infoItemChat: InfoItemChat)=navigationTo(FavoritesFragmentDirections
         .actionFavoritesFragmentToChatFragment(infoItemChat))
 
@@ -52,7 +46,7 @@ class FavoriteTendersViewModel @Inject constructor(private val interactors: Favo
            isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = ""))
    }
 
-
+    override fun navigateToOpen() =navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToOpenFragment())
 
 
 }

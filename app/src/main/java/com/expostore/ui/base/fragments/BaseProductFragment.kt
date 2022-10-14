@@ -26,7 +26,7 @@ abstract class BaseProductFragment<Binding : ViewBinding>(private val inflate: I
     }
     abstract fun loadSelections(list: List<SelectionModel>)
     override fun addToComparison(id: String) =viewModel.addToComparison(id)
-    override fun createSelection(product: String) = viewModel.navigateToCreateSelection(product)
+    override fun createSelection(product: String) = viewModel.createSelectionIntent(product)
     override fun addToSelection(id: String, product: String)= viewModel.addToSelection(id,product)
     override fun block(model: ProductModel) {
         val intent = Intent(Intent.ACTION_SEND)

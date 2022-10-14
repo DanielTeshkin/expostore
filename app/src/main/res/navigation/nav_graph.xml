@@ -29,7 +29,6 @@
         tools:layout="@layout/open_fragment" >
         <action
             android:id="@+id/action_openFragment_to_loginFragment"
-            app:popUpTo="@id/nav_graph"
 
             app:destination="@id/loginFragment" />
         <action
@@ -111,6 +110,9 @@
         <action
             android:id="@+id/action_detailCategoryFragment_to_comparison"
             app:destination="@id/comparison" />
+        <action
+            android:id="@+id/action_detailCategoryFragment_to_openFragment"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/numberFragment"
@@ -250,6 +252,9 @@
         <action
             android:id="@+id/action_profileFragment_to_comparison"
             app:destination="@id/comparison" />
+        <action
+            android:id="@+id/action_profileFragment_to_openFragment"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -281,6 +286,9 @@
         <action
             android:id="@+id/action_searchFragment_to_comparison"
             app:destination="@id/comparison" />
+        <action
+            android:id="@+id/action_searchFragment_to_openFragment"
+            app:destination="@id/openFragment" />
 
     </fragment>
     <fragment
@@ -331,6 +339,9 @@
         <action
             android:id="@+id/action_favoritesFragment_to_comparison"
             app:destination="@id/comparison" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_openFragment"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/tenderListFragment"
@@ -360,6 +371,9 @@
             app:argType="com.expostore.ui.fragment.search.filter.models.FilterModel"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_tenderListFragment_to_openFragment2"
+            app:destination="@id/openFragment" />
     </fragment>
     <fragment
         android:id="@+id/tenderCreateFragment"
@@ -382,7 +396,8 @@
             android:defaultValue="@null" />
         <action
             android:id="@+id/action_tenderCreateFragment_to_edit_tender_fragment"
-            app:destination="@id/edit_tender_fragment" />
+            app:destination="@id/edit_tender_fragment"
+            app:popUpTo="@id/tenderListFragment" />
     </fragment>
     <fragment
         android:id="@+id/specificationsFragment"
@@ -447,6 +462,9 @@
         <action
             android:id="@+id/action_productFragment_to_selection_create"
             app:destination="@id/selection_create" />
+        <action
+            android:id="@+id/action_productFragment_to_openFragment"
+            app:destination="@id/openFragment" />
 
     </fragment>
     <fragment
@@ -472,7 +490,11 @@
         android:id="@+id/addReviewFragment"
         android:name="com.expostore.ui.fragment.product.addreview.AddReviewFragment"
         android:label="add_review_fragment"
-        tools:layout="@layout/add_review_fragment" />
+        tools:layout="@layout/add_review_fragment" >
+        <action
+            android:id="@+id/action_addReviewFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productQrCodeFragment"
         android:name="com.expostore.ui.fragment.product.qrcode.ProductQrCodeFragment"
@@ -537,6 +559,12 @@
         <action
             android:id="@+id/action_shopFragment_to_comparison"
             app:destination="@id/comparison" />
+        <action
+            android:id="@+id/action_shopFragment_to_openFragment"
+            app:destination="@id/openFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/addProductFragment"
@@ -548,7 +576,8 @@
             app:destination="@id/specificationsFragment" />
         <action
             android:id="@+id/action_addProductFragment_to_edit_my_product"
-            app:destination="@id/edit_my_product" />
+            app:destination="@id/edit_my_product"
+            app:popUpTo="@id/mainFragment" />
         <action
             android:id="@+id/action_addProductFragment_to_myProductsFragment"
             app:destination="@id/myProductsFragment" />
@@ -672,6 +701,12 @@
         <action
             android:id="@+id/action_tender_item_to_support_fragment"
             app:destination="@id/support_fragment" />
+        <action
+            android:id="@+id/action_tender_item_to_openFragment"
+            app:destination="@id/openFragment" />
+        <action
+            android:id="@+id/action_tender_item_to_characteristic_fragment"
+            app:destination="@id/characteristic_fragment" />
     </fragment>
 <fragment
     android:id="@+id/selection_create"
@@ -860,6 +895,9 @@
         <action
             android:id="@+id/action_personal_productfragment_to_comparison"
             app:destination="@id/comparison" />
+        <action
+            android:id="@+id/action_personal_productfragment_to_characteristic_fragment"
+            app:destination="@id/characteristic_fragment" />
     </fragment>
     <fragment
         android:name="com.expostore.ui.fragment.product.personal.create.CreatePersonalProductFragment"
@@ -871,10 +909,16 @@
 
         <action
             android:id="@+id/action_create_personalProduct_to_personal_productfragment"
-            app:destination="@id/personal_productfragment" />
+            app:destination="@id/personal_productfragment"
+            app:popUpTo="@id/favoritesFragment" />
         <action
             android:id="@+id/action_create_personalProduct_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.expostore.model.product.ProductModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:name="com.expostore.ui.fragment.product.PriceHistoryFragment"

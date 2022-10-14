@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -20,8 +21,8 @@ import com.expostore.ui.fragment.chats.loadAvatar
 import com.expostore.ui.fragment.main.adapter.CategoriesAdapter
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.state.MainState
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.item_image_full.*
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::inflate) {
@@ -37,30 +38,29 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
             getToken()
         }
         subscribeOnChangeData()
+
     }
 
     override fun onStart() {
         super.onStart()
-
-        binding.btnAddAdvertisement.click {
-
-            viewModel.navigateToCreateProductOrOpen()
-        }
+        binding.btnAddAdvertisement.click { viewModel.navigateToCreateProductOrOpen() }
         binding.categories.adapter = adapter
-
         adapter.onCategoryClickListener = { viewModel.navigateToSelectionFragment(it) }
-
-        adapter.onProductClickListener = {
-            viewModel.navigateToProduct(it)
-        }
-
+        adapter.onProductClickListener = { viewModel.navigateToProduct(it) }
         binding.ivProfile.click { viewModel.navigateToProfileOrOpen() }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            val token=  it.result
+            Log.i("fcm",it.result)
+            viewModel.saveFcmToken(token)
+        }
     }
 
 
     private fun subscribeOnChangeData(){
-
         val loadAdvertisingModel : Show<List<CategoryAdvertisingModel>> = { handleAdvertising(it)}
         viewModel.apply {
             subscribe(uiState) { handleState(it) }
@@ -80,7 +80,6 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
             is MainState.SuccessProfile -> handleProfile(state.item)
         }
     }
-
     private fun handleProfile(item: ProfileModel) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             item.avatar?.let { binding.ivProfile.loadAvatar(it.file) }
@@ -89,14 +88,12 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
         }
     }
 
-
     private fun handleCategories(items: List<SelectionModel>) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             adapter.submitList(items)
         }
 
     }
-
     private fun handleAdvertising(item: List<CategoryAdvertisingModel>) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             if (item[0].image.isNotEmpty()) {
@@ -106,7 +103,6 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
             else binding.ivAdvertising.visibility=View.GONE
         }
     }
-
     private fun handleError(throwable: Throwable) {
         // TODO: сделать отображение ошибки с сервера
         //временная реализация
@@ -114,7 +110,6 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }
-
     private fun handleLoading(isLoading: Boolean) {
         // TODO: сделать отображение загрузки
     }

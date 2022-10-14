@@ -16,6 +16,13 @@ class SelectionRepository @Inject constructor(private val apiWorker: ApiWorker, 
         val result=handleOrEmptyList { apiWorker.getUserSelection() }.map { it.toModel }
         emit(result)
     }
+    fun getPersonalSelection()=operator(
+        databaseQuery = {localWorker.getPersonalSelection()},
+    networkCall = { handleOrEmptyList { apiWorker.getUserSelection() }.map { it.toModel }},
+        clearCall = {localWorker.removePersonalSelections()},
+        saveCallResult = {localWorker.savePersonalSelections(it)}
+
+        )
 
     fun deleteUserSelection(id:String) = flow {
         val result=handleOrDefault(SelectionResponse()){apiWorker.deleteUserSelection(id)}
@@ -38,6 +45,7 @@ class SelectionRepository @Inject constructor(private val apiWorker: ApiWorker, 
     fun getSelections()= operator(
         databaseQuery = {localWorker.getSelection().map { it.toModel }},
         networkCall ={ handleOrEmptyList { apiWorker.getCategories() }.map { it.toModel }},
+        clearCall = {localWorker.removeSelections()},
         saveCallResult = {localWorker.saveSelections(it)}
     )
 }

@@ -106,7 +106,7 @@ abstract class BaseViewModel : ViewModel() {
         emit(_navigation, directions)
     }
 
-    protected open fun back(){
+    open fun back(){
         navController.popBackStack()
     }
 

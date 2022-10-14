@@ -29,7 +29,7 @@ import com.expostore.ui.fragment.chats.general.FileStorage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Glide.with(requireActivity()).load(bitmap).centerCrop().into(_binding.imageFull)
+        Glide.with(requireActivity()).load(bitmap).into(_binding.imageFull)
         _binding.buttonSave.setOnClickListener {
             FileStorage(requireContext()).saveImage(bitmap)
         }

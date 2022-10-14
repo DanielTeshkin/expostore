@@ -46,6 +46,15 @@ class EditMyTenderFragment : BaseFragment<EditMyTenderFragmentBinding>(EditMyTen
         binding.btnBack.click { editMyTenderViewModel.navigateToBack() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.mapView.onPause()
+    }
    private fun init(model: TenderModel){
        binding.apply {
            tvProductName.text = model.title

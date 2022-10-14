@@ -20,6 +20,7 @@ class ShopCreateFragment :
     BaseFragment<ShopCreateFragmentBinding>(ShopCreateFragmentBinding::inflate) {
     private  val shopCreateViewModel: ShopCreateViewModel by viewModels()
     val load:Load ={ loading(it) }
+    override var isBottomNavViewVisible: Boolean=false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("requestKey") { _, bundle ->

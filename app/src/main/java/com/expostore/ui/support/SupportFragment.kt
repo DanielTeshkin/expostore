@@ -10,7 +10,7 @@ import com.expostore.ui.fragment.profile.profile_edit.click
 
 
 class SupportFragment : BaseFragment<SupportFragmentBinding>(SupportFragmentBinding::inflate) {
-
+    override var isBottomNavViewVisible: Boolean=false
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
        binding.btnSend.click {

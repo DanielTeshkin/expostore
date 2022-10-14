@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.authorization.passwordrecovery
 
 import android.os.CountDownTimer
+import android.util.Log
 
 import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeResponseData
 import com.expostore.data.repositories.AuthorizationRepository
@@ -74,7 +75,7 @@ class PasswordRecoveryViewModel @Inject constructor( private val repository:Auth
     }
 
     override fun onStart() {
-        TODO("Not yet implemented")
+        Log.i("ccc","vvv")
     }
 
 

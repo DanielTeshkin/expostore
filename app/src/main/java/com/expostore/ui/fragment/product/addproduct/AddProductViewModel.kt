@@ -27,16 +27,17 @@ class AddProductViewModel
     private val fileRequestData= mutableListOf<SaveFileRequestData>()
     val flag= MutableStateFlow("")
     @SuppressLint("StaticFieldLeak")
-    private val context:Context? = null
+    private var context:Context? = null
     private val _files=MutableSharedFlow<ResponseState<SaveFileResponseData>>()
     val files=_files.asSharedFlow()
     val fileList= mutableListOf<String?>(null,null)
-    init {
-        getCategories()
-    }
+    init { getCategories() }
 
     fun updateFlag(mean:String){
         flag.value=mean
+    }
+    fun saveContext(actual: Context){
+        context=actual
     }
     fun saveShopId(id:String){
         interactor.saveShopId(id)
@@ -67,8 +68,7 @@ class AddProductViewModel
 
     override fun saveMultimedia() {
         processor.checkConditionParameter(
-            condition= arrayOf(
-                {presentation.value!= Uri.parse("")},
+            condition= arrayOf({presentation.value!= Uri.parse("")},
                 {instruction.value!= Uri.parse("")}
             ),
             actionTrue = {states->loadFiles(states)},

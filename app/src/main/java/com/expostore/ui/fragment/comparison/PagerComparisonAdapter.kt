@@ -17,7 +17,7 @@ class PagerComparisonAdapter : RecyclerView.Adapter<PagerComparisonAdapter.Pager
     var onGoClickListener: ((ProductModel) -> Unit)? = null
     var onDeleteClickListener: ((String) -> Unit)? = null
 
-    var items: List<ProductModel> = emptyList()
+    var items: MutableList<ProductModel> = mutableListOf()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -54,7 +54,11 @@ class PagerComparisonAdapter : RecyclerView.Adapter<PagerComparisonAdapter.Pager
                   iconImage.load(model.images[0].file)
                   nameProduct.text=model.name
                   priceProduct.text=model.price
-                  delete.click { onDeleteClickListener?.invoke(model.id) }
+                  delete.click {
+                      items.remove(model)
+                      notifyDataSetChanged()
+                      onDeleteClickListener?.invoke(model.id)
+                  }
                   go.click { onGoClickListener?.invoke(model) }
               }
 

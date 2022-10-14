@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.data.repositories.ChatRepository
+import com.expostore.data.repositories.ProfileRepository
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.state.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +24,16 @@ import javax.inject.Inject
 class ChatsViewModel @Inject constructor(private val chatRepository: ChatRepository) : BaseViewModel() {
     private val _chats= MutableSharedFlow<ResponseState<List<MainChat>>>()
     val chats=_chats.asSharedFlow()
-    private val token= MutableStateFlow<String?>(value = null)
+     private val openPageIntent= MutableStateFlow(false)
 
-    fun chatsList() {
-        chatRepository.chats()
-            .handleResult(_chats)
+
+
+
+    fun getChatsListIntent()= when(!chatRepository.getToken().isNullOrEmpty()){
+       true-> chatRepository.chats().handleResult(_chats)
+        false->navigateToOpen()
     }
+
     fun openChatItem(infoItemChat: InfoItemChat){
         navigationTo(ChatsFragmentDirections.actionChatsFragmentToChatFragment(infoItemChat))
     }
@@ -36,18 +41,7 @@ class ChatsViewModel @Inject constructor(private val chatRepository: ChatReposit
         navigationTo(ChatsFragmentDirections.actionChatsFragmentToOpenFragment())
     }
 
-    fun getToken(){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                token.value=chatRepository.getToken()
-            }
-            check()
-        }
-    }
 
-    fun check(){
-        if(token.value.isNullOrEmpty())navigateToOpen()
-    }
 
     override fun onStart() {
 

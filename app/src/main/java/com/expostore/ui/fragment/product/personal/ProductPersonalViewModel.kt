@@ -31,6 +31,7 @@ class ProductPersonalViewModel @Inject constructor(private val interactor: BaseP
     fun navigateToComparison(){
 
     }
+    fun navigateToEdit()=navigationTo(ProductPersonalFragmentDirections.actionPersonalProductfragmentToCreatePersonalProduct(_product.value))
 
     fun saveProduct(model:ProductModel){ _product.value=model }
     fun navigateToBack()=navController.popBackStack()

@@ -15,6 +15,7 @@ import com.expostore.ui.controllers.ShopPageController
 import com.expostore.ui.fragment.category.ProductSelectionAdapter
 import com.expostore.ui.fragment.chats.loadAvatar
 import com.expostore.ui.fragment.chats.loadTabImage
+import com.expostore.ui.fragment.shop.shopcreate.ShopCreateFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,11 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener("shop") { _, bundle -> val info = bundle.getString("model")
-            if (info != null) {
-                viewModel.getShop(info)
-            }
-        }
+        val info=ShopFragmentArgs.fromBundle(requireArguments()).id
+        viewModel.getShop(info)
         viewModel.apply {
             getSelections()
             subscribe(shop) { state -> handleState(state){ data->
@@ -40,6 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
                     ivAvatar.loadAvatar(data.image.file)
                     ivBackground.loadBanner(data.image.file)
                     products.addAll(data.products.map { it.toModel })
+                    mAdapter.onClick = getClickListener(listOf())
                     rvShopProducts.apply {
                         layoutManager = LinearLayoutManager(context)
                         adapter = mAdapter

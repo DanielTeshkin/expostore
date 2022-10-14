@@ -35,11 +35,8 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init(ChatFragmentArgs.fromBundle(requireArguments()).info)
-        subscribe(PagerChatRepository.getInstance().getOpenFileState()){
-            if(it) resultLauncher.launch(FileStorage(requireContext()).openStorage())}
-        //subscribe(PagerChatRepository.getInstance().getImagesOpen()){
-        ///    if(it) openGallery()
-      //  }
+        subscribe(PagerChatRepository.getInstance().getOpenFileState()){ if(it) resultLauncher.launch(FileStorage(requireContext()).openStorage())}
+
 
     }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.expostore.MainActivity
 import com.expostore.R
 import com.expostore.databinding.NewPasswordFragmentBinding
@@ -28,10 +29,12 @@ class NewPasswordFragment : BaseFragment<NewPasswordFragmentBinding>(NewPassword
         super.onStart()
         val phone=NewPasswordFragmentArgs.fromBundle(requireArguments()).phone
         viewModel.apply {
+            start(findNavController())
             subscribe(navigation) { navigateSafety(it) }
             subscribe(loading){binding.progressBar16.isVisible=it}
             subscribe(enabled){binding.btnNext.isEnabled=it}
         }
+        binding.btnBack.click { viewModel.back() }
         binding.etPassword.addTextChangedListener { viewModel.changePassword1(it.toString()) }
         binding.etSecondPassword.addTextChangedListener { viewModel.changePassword2(it.toString()) }
         binding.btnNext.click {

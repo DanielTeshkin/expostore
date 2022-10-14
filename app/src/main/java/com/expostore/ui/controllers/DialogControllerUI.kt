@@ -145,8 +145,7 @@ class DialogControllerUI(context: Context,
     fun dismissPicker()=imagePicker.hide()
     private fun clearMap()=mapImages.clear()
     private fun openGallery(fragmentManager: FragmentManager)= imagePicker.show(fragmentManager,"load")
-    override fun click(bitmap: Bitmap) = openImageFragment(bitmap)
-            .show(fragmentManager, "DialogImage")
+    override fun click(bitmap: Bitmap) = openImageFragment(bitmap).show(fragmentManager, "DialogImage")
 
     fun filesRv(uris:MutableList<Uri>){
         visiblePanelFiles(true)
@@ -158,7 +157,6 @@ class DialogControllerUI(context: Context,
     fun imagesRv(uris: MutableList<Uri>, tag: String?){
         visiblePanelMultimedia(true)
         adapterMultimedia.addData(uris)
-
         saveImageLocal()
         sendActivate()
 

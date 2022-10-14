@@ -65,7 +65,7 @@ interface ServerApi {
     suspend fun confirmPassCode(@Body request: ConfirmCodeRequestData): Response<ConfirmCodeResponseData>
 
     @POST("api/reset_password/")
-    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ConfirmCodeResponseData>
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ResetPasswordRequest>
 
 
 
@@ -223,7 +223,7 @@ interface ServerApi {
 
     ): Response<BaseListResponse<Tender>>
 
-    @POST("/api/tender/{id}")
+    @GET("/api/tender/{id}/")
     suspend fun getTender(@Path("id")id:String): Response<Tender>
 
     @GET("/api/tender/my")
@@ -299,7 +299,7 @@ interface ServerApi {
     @GET("/api/product/get_select_for_comparison/")
     suspend fun getComparisonProducts(): Response<List<ProductResponse>>
 
-    @DELETE("/api/product/selectedproduct/delete/")
+    @POST("/api/product/selectedproduct/delete/")
     suspend fun deleteFromComparisonProducts(@Body products:List<ComparisonProductData>):Response<List<ComparisonProductData>>
 
     //personal product

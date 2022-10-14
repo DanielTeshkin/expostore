@@ -8,8 +8,9 @@ import com.expostore.databinding.TabFavoritesFragmentBinding
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.favorite.FavoriteProduct
 import com.expostore.ui.base.fragments.BaseProductFragment
-import com.expostore.ui.fragment.favorites.FavoriteSharedRepository
+import com.expostore.ui.fragment.favorites.SelectionsSharedRepository
 import com.expostore.utils.FavoritesProductRecyclerViewAdapter
+
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,29 +24,35 @@ class TabFavoritesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.apply { subscribe(favorites) { state -> handleState(state) {installAdapter(it)} }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.apply {
             getFavorites()
             getSelections()
-            subscribe(favorites) { state ->
-                handleState(state) {
-                    binding.apply {
-                        rvFavorites.apply {
-                            if(it.isNotEmpty()) {
-                                favoritesList.addAll(it)
-                                layoutManager = LinearLayoutManager(requireContext())
-                                adapter = myAdapter
-                                progressBar4.visibility = View.GONE
-                            }
-                        }
-                    }
-                }
-            } }
+        }
+    }
+
+
+    private fun installAdapter(items:List<FavoriteProduct>){
+        favoritesList.clear()
+        if(items.isNotEmpty()) {
+            favoritesList.addAll(items)
+            binding.progressBar4.visibility = View.GONE
+        }
+        binding.rvFavorites.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = myAdapter
+        }
     }
 
     override fun loadSelections(list: List<SelectionModel>) {
-        FavoriteSharedRepository.getInstance().getSelections().value=list
-        myAdapter.onClickListener=getClickListener(list)
-    }
+       SelectionsSharedRepository.getInstance().getSelections().value=list
+        myAdapter.onClickListener=getClickListener(list)}
+
 
 
 }

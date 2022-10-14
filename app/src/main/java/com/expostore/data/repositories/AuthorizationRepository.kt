@@ -60,7 +60,7 @@ class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWork
     }
 
     fun newPassword(request: ResetPasswordRequest) = flow{
-        emit(handleOrDefault(ConfirmCodeResponseData()){apiWorker.resetPassword(request)})
+        emit(handleOrDefault(ResetPasswordRequest()){apiWorker.resetPassword(request)})
     }
 
    fun saveToken( refresh:String,access:String) = localWorker.saveToken(TokenModel(refresh,access))

@@ -34,6 +34,9 @@ class TabFavoritesViewModel @Inject constructor(override val interactor: BasePro
   override  fun navigateToNote(model: ProductModel) =navigationTo(FavoritesFragmentDirections
         .actionFavoritesFragmentToNoteFragment(id=model.id,
             isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
+
+    override fun navigateToOpen()= navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToOpenFragment())
+
     override fun navigateToBlock()=navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToSupportFragment())
     override fun navigateToItem(model: ProductModel) = navigationTo(FavoritesFragmentDirections.actionFavoritesFragmentToProductFragment2(model))
 

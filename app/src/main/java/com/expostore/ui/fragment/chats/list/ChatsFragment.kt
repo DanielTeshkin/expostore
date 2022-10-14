@@ -29,6 +29,7 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeViewModel()
+
     }
     override fun onStart() {
         super.onStart()
@@ -43,11 +44,14 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
 
                 chatsViewModel.openChatItem(result)}} }
 
+    override fun onResume() {
+        super.onResume()
+        chatsViewModel.getChatsListIntent()
+    }
    private fun subscribeViewModel(){
         val show:Show = {showChats(it as MutableList<MainChat>)}
         val load:Load={loading(it)}
         chatsViewModel.apply {
-            chatsList()
             subscribe(chats) { handleState(it,load,show)}
             subscribe(navigation) { navigateSafety(it) }
         }
@@ -59,11 +63,8 @@ class ChatsFragment : BaseFragment<ChatsFragmentBinding>(ChatsFragmentBinding::i
      }
  }
     private fun showChats(list: MutableList<MainChat>) {
-        if(list.isNotEmpty()) binding.progressBar3.visibility=View.GONE
         mAdapter = ChatsRecyclerViewAdapter(list, onClick)
-        binding.apply {
-            rvChats.install(manager,mAdapter)
-        }
+        binding.rvChats.install(manager,mAdapter)
     }
 }
 

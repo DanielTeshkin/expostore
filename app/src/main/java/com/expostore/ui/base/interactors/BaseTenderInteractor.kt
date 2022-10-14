@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class BaseTenderInteractor @Inject constructor(private val chats: ChatRepository,
-                           private val favorite: FavoriteRepository,
-                           private val selectionRepository: SelectionRepository,
-                           private val tenders: TenderRepository
-): BaseItemsInteractor<TenderModel, SelectFavoriteTenderResponseData, FavoriteTender> {
+                                               private val favorite: FavoriteRepository,
+                                               private val tenders: TenderRepository,
+                                               override val user: ProfileRepository
+): BaseItemsInteractor<TenderModel, SelectFavoriteTenderResponseData, FavoriteTender>() {
     override fun createChat(id: String)=chats.createChat(id,"tender")
     override fun updateSelected(id: String)=favorite.addToFavoriteTender(id)
     override fun getFavoriteList() = favorite.getFavoriteTenders()

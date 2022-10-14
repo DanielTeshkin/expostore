@@ -29,7 +29,7 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
             adapter.items=item.images.map { it.file }
             binding.apply {
                 name.text=item.name
-                price.text=item.price
+                price.text=item.price+ " " + "руб"
                 description.text=item.shortDescription
                 address.text= "Адрес"+" "+ item.shop.address
                 viewPager.adapter=adapter

@@ -40,10 +40,10 @@ import kotlinx.coroutines.flow.collect
             initUI(sendText, {viewModel.saveImageNetwork(it)},childFragmentManager,saveFiles)
             setupVisibleControllerForTextInput { viewModel.saveMessageText(it) }
         }
-        state { PagerChatRepository.getInstance().getUriFiles().collect {
+        subscribe( PagerChatRepository.getInstance().getUriFiles()) {
             if (it.isNotEmpty())controller.filesRv(it as MutableList<Uri>)
         }
-        }
+
 
     }
 

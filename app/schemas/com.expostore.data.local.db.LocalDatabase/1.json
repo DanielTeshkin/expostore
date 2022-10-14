@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "509197e2ac0bf55c976a2c6c673398e2",
+    "identityHash": "3e3c927577974b082750a4e691fead17",
     "entities": [
       {
         "tableName": "token",
@@ -401,7 +401,7 @@
       },
       {
         "tableName": "category",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `sortingNumber` INTEGER, `parent` TEXT, `child_category` TEXT, `have_child` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `sortingNumber` INTEGER, `child_category` TEXT, `have_child` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -419,12 +419,6 @@
             "fieldPath": "sortingNumber",
             "columnName": "sortingNumber",
             "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "parent",
-            "columnName": "parent",
-            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -543,7 +537,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '509197e2ac0bf55c976a2c6c673398e2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e3c927577974b082750a4e691fead17')"
     ]
   }
 }

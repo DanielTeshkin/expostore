@@ -20,6 +20,7 @@ class ChatRepository @Inject constructor(private val apiWorker: ApiWorker, priva
     fun chats() = operator(
         databaseQuery = { localWorker.getChats().map { it.toModel }},
         networkCall = { handleOrEmptyList { apiWorker.getChats()}.map { it.toModel }},
+        clearCall = {localWorker.removeChats()},
         saveCallResult = { localWorker.saveChats(it)}
     )
 

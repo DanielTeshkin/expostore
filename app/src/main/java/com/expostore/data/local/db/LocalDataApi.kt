@@ -15,7 +15,7 @@ interface LocalDataApi {
     @Query("Select * from token")
      fun getToken():TokenDao?
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveToken(tokenDao: TokenDao)
 
     @Query("DELETE FROM token")
@@ -24,7 +24,7 @@ interface LocalDataApi {
     @Query("Select * from chats")
     suspend fun getChats():List<ChatDao>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveChats(chats:List<ChatDao>)
 
     @Query("DELETE FROM chats")
@@ -33,7 +33,7 @@ interface LocalDataApi {
     @Query("Select * from profile")
     suspend fun getProfile(): ProfileDao
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveProfile(model: ProfileDao)
 
     @Query("DELETE FROM profile")
@@ -45,7 +45,7 @@ interface LocalDataApi {
     @Query("SELECT * FROM selection WHERE id=:id ")
     suspend fun getSelectionById(id:String):SelectionDao
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveSelections(selections:List<SelectionDao>)
 
     @Query("DELETE FROM selection")
@@ -54,7 +54,7 @@ interface LocalDataApi {
     @Query("Select * from advertising")
     suspend fun getAdvertising():List<AdvertisingDao>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveAdvertising(advertising:List<AdvertisingDao>)
 
     @Query("DELETE FROM selection")
@@ -63,7 +63,7 @@ interface LocalDataApi {
     @Query("Select * from favorite")
     suspend fun getFavoritesProduct():List<FavoriteProductDao>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveFavorites(list: List<FavoriteProductDao>)
 
     @Query("DELETE FROM favorite")
@@ -72,7 +72,7 @@ interface LocalDataApi {
     @Query("Select * from favorite_tenders")
     suspend fun getFavoritesTender():List<FavoriteTenderDao>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveFavoritesTender(list: List<FavoriteTenderDao>)
 
     @Query("DELETE FROM favorite_tenders")
@@ -81,7 +81,7 @@ interface LocalDataApi {
     @Query("Select * from category")
     suspend fun getCategories():List<CategoryDao>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveCategories(list: List<CategoryDao>)
 
     @Query("DELETE FROM category")
@@ -90,7 +90,7 @@ interface LocalDataApi {
     @Query("Select * from personal")
     suspend fun getPersonalSelections():List<SelectionPersonal>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun savePersonalSelections(list: List<SelectionPersonal>)
 
     @Query("DELETE FROM personal")

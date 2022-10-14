@@ -68,7 +68,7 @@ interface ApiWorker {
 
     suspend fun confirmPassCode( request: ConfirmCodeRequestData): BaseApiResponse<ConfirmCodeResponseData>
 
-    suspend fun resetPassword( request: ResetPasswordRequest): BaseApiResponse<ConfirmCodeResponseData>
+    suspend fun resetPassword( request: ResetPasswordRequest): BaseApiResponse<ResetPasswordRequest>
 
     suspend fun shopCreate(request: AddShopRequestData):BaseApiResponse<ShopResponse>
 

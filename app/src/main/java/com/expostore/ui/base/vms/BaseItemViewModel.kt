@@ -27,12 +27,19 @@ abstract class BaseItemViewModel<T : Any,A,E>:BaseViewModel() {
     val favorites=_favorites.asSharedFlow()
 
     fun search(filterModel: FilterModel?=FilterModel())=interactor.search(filterModel = filterModel).cachedIn(viewModelScope)
+    fun getFavorites()=when(checkAuthorizationState()){
+        true->interactor.getFavoriteList().handleResult(_favorites)
+        false->navigateToOpen()
+    }
 
-    fun getFavorites()=interactor.getFavoriteList().handleResult(_favorites)
-    fun createChat(id:String)=interactor.createChat(id).handleResult(_chat,{
-        updateChatData(it)
-        navigateToChat(chatData.value)
-    })
+    fun createChat(id:String) = when(checkAuthorizationState()) {
+            true -> interactor.createChat(id).handleResult(_chat, {
+                updateChatData(it)
+                navigateToChat(chatData.value)
+            })
+            false-> navigateToOpen()
+        }
+
     private fun updateChatData(chat: MainChat) = chat.apply {
         chatData.value = InfoItemChat(identify()[1],
             identify()[0],
@@ -42,12 +49,20 @@ abstract class BaseItemViewModel<T : Any,A,E>:BaseViewModel() {
             identify()[3])
     }
 
-    fun updateSelected(id:String)=interactor.updateSelected(id).handleResult()
-
+    protected fun checkAuthorizationState()=!interactor.getToken().isNullOrEmpty()
+    fun updateSelected(id:String)= when(checkAuthorizationState()){
+        true->interactor.updateSelected(id).handleResult()
+        false-> navigateToOpen()
+    }
+    fun createIntentNote(model: T)=when(checkAuthorizationState()) {
+        true->navigateToItem(model)
+        false-> navigateToOpen()
+    }
     abstract fun navigateToChat(value: InfoItemChat)
     abstract fun navigateToBlock()
     abstract fun navigateToItem(model:T)
     abstract fun navigateToNote(model:T)
+    abstract fun navigateToOpen()
 
     override fun onStart() {
        Log.i("h","")

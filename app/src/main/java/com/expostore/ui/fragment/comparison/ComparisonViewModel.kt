@@ -18,6 +18,7 @@ class ComparisonViewModel  @Inject constructor( private val comparisonRepository
      val currentPositionFirst= MutableStateFlow(1)
     val currentPositionSecond= MutableStateFlow(1)
     val characteristicsResponse = MutableSharedFlow<ResponseState<List<ComparisonModel>>>()
+    val delete = MutableSharedFlow<ResponseState<List<ComparisonProductData>>>()
     val comparisons = MutableStateFlow(listOf<ComparisonModel>())
     override fun onStart() {
         TODO("Not yet implemented")
@@ -69,7 +70,10 @@ class ComparisonViewModel  @Inject constructor( private val comparisonRepository
         }
     }
 
-    fun deleteFromComparison(id:String)=comparisonRepository.deleteFromComparison(listOf(ComparisonProductData(id))).handleResult()
+    fun deleteFromComparison(id:String){
+        Log.i("stop",id)
+        comparisonRepository.deleteFromComparison(listOf(ComparisonProductData(id))).handleResult(delete)
+    }
     fun navigateToProduct(model: ProductModel)=
         navigationTo(ComparisonFragmentDirections.actionComparisonToProductFragment(model))
 }

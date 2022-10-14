@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -73,6 +74,7 @@ class TenderAdapter :
                     onItemClickListener?.invoke(item)
 
                 }
+                if(item.communicationType == "chatting")call.isVisible=false
                 root.click {
                     onItemClickListener?.invoke(item)
                 }

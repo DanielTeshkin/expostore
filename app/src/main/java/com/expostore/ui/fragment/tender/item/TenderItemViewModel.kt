@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.tender.item
 
 import android.util.Log
+import com.expostore.data.remote.api.pojo.getcategory.Characteristic
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.model.tender.TenderModel
@@ -11,6 +12,7 @@ import com.expostore.ui.fragment.chats.chatsId
 import com.expostore.ui.fragment.chats.identify
 import com.expostore.ui.fragment.chats.imagesProduct
 import com.expostore.ui.fragment.chats.productsName
+import com.expostore.ui.fragment.product.utils.CharacteristicsData
 import com.expostore.ui.fragment.tender.TenderInteractor
 
 import com.expostore.ui.state.ResponseState
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.stream.Collector
 import javax.inject.Inject
 @HiltViewModel
 class TenderItemViewModel @Inject constructor(override val interactor: BaseTenderInteractor):
@@ -46,14 +49,17 @@ class TenderItemViewModel @Inject constructor(override val interactor: BaseTende
             isLiked = model.isLiked, text = model.elected?.notes, flag = "tender", flagNavigation = "tender"))
     }
 
+    override fun navigateToOpen() =navigationTo(TenderItemFragmentDirections.actionTenderItemToOpenFragment())
+
     fun navigateToShop(){
-        navigationTo(TenderItemFragmentDirections.actionTenderItemToShopFragment())
+        navigationTo(TenderItemFragmentDirections.actionTenderItemToShopFragment(tender.value.shopModel.id))
     }
 
     fun saveTender(item:TenderModel){
         _tender.value=item
     }
-
+    fun navigateToCharacteristics(data:CharacteristicsData)=
+        navigationTo(TenderItemFragmentDirections.actionTenderItemToCharacteristicFragment(data))
 
     override fun onStart() {
       Log.i("got","lod")

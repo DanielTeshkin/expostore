@@ -20,6 +20,7 @@ import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.fragments.create.BaseCreatorFragment
 import com.expostore.ui.base.fragments.create.CreateProductFragment
 import com.expostore.ui.controllers.BaseCreatorController
+import com.expostore.ui.fragment.chats.dialog.adapter.getFileName
 import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.listPath
@@ -45,6 +46,7 @@ class AddProductFragment() :  CreateProductFragment() {
                 viewModel.updateFlag("instruction")
                 openFilesStorage()
             }
+            viewModel.saveContext(requireContext())
         }
     }
 
@@ -71,12 +73,11 @@ class AddProductFragment() :  CreateProductFragment() {
                      when(viewModel.flag.value){
                          "presentation"-> {
                              viewModel.savePresentation(uri ?: Uri.parse(""))
-                             binding.addPresentation.text= uri.toString()
+                             binding.addPresentation.text=  getFileName(uri?: Uri.parse(""))
                          }
-
                          "instruction"->{
                              viewModel.saveInstruction(uri?: Uri.parse(""))
-                             binding.addInstruction.text= uri.toString()
+                             binding.addInstruction.text=  getFileName(uri?: Uri.parse(""))
                          }
                      } }
 

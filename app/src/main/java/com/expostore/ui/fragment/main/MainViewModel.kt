@@ -1,6 +1,8 @@
 package com.expostore.ui.fragment.main
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
 import com.expostore.data.repositories.MainRepository
 import com.expostore.data.repositories.ProfileRepository
 import com.expostore.model.category.CategoryAdvertisingModel
@@ -11,6 +13,7 @@ import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.main.interactor.MainInteractor
 import com.expostore.ui.state.MainState
 import com.expostore.ui.state.ResponseState
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -44,7 +47,13 @@ class MainViewModel @Inject constructor(
         url = url, format = "ordinary"
     ))
 
-
+    fun saveFcmToken(fcmToken: String) {
+             if (!token.value.isNullOrEmpty()) {
+                 profileRepository.patchProfile(EditProfileRequest(pushToken = fcmToken))
+                     .handleResult()
+                 Log.i("gonee",fcmToken)
+             }
+      }
 
     fun load() {
 

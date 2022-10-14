@@ -53,4 +53,6 @@ class SearchViewModel @Inject constructor(override var interactor: BaseProductIn
         navigationTo(SearchFragmentDirections.actionSearchFragmentToNoteFragment(id=model.id,
             isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     }
-    }
+
+    override fun navigateToOpen() =navigationTo(SearchFragmentDirections.actionSearchFragmentToOpenFragment())
+}

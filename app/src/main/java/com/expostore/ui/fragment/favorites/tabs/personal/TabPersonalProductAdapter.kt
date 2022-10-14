@@ -40,10 +40,8 @@ class TabPersonalProductRecyclerViewAdapter(
     inner class FavoritesProductViewHolder(val binding:PersonalProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind( product: ProductModel){
-
             binding.price.text=product.price.priceSeparator() +" " +"рублей"
             val list=ArrayList<String>()
-
             product.images.map { list.add(it.file) }
             binding.name.text = product.name
             binding.note.text=product.elected.notes
@@ -53,10 +51,10 @@ class TabPersonalProductRecyclerViewAdapter(
                 tabProductPagerAdapter.items=list
                 adapter=tabProductPagerAdapter
             }
-            binding.delete.click {
-                onDeleteClick?.invoke(product.id)
+           // binding.delete.click {
+              //  onDeleteClick?.invoke(product.id)
                // removeAt(product)
-            }
+           // }
 
 
         }

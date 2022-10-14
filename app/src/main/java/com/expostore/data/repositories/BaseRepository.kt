@@ -39,12 +39,15 @@ open class BaseRepository {
     }
     protected fun <T> operator (databaseQuery: suspend ()-> T,
                                 networkCall: suspend () ->  T,
+                                clearCall:  suspend  () -> Unit,
                                 saveCallResult: suspend  (T) -> Unit) = flow {
         val result = databaseQuery.invoke()
         emit(result)
         val response=networkCall.invoke()
-        saveCallResult(response)
         emit(response)
+        clearCall.invoke()
+        saveCallResult(response)
+
     }
 
     protected fun <T,A> singleOperator(databaseQuery: suspend ()-> A,

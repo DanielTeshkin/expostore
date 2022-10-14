@@ -8,12 +8,15 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.expostore.databinding.AddReviewFragmentBinding
 import com.expostore.ui.base.fragments.BaseFragment
+import com.expostore.ui.fragment.profile.profile_edit.click
 
 import com.expostore.utils.TenderCreateImageRecyclerViewAdapter
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -24,23 +27,26 @@ class AddReviewFragment :
     BaseFragment<AddReviewFragmentBinding>(AddReviewFragmentBinding::inflate) {
 
     private  val addReviewViewModel: AddReviewViewModel by viewModels()
-
+    override var isBottomNavViewVisible: Boolean=false
     private  val images: MutableList<String> by lazy {
         mutableListOf("")
     }
     private  val mAdapter: TenderCreateImageRecyclerViewAdapter by lazy {
         TenderCreateImageRecyclerViewAdapter(images)
     }
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener("key_product") { _, bundle ->
             val result = bundle.getString("productId")
             addReviewViewModel.saveProduct(result?:"")
         }
+        addReviewViewModel.apply {
+            start(findNavController())
+            subscribe(loading){binding.progressBar17.isVisible=it}
+            subscribe(navigation){navigateSafety(it)}
+        }
         binding.apply {
+            binding.btnBack.click { addReviewViewModel.navigateToBack() }
             ratingBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
                 tvRating.text =
                     "Оценка: " + rating.toInt() + "/" + ratingBar.numStars.toString()
@@ -82,7 +88,8 @@ class AddReviewFragment :
             }
 
             override fun removePhoto(index: Int) {
-                TODO()
+                   addReviewViewModel.remove(index)
+
             }
         }
     }

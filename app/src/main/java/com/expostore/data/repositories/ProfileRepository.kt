@@ -1,5 +1,6 @@
 package com.expostore.data.repositories
 
+import com.expostore.data.local.db.LocalDatabase
 import com.expostore.data.remote.api.ApiWorker
 import com.expostore.data.remote.api.pojo.getcities.toModel
 import com.expostore.data.remote.api.pojo.getprofile.EditProfileRequest
@@ -13,7 +14,8 @@ import com.expostore.model.profile.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, private  val localWorker: LocalWorker) :BaseRepository() {
+class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker,
+                                            private  val localWorker: LocalWorker,private val db:LocalDatabase) :BaseRepository() {
 
 
     fun getProfile()= singleOperator(
@@ -26,6 +28,10 @@ class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, pr
        val result= handleOrDefault(GetProfileResponseData()) { apiWorker.getProfile() }.toModel
        emit(result)
     }
+   suspend fun clearDb(){
+       localWorker.removeToken()
+       db.clearAllTables()
+   }
 
     fun patchProfile( editProfileRequest: EditProfileRequest)= flow {
         val result=handleOrDefault(EditResponseProfile()){apiWorker.patchProfile(editProfileRequest)}
@@ -44,10 +50,17 @@ class ProfileRepository @Inject constructor(private val apiWorker: ApiWorker, pr
 
     fun getToken()= localWorker.getToken()
 
-    suspend fun deleteAll() {
-        localWorker.removeToken()
-     localWorker.deleteProfile()
-        localWorker.removeChats()
-    }
+    suspend fun deleteAll() =
+        localWorker.apply {
+            removeToken()
+            removeMyTenders()
+            deleteProfile()
+            removeChats()
+            removeAdvertising()
+            removeFavorites()
+            removeFavoritesTender()
+            removeMyProducts()
+        }
+
 
 }

@@ -27,6 +27,7 @@ class CompletionFragment : BaseFragment<CompletionFragmentBinding>(CompletionFra
 
     private val completionViewModel: ProfileDataViewModel by viewModels()
    private val load: Show<List<City>> = { loadCities(it) }
+    override var isBottomNavViewVisible: Boolean = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         makeStartRequest()

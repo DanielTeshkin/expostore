@@ -31,8 +31,8 @@ class FavoriteTendersFragment : BaseTenderFragment<FavoriteTendersFragmentBindin
 
     private fun showFavorites(item: List<FavoriteTender>) =
             binding.apply {
+                tenders.clear()
                 if(item.isNotEmpty()) {
-                    Log.i("size", item.size.toString())
                     tenders.addAll(item)
                     mAdapter.onCallItemClickListener = { navigateToCall(it) }
                     mAdapter.onClickLike = { updateFavorites(it) }

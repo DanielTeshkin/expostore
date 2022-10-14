@@ -14,7 +14,9 @@ import com.expostore.data.remote.api.pojo.addreview.AddReviewResponseData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.data.repositories.MultimediaRepository
+import com.expostore.data.repositories.ProductsRepository
 import com.expostore.data.repositories.ReviewsRepository
+import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.chats.general.ImageMessage
 import com.expostore.ui.state.ResponseState
@@ -28,39 +30,46 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddReviewViewModel @Inject constructor(private val reviewsRepository: ReviewsRepository,private val multimediaRepository: MultimediaRepository) : BaseViewModel() {
+class AddReviewViewModel @Inject constructor(private val
+                                             reviewsRepository: ReviewsRepository,
+                                             private val multimediaRepository: MultimediaRepository,
+private val productsRepository: ProductsRepository) : BaseViewModel() {
     private val _imageList= MutableStateFlow<MutableList<String>>(mutableListOf())
     private val  imageList=_imageList.asStateFlow()
     private val uriSource= MutableStateFlow<MutableList<Uri>>(mutableListOf())
     private val save= MutableSharedFlow<ResponseState<SaveImageResponseData>>()
     private  val id = MutableStateFlow<String>("")
     private val _uiAddReview= MutableSharedFlow<ResponseState<AddReviewResponseData>>()
+    private val _loading=MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
 
     override fun onStart() {
-        TODO("Not yet implemented")
+        Log.i("fff","fff")
     }
     fun saveReview(text: String, rating: Int, context: Context){
-
-            if(uriSource.value.size>0) {
+        if(uriSource.value.size>0) {
                 Log.i("id",id.value)
                 saveImages(uriSource.value, context)
-
-                viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(Dispatchers.IO) {
                     save.collect { images ->
                         if (images is ResponseState.Success) {
                             addPhoto(images.item.id[0])
-
-                           reviewsRepository.addReview(id.value,imageList.value,rating,text).handleResult(_uiAddReview)
+                            reviewsRepository.addReview(id.value,imageList.value,rating,text).handleResult(_uiAddReview,{
+                               loadProductAndReturn(id.value)
+                            })
 
                         }
                     }
                 }
             }
-            else {
-
-                reviewsRepository.addReview(id.value, listOf(),rating,text).handleResult(_uiAddReview)
-            }
+            else { reviewsRepository
+            .addReview(id.value, listOf(),rating,text).handleResult(_uiAddReview,{loadProductAndReturn(id.value)}) }
         }
+
+    private fun loadProductAndReturn(id: String)= productsRepository.getProduct(id).handleResult({_loading.value=it},{navigateToProduct(it)})
+
+    private fun navigateToProduct(model:ProductModel)=
+        navigationTo(AddReviewFragmentDirections.actionAddReviewFragmentToProductFragment(model))
 
     private fun saveImages(list:List<Uri>,context:Context){
         val bitmapList=ArrayList<Bitmap>()
@@ -84,13 +93,14 @@ class AddReviewViewModel @Inject constructor(private val reviewsRepository: Revi
     fun saveProduct(idProduct:String){
         id.value=idProduct
     }
+    fun navigateToBack()=navController.popBackStack()
 
     private fun  addPhoto(id:String){
         _imageList.value.add(id)
     }
-    fun saveUri(image: Uri){
-        uriSource.value.add(image)
-    }
+    fun saveUri(image: Uri)= uriSource.value.add(image)
+    fun remove(index:Int)=uriSource.value.removeAt(index)
+
 
 
 }

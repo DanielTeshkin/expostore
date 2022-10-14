@@ -14,6 +14,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
@@ -63,7 +64,6 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -168,10 +168,6 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
               }
     }
 
-
-
-
-
     override fun onResume() {
         super.onResume()
         if (!isFirstResume) {
@@ -194,7 +190,7 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
 
     protected fun snackbarOpen(){
         val snackbar = Snackbar.make(binding.root, "Перейти к сравнениям", Snackbar.LENGTH_SHORT)
-        snackbar.setAction("Да") {}
+        snackbar.setAction("Да") {navigateToComparison()}
         snackbar.show()
     }
     open fun navigateToComparison(){}

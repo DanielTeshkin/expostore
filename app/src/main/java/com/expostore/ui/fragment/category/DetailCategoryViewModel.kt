@@ -28,6 +28,8 @@ class DetailCategoryViewModel @Inject constructor(override val interactor: BaseP
             isLiked = model.isLiked, text = model.elected.notes, flag = "product", flagNavigation = ""))
     }
 
+    override fun navigateToOpen() = navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToOpenFragment())
+
     override  fun navigateToChat(infoItemChat: InfoItemChat)=
         navigationTo(DetailCategoryFragmentDirections.actionDetailCategoryFragmentToChatFragment(infoItemChat))
 

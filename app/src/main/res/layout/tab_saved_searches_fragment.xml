@@ -16,7 +16,7 @@
         android:fontFamily="@font/roboto_medium"
         android:text="Cохраненные поиски"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rv_searches"
         app:layout_constraintEnd_toEndOf="parent"

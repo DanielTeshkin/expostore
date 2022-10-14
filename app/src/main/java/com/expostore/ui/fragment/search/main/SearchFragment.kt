@@ -19,6 +19,7 @@ import com.expostore.model.product.ProductModel
 import com.expostore.ui.base.search.fragments.BaseSearchFragment
 import com.expostore.ui.base.search.fragments.Image
 import com.expostore.ui.base.search.fragments.Location
+import com.expostore.ui.fragment.category.OnClickListeners
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.search.main.adapter.ProductMarkerApi
 import com.expostore.ui.fragment.search.main.adapter.ProductsAdapter
@@ -66,6 +67,7 @@ class SearchFragment() : BaseSearchFragment<SearchFragmentBinding, ProductModel,
 
     override fun onStart() {
         super.onStart()
+        setClickListener(getClickListener(listOf()))
         val result = SearchFragmentArgs.fromBundle(requireArguments()).filter
         if (result != null) searchWithFilters(result)
     }
@@ -88,17 +90,21 @@ class SearchFragment() : BaseSearchFragment<SearchFragmentBinding, ProductModel,
 
     private fun loadSelections(list: List<SelectionModel>) {
         val events= getClickListener(list)
-        myAdapter.apply {
+        setClickListener(events)
+    }
+
+    private fun setClickListener(events:OnClickListeners<ProductModel>)= myAdapter.apply {
             onCallItemClickListener = { events.onClickCall(it) }
             onItemClickListener = { events.onClickItem(it) }
             onLikeItemClickListener = { events.onClickLike(it) }
             onMessageItemClickListener = { events.onClickMessage(it) }
             onAnotherItemClickListener ={events.onClickAnother(it)} }
-    }
+
+
 
     override fun navigateToComparison() { viewModel.navigateToComparison() }
     override fun addToComparison(id: String) =viewModel.addToComparison(id)
-    override fun createSelection(product: String) = viewModel.navigateToCreateSelection(product)
+    override fun createSelection(product: String) = viewModel.createSelectionIntent(product)
     override fun addToSelection(id: String, product: String)= viewModel.addToSelection(id,product)
     override fun showBottomScreen(
         context: Context,

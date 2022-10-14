@@ -1,5 +1,6 @@
 package com.expostore.ui.fragment.authorization.confirmnumberpass
 
+import android.util.Log
 import com.expostore.data.repositories.AuthorizationRepository
 import com.expostore.ui.base.vms.BaseViewModel
 import com.expostore.ui.fragment.authorization.registration.confirmnumber.ConfirmNumberFragmentDirections
@@ -50,6 +51,6 @@ class ConfirmNumberResetViewModel @Inject constructor(private val repository: Au
         navigationTo(ConfirmNumberFragmentDirections.actionNumberFragmentToOpenFragment())
     }
     override fun onStart() {
-        TODO("Not yet implemented")
+      Log.i("ffff","ggg")
     }
 }
