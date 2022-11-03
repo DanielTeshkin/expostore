@@ -20,7 +20,9 @@ import com.expostore.data.repositories.CategoryRepository
 import com.expostore.data.repositories.ProfileRepository
 import com.expostore.data.repositories.SelectionRepository
 import com.expostore.databinding.ActivityMainBinding
+import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.fragment.favorites.SelectionsSharedRepository
+import com.expostore.ui.fragment.main.MainFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -53,8 +55,9 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val navigation = binding.bottomNavigationView
         navigation.setupWithNavController(navController)
-      //  if (profileRepository.getToken().isNullOrEmpty()) lifecycleWrapper(selectionRepository.getPersonalSelection()){SelectionsSharedRepository.getInstance().getSelections().value = it}
-       // lifecycleWrapper(categoryRepository.getCategories()){ Log.i("count",it.size.toString())}
+      //  val infoChat=intent.getParcelableExtra<InfoItemChat>("info_chat")
+      //  if(infoChat!=null) navController.navigate(MainFragmentDirections.actionMainFragmentToChatFragment(infoChat))
+
 
     }
 
@@ -65,16 +68,7 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigationView.isVisible = isVisible
         }
     }
-    private inline fun <T> lifecycleWrapper(action:Flow<T>, crossinline handleData: (T) -> Unit){
-        lifecycleScope.launch(Dispatchers.IO) {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                action
-                    .onEach { handleData.invoke(it)}
 
-                    .launchIn(this)
-            }
-        }
-    }
 
 
     private fun animate(){

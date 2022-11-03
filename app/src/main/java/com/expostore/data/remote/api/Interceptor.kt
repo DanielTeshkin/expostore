@@ -21,21 +21,13 @@ class Interceptor @Inject constructor(
     private val localWorker: Lazy<LocalWorker>
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        // TODO: переделать получение токена, когда будет бд!!!
-      //  val token = AppPreferences.getSharedPreferences(context).getString("token", "")
-        val token1= localWorker.get().getToken()
-
-
-        Log.wtf("TOKEN", token1)
+        val token= localWorker.get().getToken()
+        Log.wtf("TOKEN", token)
 
         val request = chain.request()
             .newBuilder()
 
-        //token?.takeIf { it.isNotEmpty() }?.let {
-         //   request.addHeader(AUTHORIZATION, "$BEARER $it")
-        //}
-
-        token1?.takeIf { it.isNotEmpty() }?.let {
+        token?.takeIf { it.isNotEmpty() }?.let {
             request.addHeader(AUTHORIZATION, "$BEARER $it")
         }
 
@@ -64,19 +56,11 @@ class Interceptor @Inject constructor(
     private fun tryReLogin(chain: Interceptor.Chain): Response? {
         val newToken = runBlocking {
             apiWorker.get().refresh(
-                localWorker.get().getRefreshToken()?:""
+                localWorker.get().getRefreshToken() ?: ""
             ).result
         }
-       // if (!newToken?.access.isNullOrEmpty()) {
-          //  AppPreferences.getSharedPreferences(context).edit()
-           //     .putString("token", newToken!!.access)
-             //   .putString("refresh", newToken.refresh).apply()
 
-            if (!newToken?.access.isNullOrEmpty()) {
-                runBlocking {
-                    localWorker.get()
-                        .saveToken(TokenModel(newToken!!.refresh ?: "", newToken.access))
-                }
+        if (!newToken?.access.isNullOrEmpty()) { localWorker.get().saveToken(TokenModel(newToken!!.refresh ?: "", newToken.access))
                 val request = chain.request()
                 .newBuilder()
                 .header(AUTHORIZATION, "$BEARER ${newToken?.access}")
@@ -95,10 +79,7 @@ class Interceptor @Inject constructor(
         }.getOrDefault("")
 
     private fun triggerRebirth() {
-       // AppPreferences.getSharedPreferences(context).edit().putString("token", "").apply()
-        runBlocking {
-            localWorker.get().saveToken(TokenModel(access = " "))
-        }
+        localWorker.get().saveWorkerToken("")
         val packageManager = context.packageManager
         val intent = packageManager.getLaunchIntentForPackage(context.packageName)
         val componentName = intent!!.component

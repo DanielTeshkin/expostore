@@ -39,7 +39,8 @@ class CreatePersonalProductFragment() :
     CreateProductFragment()
     {
         override val viewModel: CreatePersonalProductViewModel by  viewModels()
-        override val item: ProductModel?=CreatePersonalProductFragmentArgs.fromBundle(requireArguments()).product
+        override val item: ProductModel?
+        get()=CreatePersonalProductFragmentArgs.fromBundle(requireArguments()).product
 
         override fun onStart() {
             super.onStart()

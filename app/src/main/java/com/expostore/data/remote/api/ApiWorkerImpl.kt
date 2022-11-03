@@ -302,6 +302,7 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
          else processResponse {serverApi.chatCreateProduct(ProductChat(id))}
     override suspend fun getChat(id: String) = processResponse { serverApi.getChat(id) }
     override suspend fun getShop(id: String) = processResponse { serverApi.getShop(id) }
+   override suspend fun getMainChat(id:String)=processResponse { serverApi.getMainChat(id) }
     override suspend fun deleteMainChat(id: String) = processResponse { serverApi.deleteMainChat(id) }
     override suspend fun deleteChat(id: String) = processResponse { serverApi.deleteChat(id) }
     override suspend fun deleteUserSelection(id: String)=processResponse {serverApi.deleteUserSelection(id) }
@@ -329,8 +330,8 @@ class ApiWorkerImpl(private val serverApi: ServerApi, private val context: Conte
     }
     override suspend fun getComparisonProducts() =processListResponse { serverApi.getComparisonProducts() }
 
-    override suspend fun deleteFromComparisonProducts(products: List<ComparisonProductData>)=
-       processListResponse { serverApi.deleteFromComparisonProducts(products) }
+    override suspend fun deleteFromComparisonProducts( id: String)=
+       processListResponse { serverApi.deleteFromComparisonProducts(id) }
 
     override suspend fun createPersonalProduct(request: ProductUpdateRequest) =
         processResponse { serverApi.createPersonalProduct(request) }

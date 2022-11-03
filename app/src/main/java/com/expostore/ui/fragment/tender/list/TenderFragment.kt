@@ -78,7 +78,11 @@ class TenderFragment() :
         super.onStart()
         clickInstall()
         val filters=TenderFragmentArgs.fromBundle(requireArguments()).filter
-        if (filters!=null) searchWithFilters(filters) }
+        if (filters!=null) {
+            viewModel.saveFilter(filters)
+            searchWithFilters()
+        }
+    }
 
 
      private fun clickInstall() {

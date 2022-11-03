@@ -1,5 +1,6 @@
 package com.expostore.data.repositories
 
+import android.util.Log
 import com.expostore.data.remote.api.ApiWorker
 import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeRequestData
 import com.expostore.data.remote.api.pojo.confirmcode.ConfirmCodeResponseData
@@ -63,6 +64,9 @@ class AuthorizationRepository @Inject constructor(private val apiWorker: ApiWork
         emit(handleOrDefault(ResetPasswordRequest()){apiWorker.resetPassword(request)})
     }
 
-   fun saveToken( refresh:String,access:String) = localWorker.saveToken(TokenModel(refresh,access))
+   fun saveToken( refresh:String,access:String){
+       Log.i("refresh",refresh)
+       localWorker.saveToken(TokenModel(refresh,access))
+   }
     fun getToken()=localWorker.getToken()
 }

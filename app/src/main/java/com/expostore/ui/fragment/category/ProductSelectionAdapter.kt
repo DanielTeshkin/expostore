@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.category
 
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -20,6 +21,7 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
         val v = SearchProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SelectionProductViewHolder(v)
     }
+
     override fun getItemViewType(position: Int): Int = position
     override fun getItemCount(): Int = products.size
     inner class SelectionProductViewHolder(val binding: SearchProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -40,14 +42,15 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
                 root.click { onClick?.onClickItem(item) }
                 write.click { onClick?.onClickMessage(item.id) }
                 another.click { onClick?.onClickAnother(model = item) }
-
             }
-
         }
     }
-    override fun onBindViewHolder(holder: SelectionProductViewHolder, position: Int) {
-        holder.bind(products[position])
+    override fun onBindViewHolder(holder: SelectionProductViewHolder, position: Int) { holder.bind(products[position]) }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun remove(model:ProductModel){
+        products.remove(model)
+        notifyDataSetChanged()
     }
 
 }

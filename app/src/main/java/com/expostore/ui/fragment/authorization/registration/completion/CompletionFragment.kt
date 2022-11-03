@@ -42,11 +42,7 @@ class CompletionFragment : BaseFragment<CompletionFragmentBinding>(CompletionFra
 
     override fun onStart() {
         super.onStart()
-       FirebaseMessaging.getInstance().token.addOnCompleteListener {
-           val token=  it.result
-           Log.i("fcm",it.result)
-           completionViewModel.saveToken(token)
-       }
+         getFcmToken { completionViewModel.saveToken(it) }
         initButtons()
         addChangeTextListeners()
     }

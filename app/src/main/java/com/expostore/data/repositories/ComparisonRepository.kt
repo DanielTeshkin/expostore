@@ -27,8 +27,8 @@ class ComparisonRepository @Inject constructor(private val apiWorker: ApiWorker,
         emit(result)
     }
 
-    fun deleteFromComparison(products:List<ComparisonProductData>) = flow {
-        val result= handleOrEmptyList{apiWorker.deleteFromComparisonProducts(products)}
+    fun deleteFromComparison(id:String) = flow {
+        val result= handleOrEmptyList{apiWorker.deleteFromComparisonProducts(id)}
         emit(result)
     }
 

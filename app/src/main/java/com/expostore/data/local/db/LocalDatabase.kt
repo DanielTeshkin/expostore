@@ -9,8 +9,7 @@ import com.expostore.data.local.db.enities.favorites.FavoriteTenderDao
 import com.expostore.data.local.db.enities.selection.SelectionDao
 
 
-@Database(entities = [
-    TokenDao::class,
+@Database(entities = [TokenDao::class,
   ChatDao::class, ProfileDao::class,
     SelectionDao::class,
     AdvertisingDao::class,
@@ -20,8 +19,7 @@ import com.expostore.data.local.db.enities.selection.SelectionDao
 CategoryDao::class,
 MyProductsDao::class,
 MyTendersDao::class,
-FavoriteTenderDao::class
-          ], version = 1,exportSchema =true)
+FavoriteTenderDao::class], version = 1,exportSchema =false)
 @TypeConverters(InfoTypeConverter::class,ConvertMessage::class, ConvertChat::class,ConvertItem::class,
   ConvertFile::class,ConvertUser::class,ConvertImage::class,ConvertProduct::class,ConverterProfile::class,
     ConverterShop::class,ConvertProductModel::class,

@@ -9,11 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.expostore.MessagingWorker
+import com.expostore.NoteWorker
 import com.expostore.R
 import com.expostore.databinding.NoteFragmentBinding
 import com.expostore.ui.base.fragments.BaseFragment
 import com.expostore.ui.fragment.profile.profile_edit.click
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.create_personal_product_fragment.*
+import java.util.concurrent.Executor
 
 @AndroidEntryPoint
 class NoteFragment : BaseFragment<NoteFragmentBinding>(NoteFragmentBinding::inflate) {
@@ -34,8 +41,24 @@ class NoteFragment : BaseFragment<NoteFragmentBinding>(NoteFragmentBinding::infl
         binding.delete.click {
             binding.myNote.text?.clear()
         }
-        binding.btnSaveNote.click { viewModel.createOrUpdateNoteProduct(binding.myNote.text.toString()) }
+        binding.btnSaveNote.click{
+            val data= workDataOf(Pair ("data",
+                NoteData(id,flag,isLiked,flagNavigation)),
+                Pair("text",binding.myNote.text.toString())
+            )
+            val myWorkRequest =  OneTimeWorkRequest.Builder(NoteWorker::class.java).addTag("note").setInputData(data).build()
+            WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
+            WorkManager.getInstance(requireContext())
+                .getWorkInfosByTagLiveData("note")
+                .observe(viewLifecycleOwner) {
+                    if(it.size>0){
+                    val info=it[0].state
+                    if (info.isFinished)
+                        viewModel.navigate()
+                }
+            }
+
+        }
 
     }
-
 }

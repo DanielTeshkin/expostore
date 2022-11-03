@@ -70,10 +70,8 @@ class ComparisonViewModel  @Inject constructor( private val comparisonRepository
         }
     }
 
-    fun deleteFromComparison(id:String){
-        Log.i("stop",id)
-        comparisonRepository.deleteFromComparison(listOf(ComparisonProductData(id))).handleResult(delete)
-    }
+    fun deleteFromComparison(id:String)= comparisonRepository.deleteFromComparison(id).handleResult(delete)
+
     fun navigateToProduct(model: ProductModel)=
         navigationTo(ComparisonFragmentDirections.actionComparisonToProductFragment(model))
 }

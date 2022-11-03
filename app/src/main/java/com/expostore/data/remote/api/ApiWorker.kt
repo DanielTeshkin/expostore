@@ -181,6 +181,7 @@ interface ApiWorker {
     suspend fun createChat(id:String,flag:String) :BaseApiResponse<ChatResponse>
     suspend fun getChat(id:String): BaseApiResponse<ItemChatResponse>
     suspend fun getShop(id: String): BaseApiResponse<GetShopResponseData>
+    suspend fun getMainChat(id:String):BaseApiResponse<ChatResponse>
     suspend fun deleteMainChat(id: String):BaseApiResponse<ChatResponse>
     suspend fun deleteChat( id: String):BaseApiResponse<ItemChatResponse>
     suspend fun deleteUserSelection( id:String):BaseApiResponse<SelectionResponse>
@@ -201,7 +202,7 @@ interface ApiWorker {
     suspend fun addProductToComparison( products:List<ComparisonProductData>):BaseApiResponse<List<ComparisonProductData>>
     suspend fun comparison( products:List<ComparisonProductData>):BaseApiResponse<ComparisonResult>
     suspend fun getComparisonProducts(): BaseApiResponse<List<ProductResponse>>
-    suspend fun deleteFromComparisonProducts( products:List<ComparisonProductData>)
+    suspend fun deleteFromComparisonProducts(id: String)
     :BaseApiResponse<List<ComparisonProductData>>
 
     //personal product

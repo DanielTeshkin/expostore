@@ -47,6 +47,7 @@ class FavoriteRepository @Inject constructor(private val apiWorker: ApiWorker, p
         val result=handleOrDefault(SelectFavoriteTenderResponseData("","","","")){apiWorker.selectFavoriteTender(id,noteRequest)}
         emit(result)
     }
+
     fun addNoteProduct(id:String,  noteRequest: NoteRequest) = flow{
                  val result=handleOrDefault(SelectFavoriteResponseData()){apiWorker.updateFavoriteProduct(id,noteRequest) }
                  emit(result)

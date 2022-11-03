@@ -20,6 +20,9 @@
             app:popUpTo="@id/nav_graph"
 
             app:destination="@id/mainFragment"/>
+        <action
+            android:id="@+id/action_splashFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 
     <fragment
@@ -78,6 +81,9 @@
         <action
             android:id="@+id/action_mainFragment_to_webViewFragment"
             app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailCategoryFragment"

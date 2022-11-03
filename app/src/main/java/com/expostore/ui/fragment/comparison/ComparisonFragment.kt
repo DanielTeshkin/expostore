@@ -45,6 +45,10 @@ class ComparisonFragment : BaseFragment<ComparisonFragmentBinding>(ComparisonFra
         viewModel.apply {
             subscribe(currentPositionFirst) { binding.current.text = "$it из ${products.value.size}" }
             subscribe(currentPositionSecond){binding.currentN.text="$it из ${products.value.size}"}
+            subscribe(products){
+                binding.currentN.text="${currentPositionSecond.value} из ${it.size}"
+                binding.current.text="${currentPositionFirst.value} из ${it.size}"
+            }
         }
         binding.apply {
             Log.i("aaa",list.size.toString())

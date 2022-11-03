@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import androidx.core.view.isEmpty
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,23 +35,20 @@ class DialogControllerUI(context: Context,
     private val adapterMessage by lazy {DialogRecyclerViewAdapter(messages,author,context,this)  }
     private val adapterMultimedia by lazy { ImageDialogRecyclerViewAdapter(multimedia,context) }
 
-    private val fileAdapter:FileDialogPanelRecyclerView by lazy { FileDialogPanelRecyclerView(multimedia,context) }
+    private val fileAdapter:FileDialogPanelRecyclerView by lazy { FileDialogPanelRecyclerView(files,context) }
     private var progressState=true
     var adapterState=false
     var flagType = false
     init {
-       adapterMultimedia.removeUri= { mapImages.remove(it) }
+       adapterMultimedia.removeUri= { mapImages.remove(it)
+       checkImageState()
+       }
         messagesView.install(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true), adapterMessage)
-
         multimediaView.apply {
             layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             adapter=adapterMultimedia
         }
-        fileAdapter.removeUri={multimedia.remove(it)}
-        filesView.apply {
-            layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            adapter=fileAdapter
-        }
+
 
     }
 
@@ -72,25 +70,26 @@ class DialogControllerUI(context: Context,
         action.invoke(id)
     }
     fun progressBarState()= binding.progressBar2.visible(progressState)
-    fun setupVisibleControllerForTextInput(action: (String) -> Unit) {
-        binding.apply {
-            etInput.addTextChangedListener {
-                if (multimedia.isNotEmpty()) {
-                    messageSend.visible(it.toString().isNotEmpty())
-                    imageView4.visible(it.toString().isEmpty())
+    fun setupVisibleControllerForTextInput(action: (String) -> Unit) = binding.etInput.addTextChangedListener {
+                if (multimedia.isEmpty()&&files.isEmpty()) {
+                    binding.messageSend.visible(it.toString().isNotEmpty())
+                    binding.imageView4.visible(it.toString().isEmpty())
                     action.invoke(it.toString())
                 } else sendActivate()
             }
-        }
-    }
 
-    private fun sendActivate(){
-    binding.apply {
+
+
+    private fun sendActivate()= binding.apply {
         messageSend.visibility = View.VISIBLE
         imageView4.visibility = View.GONE
     }
-
+    private fun setupPassive()=binding.apply {
+        messageSend.visibility = View.GONE
+        imageView4.visibility = View.VISIBLE
     }
+
+
     private fun initMessagesList(list:List<Message>) {
         messages.addAll(list)
         messagesView.down(adapterMessage.itemCount)
@@ -110,7 +109,7 @@ class DialogControllerUI(context: Context,
     private fun sendMessage(action: (String, MessageRequest) -> Unit,
                             loadImageAndSend: (List<Bitmap>) -> Unit,
                             loadFileAndSend: (List<SaveFileRequestData>)->Unit){
-        when(multimedia.isEmpty()){
+        when(multimedia.isEmpty()&&files.isEmpty()){
             true->sendText(action)
             false->{
                 when(flagType) {
@@ -149,10 +148,27 @@ class DialogControllerUI(context: Context,
 
     fun filesRv(uris:MutableList<Uri>){
         visiblePanelFiles(true)
-            fileAdapter.addData(uris)
-            flagType=true
+        fileAdapter.removeUri={checkState()}
+        Log.i("dok",fileAdapter.itemCount.toString())
+            // files.clear()
+        fileAdapter.addData(uris)
+        filesView.apply {
+            layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            adapter=fileAdapter
+        }
+
+        flagType=true
+        Log.i("dok",fileAdapter.itemCount.toString())
+
         sendActivate()
     }
+    fun checkState(){
+        if(files.isEmpty()) setupPassive()
+    }
+    fun checkImageState(){
+        if(mapImages.isEmpty()) setupPassive()
+    }
+
 
     fun imagesRv(uris: MutableList<Uri>, tag: String?){
         visiblePanelMultimedia(true)

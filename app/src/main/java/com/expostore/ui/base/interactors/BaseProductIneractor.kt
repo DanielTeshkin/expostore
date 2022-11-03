@@ -80,7 +80,8 @@ import javax.inject.Inject
              { pagingSource }
          ).flow
      }
-
+     fun getPersonalProducts()=productsRepository.getPersonalProducts()
+     fun deletePersonalProduct(id:String)=productsRepository.deletePersonalProduct(id)
      override fun letFlow(pagingConfig: PagingConfig): Flow<PagingData<ProductModel>> {
          val loaderProducts: Loader<ProductResponse> = { it ->
              productsRepository.getProducts(page = it, FilterModel()) }

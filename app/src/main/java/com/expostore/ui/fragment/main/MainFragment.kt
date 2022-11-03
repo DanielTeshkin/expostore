@@ -52,11 +52,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(MainFragmentBinding::infl
 
     override fun onResume() {
         super.onResume()
-        FirebaseMessaging.getInstance().token.addOnCompleteListener {
-            val token=  it.result
-            Log.i("fcm",it.result)
-            viewModel.saveFcmToken(token)
-        }
+         getFcmToken { viewModel.saveFcmToken(it) }
     }
 
 

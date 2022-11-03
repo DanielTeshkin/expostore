@@ -5,24 +5,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
 import com.expostore.databinding.ChatFragmentBinding
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.fragments.BaseFragment
-import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 
 import com.expostore.ui.fragment.chats.general.FileStorage
-import com.expostore.ui.fragment.chats.general.ImagePicker
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.listPath
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 /**
  * @author Teshkin Daniel
@@ -57,11 +50,27 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
 
             chatVp2.adapter = chatViewPagerAdapter
             chatVp2.offscreenPageLimit = chatViewPagerAdapter.itemCount
-            tabLayoutMediator =
-                TabLayoutMediator(chatTl, chatVp2) { tab, position ->
+            tabLayoutMediator = TabLayoutMediator(chatTl, chatVp2) { tab, position ->
                     tab.customView = chatViewPagerAdapter.getTabView(position)
-                }
+                chatTl.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        if (tab != null) { tab.customView=chatViewPagerAdapter.getUpdateView(tab.position,true) }
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+                        if (tab != null) { tab.customView=chatViewPagerAdapter.getUpdateView(tab.position,false) }
+                    }
+
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+                      Log.i("","f")
+                    }
+
+                })
+            }
+
+
             tabLayoutMediator.attach()
+
 
         }
     }
@@ -73,6 +82,7 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
                 Log.i("dok","ddd")
                 val files = result.data?.clipData
                 if (files != null) {
+
                     PagerChatRepository.getInstance().getUriFiles().value=(files.listPath())
                 } else {
                     val list = ArrayList<Uri>()

@@ -2,6 +2,7 @@ package com.expostore.ui.fragment.chats.dialog
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.expostore.data.remote.api.pojo.getchats.*
@@ -40,11 +41,6 @@ import kotlinx.coroutines.flow.collect
             initUI(sendText, {viewModel.saveImageNetwork(it)},childFragmentManager,saveFiles)
             setupVisibleControllerForTextInput { viewModel.saveMessageText(it) }
         }
-        subscribe( PagerChatRepository.getInstance().getUriFiles()) {
-            if (it.isNotEmpty())controller.filesRv(it as MutableList<Uri>)
-        }
-
-
     }
 
 
@@ -56,19 +52,24 @@ import kotlinx.coroutines.flow.collect
             subscribe(message) { handleState(it){controller.clearInput()} }
             subscribe(save){ handleState(it,loadFactory { controller.loadingImage()},
                 showFactory
-            { controller.sendImages { id-> viewModel.sendImages(id,it.id)}
+            {
+                controller.sendImages { id-> viewModel.sendImages(id,it.id)}
+
             })
             }
 
-            subscribe(saveFile) {handleState(it, loaderFactory { controller.visiblePanelFiles(false) },
-                showFactory { controller.clearMultimedia()
-                    viewModel.sendFiles(arguments?.getString("id")!!,it.files) })} }
-        //subscribe(PagerChatRepository.getInstance().getUriFiles()){controller.filesRv(it as MutableList<Uri>)}
+            subscribe(saveFile) { state ->
+                handleState(state, loaderFactory { controller.visiblePanelFiles(false) },
+                showFactory {
+                    controller.clearFileCache()
+                    viewModel.sendFiles(arguments?.getString("id")!!,it.files) })}
+        }
+        subscribe(  PagerChatRepository.getInstance().getUriFiles()) {
+            if (it.isNotEmpty()) { controller.filesRv(it as MutableList<Uri>) }
+        }
     }
-    override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
+    override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) =controller.imagesRv(uris,tag)
 
-        controller.imagesRv(uris,tag)
-    }
 }
 
 

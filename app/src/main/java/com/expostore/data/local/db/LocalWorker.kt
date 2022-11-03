@@ -41,6 +41,8 @@ interface LocalWorker {
     fun getToken():String?
     fun getRefreshToken():String?
     fun saveToken(tokenModel: TokenModel)
+    fun saveRefreshToken(refresh:String)
+    fun saveWorkerToken(token:String)
     fun removeToken()
     suspend fun getMyProducts(string: String): MyProductsDao
  suspend fun saveMyProducts(productsDao: MyProductsDao)

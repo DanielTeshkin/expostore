@@ -28,14 +28,16 @@ class SearchViewModel @Inject constructor(override var interactor: BaseProductIn
     val result = _result.asSharedFlow()
     private val _author = MutableStateFlow("")
     val author = _author.asStateFlow()
-    private val _productsMarkerUI= MutableSharedFlow<ResponseState<List<ProductModel>>>()
+
+
     override fun onStart() {
     }
     init {
         getSelections()
     }
 
-     fun getBaseProducts()=interactor.getBaseListProducts()
+
+
     fun saveLocation(latitude: Double, longitude: Double) {
         myLat.value = latitude
         myLong.value = longitude

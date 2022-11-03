@@ -52,7 +52,10 @@ class DetailPersonalSelectionFragment :
         }
         binding.menu.click { popupMenu.show() }
     }
-    override fun deleteFromSelection(model: ProductModel) = viewModel.delete(model)
+    override fun deleteFromSelection(model: ProductModel) {
+        mAdapter.remove(model)
+        viewModel.delete(model)
+    }
     override fun loadSelections(list: List<SelectionModel>) { mAdapter.onClick=getClickListener(list) }
 
     }

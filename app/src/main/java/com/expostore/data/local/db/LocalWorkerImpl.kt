@@ -22,17 +22,21 @@ import com.expostore.model.favorite.FavoriteTender
 
  class LocalWorkerImpl(private val localDataApi: LocalDataApi, private val context: Context):LocalWorker {
     override  fun getToken(): String? = AppPreferences.getSharedPreferences(context).getString("token", "")
-    override fun getRefreshToken(): String? =AppPreferences.getSharedPreferences(context).getString(
-        "refresh",
-        ""
-    )
+    override fun getRefreshToken(): String? =AppPreferences.getSharedPreferences(context).getString("refresh", "")
+     override fun saveToken(tokenModel: TokenModel){
+         saveRefreshToken(tokenModel.refresh?:"")
+         saveWorkerToken(tokenModel.access?:"")
+     }
+     override fun saveRefreshToken(refresh: String) =AppPreferences
+         .getSharedPreferences(context).edit().putString("refresh", refresh)
+         .apply()
 
-    override fun saveToken(tokenModel: TokenModel) = AppPreferences
-        .getSharedPreferences(context).edit().putString("token", tokenModel.access)
-        .putString("refresh", tokenModel.refresh)
-        .apply()
+     override fun saveWorkerToken(token: String) = AppPreferences
+         .getSharedPreferences(context).edit().putString("token", token)
+         .apply()
 
-    override  fun removeToken() = AppPreferences
+
+     override  fun removeToken() = AppPreferences
         .getSharedPreferences(context).edit().putString("token", "")
         .putString("refresh", "")
         .apply()

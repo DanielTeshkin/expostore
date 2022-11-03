@@ -29,21 +29,21 @@ class NoteViewModel @Inject constructor( private val favoriteRepository: Favorit
         if (data.value.flag=="product"&&data.value.isLiked==false) favoriteRepository.addToFavorite(data.value.id?:"",
             NoteRequest(text = note)
         ).handleResult(select,{
-            navigate(it.product?:"")
+            navigate()
         })
         else if (data.value.flag=="tender"&&data.value.isLiked==false) favoriteRepository.addToFavoriteTender(data.value.id?:"",NoteRequest(text = note)).handleResult(selectTender,{
-            navigate(it.tender?:"")
+            navigate()
         })
         else if(data.value.flag=="product"&&data.value.isLiked==true) favoriteRepository.addNoteProduct(data.value.id?:"",NoteRequest(text = note)).handleResult(select,{
-            navigate(it.product?:"")
+            navigate()
         })
         else if(data.value.flag=="tender"&&data.value.isLiked==true) favoriteRepository.addNoteTender(data.value.id?:"",NoteRequest(text = note)).handleResult(selectTender,{
-            navigate(it.tender?:"")
+            navigate()
         })
 
     }
 
-    fun navigate(id: String) {
+    fun navigate() {
         when (data.value.flagNavigation) {
             "product" -> {
                 productsRepository.getProduct(data.value.id?:"").handleResult({},{

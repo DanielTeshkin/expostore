@@ -3,6 +3,7 @@ package com.expostore.data.repositories
 import com.expostore.data.remote.api.ApiWorker
 import com.expostore.data.remote.api.pojo.getchats.*
 import com.expostore.data.local.db.LocalWorker
+import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.DataMapping.toModel
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -37,6 +38,8 @@ class ChatRepository @Inject constructor(private val apiWorker: ApiWorker, priva
         val result=handleOrDefault( MessageRequest()){apiWorker.messageFileOrImage(body,id)}
         emit(result)
     }
+    suspend fun getMainChat(id:String)= handleOrDefault(ChatResponse()){apiWorker.getMainChat(id)}.toModel
+
 
 
     fun deleteChat(id: String) = flow {

@@ -186,3 +186,49 @@ fun showBottomSheetTender(
 
 
 
+
+fun showPersonalProductBottomSheet(context: Context,model: ProductModel,listener: PersonalProductListener){
+    val bottomSheetDialog = BottomSheetDialog(context)
+    bottomSheetDialog.setContentView(R.layout.personal_selection_fragment)
+    val note = bottomSheetDialog.findViewById<LinearLayout>(R.id.note)
+    if (model.elected.notes.isNotEmpty()) bottomSheetDialog.findViewById<TextView>(R.id.note_text)?.text="Редактировать заметку"
+    note?.click {
+        bottomSheetDialog.hide()
+        listener.createOrUpdateNote(model)
+    }
+
+    val calling= bottomSheetDialog.findViewById<LinearLayout>(R.id.calling)
+    calling?.visibility=View.GONE
+    calling?.visibility=View.GONE
+    val compare = bottomSheetDialog.findViewById<LinearLayout>(R.id.compare)
+    compare?.click {
+        listener.addToComparison(model.id)
+        bottomSheetDialog.hide()
+    }
+    val chat=bottomSheetDialog.findViewById<LinearLayout>(R.id.chat_write)
+    chat?.visibility=View.GONE
+    val share=bottomSheetDialog.findViewById<LinearLayout>(R.id.share)
+    share?.visibility=View.GONE
+    val personalSelection=bottomSheetDialog.findViewById<LinearLayout>(R.id.personal)
+   personalSelection?.visibility= View.GONE
+   val block=bottomSheetDialog.findViewById<LinearLayout>(R.id.block)
+    block?.visibility=View.GONE
+
+
+        val delete= bottomSheetDialog.findViewById<LinearLayout>(R.id.delete)
+        delete?.visibility=View.VISIBLE
+
+        delete?.click {
+            listener.deletePersonalProduct(model)
+            bottomSheetDialog.hide()
+        }
+
+    bottomSheetDialog.show()
+}
+interface PersonalProductListener{
+    fun deletePersonalProduct(model: ProductModel)
+    fun addToComparison(id:String)
+    fun createOrUpdateNote(model: ProductModel)
+}
+
+

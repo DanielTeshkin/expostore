@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -27,7 +29,10 @@ import com.expostore.ui.fragment.note.NoteData
 import com.expostore.ui.fragment.note.NoteFragmentDirections
 import com.expostore.ui.general.other.OnClickBottomSheetFragment
 import com.expostore.ui.state.ResponseState
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -91,11 +96,6 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
             }
         }
     }
-    protected fun <T> singleSubscribe(flow: Flow<T>, action: suspend (T) -> Unit) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            flow.collect(action)
-        }
-    }
 
     protected fun state(action:suspend ()-> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -108,8 +108,6 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
 
     protected fun loadFactory(action:(Boolean)->Unit):Load=action
     protected fun loaderFactory(action: () -> Unit)=action
-
-    
 
     protected fun <T> handleState(state:ResponseState<T>,loader: (Boolean) -> Unit,show:Show<T>){
         when(state){
@@ -160,14 +158,6 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         }
     }
 
-    protected suspend fun <T,A> subscribeOnStateFlows( a:StateFlow<T>, b:StateFlow<A>,action:  (T,A) -> Unit){
-              a.collect { param1->
-                  b.collect{ param2->
-                      action.invoke(param1,param2)
-                  }
-              }
-    }
-
     override fun onResume() {
         super.onResume()
         if (!isFirstResume) {
@@ -194,6 +184,26 @@ abstract class BaseFragment<Binding : ViewBinding>(private val inflate: Inflate<
         snackbar.show()
     }
     open fun navigateToComparison(){}
+
+    protected fun checkGooglePlayServices(): Boolean {
+        val availability = GoogleApiAvailability.getInstance()
+        val resultCode = availability.isGooglePlayServicesAvailable(requireContext())
+        if (resultCode != ConnectionResult.SUCCESS) {
+            return false
+        }
+        return true
+    }
+
+
+    protected inline fun getFcmToken(crossinline save:(String)->Unit){
+        if(checkGooglePlayServices()){
+            FirebaseMessaging.getInstance().token.addOnCompleteListener {
+               val token=  it.result
+              Log.i("fcm",it.result)
+             save.invoke(token)
+             }
+        }
+    }
 
     private val mainActivity: MainActivity
         get() = requireActivity() as MainActivity

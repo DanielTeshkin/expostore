@@ -13,6 +13,7 @@ import javax.inject.Inject
 class DetailPersonalSelectionViewModel
 @Inject constructor(override val interactor: BaseProductInteractor) : BaseProductViewModel() {
     val selection= MutableStateFlow(SelectionModel())
+
     init {
         getSelections()
     }

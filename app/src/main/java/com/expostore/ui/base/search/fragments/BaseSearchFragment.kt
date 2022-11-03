@@ -69,13 +69,9 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
         super.onStop()
        mapView.onStop()
     }
-    fun searchWithFilters(filterModel: FilterModel){
+    fun searchWithFilters(){
         viewLifecycleOwner.lifecycleScope.launch {
-        lifecycleScope.launch {
-            viewModel.search(filterModel).collect {
-                loadItems(it)
-            }
-        }
+            lifecycleScope.launch { viewModel.search().collect { loadItems(it) } }
         }
     }
     private fun popupMenuLoad() {
@@ -86,27 +82,32 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
                 R.id.newList -> {
                     val sort = "date_created"
                     sortText.text = "По новизне"
-                    searchWithFilters(FilterModel(sort = sort))
+                    viewModel.addSort(sort)
+                    searchWithFilters()
                 }
                 R.id.ratingList -> {
                     val sort = "avg"
                     sortText.text = "По рейтингу"
-                    searchWithFilters(FilterModel(sort = sort))
+                    viewModel.addSort(sort)
+                    searchWithFilters()
                 }
                 R.id.priceList -> {
                     val sort = "price"
                     sortText.text = "По цене"
-                    searchWithFilters(FilterModel(sort = sort))
+                    viewModel.addSort(sort)
+                    searchWithFilters()
                 }
                 R.id.popularList -> {
                     val sort = "count_views"
                     sortText.text = "По популярности"
-                    searchWithFilters(FilterModel(sort = sort))
+                    viewModel.addSort(sort)
+                    searchWithFilters()
                 }
                 R.id.publicList -> {
                     val sort = "end_date_of_publication"
                     sortText.text = "По дате публикации"
-                    searchWithFilters(FilterModel(sort = sort))
+                    viewModel.addSort(sort)
+                    searchWithFilters()
                 }
 
             }
@@ -156,10 +157,6 @@ abstract class BaseSearchFragment<Binding : ViewBinding,T:Any,E,A>(private val i
         Log.i("op","ddd")
         markers[marker]?.let { viewModel.navigateToItem(it) }
     }
-
-
-
-
 
 
     abstract suspend fun loadItems(items:PagingData<T>)

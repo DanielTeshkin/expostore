@@ -246,10 +246,6 @@ interface ServerApi {
 
 
 
-
-
-
-
     //favorite
     @POST("/api/product/{id}/elected/select/")
     suspend fun selectFavorite(@Path("id") id: String, @Body note: NoteRequest): Response<SelectFavoriteResponseData>
@@ -282,6 +278,9 @@ interface ServerApi {
     @GET("/api/chat/item/{id}/")
     suspend fun getChat(@Path("id") id: String): Response<ItemChatResponse>
 
+    @GET("/api/chat/{id}/")
+    suspend fun getMainChat(@Path("id") id: String): Response<ChatResponse>
+
     @DELETE("api/chat/{id}")
     suspend fun deleteMainChat(@Path("id") id: String):Response<ChatResponse>
 
@@ -299,8 +298,8 @@ interface ServerApi {
     @GET("/api/product/get_select_for_comparison/")
     suspend fun getComparisonProducts(): Response<List<ProductResponse>>
 
-    @POST("/api/product/selectedproduct/delete/")
-    suspend fun deleteFromComparisonProducts(@Body products:List<ComparisonProductData>):Response<List<ComparisonProductData>>
+    @DELETE("/api/product/selectedproduct/{id}/")
+    suspend fun deleteFromComparisonProducts(@Path("id") id: String):Response<List<ComparisonProductData>>
 
     //personal product
     @POST("/api/product/personal/create/")
@@ -309,15 +308,10 @@ interface ServerApi {
     @GET("/api/product/personal/")
     suspend fun getPersonalProducts():Response<BaseListResponse<ProductResponse>>
 
-    @GET("/api/product/personal/{id}")
+    @GET("/api/product/personal/{id}/")
     suspend fun getPersonalProduct(@Path("id")id:String):Response<ProductResponse>
 
     @DELETE("/api/product/personal/{id}/")
     suspend fun deletePersonalProduct(@Path("id") id: String):Response<*>
-
-
-
-
-
 
 }

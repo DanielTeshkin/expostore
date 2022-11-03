@@ -88,6 +88,7 @@ class TenderCreateFragment() :
                     etTenderPrice.setText(it)
                     viewModel.changePrice(it.toString())
                 }
+                item.category?.id?.let { viewModel.saveCategory(it) }
                 if (characteristicModel != null) {
                     viewModel.saveCharacteristic(characteristicModel)
                 }

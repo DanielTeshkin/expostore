@@ -23,7 +23,7 @@ class TabPersonalProductRecyclerViewAdapter(
     ) : RecyclerView.Adapter<TabPersonalProductRecyclerViewAdapter.FavoritesProductViewHolder>() {
 
    var onItemClick:((ProductModel)->Unit)?=null
-    var onDeleteClick:((String) -> Unit)?=null
+    var onAnotherClick:((ProductModel) -> Unit)?=null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesProductViewHolder {
@@ -51,10 +51,8 @@ class TabPersonalProductRecyclerViewAdapter(
                 tabProductPagerAdapter.items=list
                 adapter=tabProductPagerAdapter
             }
-           // binding.delete.click {
-              //  onDeleteClick?.invoke(product.id)
-               // removeAt(product)
-           // }
+            binding.another.click { onAnotherClick?.invoke(product) }
+
 
 
         }

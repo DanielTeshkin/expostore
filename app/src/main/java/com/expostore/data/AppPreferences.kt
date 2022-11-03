@@ -21,4 +21,6 @@ object AppPreferences {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+
+
 }

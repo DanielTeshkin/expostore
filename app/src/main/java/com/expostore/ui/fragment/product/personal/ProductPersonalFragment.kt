@@ -19,7 +19,7 @@ import com.expostore.utils.OnClickImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductPersonalFragment  :
+class ProductPersonalFragment()  :
     BaseFragment<ProductPersonalFragmentBinding>(ProductPersonalFragmentBinding::inflate) {
     private val imageAdapter: ImageItemAdapter by lazy { ImageItemAdapter() }
     private val personalViewModel:ProductPersonalViewModel by viewModels()

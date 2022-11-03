@@ -102,6 +102,6 @@
         <item quantity="one">Выбери картинку</item>
         <item quantity="other">Пожалуйста выбере %1$d more images…</item>
     </plurals>
-    <string name="pick_multi_limit">Можно отправить только 4 картинки в одном сообщении</string>
+    <string name="pick_multi_limit">Превышен лимит</string>
 
 </resources>

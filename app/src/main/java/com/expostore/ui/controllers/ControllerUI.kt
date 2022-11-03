@@ -19,6 +19,7 @@ import com.expostore.ui.fragment.chats.fragment.ImageDownload
 import com.expostore.ui.fragment.chats.down
 import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.fragment.chats.general.ImageMessage
+import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.utils.OnClickImage
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -30,6 +31,7 @@ open class ControllerUI(val context: Context) {
     protected val multimedia:MutableList<Uri> = mutableListOf()
     private val fileStorage= FileStorage(context)
     protected val processor= ConditionProcessor()
+    protected val files= mutableListOf<Uri>()
     fun openImageFragment(bitmap: Bitmap): ImageDownload {
         return ImageDownload(bitmap)
     }
@@ -49,12 +51,16 @@ open class ControllerUI(val context: Context) {
 
   protected fun saveFile(): MutableList<SaveFileRequestData> {
      val list= mutableListOf<SaveFileRequestData>()
-     multimedia.map {
+     files.map {
        list.add(fileStorage.getSaveRequestData(it))
      }
     return list
    }
   fun clearMultimedia()=multimedia.clear()
+    fun clearFileCache(){
+        files.clear()
+        PagerChatRepository.getInstance().getUriFiles().value= mutableListOf()
+    }
 
     protected fun processingImagesData(uri: Uri,resource:Bitmap){
         mapImages[uri]=resource

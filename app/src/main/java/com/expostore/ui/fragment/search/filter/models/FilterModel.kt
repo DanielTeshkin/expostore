@@ -16,7 +16,7 @@ data class FilterModel(
     val city:String?=null,
     val lat:Double?=null,
     val long:Double?=null,
-    val sort:String?=null,
+    var sort:String?=null,
     val category: String?=null,
     val promotion:Boolean?=null,
     val characteristics:List<CharacteristicFilterModel>?=null,

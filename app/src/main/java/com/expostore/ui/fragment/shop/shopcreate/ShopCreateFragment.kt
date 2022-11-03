@@ -41,7 +41,7 @@ class ShopCreateFragment :
     override fun onStart() {
         super.onStart()
         shopCreateViewModel.apply {
-            subscribe(shopEdit){handleLoadingState(it,loader =  load)}
+            subscribe(shopEdit){ handleLoadingState(it,loader =  load)}
             subscribe(navigation){navigateSafety(it)}
         }
         init()

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -38,6 +39,17 @@ class ChatViewPagerAdapter(
             if(position>product_name.size-1)view.chat_product_image.loadTabImage("")
            else view.chat_product_image.loadTabImage(images[position])
 
+        return view
+    }
+
+
+    fun getUpdateView(position: Int, state: Boolean): View{
+        val view: View = LayoutInflater.from(context).inflate(R.layout.chat_tablayout_item, null)
+        view.chat_product_name.text=  if(position>product_name.size-1) ""
+        else product_name[position]
+        if(position>product_name.size-1)view.chat_product_image.loadTabImage("")
+        else view.chat_product_image.loadTabImage(images[position])
+        view.green_point.isVisible=state
         return view
     }
 

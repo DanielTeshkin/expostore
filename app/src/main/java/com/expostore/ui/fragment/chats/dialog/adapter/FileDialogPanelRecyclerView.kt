@@ -18,7 +18,10 @@ class FileDialogPanelRecyclerView(private var images:MutableList<Uri>, private v
     inner class FilePanelHolder( val binding: FilePanelItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(uri: Uri, index: Int){
                  binding.filenameText.text= getFileName(uri)
-            binding.floatingActionButton.click { removeAt(index) }
+            binding.floatingActionButton.click {
+                removeAt(index)
+                removeUri?.invoke(uri)
+            }
             } }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilePanelHolder {
@@ -43,7 +46,6 @@ class FileDialogPanelRecyclerView(private var images:MutableList<Uri>, private v
 
 
     fun removeAt(index: Int) {
-
         images.removeAt(index)
         notifyItemRemoved(index)
         notifyItemRangeChanged(index,itemCount);
@@ -51,7 +53,7 @@ class FileDialogPanelRecyclerView(private var images:MutableList<Uri>, private v
 
     fun addData(list:List<Uri>){
         images.addAll(list)
-        notifyItemRangeChanged(0,itemCount);
+      notifyDataSetChanged()
     }
 }
 

@@ -69,7 +69,10 @@ class SearchFragment() : BaseSearchFragment<SearchFragmentBinding, ProductModel,
         super.onStart()
         setClickListener(getClickListener(listOf()))
         val result = SearchFragmentArgs.fromBundle(requireArguments()).filter
-        if (result != null) searchWithFilters(result)
+        if (result != null) {
+            viewModel.saveFilter(result)
+            searchWithFilters()
+        }
     }
     private fun initAdapter() {
         binding.recyclerView.apply { layoutManager = LinearLayoutManager(requireContext())

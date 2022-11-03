@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.expostore.model.category.SelectionModel
 import com.expostore.model.chats.DataMapping.MainChat
+import com.expostore.model.chats.DataMapping.toInfoModel
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.interactors.BaseItemsInteractor
 import com.expostore.ui.fragment.chats.chatsId
@@ -16,6 +17,7 @@ import com.expostore.ui.state.ResponseState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 abstract class BaseItemViewModel<T : Any,A,E>:BaseViewModel() {
 
@@ -25,11 +27,19 @@ abstract class BaseItemViewModel<T : Any,A,E>:BaseViewModel() {
     private val chatData= MutableStateFlow(InfoItemChat())
     private val _favorites= MutableSharedFlow<ResponseState<List<E>>>()
     val favorites=_favorites.asSharedFlow()
-
-    fun search(filterModel: FilterModel?=FilterModel())=interactor.search(filterModel = filterModel).cachedIn(viewModelScope)
+    private val _filters= MutableStateFlow(FilterModel())
+    private val filters=_filters.asStateFlow()
+    fun search(filterModel: FilterModel?=FilterModel())=interactor.search(filterModel = filters.value).cachedIn(viewModelScope)
     fun getFavorites()=when(checkAuthorizationState()){
         true->interactor.getFavoriteList().handleResult(_favorites)
         false->navigateToOpen()
+    }
+
+    fun addSort(sort:String){
+        _filters.value.sort=sort
+    }
+    fun saveFilter(request:FilterModel){
+        _filters.value=request
     }
 
     fun createChat(id:String) = when(checkAuthorizationState()) {
@@ -40,14 +50,7 @@ abstract class BaseItemViewModel<T : Any,A,E>:BaseViewModel() {
             false-> navigateToOpen()
         }
 
-    private fun updateChatData(chat: MainChat) = chat.apply {
-        chatData.value = InfoItemChat(identify()[1],
-            identify()[0],
-            chatsId(),
-            imagesProduct(),
-            productsName(),
-            identify()[3])
-    }
+    private fun updateChatData(chat: MainChat) = chat.apply { chatData.value = toInfoModel }
 
     protected fun checkAuthorizationState()=!interactor.getToken().isNullOrEmpty()
     fun updateSelected(id:String)= when(checkAuthorizationState()){
