@@ -3,6 +3,7 @@ package com.expostore.ui.fragment.search.main.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
@@ -44,7 +45,13 @@ class ProductsAdapter(context:Context,
                 description.text = item.shortDescription
                 address.text = "Адрес:" + " " + item.shop.address
                 viewPager.adapter = adapter
-                if(item.communicationType == "chatting") call.isVisible=false
+                if(item.communicationType == "chatting") {
+                    val params=
+                        Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    params.marginStart=0
+                    binding.write.layoutParams=params
+                    call.isVisible=false
+                }
                 viewPager.setPageTransformer(MarginPageTransformer(PAGE_PADDING.dp))
                 viewPager.children.find { it is RecyclerView }?.overScrollMode =
                     RecyclerView.OVER_SCROLL_NEVER

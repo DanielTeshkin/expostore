@@ -2,8 +2,10 @@ package com.expostore.ui.fragment.category
 
 
 import android.annotation.SuppressLint
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.SearchProductItemBinding
@@ -37,7 +39,12 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
                 viewPager.adapter=adapter
                 like.isChecked=item.isLiked
                 like.click { onClick?.onClickLike(item.id) }
-                if(item.communicationType == "chatting") call.isVisible=false
+                if(item.communicationType == "chatting") {
+                    val params=Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    params.marginStart=0
+                    write.layoutParams=params
+                    call.isVisible=false
+                }
                 call.click { onClick?.onClickCall(item.author.username) }
                 root.click { onClick?.onClickItem(item) }
                 write.click { onClick?.onClickMessage(item.id) }

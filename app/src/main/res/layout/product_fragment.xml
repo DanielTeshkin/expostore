@@ -59,11 +59,9 @@
             android:layout_marginTop="20dp"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:paddingStart="10dp"
-            android:paddingEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back" >
+            app:layout_constraintTop_toBottomOf="@+id/btn_back">
 
 
         </androidx.viewpager2.widget.ViewPager2>
@@ -424,7 +422,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
 
             app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
 
@@ -438,7 +436,7 @@
             app:srb_isIndicator="true"
             app:srb_numStars="5"
             app:srb_starPadding="0dp"
-            app:srb_stepSize="1"
+            app:srb_stepSize="0.1"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <LinearLayout

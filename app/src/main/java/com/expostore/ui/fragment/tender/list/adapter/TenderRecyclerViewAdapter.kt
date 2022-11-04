@@ -3,6 +3,7 @@ package com.expostore.ui.fragment.tender.list.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
@@ -74,7 +75,13 @@ class TenderAdapter :
                     onItemClickListener?.invoke(item)
 
                 }
-                if(item.communicationType == "chatting")call.isVisible=false
+                if(item.communicationType == "chatting"){
+                    val params= Constraints
+                        .LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    params.marginStart=0
+                    write.layoutParams=params
+                    call.isVisible=false
+                }
                 root.click {
                     onItemClickListener?.invoke(item)
                 }

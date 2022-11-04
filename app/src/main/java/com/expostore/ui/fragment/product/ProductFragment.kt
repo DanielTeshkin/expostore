@@ -91,7 +91,7 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
                 imageAdapter.openImageOnFullScren={onClickImage.click(it)}
                 rvProductImages.adapter = imageAdapter
                 ivProductShopImage.loadAvatar(model.shop.image.file)
-                tvProductRating.text = "Оценка: " + model.rating
+                tvProductRating.text = "Оценка: " + model.rating.toFloat().toDouble()
                 rbProductRating.rating = model.rating.toFloat()
                 tvProductLocation.text=model.shop.address
                if (model.articul.isNotEmpty()) articul.text="Артикул:"+" "+model.articul
@@ -117,8 +117,11 @@ class ProductFragment : BaseProductFragment<ProductFragmentBinding>(ProductFragm
                         adapter = reviewAdapter
                     }
                 }
-                if (model.elected.notes.isEmpty())binding.editNote.text="Cоздать заметку"
-                else  binding.tvProductNote.text=model.elected.notes
+                if (model.elected.notes.isEmpty()){
+                  editNote.text="Cоздать заметку"
+                    tvProductNote.visibility=View.GONE
+                }
+                else  tvProductNote.text=model.elected.notes
             }
 
         }

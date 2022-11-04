@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.expostore.data.remote.api.pojo.getchats.MessageRequest
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.databinding.DialogFragmentBinding
+import com.expostore.model.ImageModel
+import com.expostore.model.chats.DataMapping.FileChat
 import com.expostore.model.chats.DataMapping.Message
 import com.expostore.model.chats.DataMapping.createMessage
 import com.expostore.ui.fragment.chats.*
 import com.expostore.ui.fragment.chats.dialog.adapter.DialogRecyclerViewAdapter
 import com.expostore.ui.fragment.chats.dialog.adapter.ImageDialogRecyclerViewAdapter
 import com.expostore.ui.fragment.chats.dialog.adapter.FileDialogPanelRecyclerView
+import com.expostore.ui.fragment.chats.dialog.adapter.getFileName
 import com.expostore.ui.fragment.chats.general.ImagePicker
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.profile.profile_edit.click
@@ -106,6 +109,13 @@ class DialogControllerUI(context: Context,
             )
         )
 
+    private fun addMessageWithImage()=adapterMessage.addMessage(
+        createMessage(binding.etInput.text.toString(),author, images = multimedia.map { ImageModel(id="", file = it.toString()) })
+    )
+    private fun addMessageWithFile()=adapterMessage.addMessage(
+    createMessage(binding.etInput.text.toString(),author, listOf(),files.map { FileChat(id="", file = it.toString(),name= getFileName(it)) })
+    )
+
     private fun sendMessage(action: (String, MessageRequest) -> Unit,
                             loadImageAndSend: (List<Bitmap>) -> Unit,
                             loadFileAndSend: (List<SaveFileRequestData>)->Unit){
@@ -113,8 +123,14 @@ class DialogControllerUI(context: Context,
             true->sendText(action)
             false->{
                 when(flagType) {
-                    false->  loadImageAndSend.invoke(mapImages.entries.map { it.value })
-                    true->  loadFileAndSend.invoke(saveFile())
+                    false-> {
+                        addMessageWithImage()
+                        loadImageAndSend.invoke(mapImages.entries.map { it.value })
+                    }
+                    true-> {
+                        addMessageWithFile()
+                        loadFileAndSend.invoke(saveFile())
+                    }
                 }
             }
         }

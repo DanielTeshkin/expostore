@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ViewSwitcher
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.expostore.databinding.DetailProductItemBinding
@@ -50,7 +51,13 @@ class FavoritesProductRecyclerViewAdapter(
             val list=ArrayList<String>()
             product.images.map { list.add(it.file) }
             binding.name.text = product.name
-            if(product.communicationType == "chatting") binding.call.isVisible=false
+            if(product.communicationType == "chatting") {
+                val params=
+                    Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                params.marginStart=0
+                binding.write.layoutParams=params
+                binding.call.isVisible=false
+            }
             binding.viewPager.apply {
                 val tabProductPagerAdapter=ImageAdapter()
                 tabProductPagerAdapter.items=list

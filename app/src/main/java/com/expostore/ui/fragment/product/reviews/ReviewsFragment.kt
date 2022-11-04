@@ -46,7 +46,10 @@ class ReviewsFragment : BaseFragment<ReviewsFragmentBinding>(ReviewsFragmentBind
 
         }
         when(val flag=ReviewsFragmentArgs.fromBundle(requireArguments()).flag){
-            "list"-> list.addAll(ReviewsFragmentArgs.fromBundle(requireArguments()).reviews!!.reviews)
+            "list"-> {
+                list.addAll(ReviewsFragmentArgs.fromBundle(requireArguments()).reviews!!.reviews)
+                binding.progressBar6.visibility=View.GONE
+            }
             else->{
                 reviewsViewModel.whoUpdate(flag)
                 reviewsViewModel.load()

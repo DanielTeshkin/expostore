@@ -40,6 +40,6 @@ fun <T> List<T>.cast():ArrayList<T>{
   return  this as ArrayList<T>
 }
 
-fun createMessage(text:String,author:String,images:List<ImageModel>): Message {
-    return Message(text = text, author = author, images = images)
+fun createMessage(text:String,author:String,images:List<ImageModel>,files:List<FileChat>?= listOf()): Message {
+    return Message(text = text, author = author, images = images, chatFiles = files)
 }
