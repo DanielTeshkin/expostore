@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -20,11 +21,7 @@ import com.expostore.utils.OnClickFavoriteProductListener
 import com.expostore.utils.OnClickRecyclerViewListener
 import kotlinx.android.synthetic.main.detail_product_item.view.*
 
-class FavoritesTenderRecyclerViewAdapter(
-    private val tenders: MutableList<FavoriteTender>,
-
-
-) : RecyclerView.Adapter<FavoritesTenderRecyclerViewAdapter.FavoritesTenderViewHolder>() {
+class FavoritesTenderRecyclerViewAdapter(private val tenders: MutableList<FavoriteTender>, ) : RecyclerView.Adapter<FavoritesTenderRecyclerViewAdapter.FavoritesTenderViewHolder>() {
 
     var onCallItemClickListener: ((String) -> Unit)? = null
     var onMessageItemClickListener: ((String) -> Unit)? = null
@@ -60,7 +57,7 @@ class FavoritesTenderRecyclerViewAdapter(
             }
             if(tender.communicationType == "chatting"){
                 val params=
-                    Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    LinearLayout.LayoutParams(  LinearLayout.LayoutParams.MATCH_PARENT,  LinearLayout.LayoutParams.MATCH_PARENT)
                 params.marginStart=0
                 binding.write.layoutParams=params
                 binding.call.isVisible=false

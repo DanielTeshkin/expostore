@@ -136,6 +136,21 @@ abstract class BaseCreatorViewModel<T,A,E> : CharacteristicViewModel() {
             override fun onLoadCleared(placeholder: Drawable?) {}
         })
     }
+    private fun saveImagesLocal(uri: MutableList<Uri>, context: Context) {
+        uri.map {
+            Glide.with(context).asBitmap().load(uri).centerCrop().into(object :
+                CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    mapImages[it] = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
+        }
+    }
 
 
    abstract fun createRequest():E
@@ -145,6 +160,7 @@ abstract class BaseCreatorViewModel<T,A,E> : CharacteristicViewModel() {
         checkEnabled()
     }
     fun addPhoto(uri: Uri,context: Context)=saveImageLocal(uri,context)
+    fun addImages(uri: MutableList<Uri>,context: Context)=saveImagesLocal(uri, context)
     abstract fun checkEnabled()
     abstract fun checkStackMultimedia():Boolean
     abstract fun saveMultimedia()

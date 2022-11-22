@@ -114,6 +114,26 @@ interface LocalDataApi {
     @Query("DELETE FROM my_tenders")
     suspend fun removeMyTenders()
 
+    @Query("Select * from local_images")
+    suspend fun getImages():List<SaveImageRequestDao>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveImages(images:List<SaveImageRequestDao>)
+
+    @Query("DELETE FROM local_images")
+    suspend fun removeImages()
+
+    @Query("Select * from local_files")
+    suspend fun getFiles():List<SaveFileRequestDao>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveFiles(files:List<SaveFileRequestDao>)
+
+    @Query("DELETE FROM local_files")
+    suspend fun removeFiles()
+
+
+
 
 
 

@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltAndroidApp
 class App : Application(), Configuration.Provider{
     @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    lateinit var workerFactory: MyWorkerFactory
     override fun getWorkManagerConfiguration()=
         Configuration.Builder()
         .setWorkerFactory(workerFactory)

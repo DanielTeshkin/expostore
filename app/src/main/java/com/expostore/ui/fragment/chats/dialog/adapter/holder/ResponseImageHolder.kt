@@ -16,11 +16,28 @@ class ResponseImageHolder(val binding:ImageReceviedItemBinding, private  val onC
         )
         binding.imageRec.apply {
                 val list=ArrayList<String>()
-                item.images?.map{ it.file?.let { it1 -> list.add(it1) } }
+                item.images?.map{ it.file.let { it1 -> list.add(it1) } }
                 val gridLayoutManager= LinearLayoutManager(context)
-                val imageAdapter= ImageMessageRecyclerViewAdapter(list,onClickImage)
+                val imageAdapter= ImageMessageRecyclerViewAdapter(list,onClickImage,"network")
                 layoutManager=gridLayoutManager
                 adapter=imageAdapter
             }
+    }
+}
+
+class ResponseLocalImageHolder(val binding:ImageReceviedItemBinding, private  val onClickImage: OnClickImage):DialogViewHolder(binding.root) {
+    override fun bind(item: Message) {
+        processor.checkCondition(condition = {item.text.isEmpty()},
+            actionFalse = {  binding.textImage.text=item.text},
+            actionTrue = {binding.textImage.isVisible=false}
+        )
+        binding.imageRec.apply {
+            val list=ArrayList<String>()
+            item.images?.map{ it.file.let { it1 -> list.add(it1) } }
+            val gridLayoutManager= LinearLayoutManager(context)
+            val imageAdapter= ImageMessageRecyclerViewAdapter(list,onClickImage,"local")
+            layoutManager=gridLayoutManager
+            adapter=imageAdapter
+        }
     }
 }

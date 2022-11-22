@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.chats.dialog.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class DialogRecyclerViewAdapter(private var messages:MutableList<Message>,
              val list= ArrayList<Message>()
              list.add(message)
              list.addAll(messages)
+//             Log.i("fff", message.images?.get(0)?.file?:"")
              diffUtil=DiffUtil.calculateDiff(DiffUtilDialog(messages,list))
              diffUtil.dispatchUpdatesTo(this)
              messages=list

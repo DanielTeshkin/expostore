@@ -35,7 +35,13 @@ class TypeHolder(  private val onClickImage: OnClickImage)
             && message.images?.size==0
         ) {
             R.layout.file_sent
-        } else{ 4}
+        }
+        else if(message.author==username&& message.images?.size!=0
+            && message.chatFiles?.size==0 && message.images?.get(0)?.id==""
+        ) {
+            13
+        }
+        else{ 4}
     }
 
     fun createHolder( type:Int,parent: ViewGroup): DialogViewHolder {
@@ -53,6 +59,8 @@ class TypeHolder(  private val onClickImage: OnClickImage)
                 false))
             R.layout.file_received->ResponseFileHolder(FileReceivedBinding.inflate(LayoutInflater.from(parent.context), parent,
                 false))
+            13->ResponseImageHolder(ImageReceviedItemBinding.inflate(LayoutInflater.from(parent.context), parent,
+                false),onClickImage)
          else-> ResponseMessageHolder(MessageReceivedItemBinding.inflate(LayoutInflater.from(parent.context), parent,
              false))
         }

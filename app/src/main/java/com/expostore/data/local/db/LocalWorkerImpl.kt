@@ -60,6 +60,15 @@ import com.expostore.model.favorite.FavoriteTender
          .savePersonalSelections(items.map { SelectionPersonal(it.name,it.count,it.id,it.products,it.date_create) })
 
      override suspend fun removePersonalSelections() =localDataApi.removePersonalSelections()
+     override suspend fun getImages()=localDataApi.getImages()
+     override suspend fun saveImages(images: List<SaveImageRequestDao>)=localDataApi.saveImages(images)
+
+     override suspend fun removeImages() =localDataApi.removeImages()
+     override suspend fun getFiles()=localDataApi.getFiles()
+
+     override suspend fun saveFiles(files: List<SaveFileRequestDao>) =localDataApi.saveFiles(files)
+
+     override suspend fun removeFiles() =localDataApi.removeFiles()
 
      override suspend fun getChats(): List<ChatDao> =localDataApi.getChats()
     override suspend fun saveChats(chats: List<MainChat>) = localDataApi.saveChats(chats.map { it.toDao})

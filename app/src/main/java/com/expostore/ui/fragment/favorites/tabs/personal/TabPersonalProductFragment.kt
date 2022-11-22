@@ -35,13 +35,11 @@ class TabPersonalProductFragment() :
     override fun onStart() {
         super.onStart()
         viewModel.load()
-        binding.newSelection.click { viewModel.navigateToAddPersonalProduct() }
+        binding.createPersonal.click { viewModel.navigateToAddPersonalProduct() }
     }
 
     fun init(products:List<ProductModel>){
-
-        personal.addAll(products)
-
+        if (personal.size<0) personal.addAll(products)
         myAdapter.onItemClick ={viewModel.navigate(it)}
         myAdapter.onAnotherClick={ showPersonalProductBottomSheet(requireContext(),it,this)}
         binding.rvUsers.apply {

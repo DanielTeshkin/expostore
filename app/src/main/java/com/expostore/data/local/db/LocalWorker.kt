@@ -56,4 +56,11 @@ interface LocalWorker {
  suspend fun getPersonalSelection():List<SelectionModel>
  suspend fun savePersonalSelections(items:List<SelectionModel>)
  suspend fun removePersonalSelections()
+    suspend fun getImages():List<SaveImageRequestDao>
+    suspend fun saveImages(images:List<SaveImageRequestDao>)
+    suspend fun removeImages()
+    suspend fun getFiles():List<SaveFileRequestDao>
+    suspend fun saveFiles(files:List<SaveFileRequestDao>)
+    suspend fun removeFiles()
+
 }

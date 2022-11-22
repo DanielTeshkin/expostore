@@ -49,6 +49,10 @@ class ProductCreateImageAdapter(private var images: MutableList<String>,private 
         }
         else{
             holder.imageView.loadImageProduct(image)
+
+            holder.imageView.setOnClickListener {
+                imagesEdit.cropImage(Uri.parse(image))
+            }
             holder.binding.deleteImage.apply {
                 visibility= View.VISIBLE
                 click {
@@ -63,7 +67,10 @@ class ProductCreateImageAdapter(private var images: MutableList<String>,private 
         images.add(uri)
         notifyDataSetChanged()
     }
-
+   fun addImages(uris:List<String>){
+       images.addAll(uris)
+       notifyDataSetChanged()
+   }
    private fun removeAt(index: Int) {
         images.removeAt(index)
         notifyItemRemoved(index)

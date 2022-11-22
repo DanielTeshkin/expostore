@@ -201,6 +201,7 @@ class BottomSheetImage internal constructor() :
             }
             is ClickedTile.ImageTile -> {
                 onImagesSelectedListener?.onImagesSelected(mutableListOf(tile.uri), requestTag)
+                adapter.clear()
                 dismissAllowingStateLoss()
             }
         }

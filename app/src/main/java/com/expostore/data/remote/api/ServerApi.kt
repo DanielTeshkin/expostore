@@ -69,7 +69,7 @@ interface ServerApi {
 
 
 
-    @POST("/api/shop/create/")
+    @POST("/api/shop/create")
     suspend fun shopCreate(@Body request:AddShopRequestData):Response<ShopResponse>
 
     @PUT("/api/shop/")

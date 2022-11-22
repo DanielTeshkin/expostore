@@ -3,6 +3,8 @@ package com.expostore.data.repositories
 import com.expostore.data.remote.api.ApiWorker
 import com.expostore.data.remote.api.pojo.getchats.*
 import com.expostore.data.local.db.LocalWorker
+import com.expostore.data.local.db.enities.SaveFileRequestDao
+import com.expostore.data.local.db.enities.SaveImageRequestDao
 import com.expostore.model.chats.DataMapping.MainChat
 import com.expostore.model.chats.DataMapping.toModel
 import kotlinx.coroutines.flow.flow
@@ -39,7 +41,8 @@ class ChatRepository @Inject constructor(private val apiWorker: ApiWorker, priva
         emit(result)
     }
     suspend fun getMainChat(id:String)= handleOrDefault(ChatResponse()){apiWorker.getMainChat(id)}.toModel
-
+    suspend fun saveImages(images:List<SaveImageRequestDao>) = localWorker.saveImages(images)
+    suspend fun saveFiles(files:List<SaveFileRequestDao>)=localWorker.saveFiles(files)
 
 
     fun deleteChat(id: String) = flow {

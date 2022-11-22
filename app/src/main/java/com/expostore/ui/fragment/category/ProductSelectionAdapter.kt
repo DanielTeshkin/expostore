@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +41,7 @@ class ProductSelectionAdapter(private val products:MutableList<ProductModel>) :R
                 like.isChecked=item.isLiked
                 like.click { onClick?.onClickLike(item.id) }
                 if(item.communicationType == "chatting") {
-                    val params=Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    val params=LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
                     params.marginStart=0
                     write.layoutParams=params
                     call.isVisible=false

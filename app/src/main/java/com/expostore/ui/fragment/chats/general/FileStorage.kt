@@ -12,6 +12,7 @@ import android.util.Base64
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import com.expostore.data.local.db.enities.SaveFileRequestDao
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.ui.fragment.chats.dialog.adapter.getFileName
 import com.expostore.ui.general.other.showBottomSheetTender
@@ -135,6 +136,13 @@ class FileStorage(val context: Context) {
         val extension=file?.extension
         val fileName= getFileName(uri)
         return SaveFileRequestData(fileDecode,extension?:"",fileName)
+    }
+    fun getSaveRequestDao(uri: Uri): SaveFileRequestDao {
+        val file=getImageFromUri(uri)
+        val fileDecode=Base64.encodeToString(file?.readBytes(), Base64.DEFAULT)
+        val extension=file?.extension
+        val fileName= getFileName(uri)
+        return SaveFileRequestDao(fileDecode,extension?:"",fileName)
     }
 
 

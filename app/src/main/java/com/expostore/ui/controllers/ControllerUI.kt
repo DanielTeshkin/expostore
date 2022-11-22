@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.expostore.data.local.db.enities.SaveFileRequestDao
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.data.remote.api.pojo.saveimage.SaveImageRequestData
 import com.expostore.model.chats.DataMapping.Message
@@ -49,10 +50,10 @@ open class ControllerUI(val context: Context) {
                 override fun onLoadCleared(placeholder: Drawable?) {}
             }) } }
 
-  protected fun saveFile(): MutableList<SaveFileRequestData> {
-     val list= mutableListOf<SaveFileRequestData>()
+  protected fun saveFile(): MutableList<SaveFileRequestDao> {
+     val list= mutableListOf<SaveFileRequestDao>()
      files.map {
-       list.add(fileStorage.getSaveRequestData(it))
+       list.add(fileStorage.getSaveRequestDao(it))
      }
     return list
    }

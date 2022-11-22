@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ViewSwitcher
 import androidx.constraintlayout.widget.Constraints
@@ -53,7 +54,10 @@ class FavoritesProductRecyclerViewAdapter(
             binding.name.text = product.name
             if(product.communicationType == "chatting") {
                 val params=
-                    Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
                 params.marginStart=0
                 binding.write.layoutParams=params
                 binding.call.isVisible=false

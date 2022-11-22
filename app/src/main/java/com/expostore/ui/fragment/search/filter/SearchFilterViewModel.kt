@@ -67,7 +67,9 @@ class SearchFilterViewModel @Inject constructor(
                 category = category.value,
                 characteristics = filterCharacteristic.value
             )
-            interactor.searchSave(filterModel, type = flag.value).handleResult(saveSearchResponse)
+            interactor.searchSave(filterModel, type = flag.value).handleResult(saveSearchResponse,{
+                navigateToSearch(filterModel)
+            })
         }
 
     }

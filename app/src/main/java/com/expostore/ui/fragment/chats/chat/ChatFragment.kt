@@ -4,18 +4,24 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import com.expostore.R
 import com.expostore.databinding.ChatFragmentBinding
+import com.expostore.databinding.ChatTablayoutItemBinding
 import com.expostore.model.chats.InfoItemChat
 import com.expostore.ui.base.fragments.BaseFragment
 
 import com.expostore.ui.fragment.chats.general.FileStorage
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import com.expostore.ui.fragment.chats.listPath
+import com.expostore.ui.fragment.chats.loadTabImage
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.chat_tablayout_item.view.*
 
 /**
  * @author Teshkin Daniel
@@ -52,24 +58,31 @@ class ChatFragment : BaseFragment<ChatFragmentBinding>(ChatFragmentBinding::infl
             chatVp2.offscreenPageLimit = chatViewPagerAdapter.itemCount
             tabLayoutMediator = TabLayoutMediator(chatTl, chatVp2) { tab, position ->
                     tab.customView = chatViewPagerAdapter.getTabView(position)
-                chatTl.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        if (tab != null) { tab.customView=chatViewPagerAdapter.getUpdateView(tab.position,true) }
-                    }
 
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-                        if (tab != null) { tab.customView=chatViewPagerAdapter.getUpdateView(tab.position,false) }
-                    }
 
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-                      Log.i("","f")
-                    }
-
-                })
             }
-
-
             tabLayoutMediator.attach()
+            chatTl.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                    if (tab != null) {
+                    val view=     chatTl.getTabAt(tab.position)?.customView
+                        view?.findViewById<ImageView>(R.id.green_point)?.visibility=View.VISIBLE
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    if (tab != null) {
+                        val view=     chatTl.getTabAt(tab.position)?.customView
+                        view?.findViewById<ImageView>(R.id.green_point)?.visibility=View.GONE
+                     }
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                   // view?.findViewById<ImageView>(R.id.green_point)?.visibility=View.GONE
+                }
+
+            })
 
 
         }

@@ -3,6 +3,7 @@ package com.expostore.ui.fragment.search.main.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -47,7 +48,7 @@ class ProductsAdapter(context:Context,
                 viewPager.adapter = adapter
                 if(item.communicationType == "chatting") {
                     val params=
-                        Constraints.LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                        LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
                     params.marginStart=0
                     binding.write.layoutParams=params
                     call.isVisible=false

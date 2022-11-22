@@ -1,6 +1,7 @@
 package com.expostore.ui.fragment.chats.dialog.adapter
 
 import android.graphics.Bitmap
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
@@ -9,10 +10,14 @@ import com.expostore.databinding.ImageItemsBinding
 import com.expostore.ui.fragment.chats.loadImage
 import com.expostore.utils.OnClickImage
 
-class ImageMessageRecyclerViewAdapter( private val images:ArrayList<String>,  val onClickImage: OnClickImage):
+class ImageMessageRecyclerViewAdapter( private val images:ArrayList<String>,  val onClickImage: OnClickImage, private val type:String):
     RecyclerView.Adapter<ImageMessageRecyclerViewAdapter.ImageViewHolder>() {
    inner class ImageViewHolder( val binding:ImageItemsBinding) : RecyclerView.ViewHolder(binding.root){
-       fun bind(url:String){ binding.messageImage.loadImage(url) }
+       fun bind(url:String){
+           if(type=="network") binding.messageImage.loadImage(url)
+           else binding.messageImage.loadImage(Uri.parse(url))
+
+       }
 
     }
 

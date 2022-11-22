@@ -18,7 +18,7 @@ class RequestImageHolder(val binding: ImageSentItemBinding, private val onClickI
                 val list=ArrayList<String>()
                 item.images?.map {list.add(it.file)  }
                 val gridLayoutManager= LinearLayoutManager(context)
-                val imageAdapter= ImageMessageRecyclerViewAdapter(list,onClickImage)
+                val imageAdapter= ImageMessageRecyclerViewAdapter(list,onClickImage,"network")
                 layoutManager=gridLayoutManager
                 adapter=imageAdapter
             }

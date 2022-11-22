@@ -1,6 +1,7 @@
 package com.expostore.ui.base.fragments.create
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -16,15 +17,20 @@ import com.expostore.data.remote.api.pojo.saveimage.SaveImageResponseData
 import com.expostore.ui.base.fragments.CharacteristicsFragment
 import com.expostore.ui.base.fragments.Inflate
 import com.expostore.ui.base.vms.BaseCreatorViewModel
+import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 import com.expostore.ui.fragment.product.addproduct.adapter.ProductCreateImageAdapter
 import com.expostore.ui.fragment.product.addproduct.adapter.utils.ImagesEdit
 import com.expostore.ui.fragment.profile.profile_edit.click
 import com.expostore.ui.fragment.profile.profile_edit.selectListener
+import com.expostore.ui.general.ImagePick
+import com.expostore.utils.OnClickImage
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseCreatorFragment<Binding : ViewBinding,T,A,E,I>(private val inflate: Inflate<Binding>) :
-    CharacteristicsFragment<Binding>(inflate),ImagesEdit {
+    CharacteristicsFragment<Binding>(inflate),ImagesEdit,BottomSheetImage.OnImagesSelectedListener {
     val list= mutableListOf (" ")
     protected  val mAdapter: ProductCreateImageAdapter by lazy {
         ProductCreateImageAdapter(list, this) }
@@ -108,11 +114,7 @@ abstract class BaseCreatorFragment<Binding : ViewBinding,T,A,E,I>(private val in
        rvImages.adapter=mAdapter
    }
     private fun addPhoto() {
-        ImagePicker.with(this)
-            .crop()
-            .compress(1024)
-            .maxResultSize(1080, 1080)
-            .createIntent { intent -> launchSomeActivity.launch(intent) }
+        com.expostore.ui.fragment.chats.general.ImagePicker().bottomSheetImageSetting().build().show(childFragmentManager,"ff")
     }
     private var launchSomeActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result  ->
@@ -122,6 +124,7 @@ abstract class BaseCreatorFragment<Binding : ViewBinding,T,A,E,I>(private val in
                 Activity.RESULT_OK -> {
                     val fileUri = data?.data!!
                     viewModel.addPhoto(fileUri,requireContext())
+                    CropImage.activity(fileUri).start(requireContext(),this)
                   mAdapter.update(fileUri.toString())
                 }
                 ImagePicker.RESULT_ERROR -> {
@@ -135,7 +138,16 @@ abstract class BaseCreatorFragment<Binding : ViewBinding,T,A,E,I>(private val in
     override fun openGallery() {
         addPhoto()
     }
+
+    override fun onImagesSelected(uris: MutableList<Uri>, tag: String?) {
+        viewModel.addImages(uris,requireContext())
+        mAdapter.addImages( uris.map { it.toString() })
+    }
     override fun removePhoto(string: String) {
         viewModel.removeImage(string)
+    }
+
+    override fun cropImage(uri: Uri) {
+        CropImage.activity(uri).start(requireContext(),this)
     }
 }

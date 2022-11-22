@@ -38,5 +38,9 @@ class AddProductController(context: Context,
                            override var fieldCharacteristic: LinearLayout=binding.llAddProductCharacteristic,
                            override val recycleViewCharacteristics: RecyclerView=binding.rvProductCharacteristic
 
-) : BaseCreatorController(context,addPhoto,  loadCharacteristics)
+) : BaseCreatorController(context,addPhoto,  loadCharacteristics) {
+    override fun cropImage(uri: Uri) {
+        TODO("Not yet implemented")
+    }
+}
 

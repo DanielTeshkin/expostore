@@ -80,8 +80,7 @@ class SearchFilterFragment(): CharacteristicsFragment<SearchFilterFragmentBindin
                     etCity.text.toString(),
                         priceMin.text.toString().toIntOrNull(),
                    priceMax.text.toString().toIntOrNull(),
-
-                )
+                    )
             }
         }
 

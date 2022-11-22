@@ -3,6 +3,7 @@ package com.expostore.ui.fragment.tender.list.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -76,8 +77,8 @@ class TenderAdapter :
 
                 }
                 if(item.communicationType == "chatting"){
-                    val params= Constraints
-                        .LayoutParams( Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT)
+                    val params= LinearLayout
+                        .LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                     params.marginStart=0
                     write.layoutParams=params
                     call.isVisible=false

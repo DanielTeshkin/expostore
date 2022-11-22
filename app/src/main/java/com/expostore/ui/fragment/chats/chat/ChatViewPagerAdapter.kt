@@ -43,14 +43,15 @@ class ChatViewPagerAdapter(
     }
 
 
-    fun getUpdateView(position: Int, state: Boolean): View{
+    fun getUpdateView(position: Int, state: Boolean){
         val view: View = LayoutInflater.from(context).inflate(R.layout.chat_tablayout_item, null)
+
         view.chat_product_name.text=  if(position>product_name.size-1) ""
         else product_name[position]
         if(position>product_name.size-1)view.chat_product_image.loadTabImage("")
         else view.chat_product_image.loadTabImage(images[position])
         view.green_point.isVisible=state
-        return view
+
     }
 
     override fun createFragment(position: Int): Fragment {

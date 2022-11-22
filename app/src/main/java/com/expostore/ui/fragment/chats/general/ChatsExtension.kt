@@ -105,7 +105,13 @@ fun ImageView.loadImage(url:String){
         .transform(RoundedCorners(10))
         .into(this)
 }
-
+fun ImageView.loadImage(url:Uri) {
+    Glide.with(context)
+        .load(url)
+        .override(300, 400)
+        .transform(RoundedCorners(10))
+        .into(this)
+}
 fun ImageView.reviewImage(url:String){
     Glide.with(context)
         .load(url)

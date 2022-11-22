@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
-import androidx.work.workDataOf
+import androidx.work.*
 import com.expostore.NoteWorker
 import com.expostore.databinding.NoteFragmentBinding
 import com.expostore.ui.base.fragments.BaseFragment
@@ -35,7 +32,9 @@ class NoteFragment : BaseFragment<NoteFragmentBinding>(NoteFragmentBinding::infl
         }
         binding.btnSaveNote.click {
             val data = workDataOf(
-                Pair("data", NoteData(id, flag, isLiked, flagNavigation)),
+                Pair("id",id),
+                Pair("flag",flag),
+                Pair("isLiked",isLiked),
                 Pair("text", binding.myNote.text.toString())
             )
             val myWorkRequest =

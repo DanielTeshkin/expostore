@@ -2,9 +2,9 @@ package com.expostore.ui.fragment.chats.dialog
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.expostore.data.local.db.enities.SaveFileRequestDao
 import com.expostore.data.remote.api.pojo.getchats.*
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.databinding.DialogFragmentBinding
@@ -13,7 +13,6 @@ import com.expostore.ui.controllers.DialogControllerUI
 import com.expostore.ui.fragment.chats.dialog.bottom.BottomSheetImage
 import com.expostore.ui.fragment.chats.general.PagerChatRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 /**
  * @author Teshkin Daniel
@@ -28,7 +27,8 @@ import kotlinx.coroutines.flow.collect
     }
     override var isBottomNavViewVisible: Boolean=false
     private val sendText:((String,MessageRequest)->Unit) by lazy {{id,body->viewModel.sentMessageOrUpdate(id,body)}  }
-    private val saveFiles:((List<SaveFileRequestData>) -> Unit) by lazy {{data-> viewModel.saveFile(data)} }
+    private val saveFiles:((List<SaveFileRequestDao>, String) -> Unit) by lazy {
+        {data,text-> viewModel.sendMessageWithFile(data, requireContext(),arguments?.getString("id")!!,text)} }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.updateMessages( arguments?.getString("id")!!)
@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.collect
     override fun onStart() {
         super.onStart()
         controller.apply {
-            initUI(sendText, {viewModel.saveImageNetwork(it)},childFragmentManager,saveFiles)
+            initUI(sendText, { data,text-> viewModel.sendMessageWithImage(data,requireContext(),text,arguments?.getString("id")!!)}, childFragmentManager,saveFiles)
             setupVisibleControllerForTextInput { viewModel.saveMessageText(it) }
         }
     }

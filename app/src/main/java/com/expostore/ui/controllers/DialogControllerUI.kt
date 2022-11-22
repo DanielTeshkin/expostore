@@ -9,6 +9,7 @@ import androidx.core.view.isEmpty
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.expostore.data.local.db.enities.SaveFileRequestDao
 import com.expostore.data.remote.api.pojo.getchats.MessageRequest
 import com.expostore.data.remote.api.pojo.saveimage.SaveFileRequestData
 import com.expostore.databinding.DialogFragmentBinding
@@ -57,9 +58,9 @@ class DialogControllerUI(context: Context,
 
     fun initUI(
         action: (String, MessageRequest) -> Unit,
-        loadImageAndSend: (List<Bitmap>) -> Unit,
+        loadImageAndSend: (List<Bitmap>,String) -> Unit,
         manager: FragmentManager,
-        loadFileAndSend: (List<SaveFileRequestData>) -> Unit
+        loadFileAndSend: (List<SaveFileRequestDao>,String) -> Unit
     ){
         binding.apply {
             messageSend.click{sendMessage(action,loadImageAndSend,loadFileAndSend)}
@@ -113,23 +114,30 @@ class DialogControllerUI(context: Context,
         createMessage(binding.etInput.text.toString(),author, images = multimedia.map { ImageModel(id="", file = it.toString()) })
     )
     private fun addMessageWithFile()=adapterMessage.addMessage(
-    createMessage(binding.etInput.text.toString(),author, listOf(),files.map { FileChat(id="", file = it.toString(),name= getFileName(it)) })
+    createMessage(binding.etInput.text.toString(),author,ArrayList() ,files = files.map { FileChat(id="", file = it.toString(),name= getFileName(it)) })
     )
 
     private fun sendMessage(action: (String, MessageRequest) -> Unit,
-                            loadImageAndSend: (List<Bitmap>) -> Unit,
-                            loadFileAndSend: (List<SaveFileRequestData>)->Unit){
+                            loadImageAndSend: (List<Bitmap>,String) -> Unit,
+                            loadFileAndSend: (List<SaveFileRequestDao>, String)->Unit){
         when(multimedia.isEmpty()&&files.isEmpty()){
             true->sendText(action)
             false->{
                 when(flagType) {
                     false-> {
                         addMessageWithImage()
-                        loadImageAndSend.invoke(mapImages.entries.map { it.value })
+                        loadImageAndSend.invoke(mapImages.entries.map { it.value },binding.etInput.text.toString())
+                        clearInput()
+                        clearMap()
+                        clearMultimedia()
+                        visiblePanelMultimedia(false)
+                        messagesView.down(0)
                     }
                     true-> {
                         addMessageWithFile()
-                        loadFileAndSend.invoke(saveFile())
+                        loadFileAndSend.invoke(saveFile(),binding.etInput.text.toString())
+                        clearInput()
+                        clearFileCache()
                     }
                 }
             }
@@ -174,7 +182,7 @@ class DialogControllerUI(context: Context,
         }
 
         flagType=true
-        Log.i("dok",fileAdapter.itemCount.toString())
+        Log.i("dok",files.size.toString())
 
         sendActivate()
     }

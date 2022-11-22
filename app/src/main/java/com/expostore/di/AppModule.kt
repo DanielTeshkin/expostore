@@ -1,6 +1,7 @@
 package com.expostore.di
 
 import android.content.Context
+import androidx.work.WorkManager
 import com.expostore.BuildConfig
 import com.expostore.data.remote.api.ApiWorker
 import com.expostore.data.remote.api.ApiWorkerImpl
@@ -86,4 +87,9 @@ object AppModule {
     @Provides
     fun provideLocalWorker(localDataApi: LocalDataApi,@ApplicationContext context: Context) : LocalWorker=
         LocalWorkerImpl(localDataApi,context)
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext appContext: Context): WorkManager =
+        WorkManager.getInstance(appContext)
 }
